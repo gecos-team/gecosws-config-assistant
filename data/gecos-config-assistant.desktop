@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=GECOS Config Assistant
+Comment=GECOS Config Assistant application
+Categories=GNOME;Utility;
+Exec=gecos-config-assistant-launcher
+X-GNOME-Autostart-Delay=3
+X-GNOME-Autostart-Phase=Desktop
+Icon=/usr/share/firstboot/media/wizard1.png
+Terminal=false
+Type=Application

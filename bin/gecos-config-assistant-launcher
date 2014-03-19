@@ -1,0 +1,4 @@
+#!/bin/bash
+	
+gksu -g python /usr/bin/gecos-config-assistant
+
