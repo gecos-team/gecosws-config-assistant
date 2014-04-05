@@ -27,78 +27,46 @@ class ChefConf():
 
     def __init__(self):
         self._data = {}
-        self._data['chef_server_url'] = ''
-        self._data['chef_validation_url'] = ''
-        self._data['chef_default_role'] = ''
+        self._data['chef_server_uri'] = ''
+        self._data['chef_validation'] = ''
 
     def load_data(self, conf):
         msg = 'ServerConf: Key "%s" not found in the configuration file.'
         try:
-            self.set_url(conf['chef_server_url'])
+            self.set_url(conf['chef_server_uri'])
         except KeyError as e:
-            print msg % ('chef_server_url',)
+            print msg % ('chef_server_uri',)
         try:
-            self.set_pem_url(conf['chef_validation_url'])
+            self.set_pem(conf['chef_validation'])
         except KeyError as e:
-            print msg % ('chef_validation_url',)
-        try:
-            self.set_default_role(conf['chef_default_role'])
-        except KeyError as e:
-            print msg % ('chef_default_role',)
+            print msg % ('chef_validation',)
 
     def validate(self):
-        valid = validation.is_url(self._data['chef_server_url']) \
-            and validation.is_url(self._data['chef_validation_url']) \
-            and validation.is_qname(self._data['chef_default_role'])
+        valid = validation.is_url(self._data['chef_server_uri']) 
         return valid
 
     def get_url(self):
-        return self._data['chef_server_url'].encode('utf-8')
+        return self._data['chef_server_uri'].encode('utf-8')
 
     def set_url(self, url):
-        self._data['chef_server_url'] = url
+        self._data['chef_server_uri'] = url
         return self
 
-    def get_pem_url(self):
-        return self._data['chef_validation_url'].encode('utf-8')
+    def get_pem(self):
+        return self._data['chef_validation'].encode('utf-8')
 
-    def set_pem_url(self, pem_url):
-        self._data['chef_validation_url'] = pem_url
-        return self
-
-    def get_default_role(self):
-        return self._data['chef_default_role'].encode('utf-8')
-
-    def set_default_role(self, default_role):
-        self._data['chef_default_role'] = default_role
+    def set_pem(self, pem):
+        self._data['chef_validation'] = pem
         return self
 
     # --- Next fields are not present in the JSON file but are
     # setted on runtime by Firstboot ---
 
-    def get_hostname(self):
-        if not 'hostname' in self._data:
-            self._data['hostname'] = ''
-        return self._data['hostname'].encode('utf-8')
+    def get_node_name(self):
+        if not 'node_name' in self._data:
+            self._data['node_name'] = ''
+        return self._data['node_name'].encode('utf-8')
 
-    def set_hostname(self, hostname):
-        self._data['hostname'] = hostname
-        return self
-
-    def get_user(self):
-        if not 'user' in self._data:
-            self._data['user'] = ''
-        return self._data['user'].encode('utf-8')
-
-    def set_user(self, user):
-        self._data['user'] = user
-        return self
-
-    def get_password(self):
-        if not 'password' in self._data:
-            self._data['password'] = ''
-        return self._data['password'].encode('utf-8')
-
-    def set_password(self, password):
-        self._data['password'] = password
+    def set_node_name(self, node_name):
+        self._data['node_name'] = node_name
         return self
