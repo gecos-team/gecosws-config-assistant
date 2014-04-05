@@ -31,7 +31,7 @@ class LdapConf():
         self._data['base'] = ''
         self._data['basegroup'] = ''
         self._data['binddn'] = ''
-        self._data['bindpw'] = ''
+        self._data['bindpwd'] = ''
 
     def load_data(self, conf):
         msg = 'ServerConf: Key "%s" not found in the configuration file.'
@@ -52,16 +52,16 @@ class LdapConf():
         except KeyError as e:
             print msg % ('binddn',)
         try:
-            self.set_password(conf['bindpw'])
+            self.set_password(conf['bindpwd'])
         except KeyError as e:
-            print msg % ('bindpw',)
+            print msg % ('bindpwd',)
 
     def validate(self):
         valid = validation.is_url(self._data['uri']) \
             and not validation.is_empty(self._data['base']) \
             and not validation.is_empty(self._data['basegroup']) \
             and not validation.is_empty(self._data['binddn']) \
-            and not validation.is_empty(self._data['bindpw'])
+            and not validation.is_empty(self._data['bindpwd'])
         return valid
 
     def get_url(self):
@@ -93,10 +93,10 @@ class LdapConf():
         return self
 
     def get_password(self):
-        return self._data['bindpw'].encode('utf-8')
+        return self._data['bindpwd'].encode('utf-8')
 
     def set_password(self, password):
-        self._data['bindpw'] = password
+        self._data['bindpwd'] = password
         return self
 
     def __str__(self):
