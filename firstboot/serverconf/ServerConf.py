@@ -22,25 +22,24 @@ __license__ = "GPL-2"
 
 
 import firstboot.serverconf
-from LdapConf import LdapConf
 from ChefConf import ChefConf
-from ActiveDirectoryConf import ActiveDirectoryConf
+from GCCConf import GCCConf
+from AuthConf import AuthConf
 from DateSyncConf import DateSyncConf
 
 
 class ServerConf():
 
     # Version of the configuration JSON file
-    VERSION = '1.3'
+    VERSION = '0.2.0'
 
     def __init__(self):
         self._data = {}
         self._data['version'] = ServerConf.VERSION
         self._data['organization'] = ''
-        self._data['notes'] = ''
-        self._ldap_conf = LdapConf()
         self._chef_conf = ChefConf()
-        self._ad_conf = ActiveDirectoryConf()
+        self._gcc_conf = GCCConf()
+        self._auth_conf = AuthConf()
         self._ntp_conf = DateSyncConf()
 
     def load_data(self, conf):
@@ -56,32 +55,28 @@ class ServerConf():
         except KeyError as e:
             print msg % ('organization',)
         try:
-            self.set_notes(conf['notes'])
-        except KeyError as e:
-            print msg % ('notes',)
-        try:
-            self._ldap_conf.load_data(conf['pamldap'])
-        except KeyError as e:
-            print msg % ('pamldap',)
-        try:
             self._chef_conf.load_data(conf['chef'])
         except KeyError as e:
             print msg % ('chef',)
         try:
-            self._ad_conf.load_data(conf['ad'])
+            self._gcc_conf.load_data(conf['gcc'])
         except KeyError as e:
-            print msg % ('ad',)
+            print msg % ('gcc',)
         try:
-            self._ntp_conf.load_data(conf['ntp'])
+            self._auth_conf.load_data(conf['auth'])
+        except KeyError as e:
+            print msg % ('auth',)
+        try:
+            self._ntp_conf.load_data(conf['uri_ntp'])
         except KeyError as e:
             print msg % ('ntp',)
 
     def validate(self):
         valid = len(self._data['version']) > 0 \
-            and self._ldap_conf.validate() \
             and self._chef_conf.validate() \
-            and self._ad_conf.validate() \
-            and self._ntp_conf.validate()
+            and self._auth_conf.validate() \
+            and self._ntp_conf.validate() \
+            and self._gcc_conf.validate()
         return valid
 
     def get_version(self):
@@ -98,22 +93,16 @@ class ServerConf():
         self._data['organization'] = organization
         return self
 
-    def get_notes(self):
-        return self._data['notes'].encode('utf-8')
-
-    def set_notes(self, notes):
-        self._data['notes'] = notes
-        return self
-
-    def get_ad_conf(self):
-        return self._ad_conf
-
-    def get_ldap_conf(self):
-        return self._ldap_conf
+    def get_auth_conf(self):
+        return self._auth_conf
 
     def get_chef_conf(self):
         return self._chef_conf
 
     def get_ntp_conf(self):
         return self._ntp_conf
+
+    def get_gcc_conf(self):
+        return self._gcc_conf
+
 
