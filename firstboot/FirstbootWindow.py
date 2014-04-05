@@ -44,7 +44,7 @@ import dbus
 from dbus.mainloop.glib import DBusGMainLoop
 
 
-__DESKTOP_FILE__ = '/etc/xdg/autostart/firstboot.desktop'
+__DESKTOP_FILE__ = '/etc/xdg/autostart/gecos-config-assistant.desktop'
 
 NM_DBUS_SERVICE = 'org.freedesktop.NetworkManager'
 NM_DBUS_OBJECT_PATH = '/org/freedesktop/NetworkManager'
@@ -131,7 +131,7 @@ class FirstbootWindow(Window):
 
         if self.fully_configured == True:
             if os.path.exists(__DESKTOP_FILE__):
-                os.rename(__DESKTOP_FILE__, '/tmp/firstboot.desktop')
+                os.rename(__DESKTOP_FILE__, '/tmp/gecos-config-assistant.desktop')
             return False
 
         dialog = Gtk.MessageDialog(self,
@@ -145,7 +145,7 @@ class FirstbootWindow(Window):
 
         if result == Gtk.ResponseType.YES:
             if os.path.exists(__DESKTOP_FILE__):
-                os.rename(__DESKTOP_FILE__, '/tmp/firstboot.desktop')
+                os.rename(__DESKTOP_FILE__, '/tmp/gecos-config-assistant.desktop')
             retval = False
 
         return False
