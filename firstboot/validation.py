@@ -41,6 +41,8 @@ def is_url(value):
     #print '> %s :: %s' % (m != None, value)
     return m != None
 
+def is_auth_type(value):
+    return value == 'ldap' or value == 'ad'
 
 def is_password(value):
     """ Maybe not necesary """
