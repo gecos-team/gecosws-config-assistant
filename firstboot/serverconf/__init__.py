@@ -236,6 +236,17 @@ def ad_is_configured():
         raise e
 
 
+def create_solo_json(server_conf):
+    json_solo = {}
+    json_solo['run_list'] = []
+    json_solo['gecos_ws_mgmt'] = {}
+    if server_conf.get_ntp_conf().get_uri_ntp() != '':
+        json_solo['run_list'].append("recipe[gecos_ws_mgmt::tz_date]")
+        json_solo['gecos_ws_mgmt']['misc_mgmt'] = {'tz_date_res':{'server':server_conf.get_ntp_conf().get_uri_ntp()}}
+    return json_solo
+
+
+
 def ldap_is_configured():
     try:
 
