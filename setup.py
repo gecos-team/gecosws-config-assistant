@@ -65,7 +65,7 @@ def update_config(values={}):
 def update_desktop_file(datadir):
 
     try:
-        fin = file('firstboot.desktop.in', 'r')
+        fin = file('gecos-config-assistant.desktop.in', 'r')
         fout = file(fin.name + '.new', 'w')
 
         for line in fin:
@@ -77,7 +77,7 @@ def update_desktop_file(datadir):
         fin.close()
         os.rename(fout.name, fin.name)
     except (OSError, IOError), e:
-        print ("ERROR: Can't find firstboot.desktop.in")
+        print ("ERROR: Can't find gecos-config-assistant.desktop.in")
         sys.exit(1)
 
 
@@ -160,8 +160,8 @@ workstation to different services',
         },
 
     scripts=[
-        'bin/firstboot',
-        'bin/firstboot-launcher',
+        'bin/gecos-config-assistant',
+        'bin/gecos-config-assistant-launcher',
         'bin/firstboot-ldapconf.sh',
         'bin/firstboot-chefconf.sh',
         'bin/firstboot-adconf.sh'
@@ -176,7 +176,7 @@ workstation to different services',
        ('share/firstboot/ui', glob.glob('data/ui/*')),
        ('share/pam-configs/', glob.glob('data/my_mkhomedir')),
        ('share/pam-configs/', glob.glob('data/my_groups')),
-       ('/etc/xdg/autostart/', glob.glob('data/firstboot.desktop')),
+       ('/etc/xdg/autostart/', glob.glob('data/gecos-config-assistant.desktop')),
        ('/opt/likewise/', glob.glob('data/debconf.likewise')),
        ('share/firstboot/', glob.glob('data/debconf.ldap')),
        ('/usr/sbin/', glob.glob('data/pam-auth-update.firstboot')),
