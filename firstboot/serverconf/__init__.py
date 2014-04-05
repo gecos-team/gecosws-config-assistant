@@ -169,48 +169,21 @@ def get_server_conf(url):
         raise ServerConfException(_('Configuration file is not valid.'))
 
 
-def get_chef_pem(chef_conf):
-    global CREDENTIAL_CACHED
-    url = chef_conf.get_pem_url()
-    user = ''
-    password = ''
-    try:
-        try:
-            url = parse_url(url)
-            user, password = validate_credentials(url)
-            chef_conf.set_user(user)
-            chef_conf.set_password(password)
-            fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
+def create_chef_pem(chef_conf):
+    content = chef_conf.get_pem()
+    (fd, filepath) = tempfile.mkstemp(dir='/tmp')
+    fp = os.fdopen(fd, "w+b")
+    if fp:
+        fp.write(content.decode('base64'))
+        fp.close()
 
-        except urllib2.URLError as e:
-            if hasattr(e, 'code') and e.code == 401:
-                user, password = validate_credentials(url)
-                fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
-
-                chef_conf.set_user(user)
-                chef_conf.set_password(password)
-
-            else:
-                raise e
-
-        content = fp.read()
-
-        (fd, filepath) = tempfile.mkstemp(dir='/tmp')  # [suffix=''[, prefix='tmp'[, dir=None[, text=False]]]])
-        fp = os.fdopen(fd, "w+b")
-        if fp:
-            fp.write(content)
-            fp.close()
-
-        return filepath
-
-    except urllib2.URLError as e:
-        raise ServerConfException(e)
+    return filepath
 
 
 def get_chef_hostnames(chef_conf):
 
     chef_url = chef_conf.get_url()
-    pem_file_path = get_chef_pem(chef_conf)
+    pem_file_path = create_chef_pem(chef_conf)
 
     cmd = 'knife node list -u chef-validator -k %s -s %s' % (pem_file_path, chef_url)
     args = shlex.split(cmd)
