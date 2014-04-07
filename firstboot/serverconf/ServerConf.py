@@ -26,6 +26,7 @@ from ChefConf import ChefConf
 from GCCConf import GCCConf
 from AuthConf import AuthConf
 from DateSyncConf import DateSyncConf
+from UsersConf import UsersConf
 
 
 class ServerConf():
@@ -41,6 +42,7 @@ class ServerConf():
         self._gcc_conf = GCCConf()
         self._auth_conf = AuthConf()
         self._ntp_conf = DateSyncConf()
+        self._users_conf = UsersConf()
 
     def load_data(self, conf):
         msg = 'ServerConf: Key "%s" not found in the configuration file.'
@@ -104,5 +106,8 @@ class ServerConf():
 
     def get_gcc_conf(self):
         return self._gcc_conf
+
+    def get_users_conf(self):
+        return self._users_conf
 
 
