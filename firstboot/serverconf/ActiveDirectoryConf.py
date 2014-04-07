@@ -97,6 +97,15 @@ class ActiveDirectoryProperties():
         self._data['smb_conf'] = smb_conf
         return self
 
+    def get_pam_conf(self):
+        return self._data['pam_conf']
+
+    def set_pam_conf(self, pam_conf):
+        self._data['pam_conf'] = pam_conf
+        return self
+
+    def __str__(self):
+        return str(self._data)
 
 
 class ActiveDirectoryConf():
@@ -121,13 +130,13 @@ class ActiveDirectoryConf():
         return True
 
     def get_specific_conf(self):
-        return self._data['specific_conf'].encode('utf-8')
+        return self._data['specific_conf']
 
     def set_specific_conf(self, specific_conf):
         self._data['specific_conf'] = specific_conf
         return self
 
-    def get_auth_properties(self):
+    def get_ad_properties(self):
         return self._ad_properties
 
     def __str__(self):
