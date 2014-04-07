@@ -24,6 +24,7 @@ __license__ = "GPL-2"
 import os
 import subprocess
 import shlex
+import shutil
 import urllib
 import urllib2
 import json
@@ -180,6 +181,15 @@ def create_chef_pem(chef_conf):
     return filepath
 
 
+def create_conf_file(file_content):
+    (fd, filepath) = tempfile.mkstemp(dir='/tmp')
+    fp = os.fdopen(fd, "w+b")
+    if fp:
+        fp.write(file_content.decode('base64'))
+        fp.close()
+
+    return filepath
+
 def get_chef_hostnames(chef_conf):
 
     chef_url = chef_conf.get_url()
@@ -238,11 +248,59 @@ def ad_is_configured():
 
 def create_solo_json(server_conf):
     json_solo = {}
-    json_solo['run_list'] = []
+    json_solo['run_list'] = ["recipe[gecos_ws_mgmt::local]"]
     json_solo['gecos_ws_mgmt'] = {}
+    json_solo['gecos_ws_mgmt']['misc_mgmt'] = {}
     if server_conf.get_ntp_conf().get_uri_ntp() != '':
-        json_solo['run_list'].append("recipe[gecos_ws_mgmt::tz_date]")
-        json_solo['gecos_ws_mgmt']['misc_mgmt'] = {'tz_date_res':{'server':server_conf.get_ntp_conf().get_uri_ntp()}}
+        json_solo['gecos_ws_mgmt']['misc_mgmt']['tz_date_res'] = {'server':server_conf.get_ntp_conf().get_uri_ntp()}
+    if server_conf.get_chef_conf().get_url() != '':
+        tmpfile = create_chef_pem(server_conf.get_chef_conf())
+        chef_url = server_conf.get_chef_conf().get_url()
+        chef_node_name = server_conf.get_chef_conf().get_node_name()
+        chef_json = {'chef_server_url':chef_url, 'chef_node_name': chef_node_name, 'chef_validation_pem': tmpfile}
+        json_solo['gecos_ws_mgmt']['misc_mgmt']['chef_conf_res'] = chef_json
+    if server_conf.get_auth_conf().get_auth_type() != '':
+        auth_type = server_conf.get_auth_conf().get_auth_type()
+        if auth_type == 'ad':
+            auth_prop = server_conf.get_auth_conf().get_auth_properties()
+            if auth_prop.get_specific_conf():
+                ad_prop = auth_prop.get_ad_properties()
+                krb5_file = create_conf_file(ad_prop.get_krb5_conf())
+                krb5_file = 'file://' + krb5_file
+                smb_file = create_conf_file(ad_prop.get_smb_conf())
+                smb_file = 'file://' + smb_file
+                sssd_file = create_conf_file(ad_prop.get_sssd_conf())
+                sssd_file = 'file://' + sssd_file
+                pam_file = create_conf_file(ad_prop.get_pam_conf())
+                pam_file = 'file://' + pam_file
+                sssd_ad_json = {'krb5_url': krb5_file, 'smb_url': smb_file, 'sssd_url': sssd_file, 'mkhimedir_url': pam_file}
+                json_solo['gecos_ws_mgmt']['misc_mgmt']['sssd_ad_res'] = sssd_ad_json
+            else:
+                ad_prop = auth_prop.get_ad_properties()
+                sssd_ad_json = {'fqdn':  ad_prop.get_fqdn(), 'workgroup' : ad_prop.get_workgroup()}
+                json_solo['gecos_ws_mgmt']['misc_mgmt']['sssd_ad_res'] = sssd_ad_json
+                
+        else:
+            auth_prop = server_conf.get_auth_conf().get_auth_properties()
+            sssd_ldap_json = {'uri': auth_prop.get_url(), 'base': auth_prop.get_basedn(), 'basegroup': auth_prop.get_basedngroup(), 'binddn': auth_prop.get_binddn(), 'bindpwd': auth_prop.get_password()}
+            json_solo['gecos_ws_mgmt']['misc_mgmt']['sssd_ldap_res'] = sssd_ldap_json
+    if server_conf.get_gcc_conf().get_uri_gcc() != '':
+        gcc_conf = server_conf.get_gcc_conf()
+        gcc_json = {'uri_gcc': gcc_conf.get_uri_gcc(), 'gcc_username' : gcc_conf.get_gcc_username(), 'ou_username': gcc_conf.get_ou_username(), 'gcc_pwd_user': gcc_conf.get_gcc_pwd_user()}
+        json_solo['gecos_ws_mgmt']['misc_mgmt']['gcc_res'] = gcc_json
+
+    if server_conf.get_users_conf().get_users_list():
+        users_conf = server_conf.get_users_conf().get_users_list()
+        array_users = [] 
+        for user in users_conf:
+            user_json = {'user': user.get_users(), 'password': user.get_password(), 'groups': user.get_groups(), 'actiontorun': user.get_actiontorun()}
+            array_users.append(user_json)
+
+        users_json = {'users_list': array_users}
+        json_solo['gecos_ws_mgmt']['misc_mgmt']['local_users_res'] = users_json
+
+
+
     return json_solo
 
 
