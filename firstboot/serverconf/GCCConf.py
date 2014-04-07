@@ -29,6 +29,7 @@ class GCCConf():
         self._data = {}
         self._data['uri_gcc'] = ''
         self._data['gcc_username'] = ''
+        self._data['gcc_pwd_user'] = ''
         self._data['ou_username'] = ''
 
     def load_data(self, conf):
@@ -62,6 +63,13 @@ class GCCConf():
 
     def set_gcc_username(self, gcc_username):
         self._data['gcc_username'] = gcc_username
+        return self
+
+    def get_gcc_pwd_user(self):
+        return self._data['gcc_pwd_user'].encode('utf-8')
+
+    def set_gcc_pwd_user(self, gcc_pwd_user):
+        self._data['gcc_pwd_user'] = gcc_pwd_user
         return self
 
     def get_ou_username(self):
