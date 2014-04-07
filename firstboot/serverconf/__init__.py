@@ -125,49 +125,47 @@ def json_is_cached():
 def clean_json_cached():
     return os.remove(__JSON_CACHE__)
 
-def get_server_conf(url):
-
-    is_cached = json_is_cached()
-
-    try:
-        if is_cached:
-            fp = open(__JSON_CACHE__, 'r')
-
-        else:
-            try:
-                url = parse_url(url)
-                user, password = validate_credentials(url)
-                fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
-
-            except urllib2.URLError as e:
-                if hasattr(e, 'code') and e.code == 401:
-                    user, password = validate_credentials(url)
-                    fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
-
-                else:
-                    raise e
-
-            fp_cached = open(__JSON_CACHE__, 'w')
-            for line in fp:
-                fp_cached.write(line)
-
-            fp_cached.close()
-            fp.close()
-            fp = open(__JSON_CACHE__, 'r')
-
+def get_json_content():
+    if json_is_cached():
+        fp = open(__JSON_CACHE__, 'r')
         content = fp.read()
         fp.close()
         conf = json.loads(content)
+        return conf
+    else:
+        return None
 
-        server_conf = ServerConf()
-        server_conf.load_data(conf)
-        return server_conf
-
+def get_json_autoconf(url):
+    try:
+        url = parse_url(url)
+        user, password = validate_credentials(url)
+        fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
     except urllib2.URLError as e:
-        raise ServerConfException(e)
+        if hasattr(e, 'code') and e.code == 401:
+            user, password = validate_credentials(url)
+            fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
+        else:
+            raise e
 
-    except ValueError as e:
-        raise ServerConfException(_('Configuration file is not valid.'))
+    fp_cached = open(__JSON_CACHE__, 'w')
+    for line in fp:
+        fp_cached.write(line)
+
+    fp_cached.close()
+    fp.close()
+    fp = open(__JSON_CACHE__, 'r')
+
+    content = fp.read()
+    fp.close()
+    conf = json.loads(content)
+    return conf
+
+def get_server_conf(content):
+    server_conf = ServerConf()
+    if content != None
+        server_conf.load_data(content)
+    return server_conf
+
 
 
 def create_chef_pem(chef_conf):

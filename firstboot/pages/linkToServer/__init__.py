@@ -152,7 +152,7 @@ class LinkToServerPage(PageWindow.PageWindow):
 
     def next_page(self, load_page_callback):
         if self.unlink_ldap == True or self.unlink_ad == True:
-            server_conf = None
+            server_conf = serverconf.get_server_conf(None)
             result, messages = serverconf.setup_server(
                 server_conf=server_conf,
                 unlink_ldap=self.unlink_ldap,
@@ -176,6 +176,9 @@ class LinkToServerPage(PageWindow.PageWindow):
         try:
             server_conf = None
             if self.json_cached:
+                content = serverconf.get_json_content()
+                server_conf = serverconf.get_server_conf(content)
+            else:
                 server_conf = serverconf.get_server_conf(None)
 
             load_page_callback(LinkToServerConfEditorPage, {
