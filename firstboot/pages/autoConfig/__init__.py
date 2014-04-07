@@ -120,6 +120,5 @@ class AutoConfigPage(PageWindow.PageWindow):
                except Exception as e:
                     self.set_status(1, str(e))
                     return
-           
- 
+        
         load_page_callback(firstboot.pages.dateSync)
