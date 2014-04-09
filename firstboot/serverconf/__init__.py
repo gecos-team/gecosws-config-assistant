@@ -162,7 +162,7 @@ def get_json_autoconf(url):
 
 def get_server_conf(content):
     server_conf = ServerConf()
-    if content != None
+    if content != None:
         server_conf.load_data(content)
     return server_conf
 
