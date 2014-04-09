@@ -54,7 +54,7 @@ class AutoConfigPage(PageWindow.PageWindow):
 
     def load_page(self, params=None):
         self.emit('status-changed', 'autoConfig', not __REQUIRED__)
-        
+        import ipdb; ipdb.set_trace() 
 
         self.ui.chkAutoconf.set_visible(False)
         url_config = self.fbe.get_url()
@@ -81,8 +81,6 @@ class AutoConfigPage(PageWindow.PageWindow):
         self.ui.lblDescription.set_text(desc)
         self.ui.chkAutoconf.set_label(_('Download a new file with default configuration parameters.'))
         self.ui.lblGCC.set_label(_('Control Center URL'))
-        self.ui.lblUser.set_label(_('Control Center User'))
-        self.ui.lblPasswd.set_label(_('Password'))
 
     def on_chkAutoconf_toggled(self, widget):
         self.ui.txtAutoconf.set_sensitive(self.ui.chkAutoconf.get_active())
@@ -115,7 +113,9 @@ class AutoConfigPage(PageWindow.PageWindow):
                try:
                    if serverconf.json_is_cached():
                        serverconf.clean_json_cached()
-                   self.serverconf = serverconf.get_server_conf(url)
+                   json = serverconf.get_json_autoconf(url)
+                   content = serverconf.get_json_content()
+                   self.serverconf = serverconf.get_server_conf(content)
 
                except Exception as e:
                     self.set_status(1, str(e))
