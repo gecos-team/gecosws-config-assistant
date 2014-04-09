@@ -9,5 +9,5 @@ conf = None
 fp = open('/home/damian/Proyectos/emergya/gecos/apps/gecosws-config-assistant/tests/autoconfig-gecos.json','r')
 content = fp.read()
 conf = json.loads(content)
-s=ServerConf()
+s=ServerConf.Instance()
 s.load_data(conf)

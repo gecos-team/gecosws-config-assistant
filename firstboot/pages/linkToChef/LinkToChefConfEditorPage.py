@@ -65,7 +65,7 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
 #                self.ui.txtDefaultRole.set_text(self.server_conf.get_chef_conf().get_default_role())
 
         if self.server_conf is None:
-            self.server_conf = serverconf.ServerConf()
+            self.server_conf = serverconf.get_server_conf(None)
 
 #        if len(self.ui.txtDefaultRole.get_text()) == 0:
 #            self.ui.txtDefaultRole.set_text(__DEFAULT_ROLE__)

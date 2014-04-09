@@ -68,7 +68,7 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
             self.ui.lblNotes.set_visible(False)
             self.ui.lblNotesValue.set_visible(False)
             self.ui.lblOrganizationValue.set_visible(False)
-            self.server_conf = serverconf.ServerConf()
+            self.server_conf = serverconf.get_server_conf(None)
 
         self.update_server_conf = True
         self.method = params['auth_method']
