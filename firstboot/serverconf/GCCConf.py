@@ -30,7 +30,7 @@ class GCCConf():
         self._data['uri_gcc'] = ''
         self._data['gcc_username'] = ''
         self._data['gcc_pwd_user'] = ''
-        self._data['ou_username'] = ''
+        self._data['ou_username'] = []
 
     def load_data(self, conf):
         msg = 'ServerConf: Key "%s" not found in the configuration file.'
@@ -73,7 +73,11 @@ class GCCConf():
         return self
 
     def get_ou_username(self):
-        return self._data['ou_username'].encode('utf-8')
+        return self._data['ou_username']
+    
+    def add_ou_username(self, ou_username):
+        self._data['ou_username'].append(ou_username)
+        return self
 
     def set_ou_username(self, ou_username):
         self._data['ou_username'] = ou_username
