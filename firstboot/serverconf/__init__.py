@@ -21,15 +21,17 @@ __copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 
+import json
+import requests
 import os
 import subprocess
 import shlex
 import shutil
+import tempfile
 import urllib
 import urllib2
-import json
 import urlparse
-import tempfile
+
 
 from gi.repository import Gtk
 from firstboot_lib import firstbootconfig
@@ -50,74 +52,38 @@ __AD_CONF_SCRIPT__ = 'firstboot-adconf.sh'
 CREDENTIAL_CACHED = {}
 
 
-def _install_opener(url, user, password, url_based_auth=True):
-    if not url_based_auth:
-        # Domain based auth
-        parsed_url = list(urlparse.urlparse(url))
-        top_level_url = '%s://%s' % (parsed_url[0], parsed_url[1])
-
-    else:
-        # URL based auth
-        top_level_url = url
-
-    pwmgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
-    pwmgr.add_password(None, top_level_url, user, password)
-    handler = urllib2.HTTPBasicAuthHandler(pwmgr)
-    opener = urllib2.build_opener(handler)
-    opener.open(url)
-    urllib2.install_opener(opener)
-
-
-def parse_url(url):
-    parsed_url = list(urlparse.urlparse(url))
-    if parsed_url[0] in ('http', 'https'):
-        query = urlparse.parse_qsl(parsed_url[4])
-        query.append(('v', ServerConf.VERSION))
-        query = urllib.urlencode(query)
-        parsed_url[4] = query
-    url = urlparse.urlunparse(parsed_url)
-    return url
-
-
 def validate_credentials(url):
     global CREDENTIAL_CACHED
     url_parsed = urlparse.urlparse(url)
     user = ''
     password = ''
-    hostname = ''
-    if url_parsed.scheme == '':
-        if url_parsed.path == '':
-            hostname = url_parsed.hostname
-        else:
-            hostname = url_parsed.path
-    else:
-        hostname = url_parsed.hostname
+    hostname = url_parsed.hostname
+    headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 
+    validate = False
     if hostname in CREDENTIAL_CACHED:
-        validate_credentials = False
         credentials = CREDENTIAL_CACHED[hostname]
         for cred in credentials:
-            try:
-                _install_opener(url, cred[0], cred[1])
+            user, password = cred[0], cred[1]
+            r = requests.get(url, auth=(user,password), headers=headers)
+            if r.ok:
                 validate = True
-                user, password = cred[0], cred[1]
-                break
-            except urllib2.URLError as e:
-                print e
-                if hasattr(e, 'code') and e.code == 401 and e.msg == 'basic auth failed':
-                    continue
-        if not validate:
-            user, password = auth_dialog(_('Authentication Required'),
-                    _('You need to enter your credentials to access the requested resource.'))
-            _install_opener(url, user, password)
+
+    if not validate:
+
+        import ipdb; ipdb.set_trace()
+        user, password = auth_dialog(_('Authentication Required'),
+            _('You need to enter your credentials to access the requested resource.'))
+        r = requests.get(url, auth=(user,password), headers=headers)
+        if r.ok:
+            if not CREDENTIAL_CACHED.has_key(hostname):
+                CREDENTIAL_CACHED[hostname] = []
             credentials = CREDENTIAL_CACHED[hostname]
             credentials.append([user, password])
-    else:
-        user, password = auth_dialog(_('Authentication Required'),
-                _('You need to enter your credentials to access the requested resource.'))
-        _install_opener(url, user, password)
-        CREDENTIAL_CACHED[hostname] = [[user, password]]
-    return user, password
+        else:
+            raise ServerConfException(_('Authentication is failed.'))
+    
+    return r.text
 
 def json_is_cached():
     return os.path.exists(__JSON_CACHE__)
@@ -137,32 +103,20 @@ def get_json_content():
 
 def get_json_autoconf(url):
     try:
-        url = parse_url(url)
-        user, password = validate_credentials(url)
-        fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
-    except urllib2.URLError as e:
-        if hasattr(e, 'code') and e.code == 401:
-            user, password = validate_credentials(url)
-            fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
-        else:
-            raise e
+        content = validate_credentials(url)
+    except Exception as e:
+        raise e
 
     fp_cached = open(__JSON_CACHE__, 'w')
-    for line in fp:
-        fp_cached.write(line)
-
+    fp_cached.write(content)
     fp_cached.close()
-    fp.close()
-    fp = open(__JSON_CACHE__, 'r')
-
-    content = fp.read()
-    fp.close()
+    
     conf = json.loads(content)
     return conf
 
 def get_server_conf(content):
     server_conf = ServerConf()
-    if content != None
+    if content != None:
         server_conf.load_data(content)
     return server_conf
 
