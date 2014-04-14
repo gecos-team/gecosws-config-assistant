@@ -54,7 +54,7 @@ def read_users(min_uid=1000):
                     'home': tokens[5],
                     'shell': tokens[6],
                     'groups': groups,
-                    'is_admin': ('admin' in groups)
+                    'is_admin': ('sudo' in groups.split(' '))
                 }
                 users.append(user)
 
