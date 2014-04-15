@@ -54,7 +54,6 @@ class AutoConfigPage(PageWindow.PageWindow):
 
     def load_page(self, params=None):
         self.emit('status-changed', 'autoConfig', not __REQUIRED__)
-        import ipdb; ipdb.set_trace() 
 
         self.ui.chkAutoconf.set_visible(False)
         url_config = self.fbe.get_url()
@@ -71,8 +70,7 @@ class AutoConfigPage(PageWindow.PageWindow):
             self.ui.boxCheckAutoconf.set_visible(True)
             self.ui.chkAutoconf.set_visible(True)
             self.ui.txtGCC.set_sensitive(False)
-            self.ui.txtUser.set_sensitive(False)
-            self.ui.txtPasswd.set_sensitive(False)
+#            content = serverconf.get_json_content()
             self.serverconf = serverconf.get_server_conf(None)
 
     def translate(self):
@@ -83,7 +81,7 @@ class AutoConfigPage(PageWindow.PageWindow):
         self.ui.lblGCC.set_label(_('Control Center URL'))
 
     def on_chkAutoconf_toggled(self, widget):
-        self.ui.txtAutoconf.set_sensitive(self.ui.chkAutoconf.get_active())
+        self.ui.txtGCC.set_sensitive(self.ui.chkAutoconf.get_active())
 
     def set_status(self, code, description=''):
 
@@ -111,11 +109,9 @@ class AutoConfigPage(PageWindow.PageWindow):
            url = self.ui.txtGCC.get_text()
            if url != '' and url != None:
                try:
-                   if serverconf.json_is_cached():
-                       serverconf.clean_json_cached()
                    json = serverconf.get_json_autoconf(url)
-                   content = serverconf.get_json_content()
-                   self.serverconf = serverconf.get_server_conf(content)
+#                   content = serverconf.get_json_content()
+                   self.serverconf = serverconf.get_server_conf(None)
 
                except Exception as e:
                     self.set_status(1, str(e))
