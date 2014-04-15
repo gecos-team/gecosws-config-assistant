@@ -106,7 +106,8 @@ def get_json_autoconf(url):
         content = validate_credentials(url)
     except Exception as e:
         raise e
-
+    if json_is_cached():
+        clean_json_cached()
     fp_cached = open(__JSON_CACHE__, 'w')
     fp_cached.write(content)
     fp_cached.close()
@@ -238,7 +239,7 @@ def create_solo_json(server_conf):
             json_solo['gecos_ws_mgmt']['misc_mgmt']['sssd_ldap_res'] = sssd_ldap_json
     if server_conf.get_gcc_conf().get_uri_gcc() != '':
         gcc_conf = server_conf.get_gcc_conf()
-        gcc_json = {'uri_gcc': gcc_conf.get_uri_gcc(), 'gcc_username' : gcc_conf.get_gcc_username(), 'ou_username': gcc_conf.get_ou_username(), 'gcc_pwd_user': gcc_conf.get_gcc_pwd_user()}
+        gcc_json = {'uri_gcc': gcc_conf.get_uri_gcc(), 'gcc_username' : gcc_conf.get_gcc_username(), 'ou_username': gcc_conf.get_ou_username(), 'gcc_pwd_user': gcc_conf.get_gcc_pwd_user(),'gcc_nodename': gcc_conf.get_nodename(),'gcc_link': gcc_conf.get_link()}
         json_solo['gecos_ws_mgmt']['misc_mgmt']['gcc_res'] = gcc_json
 
     if server_conf.get_users_conf().get_users_list():
@@ -583,6 +584,33 @@ def unlink_from_chef():
         raise e
 
     return True
+
+def url_chef(title, text):
+    dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,
+                                   Gtk.ButtonsType.OK_CANCEL)
+    dialog.set_title(title)
+    dialog.set_position(Gtk.WindowPosition.CENTER)
+    dialog.set_default_response(Gtk.ResponseType.OK)
+    dialog.set_icon_name('dialog-password')
+    dialog.set_markup(text)
+
+    hboxurl = Gtk.HBox()
+    lblurl = Gtk.Label(_('Url Certificate'))
+    lblurl.set_visible(True)
+    hboxurl.pack_start(lblurl, False, False, False)
+    url = Gtk.Entry()
+    url.set_activates_default(True)
+    url.show()
+    hboxurl.pack_end(url, False, False, False)
+    hboxurl.show()
+
+    dialog.get_message_area().pack_start(hboxurl, False, False, False)
+    result = dialog.run()
+    retval = [None, None]
+    if result == Gtk.ResponseType.OK:
+        retval = url.get_text()
+    dialog.destroy()
+    return retval
 
 
 def auth_dialog(title, text):
