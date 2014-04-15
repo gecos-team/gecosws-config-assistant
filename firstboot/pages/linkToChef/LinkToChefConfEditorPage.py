@@ -54,68 +54,61 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToChefConfEditorPage"
 
     def finish_initializing(self):
-
-        self.update_server_conf = False
-        self.chef_is_configured = False
-        self.unlink_from_chef = False
+        self.show_status()
 
     def load_page(self, params=None):
-
-        if 'server_conf' in params:
-            self.server_conf = params['server_conf']
-            if not self.server_conf is None:
-#                self.ui.lblVersionValue.set_label(self.server_conf.get_version())
-#                self.ui.lblOrganizationValue.set_label(self.server_conf.get_organization())
-#                self.ui.lblNotesValue.set_label(self.server_conf.get_notes())
-                self.ui.txtUrlChef.set_text(self.server_conf.get_chef_conf().get_url())
-                self.ui.txtUrlChefCert.set_text(self.server_conf.get_chef_conf().get_pem_url())
-                self.ui.txtHostname.set_text(self.server_conf.get_chef_conf().get_hostname())
-#                self.ui.txtDefaultRole.set_text(self.server_conf.get_chef_conf().get_default_role())
-
-        if self.server_conf is None:
-            self.server_conf = serverconf.get_server_conf(None)
-
-#        if len(self.ui.txtDefaultRole.get_text()) == 0:
-#            self.ui.txtDefaultRole.set_text(__DEFAULT_ROLE__)
-
-        self.update_server_conf = True
-        self.chef_is_configured = params['chef_is_configured']
-        self.unlink_from_chef = params['unlink_from_chef']
-
-#        if self.chef_is_configured and self.unlink_from_chef:
-#            self.ui.chkChef.get_child().set_markup(self._bold(_('This \
-#workstation is going to be unlinked from the Chef server.')))
-
-    def _bold(self, str):
-        return '<b>%s</b>' % str
+        #content = serverconf.get_json_content()
+        self.serverconf = serverconf.get_server_conf(None)
+        self.gcc_conf = self.serverconf.get_gcc_conf()
+        self.chef_conf = self.serverconf.get_chef_conf()
+        self.ui.txtUrlChef.set_text(self.gcc_conf.get_uri_gcc())
+        self.ui.txtUser.set_text(self.gcc_conf.get_gcc_username())
 
     def translate(self):
         desc = _('These parameters are required in order to join a Control Center:')
 
         self.ui.lblDescription.set_text(desc)
         self.ui.lblUrlChefDesc.set_label(_('"Control Center URL": an existant URL in your server where GECOS Control Center is installed.'))
- #       self.ui.lblUrlChefCertDesc.set_label(_('"Chef Certificate": Validation certificate URL\
- #in order to autoregister this workstation in the Chef server.'))
-        self.ui.lblHostnameDesc.set_label(_('"Node Name": must be an unique name.'))
         self.ui.lblUsernameDesc.set_label(_('"Username": User with administrative privilees (This will not be workstation user)'))
- #       self.ui.lblDefaultRoleDesc.set_label(_('"Default Group": a global group for all the workstations in your organization.\nIf you are not an advanced Chef administrator, do not change this.'))
-
- #       self.ui.lblVersion.set_label(_('Version'))
- #       self.ui.lblOrganization.set_label(_('Organization'))
- #       self.ui.lblNotes.set_label(_('Comments'))
         self.ui.lblUrlChef.set_label('Control Center URL')
-#        self.ui.lblUrlChefCert.set_label(_('Certificate URL'))
-        self.ui.lblHostname.set_label(_('Node Name'))
         self.ui.lblUser.set_label(_('Control Center Username'))
         self.ui.lblPassword.set_label(_('Password'))
- #       self.ui.lblDefaultRole.set_label(_('Default Group'))
 
     def previous_page(self, load_page_callback):
         load_page_callback(firstboot.pages.linkToChef)
 
     def next_page(self, load_page_callback):
-        pass
+        self.gcc_conf.set_uri_gcc(self.ui.txtUrlChef.get_text())
+        self.gcc_conf.set_gcc_username(self.ui.txtUser.get_text())
+        self.gcc_conf.set_gcc_pwd_user(self.ui.txtPassword.get_text())
+        self.gcc_conf.set_gcc_link(True)
+        self.interfaces = interface.localifs()
+        self.interfaces.reverse()
+        for inter in self.interfaces:
+            if not inter[1].startswith('127.0'):
+                break
+        if not serverconf.json_is_cached():
+            result = serverconf.url_chef(_('Url Chef Certificate Required'), _('You need to enter url with certificate file\n in protocol://domain/resource format'))
+            try:
+                req = requests.get(result)
+                if not req.ok:
+                    raise LinkToChefException(_("Can not download pem file"))
+                pem = req.text
+                self.chef_conf.set_pem(pem)
+                self.chef_conf.set_url(self.gcc_conf.get_uri_gcc())
 
+            except Exception as e:
+                self.show_status(__STATUS_ERROR__, e)
+        mac = interface.getHwAddr(inter[0])
+        node_name = hashlib.md5(mac.encode()).hexdigest()
+        self.gcc_conf.set_gcc_nodename(node_name)
+        result, messages = self.validate_conf()
+        load_page_callback(LinkToChefResultsPage, {
+            'result': result,
+            'messages': messages
+         })
+
+        
 #        if not self.unlink_from_chef:
 #
 #            result, messages = self.validate_conf()
