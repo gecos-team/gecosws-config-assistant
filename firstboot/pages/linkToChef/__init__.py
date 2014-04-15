@@ -53,18 +53,9 @@ def get_page(main_window):
 class LinkToChefPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToChefPage"
 
-#    def load_page(self, params=None):
-#        if serverconf.json_is_cached() and not self.chef_is_configured:
-#            self.json_cached = True
-#            server_conf = serverconf.get_server_conf(None)
-#            self.emit('page-changed', LinkToChefConfEditorPage, {
-#                    'server_conf': server_conf,
-#                    'chef_is_configured': self.chef_is_configured,
-#                    'unlink_from_chef': False
-#            })
-#
-#        else:
-#            self.json_cached = False
+    def load_page(self, params=None):
+        pass
+
 
     def finish_initializing(self):
         self.chef_is_configured = serverconf.chef_is_configured()
@@ -133,26 +124,22 @@ easily managed remotely.\n\n')
             server_conf = None
 
             if not self.chef_is_configured:
-                if self.json_cached:
-                    server_conf = serverconf.get_server_conf(None)
+#                content = serverconf.get_json_content()
+                server_conf = serverconf.get_server_conf(None)
 
-                load_page_callback(LinkToChefConfEditorPage, {
-                    'server_conf': server_conf,
-                    'chef_is_configured': self.chef_is_configured,
-                    'unlink_from_chef': self.ui.chkUnlinkChef.get_active()
-                })
+                load_page_callback(LinkToChefConfEditorPage)
 
             elif self.ui.chkUnlinkChef.get_active():
-
-                result, messages = serverconf.setup_server(
-                    server_conf=server_conf,
-                    link_chef=False,
-                    unlink_chef=True
-                )
+#                content = serverconf.get_json_content()
+                server_conf = serverconf.get_server_conf(None)
+#                result, messages = serverconf.setup_server(
+#                    server_conf=server_conf,
+#                    link_chef=False,
+#                    unlink_chef=True
+#                )
 
                 load_page_callback(LinkToChefResultsPage, {
-                    'result': result,
-                    'server_conf': server_conf,
+                    'result': True,
                     'messages': messages
                 })
 
