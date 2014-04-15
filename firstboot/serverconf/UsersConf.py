@@ -27,25 +27,37 @@ class Users():
         self._data = {}
         self._data['actiontorun'] = ''
         self._data['groups'] =  []
+        self._data['name'] = ''
         self._data['user'] = ''
         self._data['password'] = ''
 
     def get_actiontorun(self):
         return self._data['actiontorun'].encode('utf-8')
     
-    def set_actiontorun(self, fqdn):
+    def set_actiontorun(self, actiontorun):
         self._data['actiontorun'] = actiontorun
         return self
 
     def get_groups(self):
-        return self._data['groups'].encode('utf-8')
+        return self._data['groups']
 
-    def add_groups(self, group):
-        self._data['groups'].append = group
+    def add_group(self, group):
+        self._data['groups'].append(group)
+        return self
+    
+    def add_groups(self, groups):
+        [self.add_group(group) for group in groups]
         return self
 
-    def remove_groups(self, group):
+    def remove_group(self, group):
         self._data['groups'].remove(group)
+        return self
+
+    def get_name(self):
+        return self._data['name']
+
+    def set_name(self, name):
+        self._data['name'] = name
         return self
 
     def get_user(self):
@@ -55,11 +67,18 @@ class Users():
         self._data['user'] = user
         return self
 
-    def get_passwd(self):
-        return self._data['passwd']
+    def get_password(self):
+        return self._data['password']
 
-    def set_passwd(self, passwd):
-        self._data['passwd'] = passwd
+    def set_password(self, password):
+        self._data['password'] = password
+        return self
+    
+    def get_deletehome(self):
+        return self._data['deletehome']
+
+    def set_deletehome(self, deletehome):
+        self._data['deletehome'] = deletehome
         return self
 
     def __str__(self):
@@ -75,12 +94,18 @@ class UsersConf():
     def validate(self):
         return True
 
-
     def get_users_list(self):
         return self._data['users_list']
 
     def add_user_to_list(self, user):
         return self._data['users_list'].append(user)
-
+    
+    def add_users_to_list(self, users):
+        return [self.add_user_to_list(user) for user in users]
+    
+    def clear(self):
+        self._data['users_list'] = []
+        return self
+    
     def __str__(self):
         return str(self._data)
