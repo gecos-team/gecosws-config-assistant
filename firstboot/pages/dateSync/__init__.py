@@ -55,8 +55,7 @@ class DateSyncPage(PageWindow.PageWindow):
 
     def load_page(self, params=None):
         self.emit('status-changed', 'dateSync', not __REQUIRED__)
-        content = serverconf.get_json_content()
-        self.serverconf = serverconf.get_server_conf(content)
+        self.serverconf = serverconf.get_server_conf(None)
         self.ui.txtHost.set_text(self.serverconf.get_ntp_conf().get_uri_ntp())
 
     def translate(self):
