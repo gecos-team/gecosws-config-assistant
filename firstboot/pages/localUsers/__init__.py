@@ -22,15 +22,19 @@ __license__ = "GPL-2"
 
 
 import pwd
-import os, SystemUsers, Dialogs
+import os, Dialogs
 from gi.repository import Gtk
 import firstboot.pages
 from firstboot_lib import PageWindow
+from firstboot import serverconf
 import firstboot.validation as validation
 
 import gettext
 from gettext import gettext as _
 gettext.textdomain('firstboot')
+
+import shlex
+import subprocess
 
 __REQUIRED__ = False
 
@@ -49,6 +53,8 @@ class LocalUsersPage(PageWindow.PageWindow):
     def load_page(self, params=None):
      
         self.emit('status-changed', 'localUsers', not __REQUIRED__)
+        content = serverconf.get_json_content()
+        self.serverconf = serverconf.get_server_conf(content)
         self.init_treeview()
         self.reload_page()
 
@@ -122,14 +128,40 @@ workstation. \n\nUsers authenticated by external services (AD, LDAP...) director
         cell.set_property(property, text)
 
     def load_users(self):
-
-        users = SystemUsers.read_users()
+        #read users to delete, to avoid to show them in the widget
+        userstodelete = []
+        for user in self.serverconf.get_users_conf().get_users_list():
+            if user.get_actiontorun() == 'delete':
+                userstodelete.append(user.get_user())
+        
+        #load users in the system, excluding those to be deleted
+        #and load changes in parameters
+        users = self.read_users()
         store = self.ui.tvUsers.get_model()
         store.clear()
-
+        
         for user in users:
-            store.append([user])
-
+            if user['login'] not in userstodelete:
+                for user2 in self.serverconf.get_users_conf().get_users_list():
+                    if user2.get_user() == user['login']:
+                        user['name'] = user2.get_name()
+                store.append([user])
+        
+        #load users to create
+        for user in self.serverconf.get_users_conf().get_users_list():
+            if user.get_actiontorun() == 'create':
+                userdict = {
+                    'login': user.get_user(),
+                    'uid': '',
+                    'gid': '',
+                    'name': user.get_name(),
+                    'home': '',
+                    'shell': '',
+                    'groups': '',
+                    'is_admin': False,
+                    }
+                store.append([userdict])
+        
         self.ui.tvUsers.set_model(store)
 
     def _select_user(self):
@@ -180,16 +212,49 @@ workstation. \n\nUsers authenticated by external services (AD, LDAP...) director
             'confirm': self.ui.txtConfirm.get_text(),
             'groups': self.ui.txtGroups.get_text()
         }
-
         if not self.validate_user(user):
             return
-
+        
+        #modify user
         try:
-            SystemUsers.update_user(user, update_passwd)
+            changeuser = serverconf.UsersConf.Users()
+            changeuser.set_actiontorun('modify')
+            changeuser.set_user(user['login'])
+            changeuser.set_name(user['name'])
+            changeuser.set_password(user['password'])
+            changeuser.add_group(user['groups'])
+            
+            #avoid to add 2 or more modify entries for the same user
+            #add only the last one
+            #if there is a create operation, rewrite the create with the modified parameters
+            userlist = []
+            modifiedbefore = False
+            for user2 in self.serverconf.get_users_conf().get_users_list():
+                if user2.get_user() == changeuser.get_user():
+                    if user2.get_actiontorun() == 'create':
+                        modifiedbefore = True
+                        #rewrite the create operation with the new parameters
+                        user2.set_name(changeuser.get_name())
+                        user2.set_password(changeuser.get_password())
+                        user2.add_groups(changeuser.get_groups())
+                        userlist.append(user2)
+                    elif user2.get_actiontorun() == 'modify':
+                        modifiedbefore = True
+                        userlist.append(changeuser) #add the new changes
+                    elif user2.get_actiontorun() == 'delete':
+                        userlist.append(user2)
+                else:
+                    userlist.append(user2)
+            
+            if not modifiedbefore:
+                userlist.append(changeuser)
+            
+            self.serverconf.get_users_conf().clear()
+            self.serverconf.get_users_conf().add_users_to_list(userlist)
             self.reload_page()
             self._select_user()
 
-        except SystemUsers.SystemUserException as e:
+        except LocalUsersException as e:
             Dialogs.user_error_dialog(e.message)
 
     def on_btnCancelClicked(self, widget):
@@ -209,25 +274,67 @@ workstation. \n\nUsers authenticated by external services (AD, LDAP...) director
 
         if not self.validate_user(login_info):
             return
-
+        
+        #checking for duplicated users
+        usedusers = set()
+        for user in self.read_users():
+            usedusers.add(user['login'])
+        for user in self.serverconf.get_users_conf().get_users_list():
+            if user.get_actiontorun() == 'create':
+                usedusers.add(user.get_user())
+            elif user.get_actiontorun() == 'delete':
+                usedusers.remove(user.get_user())
+        if login_info['login'] in usedusers:
+            Dialogs.user_error_dialog(_('Duplicated user'))
+            return
+        
+        #mark to add
         try:
-            SystemUsers.add_user(login_info['login'], login_info['password'])
-            SystemUsers.update_user(login_info)
+            newuser = serverconf.UsersConf.Users()
+            newuser.set_actiontorun('create')
+            newuser.set_user(login_info['login'])
+            newuser.set_name(login_info['name'])
+            newuser.set_password(login_info['password'])
+            newuser.add_group('') #groups not added
+            self.serverconf.get_users_conf().add_user_to_list(newuser)
             self.reload_page()
+            self._select_user()
+            
 
-        except SystemUsers.SystemUserException as e:
+        except LocalUsersException as e:
             Dialogs.user_error_dialog(e.message)
 
     def on_btnRemoveClicked(self, widget):
         action = Dialogs.remove_user_dialog(self._active_user)
         if action == False:
             return
-
+        
+        #mark user to delete
         try:
-            SystemUsers.remove_user(self._active_user['login'], action[1])
+            deleteuser = serverconf.UsersConf.Users()
+            deleteuser.set_actiontorun('delete')
+            deleteuser.set_user(self._active_user['login'])
+            deleteuser.set_deletehome(action[1])
+            
+            #remove any operation on the user we are going to delete
+            userlist = []
+            createdhere = False
+            for user2 in self.serverconf.get_users_conf().get_users_list():
+                if user2.get_user() != deleteuser.get_user(): #operation on a different user, ok
+                    userlist.append(user2)
+                elif user2.get_actiontorun() == 'create': #if user was created in this session, then, do not create+delete
+                    createdhere = True
+            
+            if not createdhere:
+                userlist.append(deleteuser)
+            
+            self.serverconf.get_users_conf().clear()
+            self.serverconf.get_users_conf().add_users_to_list(userlist)
+            
             self.reload_page()
+            self._select_user()
 
-        except SystemUsers.SystemUserException as e:
+        except LocalUsersException as e:
             Dialogs.user_error_dialog(e.message)
 
     def validate_user(self, user):
@@ -253,3 +360,55 @@ workstation. \n\nUsers authenticated by external services (AD, LDAP...) director
 
         return valid
 
+    def read_users(self, min_uid=1000):
+
+        users = []
+
+        f = open('/etc/passwd')
+        try:
+            for line in f:
+                line = line.strip()
+                tokens = line.split(':')
+                if int(tokens[2]) >= min_uid and tokens[0] != 'nobody':
+                    cmd = 'groups %s' % (tokens[0],)
+                    pid, exit_code, output = self._run_command(cmd)
+                    groups = output.split(':')
+                    groups = groups[1].strip()
+
+                    user = {
+                        'login': tokens[0],
+                        'uid': tokens[2],
+                        'gid': tokens[3],
+                        'name': tokens[4].split(',')[0],
+                        'home': tokens[5],
+                        'shell': tokens[6],
+                        'groups': groups,
+                        'is_admin': ('sudo' in groups.split(' '))
+                    }
+                    users.append(user)
+
+        finally:
+            f.close()
+        
+        return users
+
+
+    def _run_command(self, cmd):
+        args = shlex.split(cmd)
+        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        exit_code = os.waitpid(process.pid, 0)
+        output = process.communicate()[0]
+        output = output.strip()
+
+        #print cmd, exit_code
+        #if exit_code[1] != 0:
+        #    raise Exception(output)
+
+        # PID, exit code, output
+        return (exit_code[0], exit_code[1], output)
+
+
+class LocalUsersException(Exception):
+
+    def __init__(self, msg):
+        Exception.__init__(self, msg)
