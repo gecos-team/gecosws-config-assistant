@@ -27,5 +27,10 @@ import pcLabel
 import linkToServer
 import localUsers
 import installSoftware
+from firstboot import serverconf
+
+content = serverconf.get_json_content()
+#Fist initialization of ServerConf if the json is cached
+sc = serverconf.get_server_conf(content)
 
 pages = ['network','autoConfig','dateSync', 'linkToChef', 'linkToServer', 'localUsers', 'installSoftware']
