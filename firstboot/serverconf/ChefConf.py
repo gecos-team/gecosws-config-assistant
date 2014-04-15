@@ -42,7 +42,7 @@ class ChefConf():
             print msg % ('chef_validation',)
 
     def validate(self):
-        valid = validation.is_url(self._data['chef_server_uri']) 
+        valid = validation.is_url(self._data['chef_server_uri']) and self._data['chef_validation'] != '' 
         return valid
 
     def get_url(self):

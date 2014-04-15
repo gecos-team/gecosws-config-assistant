@@ -29,6 +29,8 @@ class GCCConf():
         self._data = {}
         self._data['uri_gcc'] = ''
         self._data['gcc_username'] = ''
+        self._data['gcc_nodename'] = ''
+        self._data['gcc_link'] = False
         self._data['gcc_pwd_user'] = ''
         self._data['ou_username'] = []
 
@@ -48,7 +50,7 @@ class GCCConf():
             print msg % ('ou_username',)
 
     def validate(self):
-        valid = validation.is_url(self._data['uri_gcc']) 
+        valid = validation.is_url(self._data['uri_gcc']) and self._data['gcc_username'] != '' and self._data['gcc_nodename'] != '' and self._data['gcc_link'] != None and self._data['gcc_pwd_user'] != '' and self._data['ou_username'] != None
         return valid
 
     def get_uri_gcc(self):
@@ -63,6 +65,20 @@ class GCCConf():
 
     def set_gcc_username(self, gcc_username):
         self._data['gcc_username'] = gcc_username
+        return self
+
+    def get_gcc_nodename(self):
+        return self._data['gcc_nodename'].encode('utf-8')
+
+    def set_gcc_nodename(self, gcc_nodename):
+        self._data['gcc_nodename'] = gcc_nodename
+        return self
+
+    def get_gcc_link(self):
+        return self._data['gcc_link'].encode('utf-8')
+
+    def set_gcc_link(self, gcc_link):
+        self._data['gcc_link'] = gcc_link
         return self
 
     def get_gcc_pwd_user(self):
