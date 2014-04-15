@@ -22,7 +22,7 @@ __license__ = "GPL-2"
 
 
 from gi.repository import Gtk
-
+from firstboot import serverconf
 import firstboot.pages
 from firstboot_lib import PageWindow
 
@@ -50,9 +50,8 @@ class LinkToChefResultsPage(PageWindow.PageWindow):
         self.ui.lblDescription.set_text('')
 
     def load_page(self, params=None):
-
-        if 'server_conf' in params:
-            self.server_conf = params['server_conf']
+#        content = serverconf.get_json_content()
+        self.serverconf = serverconf.get_server_conf(None)
 
         if 'result' in params:
             self.result = params['result']
