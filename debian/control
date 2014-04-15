@@ -13,7 +13,7 @@ XS-Python-Version: current
 
 Package: gecosws-config-assistant
 Architecture: all
-Depends: ${misc:Depends}, python
+Depends: ${misc:Depends}, python, python-requests
 Description: Aplicacion para configurar los clientes de GECOS
  Aplicacion encargada de configurar un cliente de GECOS permitiendo configurar
  red, conexion con LDAP y servidor.
