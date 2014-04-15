@@ -24,17 +24,25 @@ __license__ = "GPL-2"
 import LinkToChefHostnamePage
 import LinkToChefResultsPage
 import firstboot.pages.linkToChef
+from firstboot.pages.network import interface
 from firstboot_lib import PageWindow
 from firstboot import serverconf
 import firstboot.validation as validation
 
+from gi.repository import Gtk
+import requests
+import hashlib
 import gettext
 from gettext import gettext as _
 gettext.textdomain('firstboot')
 
 __REQUIRED__ = False
 
-__DEFAULT_ROLE__ = 'default_group'
+__STATUS_TEST_PASSED__ = 0
+__STATUS_CONFIG_CHANGED__ = 1
+__STATUS_CONNECTING__ = 2
+__STATUS_ERROR__ = 3
+
 
 def get_page(main_window):
 
