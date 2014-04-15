@@ -141,42 +141,58 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
 #                'messages': messages
 #            })
 
-    def on_serverConf_changed(self, entry):
-        if not self.update_server_conf:
-            return
-        self.server_conf.get_chef_conf().set_url(self.ui.txtUrlChef.get_text())
-   #     self.server_conf.get_chef_conf().set_pem_url(self.ui.txtUrlChefCert.get_text())
-   #     self.server_conf.get_chef_conf().set_default_role(self.ui.txtDefaultRole.get_text())
-        self.server_conf.get_chef_conf().set_hostname(self.ui.txtHostname.get_text())
-
+#    def on_serverConf_changed(self, entry):
+#        if not self.update_server_conf:
+#            return
+#        self.server_conf.get_chef_conf().set_url(self.ui.txtUrlChef.get_text())
+#   #     self.server_conf.get_chef_conf().set_pem_url(self.ui.txtUrlChefCert.get_text())
+#   #     self.server_conf.get_chef_conf().set_default_role(self.ui.txtDefaultRole.get_text())
+#        self.server_conf.get_chef_conf().set_hostname(self.ui.txtHostname.get_text())
+#
     def validate_conf(self):
 
         valid = True
         messages = []
 
-        if not self.server_conf.get_chef_conf().validate():
+        if not self.serverconf.get_chef_conf().validate():
             valid = False
-            messages.append({'type': 'error', 'message': _('Chef and Chef Cert URLs must be valid URLs.')})
+            messages.append({'type': 'error', 'message': _('Chef URL must be valid URL and need certificate')})
 
-        hostname = self.server_conf.get_chef_conf().get_hostname()
-
-        if not validation.is_qname(hostname):
+        if not self.serverconf.get_gcc_conf().validate():
             valid = False
-            messages.append({'type': 'error', 'message': _('Node name is empty or contains invalid characters.')})
+            messages.append({'type': 'error', 'message': _('Some GCC attributes are incorrect or blank')})
 
-        try:
-            used_hostnames = serverconf.get_chef_hostnames(self.server_conf.get_chef_conf())
-
-        except Exception as e:
-            used_hostnames = []
-            # IMPORTANT: Append the error but don't touch the variable "valid" here,
-            # just because if we can't get the hostnames here,
-            # Chef will inform us about that later, while we are registering
-            # the client.
-            messages.append({'type': 'error', 'message': str(e)})
-
-        if hostname in used_hostnames:
-            valid = False
-            messages.append({'type': 'error', 'message': _('Node name already exists in the Chef server. Choose a different one.')})
 
         return valid, messages
+
+    def show_status(self, status=None, exception=None):
+
+        icon_size = Gtk.IconSize.BUTTON
+
+        if status == None:
+            self.ui.imgStatus.set_visible(False)
+            self.ui.lblStatus.set_visible(False)
+
+        elif status == __STATUS_TEST_PASSED__:
+            self.ui.imgStatus.set_from_stock(Gtk.STOCK_APPLY, icon_size)
+            self.ui.imgStatus.set_visible(True)
+            self.ui.lblStatus.set_label(_('The configuration file is valid.'))
+            self.ui.lblStatus.set_visible(True)
+
+        elif status == __STATUS_CONFIG_CHANGED__:
+            self.ui.imgStatus.set_from_stock(Gtk.STOCK_APPLY, icon_size)
+            self.ui.imgStatus.set_visible(True)
+            self.ui.lblStatus.set_label(_('The configuration was updated successfully.'))
+            self.ui.lblStatus.set_visible(True)
+
+        elif status == __STATUS_ERROR__:
+            self.ui.imgStatus.set_from_stock(Gtk.STOCK_DIALOG_ERROR, icon_size)
+            self.ui.imgStatus.set_visible(True)
+            self.ui.lblStatus.set_label(str(exception))
+            self.ui.lblStatus.set_visible(True)
+
+        elif status == __STATUS_CONNECTING__:
+            self.ui.imgStatus.set_from_stock(Gtk.STOCK_CONNECT, icon_size)
+            self.ui.imgStatus.set_visible(True)
+            self.ui.lblStatus.set_label(_('Trying to connect...'))
+            self.ui.lblStatus.set_visible(True)
