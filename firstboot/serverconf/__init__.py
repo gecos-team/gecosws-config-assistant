@@ -72,7 +72,6 @@ def validate_credentials(url):
 
     if not validate:
 
-        import ipdb; ipdb.set_trace()
         user, password = auth_dialog(_('Authentication Required'),
             _('You need to enter your credentials to access the requested resource.'))
         r = requests.get(url, auth=(user,password), headers=headers)
