@@ -174,12 +174,7 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.show_status()
 
         try:
-            server_conf = None
-            if self.json_cached:
-                content = serverconf.get_json_content()
-                server_conf = serverconf.get_server_conf(content)
-            else:
-                server_conf = serverconf.get_server_conf(None)
+            server_conf = serverconf.get_server_conf(None)
 
             load_page_callback(LinkToServerConfEditorPage, {
                 'server_conf': server_conf,
