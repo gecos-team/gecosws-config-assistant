@@ -28,6 +28,7 @@ import firstboot.pages
 import LinkToChefConfEditorPage
 from firstboot_lib import PageWindow
 from firstboot import serverconf
+from firstboot.serverconf import GCCConf, ChefConf
 
 import gettext
 from gettext import gettext as _
@@ -42,6 +43,8 @@ __STATUS_TEST_PASSED__ = 0
 __STATUS_CONFIG_CHANGED__ = 1
 __STATUS_CONNECTING__ = 2
 __STATUS_ERROR__ = 3
+
+__GCC_FLAG__ = '/etc/gcc.control'
 
 
 def get_page(main_window):
@@ -58,12 +61,13 @@ class LinkToChefPage(PageWindow.PageWindow):
 
 
     def finish_initializing(self):
-        self.chef_is_configured = serverconf.chef_is_configured()
-        self.json_cached = serverconf.json_is_cached()
+        self.gcc_is_configured = serverconf.gcc_is_configured()
+        server_conf = serverconf.get_server_conf(None)
         self.show_status()
-
-        self.ui.chkUnlinkChef.set_visible(self.chef_is_configured)
-        self.ui.chkLinkChef.set_visible(not self.chef_is_configured)
+        if server_conf.get_gcc_conf().get_gcc_link():
+            self.emit('page-changed', LinkToChefConfEditorPage,{})
+        self.ui.chkUnlinkChef.set_visible(self.gcc_is_configured)
+        self.ui.chkLinkChef.set_visible(not self.gcc_is_configured)
 
     def translate(self):
         desc = _('When a workstation is linked to a Control Center can be \
@@ -115,7 +119,7 @@ easily managed remotely.\n\n')
 
     def next_page(self, load_page_callback):
         if (self.ui.chkLinkChef.get_visible() and not self.ui.chkLinkChef.get_active()) or \
-            (self.chef_is_configured and not self.ui.chkUnlinkChef.get_active()):
+            (self.gcc_is_configured and not self.ui.chkUnlinkChef.get_active()):
             self.emit('status-changed', 'linkToChef', True)
             load_page_callback(firstboot.pages.linkToServer)
             return
@@ -123,9 +127,8 @@ easily managed remotely.\n\n')
         try:
             server_conf = None
 
-            if not self.chef_is_configured:
+            if not self.gcc_is_configured:
 #                content = serverconf.get_json_content()
-                server_conf = serverconf.get_server_conf(None)
 
                 load_page_callback(LinkToChefConfEditorPage)
 
