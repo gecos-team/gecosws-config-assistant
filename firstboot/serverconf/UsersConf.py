@@ -49,6 +49,10 @@ class Users():
         [self.add_group(group) for group in groups]
         return self
 
+    def clear_groups(self):
+        self._data['groups'] = []
+        return self
+
     def remove_group(self, group):
         self._data['groups'].remove(group)
         return self
@@ -99,6 +103,9 @@ class UsersConf():
 
     def add_user_to_list(self, user):
         return self._data['users_list'].append(user)
+
+    def remove_user_from_list(self,user):
+        return self._data['users_list'].remove(user)
     
     def add_users_to_list(self, users):
         return [self.add_user_to_list(user) for user in users]

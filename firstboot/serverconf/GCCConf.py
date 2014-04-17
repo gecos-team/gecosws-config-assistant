@@ -48,6 +48,10 @@ class GCCConf():
             self.set_ou_username(conf['ou_username'])
         except KeyError as e:
             print msg % ('ou_username',)
+        try:
+            self.set_gcc_link(conf['gcc_link'])
+        except KeyError as e:
+            print msg % ('gcc_link',)
 
     def validate(self):
         valid = validation.is_url(self._data['uri_gcc']) and self._data['gcc_username'] != '' and self._data['gcc_nodename'] != '' and self._data['gcc_link'] != None and self._data['gcc_pwd_user'] != '' and self._data['ou_username'] != None
@@ -75,7 +79,7 @@ class GCCConf():
         return self
 
     def get_gcc_link(self):
-        return self._data['gcc_link'].encode('utf-8')
+        return self._data['gcc_link']
 
     def set_gcc_link(self, gcc_link):
         self._data['gcc_link'] = gcc_link
