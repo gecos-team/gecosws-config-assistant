@@ -150,4 +150,22 @@ class ServerConf():
     def get_users_conf(self):
         return self._users_conf
 
+    def set_auth_conf(self, auth_conf):
+        self._auth_conf = auth_conf
+        return self
 
+    def set_chef_conf(self, chef_conf):
+        self._chef_conf = chef_conf
+        return self
+
+    def set_ntp_conf(self, ntp_conf):
+        self._ntp_conf = ntp_conf
+        return self
+
+    def set_gcc_conf(self, gcc_conf):
+        self._gcc_conf = gcc_conf
+        return gcc_conf
+
+    def set_users_conf(self, user_conf):
+        self._users_conf = user_conf
+        return self
