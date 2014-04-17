@@ -47,6 +47,7 @@ __JSON_CACHE__ = '/tmp/json_cached'
 __BIN_PATH__ = firstbootconfig.get_bin_path()
 __LDAP_CONF_SCRIPT__ = 'firstboot-ldapconf.sh'
 __CHEF_CONF_SCRIPT__ = 'firstboot-chefconf.sh'
+__GCC_FLAG__ = '/etc/gcc.control'
 __AD_CONF_SCRIPT__ = 'firstboot-adconf.sh'
 
 CREDENTIAL_CACHED = {}
@@ -246,7 +247,11 @@ def create_solo_json(server_conf):
         users_conf = server_conf.get_users_conf().get_users_list()
         array_users = [] 
         for user in users_conf:
-            user_json = {'user': user.get_users(), 'password': user.get_password(), 'groups': user.get_groups(), 'actiontorun': user.get_actiontorun()}
+            user_json = {}
+            if user.get_actiontorun() == 'delete':
+                user_json = {'user': user.get_user(),'groups': user.get_groups(), 'actiontorun': user.get_actiontorun(),'deletehome':user.get_deletehome()}
+            else:
+                user_json = {'user': user.get_user(), 'password': user.get_password(), 'groups': user.get_groups(), 'actiontorun': user.get_actiontorun(),'name':user.get_name()}
             array_users.append(user_json)
 
         users_json = {'users_list': array_users}
@@ -284,27 +289,13 @@ def ldap_is_configured():
         raise e
 
 
-def chef_is_configured():
+def gcc_is_configured():
     try:
 
-        script = os.path.join(__BIN_PATH__, __CHEF_CONF_SCRIPT__)
-        if not os.path.exists(script):
-            raise LinkToChefException(_("The Chef configuration script couldn't be found") + ': ' + script)
-
-        cmd = '"%s" "--query"' % (script,)
-        args = shlex.split(cmd)
-
-        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        exit_code = os.waitpid(process.pid, 0)
-        output = process.communicate()[0]
-        output = output.strip()
-
-        if exit_code[1] == 0:
-            ret = bool(int(output))
-            return ret
-
-        else:
-            raise LinkToChefException(_('Chef setup error') + ': ' + output)
+        gcc_flag = os.path.join(__GCC_FLAG__)
+        if not os.path.exists(gcc_flag):
+            return False
+        return True
 
     except Exception as e:
         raise e
@@ -561,29 +552,33 @@ def link_to_chef(chef_conf):
 
     return True
 
+def unlink_from_gcc():
+#TODO Implement unlink from gcc server
+    return []
 
 def unlink_from_chef():
-
-    try:
-
-        script = os.path.join(__BIN_PATH__, __CHEF_CONF_SCRIPT__)
-        if not os.path.exists(script):
-            raise LinkToChefException("The file could not be found: " + script)
-
-        cmd = '"%s" "--restore"' % (script,)
-        args = shlex.split(cmd)
-
-        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        exit_code = os.waitpid(process.pid, 0)
-        output = process.communicate()[0]
-
-        if exit_code[1] != 0:
-            raise LinkToChefException(_('An error has ocurred unlinking from Chef') + ': ' + output)
-
-    except Exception as e:
-        raise e
-
-    return True
+#TODO Implement unlink from chef server
+    return []
+#    try:
+#
+#        script = os.path.join(__BIN_PATH__, __CHEF_CONF_SCRIPT__)
+#        if not os.path.exists(script):
+#            raise LinkToChefException("The file could not be found: " + script)
+#
+#        cmd = '"%s" "--restore"' % (script,)
+#        args = shlex.split(cmd)
+#
+#        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+#        exit_code = os.waitpid(process.pid, 0)
+#        output = process.communicate()[0]
+#
+#        if exit_code[1] != 0:
+#            raise LinkToChefException(_('An error has ocurred unlinking from Chef') + ': ' + output)
+#
+#    except Exception as e:
+#        raise e
+#
+#    return True
 
 def url_chef(title, text):
     dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,
