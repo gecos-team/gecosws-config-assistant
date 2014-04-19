@@ -141,22 +141,24 @@ easily managed remotely.\n\n')
 #                    unlink_chef=True
 #                )
 
-## TODO Implementar llamada a la api para dar de baja el puesto en GCC y en Chef
+## TODO Implement unlink GCC an Chef into serverconf Class
                 messages = []
                 messages += serverconf.unlink_from_gcc()
                 messages += serverconf.unlink_from_chef()
-                os.remove(__GCC_FLAG__)
-                content = serverconf.get_json_content()
-                if content != None:
-                    gcc_conf_cached = GCCConf.GCCConf()
-                    gcc_conf_cached.load_data(content['gcc'])
-                    chef_conf_cached = ChefConf.ChefConf()
-                    chef_conf_cached.load_data(content['chef'])
-                    server_conf.set_chef_conf(chef_conf_cached)
-                    server_conf.set_gcc_conf(gcc_conf_cached)
-                else:
-                    server_conf.set_chef_conf(ChefConf.ChefConf())
-                    server_conf.set_gcc_conf(GCCConf.GCCConf())
+                result = len(messages) == 0
+                if result:
+                    os.remove(__GCC_FLAG__)
+                    content = serverconf.get_json_content()
+                    if content != None:
+                        gcc_conf_cached = GCCConf.GCCConf()
+                        gcc_conf_cached.load_data(content['gcc'])
+                        chef_conf_cached = ChefConf.ChefConf()
+                        chef_conf_cached.load_data(content['chef'])
+                        server_conf.set_chef_conf(chef_conf_cached)
+                        server_conf.set_gcc_conf(gcc_conf_cached)
+                    else:
+                        server_conf.set_chef_conf(ChefConf.ChefConf())
+                        server_conf.set_gcc_conf(GCCConf.GCCConf())
                 load_page_callback(LinkToChefResultsPage, {
                     'result': True,
                     'messages': messages
