@@ -5,7 +5,8 @@
     "gcc": {
         "uri_gcc": "http://URL_GCC",
         "gcc_username": "ADMIN_USER",
-        "ou_username": "OU_ADMIN"
+        "ou_username": "OU_ADMIN",
+        "gcc_link": true
     },
     "auth": {
         "auth_type": "ldap",
