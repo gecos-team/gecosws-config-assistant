@@ -25,12 +25,6 @@ import firstboot.validation as validation
 class ActiveDirectoryProperties():
     def __init__(self):
         self._data = {}
-        self._data['fqdn'] = ''
-        self._data['workgroup'] = ''
-        self._data['sssd_conf'] = ''
-        self._data['krb5_conf'] = ''
-        self._data['smb_conf'] = ''
-        self._data['pam_conf'] = ''
 
     def load_data(self, conf, specific):
         msg = 'ServerConf: Key "%s" not found in the configuration file.'
@@ -63,6 +57,8 @@ class ActiveDirectoryProperties():
                 print msg % ('pam_conf',)
 
     def get_fqdn(self):
+        if not 'fqdn' in self._data:
+            self._data['fqdn'] = ''
         return self._data['fqdn'].encode('utf-8')
     
     def set_fqdn(self, fqdn):
@@ -70,6 +66,8 @@ class ActiveDirectoryProperties():
         return self
 
     def get_workgroup(self):
+        if not 'workgroup' in self._data:
+            self._data['workgroup'] = ''
         return self._data['workgroup'].encode('utf-8')
 
     def set_workgroup(self, workgroup):
@@ -77,6 +75,8 @@ class ActiveDirectoryProperties():
         return self
 
     def get_sssd_conf(self):
+        if not 'sssd_conf' in self._data:
+            self._data['sssd_conf'] = ''
         return self._data['sssd_conf']
 
     def set_sssd_conf(self, sssd_conf):
@@ -84,6 +84,8 @@ class ActiveDirectoryProperties():
         return self
 
     def get_krb5_conf(self):
+        if not 'krb5_conf' in self._data:
+            self._data['krb5_conf'] = ''
         return self._data['krb5_conf']
 
     def set_krb5_conf(self, krb5_conf):
@@ -91,6 +93,8 @@ class ActiveDirectoryProperties():
         return self
 
     def get_smb_conf(self):
+        if not 'smb_conf' in self._data:
+            self._data['smb_conf'] = ''
         return self._data['smb_conf']
 
     def set_smb_conf(self, smb_conf):
@@ -98,11 +102,39 @@ class ActiveDirectoryProperties():
         return self
 
     def get_pam_conf(self):
+        if not 'pam_conf' in self._data:
+            self._data['pam_conf'] = ''
         return self._data['pam_conf']
 
     def set_pam_conf(self, pam_conf):
         self._data['pam_conf'] = pam_conf
         return self
+
+    def set_user_ad(self, user_ad):
+        self._data['user_ad'] = user_ad
+        return self
+
+    def set_passwd_ad(self, passwd_ad):
+        self._data['passwd_ad'] = passwd_ad
+        return self
+
+    def get_user_ad(self):
+        if not 'user_ad' in self._data:
+            self._data['user_ad'] = ''
+        return self._data['user_ad']
+
+    def get_passwd_ad(self):
+        if not 'passwd_ad' in self._data:
+            self._data['passwd_ad'] = ''
+        return self._data['passwd_ad']
+
+
+    def validate(self, specific):
+        if specific:
+            return self.get_pam_conf() != '' and self.get_smb_conf() != '' and self.get_krb5_conf() != '' and self.get_sssd_conf() != ''
+        else:
+            return self.get_fqdn() != '' and self.get_workgroup() != ''
+
 
     def __str__(self):
         return str(self._data)
@@ -112,7 +144,7 @@ class ActiveDirectoryConf():
 
     def __init__(self):
         self._data = {}
-        self._data['specific_conf'] = ''
+        self._data['specific_conf'] = False
         self._ad_properties = ActiveDirectoryProperties()
 
     def load_data(self, conf):
@@ -127,7 +159,7 @@ class ActiveDirectoryConf():
             print msg % ('auth_properties',)
 
     def validate(self):
-        return True
+        return self._ad_properties.validate(self.get_specific_conf())
 
     def get_specific_conf(self):
         return self._data['specific_conf']
