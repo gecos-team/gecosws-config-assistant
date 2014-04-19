@@ -31,6 +31,7 @@ class AuthConf():
         self._data = {}
         self._data['auth_type'] = ''
         self._data['auth_properties'] = ''
+        self._data['auth_link'] = True
         self._ad_conf = ActiveDirectoryConf()
         self._ldap_conf = LdapConf()
 
@@ -59,6 +60,13 @@ class AuthConf():
     def set_auth_type(self, auth_type):
         self._data['auth_type'] = auth_type
         return self
+
+    def set_auth_link(self, auth_link):
+        self._data['auth_link'] = auth_link
+        return self
+
+    def get_auth_link(self):
+        return self._data['auth_link']
 
     def get_auth_properties(self):
         if self._data['auth_type'] == 'ldap':
