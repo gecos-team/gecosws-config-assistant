@@ -107,7 +107,7 @@ class DateSyncPage(PageWindow.PageWindow):
         if validation.is_domain(self.ui.txtHost.get_text()):
             self.serverconf.get_ntp_conf().set_uri_ntp(self.ui.txtHost.get_text())
             #print self.serverconf.get_ntp_conf().get_uri_ntp()
-            load_page_callback(firstboot.pages.linkToChef)
+            load_page_callback(firstboot.pages.pcLabel)
         else:
             self.set_status(1, str(_('Incorrect value for NTP Server')))
 

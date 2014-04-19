@@ -33,4 +33,4 @@ content = serverconf.get_json_content()
 #Fist initialization of ServerConf if the json is cached
 sc = serverconf.get_server_conf(content)
 
-pages = ['network','autoConfig','dateSync', 'linkToChef', 'linkToServer', 'localUsers', 'installSoftware']
+pages = ['network','autoConfig','dateSync','pcLabel', 'linkToChef', 'linkToServer', 'localUsers', 'installSoftware']

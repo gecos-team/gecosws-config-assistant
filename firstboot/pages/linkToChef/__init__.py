@@ -115,7 +115,7 @@ easily managed remotely.\n\n')
             self.ui.lblStatus.set_visible(True)
 
     def previous_page(self, load_page_callback):
-        load_page_callback(firstboot.pages.dateSync)
+        load_page_callback(firstboot.pages.pcLabel)
 
     def next_page(self, load_page_callback):
         if (self.ui.chkLinkChef.get_visible() and not self.ui.chkLinkChef.get_active()) or \
