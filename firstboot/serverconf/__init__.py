@@ -48,6 +48,8 @@ __BIN_PATH__ = firstbootconfig.get_bin_path()
 __LDAP_CONF_SCRIPT__ = 'firstboot-ldapconf.sh'
 __CHEF_CONF_SCRIPT__ = 'firstboot-chefconf.sh'
 __GCC_FLAG__ = '/etc/gcc.control'
+__LDAP_FLAG__ = '/etc/ldap.control'
+__AD_FLAG__ = '/etc/ad.control'
 __AD_CONF_SCRIPT__ = 'firstboot-adconf.sh'
 
 CREDENTIAL_CACHED = {}
@@ -178,25 +180,33 @@ def get_chef_hostnames(chef_conf):
 
 
 def ad_is_configured():
+
     try:
-        script = os.path.join(__BIN_PATH__, __AD_CONF_SCRIPT__)
-        if not os.path.exists(script):
-            raise LinkToADException(_("The Active Directory configuration script couldn't be found") + ': ' + script)
-        cmd = '"%s" "--query"' % (script,)
-        args = shlex.split(cmd)
-        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        exit_code = os.waitpid(process.pid, 0)
-        output = process.communicate()[0]
-        output = output.strip()
-        if exit_code[1] == 0:
-            ret = bool(int(output))
-            return ret
-
-        else:
-            raise LinkToADException(_('Active Directory setup error') + ': ' + output)
-
+        if not os.path.exists(__AD_FLAG__):
+            return False
+        return True
     except Exception as e:
         raise e
+
+    #try:
+    #    script = os.path.join(__BIN_PATH__, __AD_CONF_SCRIPT__)
+    #    if not os.path.exists(script):
+    #        raise LinkToADException(_("The Active Directory configuration script couldn't be found") + ': ' + script)
+    #    cmd = '"%s" "--query"' % (script,)
+    #    args = shlex.split(cmd)
+    #    process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    #    exit_code = os.waitpid(process.pid, 0)
+    #    output = process.communicate()[0]
+    #    output = output.strip()
+    #    if exit_code[1] == 0:
+    #        ret = bool(int(output))
+    #        return ret
+
+    #    else:
+    #        raise LinkToADException(_('Active Directory setup error') + ': ' + output)
+
+    #except Exception as e:
+    #    raise e
 
 
 def create_solo_json(server_conf):
@@ -216,6 +226,7 @@ def create_solo_json(server_conf):
         auth_type = server_conf.get_auth_conf().get_auth_type()
         if auth_type == 'ad':
             auth_prop = server_conf.get_auth_conf().get_auth_properties()
+            sssd_ad_json  = {}
             if auth_prop.get_specific_conf():
                 ad_prop = auth_prop.get_ad_properties()
                 krb5_file = create_conf_file(ad_prop.get_krb5_conf())
@@ -227,19 +238,23 @@ def create_solo_json(server_conf):
                 pam_file = create_conf_file(ad_prop.get_pam_conf())
                 pam_file = 'file://' + pam_file
                 sssd_ad_json = {'krb5_url': krb5_file, 'smb_url': smb_file, 'sssd_url': sssd_file, 'mkhimedir_url': pam_file}
-                json_solo['gecos_ws_mgmt']['misc_mgmt']['sssd_ad_res'] = sssd_ad_json
             else:
                 ad_prop = auth_prop.get_ad_properties()
                 sssd_ad_json = {'fqdn':  ad_prop.get_fqdn(), 'workgroup' : ad_prop.get_workgroup()}
-                json_solo['gecos_ws_mgmt']['misc_mgmt']['sssd_ad_res'] = sssd_ad_json
+            sssd_ad_json['user_ad'] = ad_prop.get_user_ad()
+            sssd_ad_json['passwd_ad'] = ad_prop.get_passwd_ad()
+            sssd_ad_json['auth_link'] = server_conf.get_auth_conf().get_auth_link()
+            json_solo['gecos_ws_mgmt']['misc_mgmt']['sssd_ad_res'] = sssd_ad_json
+            
                 
         else:
             auth_prop = server_conf.get_auth_conf().get_auth_properties()
             sssd_ldap_json = {'uri': auth_prop.get_url(), 'base': auth_prop.get_basedn(), 'basegroup': auth_prop.get_basedngroup(), 'binddn': auth_prop.get_binddn(), 'bindpwd': auth_prop.get_password()}
+            sssd_ldap_json['auth_link'] = server_conf.get_auth_conf().get_auth_link()
             json_solo['gecos_ws_mgmt']['misc_mgmt']['sssd_ldap_res'] = sssd_ldap_json
     if server_conf.get_gcc_conf().get_uri_gcc() != '':
         gcc_conf = server_conf.get_gcc_conf()
-        gcc_json = {'uri_gcc': gcc_conf.get_uri_gcc(), 'gcc_username' : gcc_conf.get_gcc_username(), 'ou_username': gcc_conf.get_ou_username(), 'gcc_pwd_user': gcc_conf.get_gcc_pwd_user(),'gcc_nodename': gcc_conf.get_nodename(),'gcc_link': gcc_conf.get_link()}
+        gcc_json = {'uri_gcc': gcc_conf.get_uri_gcc(), 'gcc_username' : gcc_conf.get_gcc_username(), 'ou_username': gcc_conf.get_ou_username(), 'gcc_pwd_user': gcc_conf.get_gcc_pwd_user(),'gcc_nodename': gcc_conf.get_gcc_nodename(),'gcc_link': gcc_conf.get_gcc_link()}
         json_solo['gecos_ws_mgmt']['misc_mgmt']['gcc_res'] = gcc_json
 
     if server_conf.get_users_conf().get_users_list():
@@ -264,35 +279,39 @@ def create_solo_json(server_conf):
 
 def ldap_is_configured():
     try:
-
-        script = os.path.join(__BIN_PATH__, __LDAP_CONF_SCRIPT__)
-        if not os.path.exists(script):
-            raise LinkToLDAPException(_("The LDAP configuration script couldn't be found") + ': ' + script)
-
-        cmd = '"%s" "--query"' % (script,)
-        args = shlex.split(cmd)
-
-        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        exit_code = os.waitpid(process.pid, 0)
-        output = process.communicate()[0]
-        output = output.strip()
-
-        if exit_code[1] == 0:
-            ret = bool(int(output))
-            return ret
-
-        else:
-            raise LinkToLDAPException(_('LDAP setup error') + ': ' + output)
-
+        if not os.path.exists(__LDAP_FLAG__):
+            return False
+        return True
     except Exception as e:
         raise e
+    #try:
+
+    #    script = os.path.join(__BIN_PATH__, __LDAP_CONF_SCRIPT__)
+    #    if not os.path.exists(script):
+    #        raise LinkToLDAPException(_("The LDAP configuration script couldn't be found") + ': ' + script)
+
+    #    cmd = '"%s" "--query"' % (script,)
+    #    args = shlex.split(cmd)
+
+    #    process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    #    exit_code = os.waitpid(process.pid, 0)
+    #    output = process.communicate()[0]
+    #    output = output.strip()
+
+    #    if exit_code[1] == 0:
+    #        ret = bool(int(output))
+    #        return ret
+
+    #    else:
+    #        raise LinkToLDAPException(_('LDAP setup error') + ': ' + output)
+
+    #except Exception as e:
+    #    raise e
 
 
 def gcc_is_configured():
     try:
-
-        gcc_flag = os.path.join(__GCC_FLAG__)
-        if not os.path.exists(gcc_flag):
+        if not os.path.exists(__GCC_FLAG__):
             return False
         return True
 
@@ -461,51 +480,56 @@ def link_to_ad(ad_conf):
 
 
 def unlink_from_ldap():
-
-    try:
-
-        script = os.path.join(__BIN_PATH__, __LDAP_CONF_SCRIPT__)
-        if not os.path.exists(script):
-            raise LinkToLDAPException("The file could not be found: " + script)
-
-        cmd = '"%s" "--restore"' % (script,)
-        args = shlex.split(cmd)
-
-        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        exit_code = os.waitpid(process.pid, 0)
-        output = process.communicate()[0]
-
-        if exit_code[1] != 0:
-            raise LinkToLDAPException(_('An error has ocurred unlinking from LDAP') + ': ' + output)
-
-    except Exception as e:
-        raise e
-
-    return True
+#TODO implement unlink from ldap calling chef-solo
+    return []
+#
+#    try:
+#
+#        script = os.path.join(__BIN_PATH__, __LDAP_CONF_SCRIPT__)
+#        if not os.path.exists(script):
+#            raise LinkToLDAPException("The file could not be found: " + script)
+#
+#        cmd = '"%s" "--restore"' % (script,)
+#        args = shlex.split(cmd)
+#
+#        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+#        exit_code = os.waitpid(process.pid, 0)
+#        output = process.communicate()[0]
+#
+#        if exit_code[1] != 0:
+#            raise LinkToLDAPException(_('An error has ocurred unlinking from LDAP') + ': ' + output)
+#
+#    except Exception as e:
+#        raise e
+#
+#    return True
 
 
 def unlink_from_ad():
+#TODO implement unlink from ad calling chef-solo
 
-    try:
-
-        script = os.path.join(__BIN_PATH__, __AD_CONF_SCRIPT__)
-        if not os.path.exists(script):
-            raise LinkToADException("The file could not be found: " + script)
-
-        cmd = '"%s" "--restore"' % (script,)
-        args = shlex.split(cmd)
-
-        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        exit_code = os.waitpid(process.pid, 0)
-        output = process.communicate()[0]
-
-        if exit_code[1] != 0:
-            raise LinkToADException(_('An error has ocurred unlinking from Active Directory') + ': ' + output)
-
-    except Exception as e:
-        raise e
-
-    return True
+    return []
+#
+#    try:
+#
+#        script = os.path.join(__BIN_PATH__, __AD_CONF_SCRIPT__)
+#        if not os.path.exists(script):
+#            raise LinkToADException("The file could not be found: " + script)
+#
+#        cmd = '"%s" "--restore"' % (script,)
+#        args = shlex.split(cmd)
+#
+#        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+#        exit_code = os.waitpid(process.pid, 0)
+#        output = process.communicate()[0]
+#
+#        if exit_code[1] != 0:
+#            raise LinkToADException(_('An error has ocurred unlinking from Active Directory') + ': ' + output)
+#
+#    except Exception as e:
+#        raise e
+#
+#    return True
 
 
 def link_to_chef(chef_conf):
