@@ -192,7 +192,6 @@ class LinkToServerPage(PageWindow.PageWindow):
             if self.ui.radioNone.get_active():
                 server_conf = serverconf.get_server_conf(None)
                 server_conf.set_auth_conf(AuthConf.AuthConf())
-            import ipdb;ipdb.set_trace()
             self.emit('status-changed', 'linkToServer', True)
             load_page_callback(firstboot.pages.localUsers)
             return

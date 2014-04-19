@@ -51,7 +51,6 @@ class LinkToServerResultsPage(PageWindow.PageWindow):
 
     def load_page(self, params=None):
 
-        import ipdb;ipdb.set_trace()
         if 'result' in params:
             self.result = params['result']
 
