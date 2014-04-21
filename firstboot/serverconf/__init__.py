@@ -277,6 +277,9 @@ def gcc_is_configured():
         raise e
 
 
+def apply_changes():
+#TODO implements save the json to run chef solo and run it
+    print "Apply Changes"
 
 def unlink_from_ldap():
 #TODO implement unlink from ldap calling chef-solo
