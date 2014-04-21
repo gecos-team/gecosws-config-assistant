@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="2.24"/>
+  <!-- interface-requires gtk+ 3.0 -->
   <!-- interface-requires FirstbootWindow_ctl 1.0 -->
   <object class="FirstbootWindow" id="FirstbootWindow">
     <property name="can_focus">False</property>
@@ -131,13 +131,12 @@
             <property name="homogeneous">True</property>
             <property name="layout_style">end</property>
             <child>
-              <object class="GtkButton" id="btnPrev">
-                <property name="label" translatable="yes">Previous</property>
+              <object class="GtkButton" id="btnApply">
+                <property name="label" translatable="yes">Apply</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
-                <signal name="clicked" handler="on_btnPrev_Clicked" swapped="no"/>
+                <signal name="clicked" handler="on_btnApply_Clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -146,18 +145,31 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="btnNext">
-                <property name="label" translatable="yes">Next</property>
+              <object class="GtkButton" id="btnPrev">
+                <property name="label" translatable="yes">Previous</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="use_action_appearance">False</property>
-                <signal name="clicked" handler="on_btnNext_Clicked" swapped="no"/>
+                <signal name="clicked" handler="on_btnPrev_Clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="btnNext">
+                <property name="label" translatable="yes">Next</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_btnNext_Clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
               </packing>
             </child>
           </object>

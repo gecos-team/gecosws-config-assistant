@@ -38,6 +38,7 @@ from gi.repository import GObject
 import logging
 logger = logging.getLogger('firstboot')
 
+from firstboot import serverconf
 from firstboot_lib import Window, firstbootconfig, FirstbootEntry
 import pages
 import dbus
@@ -78,6 +79,7 @@ class FirstbootWindow(Window):
         self.resize(sw, sh)
 
         self.btnPrev = self.ui.btnPrev
+        self.btnApply = self.ui.btnApply
         self.btnNext = self.ui.btnNext
 
         self.cmd_options = options
@@ -120,6 +122,7 @@ class FirstbootWindow(Window):
         self.ui.lblDescription.set_text('')
         self.ui.btnPrev.set_label(_('Previous'))
         self.ui.btnNext.set_label(_('Next'))
+        self.ui.btnApply.set_label(_('Apply'))
 
     def on_btnClose_Clicked(self, button):
         self.destroy()
@@ -155,6 +158,9 @@ class FirstbootWindow(Window):
 
     def on_btnPrev_Clicked(self, button):
         self.current_page.previous_page(self.set_current_page)
+
+    def on_btnApply_Clicked(self, button):
+        serverconf.apply_changes()
 
     def on_btnNext_Clicked(self, button):
         if self.is_last_page == True:
@@ -226,6 +232,7 @@ class FirstbootWindow(Window):
 
         self.ui.btnPrev.set_sensitive(True)
         self.ui.btnNext.set_sensitive(True)
+        self.ui.btnApply.set_sensitive(True)
         self.translate()
 
         try:
