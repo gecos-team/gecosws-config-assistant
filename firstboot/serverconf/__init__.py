@@ -200,7 +200,8 @@ def create_solo_json(server_conf):
         tmpfile = create_chef_pem(server_conf.get_chef_conf())
         chef_url = server_conf.get_chef_conf().get_url()
         chef_node_name = server_conf.get_chef_conf().get_node_name()
-        chef_json = {'chef_server_url':chef_url, 'chef_node_name': chef_node_name, 'chef_validation_pem': tmpfile}
+        chef_link = server_conf.get_chef_conf().get_chef_link()
+        chef_json = {'chef_server_url':chef_url, 'chef_node_name': chef_node_name, 'chef_validation_pem': tmpfile, 'chef_link': chef_link}
         json_solo['gecos_ws_mgmt']['misc_mgmt']['chef_conf_res'] = chef_json
     if server_conf.get_auth_conf().get_auth_type() != '':
         auth_type = server_conf.get_auth_conf().get_auth_type()
@@ -217,13 +218,13 @@ def create_solo_json(server_conf):
                 sssd_file = 'file://' + sssd_file
                 pam_file = create_conf_file(ad_prop.get_pam_conf())
                 pam_file = 'file://' + pam_file
-                sssd_ad_json = {'krb5_url': krb5_file, 'smb_url': smb_file, 'sssd_url': sssd_file, 'mkhimedir_url': pam_file}
+                sssd_ad_json = {'krb5_url': krb5_file, 'smb_url': smb_file, 'sssd_url': sssd_file, 'mkhomedir_url': pam_file}
             else:
                 ad_prop = auth_prop.get_ad_properties()
-                sssd_ad_json = {'fqdn':  ad_prop.get_fqdn(), 'workgroup' : ad_prop.get_workgroup()}
+                sssd_ad_json = {'domain_list': [ad_prop.get_domain()], 'workgroup' : ad_prop.get_workgroup()}
             sssd_ad_json['user_ad'] = ad_prop.get_user_ad()
             sssd_ad_json['passwd_ad'] = ad_prop.get_passwd_ad()
-            sssd_ad_json['auth_link'] = server_conf.get_auth_conf().get_auth_link()
+            sssd_ad_json['enabled'] = server_conf.get_auth_conf().get_auth_link()
             json_solo['gecos_ws_mgmt']['misc_mgmt']['sssd_ad_res'] = sssd_ad_json
             
                 
@@ -234,7 +235,7 @@ def create_solo_json(server_conf):
             json_solo['gecos_ws_mgmt']['misc_mgmt']['sssd_ldap_res'] = sssd_ldap_json
     if server_conf.get_gcc_conf().get_uri_gcc() != '':
         gcc_conf = server_conf.get_gcc_conf()
-        gcc_json = {'uri_gcc': gcc_conf.get_uri_gcc(), 'gcc_username' : gcc_conf.get_gcc_username(), 'ou_username': gcc_conf.get_ou_username(), 'gcc_pwd_user': gcc_conf.get_gcc_pwd_user(),'gcc_nodename': gcc_conf.get_gcc_nodename(),'gcc_link': gcc_conf.get_gcc_link()}
+        gcc_json = {'uri_gcc': gcc_conf.get_uri_gcc(), 'gcc_username' : gcc_conf.get_gcc_username(), 'ou_username': gcc_conf.get_ou_username(), 'gcc_pwd_user': gcc_conf.get_gcc_pwd_user(),'gcc_nodename': gcc_conf.get_gcc_nodename(),'gcc_link': gcc_conf.get_gcc_link(), 'gcc_selected_ou': gcc_conf.get_selected_ou()}
         json_solo['gecos_ws_mgmt']['misc_mgmt']['gcc_res'] = gcc_json
 
     if server_conf.get_users_conf().get_users_list():
