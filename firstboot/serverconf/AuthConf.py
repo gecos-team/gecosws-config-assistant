@@ -38,11 +38,11 @@ class AuthConf():
     def load_data(self, conf):
         msg = 'ServerConf: Key "%s" not found in the configuration file.'
         try:
-            self.set_auth_type(conf['auth_type'])
+            self.set_auth_type(conf['auth_type'].lower())
         except KeyError as e:
             print msg % ('auth_type',)
         try:
-            if conf['auth_type'] == 'ldap':
+            if conf['auth_type'].lower() == 'ldap':
                 self._ldap_conf.load_data(conf['auth_properties'])
             else:
                 self._ad_conf.load_data(conf['auth_properties'])
