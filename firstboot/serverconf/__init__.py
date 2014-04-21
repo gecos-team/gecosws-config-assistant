@@ -188,26 +188,6 @@ def ad_is_configured():
     except Exception as e:
         raise e
 
-    #try:
-    #    script = os.path.join(__BIN_PATH__, __AD_CONF_SCRIPT__)
-    #    if not os.path.exists(script):
-    #        raise LinkToADException(_("The Active Directory configuration script couldn't be found") + ': ' + script)
-    #    cmd = '"%s" "--query"' % (script,)
-    #    args = shlex.split(cmd)
-    #    process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    #    exit_code = os.waitpid(process.pid, 0)
-    #    output = process.communicate()[0]
-    #    output = output.strip()
-    #    if exit_code[1] == 0:
-    #        ret = bool(int(output))
-    #        return ret
-
-    #    else:
-    #        raise LinkToADException(_('Active Directory setup error') + ': ' + output)
-
-    #except Exception as e:
-    #    raise e
-
 
 def create_solo_json(server_conf):
     json_solo = {}
@@ -284,29 +264,6 @@ def ldap_is_configured():
         return True
     except Exception as e:
         raise e
-    #try:
-
-    #    script = os.path.join(__BIN_PATH__, __LDAP_CONF_SCRIPT__)
-    #    if not os.path.exists(script):
-    #        raise LinkToLDAPException(_("The LDAP configuration script couldn't be found") + ': ' + script)
-
-    #    cmd = '"%s" "--query"' % (script,)
-    #    args = shlex.split(cmd)
-
-    #    process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    #    exit_code = os.waitpid(process.pid, 0)
-    #    output = process.communicate()[0]
-    #    output = output.strip()
-
-    #    if exit_code[1] == 0:
-    #        ret = bool(int(output))
-    #        return ret
-
-    #    else:
-    #        raise LinkToLDAPException(_('LDAP setup error') + ': ' + output)
-
-    #except Exception as e:
-    #    raise e
 
 
 def gcc_is_configured():
@@ -318,165 +275,6 @@ def gcc_is_configured():
     except Exception as e:
         raise e
 
-
-def setup_server(server_conf, link_ldap=False, unlink_ldap=False,
-                link_chef=False, unlink_chef=False, link_ad=False, unlink_ad=False):
-
-    result = True
-    messages = []
-
-    if unlink_ldap == True:
-        try:
-            ret = unlink_from_ldap()
-            if ret == True:
-                messages.append({'type': 'info', 'message': _('Workstation has been unlinked from LDAP.')})
-            else:
-                messages += ret
-        except Exception as e:
-            messages.append({'type': 'error', 'message': str(e)})
-
-    elif link_ldap == True:
-        try:
-            ret = link_to_ldap(server_conf.get_ldap_conf())
-            if ret == True:
-                messages.append({'type': 'info', 'message': _('The LDAP has been configured successfully.')})
-            else:
-                messages += ret
-        except Exception as e:
-            messages.append({'type': 'error', 'message': str(e)})
-
-    if unlink_ad == True:
-        try:
-            ret = unlink_from_ad()
-            if ret == True:
-                messages.append({'type': 'info', 'message': _('Workstation has been unlinked from the Active Directory.')})
-            else:
-                messages += ret
-        except Exception as e:
-            messages.append({'type': 'error', 'message': str(e)})
-
-    elif link_ad == True:
-        try:
-            ret = link_to_ad(server_conf.get_ad_conf())
-            if ret == True:
-                messages.append({'type': 'info', 'message': _('The Active Directory has been configured successfully.')})
-            else:
-                messages += ret
-        except Exception as e:
-            messages.append({'type': 'error', 'message': str(e)})
-
-    if unlink_chef == True:
-        try:
-            ret = unlink_from_chef()
-            if ret == True:
-                messages.append({'type': 'info', 'message': _('Workstation has been unlinked from Chef.')})
-            else:
-                messages += ret
-        except Exception as e:
-            messages.append({'type': 'error', 'message': str(e)})
-
-    elif link_chef == True:
-        try:
-            ret = link_to_chef(server_conf.get_chef_conf())
-            if ret == True:
-                messages.append({'type': 'info', 'message': _('The Chef client has been configured successfully.')})
-            else:
-                messages += ret
-        except Exception as e:
-            messages.append({'type': 'error', 'message': str(e)})
-
-    for msg in messages:
-        if msg['type'] == 'error':
-            result = False
-            break
-
-    return result, messages
-
-
-def link_to_ldap(ldap_conf):
-
-    url = ldap_conf.get_url()
-    basedn = ldap_conf.get_basedn()
-    basedngroup = ldap_conf.get_basedngroup()
-    binddn = ldap_conf.get_binddn()
-    password = ldap_conf.get_password()
-    errors = []
-
-    if len(url) == 0:
-        errors.append({'type': 'error', 'message': _('The LDAP URL cannot be empty.')})
-
-    if len(basedn) == 0:
-        errors.append({'type': 'error', 'message': _('The LDAP BaseDN cannot be empty.')})
-
-    if len(binddn) == 0:
-        errors.append({'type': 'error', 'message': _('The LDAP BindDN cannot be empty.')})
-
-    if len(errors) > 0:
-        return errors
-
-    try:
-
-        script = os.path.join(__BIN_PATH__, __LDAP_CONF_SCRIPT__)
-        if not os.path.exists(script):
-            raise LinkToLDAPException(_("The LDAP configuration script couldn't be found") + ': ' + script)
-
-        cmd = '"%s" "%s" "%s" "%s" "%s" "%s"' % (script, url, basedn, basedngroup, binddn, password)
-        args = shlex.split(cmd)
-
-        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        exit_code = os.waitpid(process.pid, 0)
-        output = process.communicate()[0]
-
-        if exit_code[1] != 0:
-            raise LinkToLDAPException(_('LDAP setup error') + ': ' + output)
-
-    except Exception as e:
-        raise e
-
-    return True
-
-
-def link_to_ad(ad_conf):
-
-    fqdn = ad_conf.get_fqdn()
-    dns_domain = ad_conf.get_dns_domain()
-    user = ad_conf.get_user()
-    passwd = ad_conf.get_passwd()
-    errors = []
-
-    if len(fqdn) == 0:
-        errors.append({'type': 'error', 'message': _('The Active Directory URL cannot be empty.')})
-
-    if len(dns_domain) == 0:
-        errors.append({'type': 'error', 'message': _('The DNS Domain cannot be empty.')})
-    if len(user) == 0:
-        errors.append({'type': 'error', 'message': _('The administrator user cannot be empty.')})
-    if len(passwd) == 0:
-        errors.append({'type': 'error', 'message': _('The administrator password cannot be empty.')})
-
-    if len(errors) > 0:
-        return errors
-
-    try:
-
-        script = os.path.join(__BIN_PATH__, __AD_CONF_SCRIPT__)
-        if not os.path.exists(script):
-            raise LinkToADException(_("The Active Directory configuration script couldn't be found") + ': ' + script)
-
-        cmd = '"%s" "%s" "%s" "%s" "%s"' % (script, fqdn, dns_domain, user, passwd)
-        args = shlex.split(cmd)
-
-        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        exit_code = os.waitpid(process.pid, 0)
-        output = process.communicate()[0]
-
-        if exit_code[1] != 0:
-            raise LinkToADException(_('Active Directory setup error') + ': ' + output)
-
-    except Exception as e:
-        raise e
-
-    return True
 
 
 def unlink_from_ldap():
@@ -531,49 +329,6 @@ def unlink_from_ad():
 #
 #    return True
 
-
-def link_to_chef(chef_conf):
-
-    url = chef_conf.get_url()
-    pemurl = chef_conf.get_pem_url()
-    role = chef_conf.get_default_role()
-    hostname = chef_conf.get_hostname()
-    user = chef_conf.get_user()
-    password = chef_conf.get_password()
-    errors = []
-
-    if len(url) == 0:
-        errors.append({'type': 'error', 'message': _('The Chef URL cannot be empty.')})
-
-    if len(pemurl) == 0:
-        errors.append({'type': 'error', 'message': _('The Chef certificate URL cannot be empty.')})
-
-    if len(hostname) == 0:
-        errors.append({'type': 'error', 'message': _('The Chef host name cannot be empty.')})
-
-    if len(errors) > 0:
-        return errors
-
-    try:
-
-        script = os.path.join(__BIN_PATH__, __CHEF_CONF_SCRIPT__)
-        if not os.path.exists(script):
-            raise LinkToChefException(_("The Chef configuration script couldn't be found") + ': ' + script)
-
-        cmd = '"%s" "%s" "%s" "%s" "%s" "%s" "%s"' % (script, url, pemurl, hostname, user, password, role)
-        args = shlex.split(cmd)
-
-        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        exit_code = os.waitpid(process.pid, 0)
-        output = process.communicate()[0]
-
-        if exit_code[1] != 0:
-            raise LinkToChefException(_('Chef setup error') + ': ' + output)
-
-    except Exception as e:
-        raise e
-
-    return True
 
 def unlink_from_gcc():
 #TODO Implement unlink from gcc server
