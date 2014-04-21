@@ -63,6 +63,7 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
         self.chef_conf = self.serverconf.get_chef_conf()
         self.ui.txtUrlChef.set_text(self.gcc_conf.get_uri_gcc())
         self.ui.txtUser.set_text(self.gcc_conf.get_gcc_username())
+        self.ui.txtPassword.set_text(self.gcc_conf.get_gcc_pwd_user())
 
     def translate(self):
         desc = _('These parameters are required in order to join a Control Center:')
@@ -84,6 +85,11 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
         self.gcc_conf.set_gcc_link(True)
         self.interfaces = interface.localifs()
         self.interfaces.reverse()
+        if len(self.gcc_conf.get_ou_username()) > 2:
+            result = serverconf.select_ou(_('Select OU'), _('Select the OU to link into GCC Ui'), self.gcc_conf.get_ou_username()) 
+            self.gcc_conf.set_selected_ou(result)
+        elif len(self.gcc_conf.get_ou_username()) == 1:
+            self.gcc_conf.set_selected_ou(self.gcc_conf.get_ou_username()[0])
         for inter in self.interfaces:
             if not inter[1].startswith('127.0'):
                 break
@@ -92,13 +98,20 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
             try:
                 req = requests.get(result)
                 if not req.ok:
-                    raise LinkToChefException(_("Can not download pem file"))
+                    raise serverconf.LinkToChefException(_("Can not download pem file"))
                 pem = req.text
                 self.chef_conf.set_pem(pem)
                 self.chef_conf.set_url(self.gcc_conf.get_uri_gcc())
 
+                result = serverconf.entry_ou(_('Select OU'),_('Enter the correct OU to link into GCC Ui'))
+                if result:
+                    self.gcc_conf.set_selected_ou(result)
+                else:
+                    raise serverconf.LinkToChefException(_("You need enter a OU"))
             except Exception as e:
                 self.show_status(__STATUS_ERROR__, e)
+    
+
         mac = interface.getHwAddr(inter[0])
         node_name = hashlib.md5(mac.encode()).hexdigest()
         self.gcc_conf.set_gcc_nodename(node_name)
