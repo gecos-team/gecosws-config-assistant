@@ -186,7 +186,7 @@
                 <property name="can_focus">False</property>
                 <property name="spacing">10</property>
                 <child>
-                  <object class="GtkLabel" id="lblFqdnAD">
+                  <object class="GtkLabel" id="lblDomain">
                     <property name="width_request">100</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -201,7 +201,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="txtFqdnAD">
+                  <object class="GtkEntry" id="txtDomain">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="invisible_char">•</property>
