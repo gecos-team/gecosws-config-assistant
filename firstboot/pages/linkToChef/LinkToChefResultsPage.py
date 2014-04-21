@@ -92,4 +92,4 @@ updated successfully.'))
         load_page_callback(firstboot.pages.linkToChef)
 
     def next_page(self, load_page_callback):
-        load_page_callback(firstboot.pages.localUsers)
+        load_page_callback(firstboot.pages.linkToServer)
