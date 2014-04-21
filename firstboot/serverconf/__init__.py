@@ -383,11 +383,77 @@ def url_chef(title, text):
 
     dialog.get_message_area().pack_start(hboxurl, False, False, False)
     result = dialog.run()
-    retval = [None, None]
+    retval = None
     if result == Gtk.ResponseType.OK:
         retval = url.get_text()
     dialog.destroy()
     return retval
+
+
+
+def entry_ou(title, text):
+    dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,
+                                   Gtk.ButtonsType.OK_CANCEL)
+    dialog.set_title(title)
+    dialog.set_position(Gtk.WindowPosition.CENTER)
+    dialog.set_default_response(Gtk.ResponseType.OK)
+    dialog.set_icon_name('dialog-password')
+    dialog.set_markup(text)
+
+    hboxou = Gtk.HBox()
+    lblou = Gtk.Label(_('OU Name'))
+    lblou.set_visible(True)
+    hboxou.pack_start(lblou, False, False, False)
+    ou = Gtk.Entry()
+    ou.set_activates_default(True)
+    ou.show()
+    hboxou.pack_end(ou, False, False, False)
+    hboxou.show()
+
+    dialog.get_message_area().pack_start(hboxou, False, False, False)
+    result = dialog.run()
+    retval = None
+    if result == Gtk.ResponseType.OK:
+        retval = ou.get_text()
+    dialog.destroy()
+    return retval
+
+
+def select_ou(title, text, ous):
+    dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,
+                                   Gtk.ButtonsType.OK_CANCEL)
+    dialog.set_title(title)
+    dialog.set_position(Gtk.WindowPosition.CENTER)
+    dialog.set_default_response(Gtk.ResponseType.OK)
+    dialog.set_icon_name('dialog-password')
+    dialog.set_markup(text)
+
+    hboxou = Gtk.HBox()
+    lblou = Gtk.Label(_('Select OU'))
+    lblou.set_visible(True)
+    hboxou.pack_start(lblou, False, False, False)
+    ou_store = Gtk.ListStore(str)
+    for ou in ous:
+        ou_store.append([ou])
+
+    ou_combo = Gtk.ComboBox.new_with_model(ou_store)
+    renderer_text = Gtk.CellRendererText()
+    ou_combo.pack_start(renderer_text, True)
+    ou_combo.add_attribute(renderer_text, "text", 0)    
+
+    ou_combo.show()
+    hboxou.pack_end(ou_combo, False, False, False)
+    hboxou.show()
+
+    dialog.get_message_area().pack_start(hboxou, False, False, False)
+    result = dialog.run()
+    retval = None
+    if result == Gtk.ResponseType.OK:
+        retval = ou_combo.get_active()
+    dialog.destroy()
+    return retval
+
+
 
 
 def auth_dialog(title, text):
