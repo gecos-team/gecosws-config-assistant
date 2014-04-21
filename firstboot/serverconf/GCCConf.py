@@ -32,6 +32,7 @@ class GCCConf():
         self._data['gcc_nodename'] = ''
         self._data['gcc_link'] = False
         self._data['gcc_pwd_user'] = ''
+        self._data['selected_ou'] = ''
         self._data['ou_username'] = []
 
     def load_data(self, conf):
@@ -77,6 +78,13 @@ class GCCConf():
     def set_gcc_nodename(self, gcc_nodename):
         self._data['gcc_nodename'] = gcc_nodename
         return self
+
+    def set_selected_ou(self, selected_ou):
+        self._data['selected_ou'] = selected_ou
+        return self
+
+    def get_selected_ou(self):
+        return self._data['selected_ou']
 
     def get_gcc_link(self):
         return self._data['gcc_link']
