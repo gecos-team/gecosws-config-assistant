@@ -30,9 +30,9 @@ class ActiveDirectoryProperties():
         msg = 'ServerConf: Key "%s" not found in the configuration file.'
         if not specific:
             try:
-                self.set_fqdn(conf['fqdn'])
+                self.set_domain(conf['domain'])
             except KeyError as e:
-                print msg % ('fqdn',)
+                print msg % ('domain',)
             try:
                 self.set_workgroup(conf['workgroup'])
             except KeyError as e:
@@ -56,13 +56,13 @@ class ActiveDirectoryProperties():
             except KeyError as e:
                 print msg % ('pam_conf',)
 
-    def get_fqdn(self):
-        if not 'fqdn' in self._data:
-            self._data['fqdn'] = ''
-        return self._data['fqdn'].encode('utf-8')
+    def get_domain(self):
+        if not 'domain' in self._data:
+            self._data['domain'] = ''
+        return self._data['domain'].encode('utf-8')
     
-    def set_fqdn(self, fqdn):
-        self._data['fqdn'] = fqdn
+    def set_domain(self, domain):
+        self._data['domain'] = domain
         return self
 
     def get_workgroup(self):
@@ -133,7 +133,7 @@ class ActiveDirectoryProperties():
         if specific:
             return self.get_pam_conf() != '' and self.get_smb_conf() != '' and self.get_krb5_conf() != '' and self.get_sssd_conf() != ''
         else:
-            return self.get_fqdn() != '' and self.get_workgroup() != ''
+            return self.get_domain() != '' and self.get_workgroup() != ''
 
 
     def __str__(self):
@@ -150,11 +150,11 @@ class ActiveDirectoryConf():
     def load_data(self, conf):
         msg = 'ServerConf: Key "%s" not found in the configuration file.'
         try:
-            self.set_fqdn(conf['specific_conf'])
+            self.set_specific_conf(conf['specific_conf'])
         except KeyError as e:
             print msg % ('specific_conf',)
         try:
-            self.set_ad_properites.load_data(conf['auth_properties'])
+            self._ad_properties.load_data(conf['auth_properties'])
         except KeyError as e:
             print msg % ('auth_properties',)
 
@@ -170,6 +170,6 @@ class ActiveDirectoryConf():
 
     def get_ad_properties(self):
         return self._ad_properties
-
+    
     def __str__(self):
         return str(self._data)

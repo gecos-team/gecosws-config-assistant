@@ -75,10 +75,10 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
                 if self.server_conf.get_auth_conf().get_auth_properties().get_specific_conf():
                     self.ui.checkSpecific.set_active(True)
                     self.ui.txtWorkgroup.set_editable(False)
-                    self.ui.txtFqdnAD.set_editable(False)
+                    self.ui.txtDomain.set_editable(False)
                 else:
-                    ad_conf = self.server_conf.get_auth_conf().get_auth_properites().get_ad_properties()
-                    self.ui.txtFqdnAD.set_text(ad_conf.get_fqdn())
+                    ad_conf = self.server_conf.get_auth_conf().get_auth_properties().get_ad_properties()
+                    self.ui.txtDomain.set_text(ad_conf.get_domain())
                     self.ui.checkSpecific.hide()
                     self.ui.txtWorkgroup.set_text(ad_conf.get_workgroup())
             else:
@@ -109,16 +109,16 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
         self.ui.lblBaseDNGroup.set_label(_('Base DN for groups'))
         self.ui.lblBindDN.set_label('Bind DN')
         self.ui.lblPassword.set_label(_('Password'))
-        self.ui.lblFqdnAD.set_label('FQDN')
+        self.ui.lblDomain.set_label('Domain')
         self.ui.lblWorkgroup.set_label(_('Workgroup'))
         self.ui.checkSpecific.set_label(_('Change specific configuration from server?'))
 
     def on_checkSpecific_toggled(self, widget):
         if not self.ui.checkSpecific.get_active():
-            self.ui.txtFqdnAD.set_editable(False)
+            self.ui.txtDomain.set_editable(False)
             self.ui.txtWorkgroup.set_editable(False)
         else:
-            self.ui.txtFqdnAD.set_editable(True)
+            self.ui.txtDomain.set_editable(True)
             self.ui.txtWorkgroup.set_editable(True)
 
 
@@ -141,7 +141,7 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
             ad_conf.get_ad_properties().set_user_ad(retval[0])
             ad_conf.get_ad_properties().set_passwd_ad(retval[1])
             ad_conf.set_specific_conf(False)
-            ad_conf.get_ad_properties().set_fqdn(self.ui.txtFqdnAD.get_text())
+            ad_conf.get_ad_properties().set_domain(self.ui.txtDomain.get_text())
             ad_conf.get_ad_properties().set_workgroup(self.ui.txtWorkgroup.get_text())
             if not auth_conf.get_auth_properties().validate():
                 messages.append({'type': 'error', 'message': 'Please, check the Active Directory parameters.'})
@@ -149,7 +149,7 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
             
         else:
             if self.server_conf.get_auth_conf().get_auth_type() == 'ad':
-                self.server_conf.get_auth_conf().set_auth_typei('ldap')
+                self.server_conf.get_auth_conf().set_auth_type('ldap')
 
             ldap_conf = self.server_conf.get_auth_conf().get_auth_properties()
             ldap_conf.set_url(self.ui.txtUrlLDAP.get_text())
