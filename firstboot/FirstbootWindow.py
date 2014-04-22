@@ -160,6 +160,7 @@ class FirstbootWindow(Window):
         self.current_page.previous_page(self.set_current_page)
 
     def on_btnApply_Clicked(self, button):
+        self.current_page.next_page(self.set_current_page)
         serverconf.apply_changes()
 
     def on_btnNext_Clicked(self, button):
