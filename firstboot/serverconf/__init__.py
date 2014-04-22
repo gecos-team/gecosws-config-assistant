@@ -225,14 +225,13 @@ def create_solo_json(server_conf):
             sssd_ad_json['user_ad'] = ad_prop.get_user_ad()
             sssd_ad_json['passwd_ad'] = ad_prop.get_passwd_ad()
             sssd_ad_json['enabled'] = server_conf.get_auth_conf().get_auth_link()
-            json_solo['gecos_ws_mgmt']['misc_mgmt']['sssd_ad_res'] = sssd_ad_json
+            json_solo['gecos_ws_mgmt']['misc_mgmt']['sssd_res'] = sssd_ad_json
             
-                
         else:
             auth_prop = server_conf.get_auth_conf().get_auth_properties()
             sssd_ldap_json = {'uri': auth_prop.get_url(), 'base': auth_prop.get_basedn(), 'basegroup': auth_prop.get_basedngroup(), 'binddn': auth_prop.get_binddn(), 'bindpwd': auth_prop.get_password()}
             sssd_ldap_json['auth_link'] = server_conf.get_auth_conf().get_auth_link()
-            json_solo['gecos_ws_mgmt']['misc_mgmt']['sssd_ldap_res'] = sssd_ldap_json
+            json_solo['gecos_ws_mgmt']['misc_mgmt']['sssd_res'] = sssd_ldap_json
     if server_conf.get_gcc_conf().get_uri_gcc() != '':
         gcc_conf = server_conf.get_gcc_conf()
         gcc_json = {'uri_gcc': gcc_conf.get_uri_gcc(), 'gcc_username' : gcc_conf.get_gcc_username(), 'ou_username': gcc_conf.get_ou_username(), 'gcc_pwd_user': gcc_conf.get_gcc_pwd_user(),'gcc_nodename': gcc_conf.get_gcc_nodename(),'gcc_link': gcc_conf.get_gcc_link(), 'gcc_selected_ou': gcc_conf.get_selected_ou()}
@@ -279,59 +278,19 @@ def gcc_is_configured():
 
 def apply_changes():
 #TODO implements save the json to run chef solo and run it
+    
     print "Apply Changes"
 
-def unlink_from_ldap():
+def unlink_from_sssd():
 #TODO implement unlink from ldap calling chef-solo
+    json_solo = {}
+    json_solo['run_list'] = ["recipe[gecos_ws_mgmt::unlink_from_sssd]"]
+    json_solo['gecos_ws_mgmt'] = {}
+    json_solo['gecos_ws_mgmt']['misc_mgmt'] = {}
+    sssd_json = {}
+    sssd_json['enabled'] = server_conf.get_auth_conf().get_auth_link()
+    json_solo['gecos_ws_mgmt']['misc_mgmt']['sssd_res'] = sssd_json
     return []
-#
-#    try:
-#
-#        script = os.path.join(__BIN_PATH__, __LDAP_CONF_SCRIPT__)
-#        if not os.path.exists(script):
-#            raise LinkToLDAPException("The file could not be found: " + script)
-#
-#        cmd = '"%s" "--restore"' % (script,)
-#        args = shlex.split(cmd)
-#
-#        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-#        exit_code = os.waitpid(process.pid, 0)
-#        output = process.communicate()[0]
-#
-#        if exit_code[1] != 0:
-#            raise LinkToLDAPException(_('An error has ocurred unlinking from LDAP') + ': ' + output)
-#
-#    except Exception as e:
-#        raise e
-#
-#    return True
-
-
-def unlink_from_ad():
-#TODO implement unlink from ad calling chef-solo
-
-    return []
-#
-#    try:
-#
-#        script = os.path.join(__BIN_PATH__, __AD_CONF_SCRIPT__)
-#        if not os.path.exists(script):
-#            raise LinkToADException("The file could not be found: " + script)
-#
-#        cmd = '"%s" "--restore"' % (script,)
-#        args = shlex.split(cmd)
-#
-#        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-#        exit_code = os.waitpid(process.pid, 0)
-#        output = process.communicate()[0]
-#
-#        if exit_code[1] != 0:
-#            raise LinkToADException(_('An error has ocurred unlinking from Active Directory') + ': ' + output)
-#
-#    except Exception as e:
-#        raise e
-#
-#    return True
 
 
 def unlink_from_gcc():
