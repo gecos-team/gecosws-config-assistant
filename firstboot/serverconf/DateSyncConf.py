@@ -37,7 +37,7 @@ class DateSyncConf():
             print msg % ('uri_ntp',)
 
     def validate(self):
-        valid = validation.is_qname(self._data['uri_ntp'])
+        valid = validation.is_domain(self._data['uri_ntp'])
         return valid
 
     def get_uri_ntp(self):

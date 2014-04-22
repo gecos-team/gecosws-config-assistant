@@ -110,6 +110,5 @@ class DateSyncPage(PageWindow.PageWindow):
             load_page_callback(firstboot.pages.pcLabel)
         else:
             self.set_status(1, str(_('Incorrect value for NTP Server')))
-
         
         
