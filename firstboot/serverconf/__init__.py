@@ -278,8 +278,36 @@ def gcc_is_configured():
 
 def apply_changes():
 #TODO implements save the json to run chef solo and run it
-    
-    print "Apply Changes"
+    server_conf = get_server_conf(None)
+    messages = []
+    json_solo = create_solo_json(server_conf)
+    resources = json_solo['gecos_ws_mgmt']['misc_mgmt'].keys()
+    for res in resources:
+        if res == 'tz_date_res':
+            if not server_conf.get_ntp_conf().validate():
+                messages.append(_("The Date/Time Syncronization parameters are incorrect"))
+        if res == 'chef_conf_res' or res == 'gcc_res':
+            if not server_conf.get_chef_conf().validate() or not server_conf.get_gcc_conf().validate():
+                messages.append(_("The GCC parameters are incorrect"))
+        if res == 'sssd_res':
+            if not server_conf.get_chef_conf().validate():
+                messages.append(_("The authentication parameters are incorrect"))
+        if res == 'local_users_res':
+            if not server_conf.get_users_conf().validate():
+                messages.append(_("The Local Users parameters are incorrect"))
+    if len(messages) > 0:
+        display_errors(_("Configuration Error"),messages)
+        return 0    
+    (fd, filepath) = tempfile.mkstemp(dir='/tmp')
+    fp = os.fdopen(fd, "w+b")
+    if fp:
+        fp.write(json_solo)
+        fp.close()
+ 
+    run_chef_solo(fp)
+
+def run_chef_solo(fp):
+    pass        
 
 def unlink_from_sssd():
 #TODO implement unlink from ldap calling chef-solo
@@ -413,7 +441,15 @@ def select_ou(title, text, ous):
     return retval
 
 
-
+def display_errors(title, messages):
+    text = ''
+    for message in messages:
+        text += message + '\n'
+    dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK,text)
+    dialog.set_title(title)
+    result = dialog.run()
+    dialog.destroy()
+    return result 
 
 def auth_dialog(title, text):
     dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,
