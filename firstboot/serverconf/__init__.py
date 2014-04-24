@@ -231,7 +231,7 @@ def create_solo_json(server_conf):
             auth_prop = server_conf.get_auth_conf().get_auth_properties()
             sssd_ldap_json = {'uri': auth_prop.get_url(), 'base': auth_prop.get_basedn(), 'basegroup': auth_prop.get_basedngroup(), 'binddn': auth_prop.get_binddn(), 'bindpwd': auth_prop.get_password()}
             sssd_ldap_json['auth_link'] = server_conf.get_auth_conf().get_auth_link()
-            json_solo['gecos_ws_mgmt']['misc_mgmt']['sssd_res'] = sssd_ldap_json
+            json_solo['gecos_ws_mgmt']['network_mgmt']['sssd_res'] = sssd_ldap_json
     if server_conf.get_gcc_conf().get_uri_gcc() != '':
         gcc_conf = server_conf.get_gcc_conf()
         gcc_json = {'uri_gcc': gcc_conf.get_uri_gcc(), 'gcc_username' : gcc_conf.get_gcc_username(), 'ou_username': gcc_conf.get_ou_username(), 'gcc_pwd_user': gcc_conf.get_gcc_pwd_user(),'gcc_nodename': gcc_conf.get_gcc_nodename(),'gcc_link': gcc_conf.get_gcc_link(), 'gcc_selected_ou': gcc_conf.get_selected_ou()}
