@@ -301,13 +301,26 @@ def apply_changes():
     (fd, filepath) = tempfile.mkstemp(dir='/tmp')
     fp = os.fdopen(fd, "w+b")
     if fp:
-        fp.write(json_solo)
+        fp.write(json.dumps(json_solo,indent=2))
         fp.close()
- 
-    run_chef_solo(fp)
+    run_chef_solo(filepath)
 
 def run_chef_solo(fp):
-    pass        
+    try:
+        
+        cmd = '"chef-solo" "-j" "%s"' % (fp)
+        args = shlex.split(cmd)
+        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        exit_code = os.waitpid(process.pid, 0):
+        output = process.communicate()[0]
+
+        if exit_code[1] != 0:
+            messages = [(_('An error has ocurred running chef-solo'))]
+            display_errors(_("Configuration Error"), messages)
+
+    except Exception as e:
+        display_errors(_("Configuration Error"), [e.message])
+         
 
 def unlink_from_sssd():
 #TODO implement unlink from ldap calling chef-solo
