@@ -85,7 +85,7 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
         self.gcc_conf.set_gcc_link(True)
         self.interfaces = interface.localifs()
         self.interfaces.reverse()
-        if len(self.gcc_conf.get_ou_username()) > 2:
+        if len(self.gcc_conf.get_ou_username()) >= 2:
             result = serverconf.select_ou(_('Select OU'), _('Select the OU to link into GCC Ui'), self.gcc_conf.get_ou_username()) 
             self.gcc_conf.set_selected_ou(result)
         elif len(self.gcc_conf.get_ou_username()) == 1:
@@ -96,12 +96,16 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
         if not serverconf.json_is_cached():
             result = serverconf.url_chef(_('Url Chef Certificate Required'), _('You need to enter url with certificate file\n in protocol://domain/resource format'))
             try:
-                req = requests.get(result)
-                if not req.ok:
+                res = requests.get(result)
+                if not res.ok:
                     raise serverconf.LinkToChefException(_("Can not download pem file"))
-                pem = req.text
-                self.chef_conf.set_pem(pem)
+                if hasattr(res,'text'):
+                    pem = res.text
+                else:
+                    pem = res.content
+                self.chef_conf.set_pem(pem.encode('base64'))
                 self.chef_conf.set_url(self.gcc_conf.get_uri_gcc())
+                self.chef_conf.set_admin_name(self.gcc_conf.get_gcc_username())
 
                 result = serverconf.entry_ou(_('Select OU'),_('Enter the correct OU to link into GCC Ui'))
                 if result:
@@ -115,6 +119,8 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
         mac = interface.getHwAddr(inter[0])
         node_name = hashlib.md5(mac.encode()).hexdigest()
         self.gcc_conf.set_gcc_nodename(node_name)
+        self.chef_conf.set_node_name(node_name)
+        self.chef_conf.set_chef_link(True)
         result, messages = self.validate_conf()
         load_page_callback(LinkToChefResultsPage, {
             'result': result,
