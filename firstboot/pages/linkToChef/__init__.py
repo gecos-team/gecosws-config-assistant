@@ -30,6 +30,8 @@ from firstboot_lib import PageWindow
 from firstboot import serverconf
 from firstboot.serverconf import GCCConf, ChefConf
 
+import requests
+import json
 import gettext
 from gettext import gettext as _
 gettext.textdomain('firstboot')
@@ -45,6 +47,7 @@ __STATUS_CONNECTING__ = 2
 __STATUS_ERROR__ = 3
 
 __GCC_FLAG__ = '/etc/gcc.control'
+__CHEF_FLAG__ = '/etc/chef.control'
 
 
 def get_page(main_window):
@@ -128,26 +131,44 @@ easily managed remotely.\n\n')
             server_conf = None
 
             if not self.gcc_is_configured:
-#                content = serverconf.get_json_content()
-
                 load_page_callback(LinkToChefConfEditorPage)
 
             elif self.ui.chkUnlinkChef.get_active():
-#                content = serverconf.get_json_content()
                 server_conf = serverconf.get_server_conf(None)
-#                result, messages = serverconf.setup_server(
-#                    server_conf=server_conf,
-#                    link_chef=False,
-#                    unlink_chef=True
-#                )
-
-## TODO Implement unlink GCC an Chef into serverconf Class
+                ## TODO Implement unlink GCC an Chef into serverconf Class
+                if not serverconf.json_is_cached():
+                    gcc_flag = open(__GCC_FLAG__, 'r')
+                    content = gcc_flag.read()
+                    gcc_flag.close()
+                    gcc_flag_json = json.loads(content)
+                    server_conf.get_gcc_conf().set_gcc_username(gcc_flag_json['gcc_username'])
+                    server_conf.get_gcc_conf().set_uri_gcc(gcc_flag_json['uri_gcc'])
+                    server_conf.get_gcc_conf().set_gcc_nodename(gcc_flag_json['gcc_nodename'])
+                    result = serverconf.url_chef(_('Url Chef Certificate Required'), _('You need to enter url with certificate file\n in protocol://domain/resource format'))
+                    res = requests.get(result)
+                    if not res.ok:
+                        raise Exception(_("Can not download pem file"))
+                    if hasattr(res,'text'):
+                        pem = res.text
+                    else:
+                        pem = res.content
+#                    serverconf.create_chef_pem(pem.encode('base64'))
+                    chef_flag = open(__CHEF_FLAG__, 'r')
+                    content = chef_flag.read()
+                    chef_flag.close()
+                    chef_flag_json = json.loads(content)
+                    serverconf.url_chef
+                    server_conf.get_chef_conf().set_url(chef_flag_json['chef_server_url'])
+                    server_conf.get_chef_conf().set_node_name(chef_flag_json['chef_node_name'])
+                    server_conf.get_chef_conf().set_admin_name(chef_flag_json['chef_admin_name'])
+                password = serverconf.get_passwd_gcc(server_conf.get_gcc_conf().get_gcc_username())
+                if password == None:
+                   raise Exception(_('Please insert a password'))
                 messages = []
-                messages += serverconf.unlink_from_gcc()
+                messages += serverconf.unlink_from_gcc(password)
                 messages += serverconf.unlink_from_chef()
                 result = len(messages) == 0
                 if result:
-                    os.remove(__GCC_FLAG__)
                     content = serverconf.get_json_content()
                     if content != None:
                         gcc_conf_cached = GCCConf.GCCConf()
