@@ -71,7 +71,7 @@ class FirstbootWindow(Window):
     def finish_initializing(self, builder, options=None):   # pylint: disable=E1002
         """Set up the main window"""
         super(FirstbootWindow, self).finish_initializing(builder)
-        self.connect("delete_event", self.on_delete_event)
+#        self.connect("delete_event", self.on_delete_event)
 
         screen = Gdk.Screen.get_default()
         sw = math.floor(screen.width() - screen.width() / 6)
@@ -118,7 +118,7 @@ class FirstbootWindow(Window):
         self.on_nm_state_changed(state)
 
     def translate(self):
-        self.set_title(_('First Boot Assistant'))
+        self.set_title(_('GECOS Config Assistant'))
         self.ui.lblDescription.set_text('')
         self.ui.btnPrev.set_label(_('Previous'))
         self.ui.btnNext.set_label(_('Next'))
@@ -127,9 +127,9 @@ class FirstbootWindow(Window):
     def on_btnClose_Clicked(self, button):
         self.destroy()
 
-    def on_delete_event(self, widget, data=None):
-        return self.confirm_exit()
-
+#    def on_delete_event(self, widget, data=None):
+#        return self.confirm_exit()
+#
     def confirm_exit(self):
 
         if self.fully_configured == True:
@@ -137,20 +137,20 @@ class FirstbootWindow(Window):
                 os.rename(__DESKTOP_FILE__, '/tmp/gecos-config-assistant.desktop')
             return False
 
-        dialog = Gtk.MessageDialog(self,
-            Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
-            Gtk.MessageType.INFO, Gtk.ButtonsType.YES_NO,
-            _("Are you sure you have fully configured this workstation?"))
-
-        result = dialog.run()
-        dialog.destroy()
-        retval = True
-
-        if result == Gtk.ResponseType.YES:
-            if os.path.exists(__DESKTOP_FILE__):
-                os.rename(__DESKTOP_FILE__, '/tmp/gecos-config-assistant.desktop')
-            retval = False
-
+#        dialog = Gtk.MessageDialog(self,
+#            Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+#            Gtk.MessageType.INFO, Gtk.ButtonsType.YES_NO,
+#            _("Are you sure you have fully configured this workstation?"))
+#
+#        result = dialog.run()
+#        dialog.destroy()
+#        retval = True
+#
+#        if result == Gtk.ResponseType.YES:
+#            if os.path.exists(__DESKTOP_FILE__):
+#                os.rename(__DESKTOP_FILE__, '/tmp/gecos-config-assistant.desktop')
+#            retval = False
+#
         return False
 
     def on_btnIndex_Clicked(self, button, page_name, module=None):
@@ -165,8 +165,8 @@ class FirstbootWindow(Window):
 
     def on_btnNext_Clicked(self, button):
         if self.is_last_page == True:
-            if not self.confirm_exit():
-                self.destroy()
+            #if not self.confirm_exit():
+            self.destroy()
             return
         self.current_page.next_page(self.set_current_page)
 
