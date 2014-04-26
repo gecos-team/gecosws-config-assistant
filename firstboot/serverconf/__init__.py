@@ -312,7 +312,8 @@ def apply_changes():
     if fp:
         fp.write(json.dumps(json_solo,indent=2))
         fp.close()
-    run_chef_solo(filepath)
+    print filepath
+    #run_chef_solo(filepath)
 
 def run_chef_solo(fp):
     try:
