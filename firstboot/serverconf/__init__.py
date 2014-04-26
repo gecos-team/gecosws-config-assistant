@@ -85,8 +85,10 @@ def validate_credentials(url):
             credentials.append([user, password])
         else:
             raise ServerConfException(_('Authentication is failed.'))
-    
-    return r.text
+    if hasattr(r,'text'):
+        return r.text
+    else:  
+        return r.content
 
 def json_is_cached():
     return os.path.exists(__JSON_CACHE__)
