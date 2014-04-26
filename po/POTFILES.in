@@ -15,7 +15,6 @@ firstboot/pages/pcLabel/__init__.py
 firstboot/pages/__init__.py
 firstboot/pages/installSoftware/__init__.py
 firstboot/pages/dateSync/__init__.py
-firstboot/pages/localUsers/SystemUsers.py
 firstboot/pages/localUsers/__init__.py
 firstboot/pages/localUsers/Dialogs.py
 firstboot/pages/linkToChef/LinkToChefResultsPage.py
