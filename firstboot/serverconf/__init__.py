@@ -130,12 +130,12 @@ def get_server_conf(content):
 
 def create_chef_pem(chef_conf):
     content = chef_conf.get_pem()
-    fp = os.fdopen(__CHEF_PEM__, "w+b")
+    fp = open(__CHEF_PEM__, "w+b")
     if fp:
         fp.write(content.decode('base64'))
         fp.close()
 
-    return filepath
+    return __CHEF_PEM__
 
 
 def create_conf_file(file_content):
