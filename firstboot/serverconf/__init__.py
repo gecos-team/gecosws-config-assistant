@@ -291,16 +291,19 @@ def apply_changes():
     for res in resources:
         if res == 'tz_date_res':
             if not server_conf.get_ntp_conf().validate():
-                messages.append(_("The Date/Time Syncronization parameters are incorrect"))
-        if res == 'chef_conf_res' or res == 'gcc_res':
-            if not server_conf.get_chef_conf().validate() or not server_conf.get_gcc_conf().validate():
-                messages.append(_("The GCC parameters are incorrect"))
-        if res == 'sssd_res':
+                messages.append(_("The Date/Time Syncronization parameters are incorrect, please got to Date/Time section or review your autconf file"))
+        if res == 'gcc_res':
+            if not server_conf.get_gcc_conf().validate():
+                messages.append(_("The GCC parameters are incorrect, please got to GCC section or review your autconf file"))
+        if res == 'chef_conf_res':
             if not server_conf.get_chef_conf().validate():
-                messages.append(_("The authentication parameters are incorrect"))
+                messages.append(_("The Chef parameters are incorrect, please got to GCC section or review your autconf file"))
+        if res == 'sssd_res':
+            if not server_conf.get_auth_conf().validate():
+                messages.append(_("The authentication parameters are incorrect, please go to Authentication section or review your autconf file"))
         if res == 'local_users_res':
             if not server_conf.get_users_conf().validate():
-                messages.append(_("The Local Users parameters are incorrect"))
+                messages.append(_("The Local Users parameters are incorrect, please go to Users section"))
     if len(messages) > 0:
         display_errors(_("Configuration Error"),messages)
         return 0    
