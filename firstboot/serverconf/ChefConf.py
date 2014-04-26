@@ -81,3 +81,12 @@ class ChefConf():
     def set_node_name(self, node_name):
         self._data['node_name'] = node_name
         return self
+
+    def get_admin_name(self):
+        if not 'chef_admin_name' in self._data:
+            self._data['chef_admin_name'] = ''
+        return self._data['chef_admin_name'].encode('utf-8')
+
+    def set_admin_name(self, admin_name):
+        self._data['chef_admin_name'] = admin_name
+        return self
