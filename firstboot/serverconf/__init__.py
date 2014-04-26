@@ -321,7 +321,7 @@ def run_chef_solo(fp):
         cmd = '"chef-solo" "-j" "%s"' % (fp)
         args = shlex.split(cmd)
         process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        exit_code = os.waitpid(process.pid, 0):
+        exit_code = os.waitpid(process.pid, 0)
         output = process.communicate()[0]
 
         if exit_code[1] != 0:
@@ -334,22 +334,53 @@ def run_chef_solo(fp):
 
 def unlink_from_sssd():
 #TODO implement unlink from ldap calling chef-solo
+    server_conf = get_server_conf(None)
     json_solo = {}
     json_solo['run_list'] = ["recipe[gecos_ws_mgmt::unlink_from_sssd]"]
     json_solo['gecos_ws_mgmt'] = {}
-    json_solo['gecos_ws_mgmt']['misc_mgmt'] = {}
+    json_solo['gecos_ws_mgmt']['network_mgmt'] = {}
     sssd_json = {}
     sssd_json['enabled'] = server_conf.get_auth_conf().get_auth_link()
-    json_solo['gecos_ws_mgmt']['misc_mgmt']['sssd_res'] = sssd_json
+    json_solo['gecos_ws_mgmt']['network_mgmt']['sssd_res'] = sssd_json
     return []
 
 
-def unlink_from_gcc():
+def unlink_from_gcc(password):
 #TODO Implement unlink from gcc server
+    server_conf = get_server_conf(None)
+    json_solo = {}
+    json_solo['run_list'] = ["recipe[gecos_ws_mgmt::unlink_from_gcc]"]
+    json_solo['gecos_ws_mgmt'] = {}
+    json_solo['gecos_ws_mgmt']['misc_mgmt'] = {}
+    gcc_conf = server_conf.get_gcc_conf()
+    gcc_json = {}
+    gcc_json = {'uri_gcc': gcc_conf.get_uri_gcc(), 'gcc_username' : gcc_conf.get_gcc_username(), 'gcc_pwd_user': password,'gcc_nodename': gcc_conf.get_gcc_nodename(),'gcc_link': gcc_conf.get_gcc_link(), 'gcc_selected_ou': 'without ou'}
+    json_solo['gecos_ws_mgmt']['misc_mgmt']['gcc_res'] = gcc_json
     return []
 
 def unlink_from_chef():
 #TODO Implement unlink from chef server
+    server_conf = get_server_conf(None)
+    json_solo = {}
+    json_solo['run_list'] = ["recipe[gecos_ws_mgmt::unlink_from_chef]"]
+    json_solo['gecos_ws_mgmt'] = {}
+    json_solo['gecos_ws_mgmt']['misc_mgmt'] = {}
+    chef_url = server_conf.get_chef_conf().get_url()
+    chef_node_name = server_conf.get_chef_conf().get_node_name()
+    chef_admin_name = server_conf.get_chef_conf().get_admin_name()
+    if chef_admin_name == "":
+        chef_admin_name = server_conf.get_gcc_conf().get_gcc_username()
+    chef_link = server_conf.get_chef_conf().get_chef_link()
+    chef_json = {}
+    chef_json = {'chef_server_url':chef_url, 'chef_node_name': chef_node_name, 'chef_validation_pem': __CHEF_PEM__, 'chef_link': chef_link, 'chef_admin_name': chef_admin_name}
+    chef_json['chef_link'] = server_conf.get_chef_conf().get_chef_link()
+    json_solo['gecos_ws_mgmt']['misc_mgmt']['chef_conf_res'] = chef_json
+    (fd, filepath) = tempfile.mkstemp(dir='/tmp')
+    fp = os.fdopen(fd, "w+b")
+    if fp:
+        fp.write(json.dumps(json_solo,indent=2))
+        fp.close()
+#    run_chef_solo(filepath)
     return []
 #    try:
 #
