@@ -111,7 +111,7 @@ class AutoConfigPage(PageWindow.PageWindow):
                try:
                    json = serverconf.get_json_autoconf(url)
 #                   content = serverconf.get_json_content()
-                   self.serverconf = serverconf.get_server_conf(None)
+                   self.serverconf = serverconf.get_server_conf(json)
 
                except Exception as e:
                     self.set_status(1, str(e))
