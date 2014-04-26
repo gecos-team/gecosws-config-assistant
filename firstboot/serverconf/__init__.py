@@ -505,6 +505,35 @@ def display_errors(title, messages):
     dialog.destroy()
     return result 
 
+def get_passwd_gcc(username):
+    dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,
+                                   Gtk.ButtonsType.OK_CANCEL)
+    dialog.set_title(_('GCC Password'))
+    dialog.set_position(Gtk.WindowPosition.CENTER)
+    dialog.set_default_response(Gtk.ResponseType.OK)
+    dialog.set_icon_name('dialog-password')
+    dialog.set_markup(_('Please insert GCC password for user ') + username )
+    hboxpwd = Gtk.HBox()
+    lblpwd = Gtk.Label(_('password'))
+    lblpwd.set_visible(True)
+    hboxpwd.pack_start(lblpwd, False, False, False)
+    pwd = Gtk.Entry()
+    pwd.set_activates_default(True)
+    pwd.set_visibility(False)
+    pwd.show()
+    hboxpwd.pack_end(pwd, False, False, False)
+    hboxpwd.show()
+    dialog.get_message_area().pack_start(hboxpwd, False, False, False)
+    result = dialog.run()
+
+    retval = None
+    if result == Gtk.ResponseType.OK:
+        retval = pwd.get_text()
+
+    dialog.destroy()
+    return retval
+    
+
 def auth_dialog(title, text):
     dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,
                                    Gtk.ButtonsType.OK_CANCEL)
