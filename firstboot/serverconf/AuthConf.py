@@ -52,7 +52,12 @@ class AuthConf():
 
     def validate(self):
         valid = validation.is_auth_type(self._data['auth_type']) 
-        return valid
+        valid_prop = False
+        if conf['auth_type'].lower() == 'ldap':
+            valid_prop = self._ldap_conf.valdiate()
+        else:
+            valid_prop = self._ad_conf.valdiate()
+        return valid and valid_prop
 
     def get_auth_type(self):
         return self._data['auth_type'].encode('utf-8')
