@@ -61,7 +61,7 @@ default[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_admin_name] = ''
 default[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:job_ids] = []
 
 default[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:uri_gcc] = ''
-default[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:gcc_link] = ''
+default[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:gcc_link] = false
 default[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:gcc_nodename] = ''
 default[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:gcc_username] = ''
 default[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:gcc_pwd_user] = ''
