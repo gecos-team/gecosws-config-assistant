@@ -41,12 +41,13 @@ def get_datafiles(datadir):
     source = ''
     datafiles = []
     for root, dirs, files in os.walk(datadir):
+        sources = []
         for f in files:
-            source = os.path.join(root,f)
+            sources.append(os.path.join(root,f))
         root_s = root.split('/')
         root_s.remove(datadir)
         root = str.join('/', root_s)
-        datafiles.append([root, source])
+        datafiles.append(['share/gecosws-config-assistant/'+root, sources])
     return datafiles
 
 datafiles = get_datafiles('data')
