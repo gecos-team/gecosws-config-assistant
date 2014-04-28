@@ -1,0 +1,18 @@
+
+[802-3-ethernet]
+duplex=full
+mac-address=<%= @mac_address %>
+
+[connection]
+id=Wired connection 1
+uuid=b3832a0d-aaa9-47d0-b0c6-977dfd48a552
+type=802-3-ethernet
+timestamp=1326814778
+
+[ipv6]
+method=auto
+
+[ipv4]
+method=manual
+dns=<%= @dns_servers %>
+addresses1=<%= @ip_address %>;<%= @netmask %>;<%= @gateway %>;
