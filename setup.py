@@ -75,7 +75,7 @@ def update_config(values={}):
     return oldvalues
 
 
-def update_solo_rb(datadir):
+def create_solo_rb(datadir):
     try:
         fout = file('data\solo.rb', 'w')
         line = "cookbook_path \"" + datadir + "cookbooks/\""
