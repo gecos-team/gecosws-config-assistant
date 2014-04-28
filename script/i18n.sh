@@ -1,7 +1,7 @@
 #!/bin/bash
 
 lang=$1
-appname="gecos-config-assistant"
+appname="gecosws-config-assistant"
 
 if [ "" == "$lang" ] 
 then
