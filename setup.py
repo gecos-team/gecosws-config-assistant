@@ -62,6 +62,17 @@ def update_config(values={}):
     return oldvalues
 
 
+def create_solo_rb(datadir):
+    try:
+        fout = file('/etc/chef/solo.rb', 'w')
+        line = "cookbook_path \"" + datadir + "cookbooks/\""
+        fout.write(line)
+        fout.close()
+    except (OSError, IOError), e:
+        print ("ERROR: Can't create /etc/chef/solo.rb file")
+        sys.exit(1)
+
+
 def update_desktop_file(datadir):
 
     try:
@@ -93,6 +104,7 @@ class InstallAndUpdateDataDirectory(DistUtilsExtra.auto.install_auto):
                   '__firstboot_prefix__': "'%s'" % self.prefix}
         previous_values = update_config(values)
         update_desktop_file(self.prefix + '/share/gecosws-config-assistant/')
+        create_solo_rb(self.prefix + '/share/gecosws-config-assistant/')
         DistUtilsExtra.auto.install_auto.run(self)
         update_config(previous_values)
 
