@@ -118,14 +118,14 @@ class Clean(Command):
 ##################################################################################
 
 DistUtilsExtra.auto.setup(
-    name='firstboot',
-    version='0.3.3',
+    name='gecos-config-assistant',
+    version='0.0.1',
     license='GPL-2',
-    author='Antonio Hernández',
-    author_email='ahernandez@emergya.com',
+    author='David Amian',
+    author_email='damian@emergya.com',
     description='First start assistant for helping to connect a GECOS \
 workstation to different services',
-    url='https://github.com/ahdiaz/gecos-firstboot',
+    url='https://github.com/gecos-team/gecosws-config-assistant',
 
     keywords=['python', 'gnome', 'guadalinex', 'gecos'],
 
