@@ -36,7 +36,7 @@ __all__ = [
 # files). By default, this is ../data, relative your trunk layout
 __firstboot_data_directory__ = '../data/'
 __license__ = ''
-__version__ = '0.3.1'
+__version__ = '0.0.1'
 __firstboot_prefix__ = '/usr/local'
 
 import os
@@ -44,7 +44,7 @@ import sys
 
 import gettext
 from gettext import gettext as _
-gettext.textdomain('firstboot')
+gettext.textdomain('gecosws-config-assistant')
 
 class project_path_not_found(Exception):
     """Raised when we can't find the project directory."""

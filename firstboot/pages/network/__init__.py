@@ -27,7 +27,7 @@ from firstboot_lib import PageWindow
 
 import gettext
 from gettext import gettext as _
-gettext.textdomain('firstboot')
+gettext.textdomain('gecosws-config-assistant')
 
 import firstboot.pages
 from interface import localifs, internet_on

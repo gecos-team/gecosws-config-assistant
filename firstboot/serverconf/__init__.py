@@ -38,8 +38,9 @@ from firstboot_lib import firstbootconfig
 from ServerConf import ServerConf
 from gi.repository import Gtk
 import gettext
+from firstboot_lib.firstbootconfig import get_prefix
 from gettext import gettext as _
-gettext.textdomain('firstboot')
+gettext.textdomain('gecosws-config-assistant')
 
 
 __URLOPEN_TIMEOUT__ = 15

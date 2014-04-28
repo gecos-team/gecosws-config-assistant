@@ -23,7 +23,7 @@ __license__ = "GPL-2"
 
 import gettext
 from gettext import gettext as _
-gettext.textdomain('firstboot')
+gettext.textdomain('gecosws-config-assistant')
 
 import math
 import shlex
@@ -36,7 +36,7 @@ from gi.repository import Gio
 from gi.repository import GdkPixbuf
 from gi.repository import GObject
 import logging
-logger = logging.getLogger('firstboot')
+logger = logging.getLogger('gecosws-config-assistant')
 
 from firstboot import serverconf
 from firstboot_lib import Window, firstbootconfig, FirstbootEntry

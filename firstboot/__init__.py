@@ -27,7 +27,7 @@ import optparse
 
 import gettext
 from gettext import gettext as _
-gettext.textdomain('firstboot')
+gettext.textdomain('gecosws-config-assistant')
 
 from firstboot import FirstbootWindow
 from firstboot_lib import set_up_logging, get_version, FirstbootEntry
