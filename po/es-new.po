@@ -52,25 +52,25 @@ msgid ""
 "You can skip this step if this workstation will be managed from your GECOS "
 "server."
 msgstr ""
-"Instala paquetes de software desde un respositorio seguro.\n"
+"Instala paquetes de software desde un repositorio seguro.\n"
 "\n"
 "Puede saltarse este paso si el puesto de trabajo va a ser controlado desde "
 "su servidor GECOS."
 
 #: ../firstboot/pages/network/__init__.py:37
 msgid "Configure the network"
-msgstr ""
+msgstr "Configurar la red"
 
 #: ../firstboot/pages/network/__init__.py:54
 msgid "Configure a network interface"
-msgstr "Configurar la red"
+msgstr "Configurar una interfaz de red"
 
 #: ../firstboot/pages/network/__init__.py:55
 msgid ""
 "This workstation needs a network connection in order to autenticate users, "
 "link to GECOS Control Center, and software installation."
 msgstr ""
-"Este puesto de trabajo necesita una conexión de red para autenticarse los "
+"Este puesto de trabajo necesita una conexión de red para autenticar los "
 "usuarios, enlazar con el servidor GECOS e instalar software."
 
 #: ../firstboot/pages/network/__init__.py:57
@@ -94,13 +94,12 @@ msgid ""
 "Parameters can be filled automatically if an autoconfiguration file is "
 "available in your GECOS Control Center"
 msgstr ""
-"Los parámetros pueden ser rellenados automáticamente si dispones de un "
-"fichero de autoconfiguración en tu servidor de GECOS"
+"Los parámetros pueden ser rellenados automáticamente si dispone de un "
+"fichero de autoconfiguración en el servidor de GECOS"
 
 #: ../firstboot/pages/autoConfig/__init__.py:80
 msgid "Download a new file with default configuration parameters."
-msgstr ""
-"Descargar un nuevo fichero con la configuración por defecto de los parámetros"
+msgstr "Descargar un nuevo fichero con los parámetros de configuración por defecto."
 
 #: ../firstboot/pages/autoConfig/__init__.py:81
 msgid "Control Center URL"
@@ -112,150 +111,154 @@ msgstr "URL del Centro de Control"
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:204
 #: ../firstboot/pages/linkToChef/__init__.py:105
 msgid "The configuration was updated successfully."
-msgstr ""
+msgstr "La configuración fue actualizada satisfactoriamente."
 
 #: ../firstboot/pages/linkToServer/LinkToServerResultsPage.py:72
 #: ../firstboot/pages/linkToChef/LinkToChefResultsPage.py:74
 msgid "There are some errors you must fix."
-msgstr ""
+msgstr "Hay algunos errores que debe corregir."
 
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:100
 msgid ""
 "These parameters are required in order to join an authentication server:"
-msgstr ""
+msgstr "Estos parámetros son necesarios para unirse a un servidor de autenticación:"
 
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:104
 msgid "Version"
-msgstr ""
+msgstr "Versión"
 
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:105
 msgid "Organization"
-msgstr ""
+msgstr "Organización"
 
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:106
 msgid "Notes"
-msgstr ""
+msgstr "Notas"
 
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:108
 msgid "Base DN for users"
-msgstr ""
+msgstr "DN base para usuarios"
 
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:109
 msgid "Base DN for groups"
-msgstr ""
+msgstr "DN base para grupos"
 
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:111
 #: ../firstboot/pages/localUsers/__init__.py:93
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:76
 msgid "Password"
-msgstr ""
+msgstr "Contraseña"
 
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:113
 msgid "Workgroup"
-msgstr ""
+msgstr "Grupo de trabajo"
 
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:114
 msgid "Change specific configuration from server?"
-msgstr ""
+msgstr "¿Cambiar configuración específica desde el servidor?"
 
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:135
 #: ../firstboot/serverconf/__init__.py:78
 msgid "Authentication Required"
-msgstr ""
+msgstr "Autenticación requerida"
 
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:136
 msgid "Please, provide administration credentials for the Active Directory."
-msgstr ""
+msgstr "Por favor, indique credenciales de administración para el Active Directory."
 
 #: ../firstboot/pages/linkToServer/__init__.py:40
 msgid "Select authentication method"
-msgstr ""
+msgstr "Seleccionar método de autenticación"
 
 #: ../firstboot/pages/linkToServer/__init__.py:85
 msgid ""
 "Users in this workstation can be authenticated against a external system.\n"
 "\n"
 msgstr ""
+"Los usuarios de este puesto de trabajo pueden ser autenticados contra un sistema externo.\n"
+"\n"
 
 #: ../firstboot/pages/linkToServer/__init__.py:88
 msgid "This workstation currently uses a LDAP server for user authentication."
-msgstr ""
+msgstr "Este puesto de trabajo usa actualmente un servidor LDAP para autenticación de usuarios."
 
 #: ../firstboot/pages/linkToServer/__init__.py:90
 msgid ""
 "This workstation currently uses an Active Directory server for user "
 "authentication."
 msgstr ""
+"Este puesto de trabajo usa actualmente un servidor Active Directory "
+"para autenticación de usuarios."
 
 #: ../firstboot/pages/linkToServer/__init__.py:92
 msgid "No authentication system is currently configured."
-msgstr ""
+msgstr "Ningún sistema de autenticación está configurado actualmente."
 
 #: ../firstboot/pages/linkToServer/__init__.py:94
 msgid "Select the authentication method you would like to use:"
-msgstr ""
+msgstr "Seleccione el método de autenticación que desee usar:"
 
 #: ../firstboot/pages/linkToServer/__init__.py:99
 msgid "Unlink from LDAP"
-msgstr ""
+msgstr "Desvincular de LDAP"
 
 #: ../firstboot/pages/linkToServer/__init__.py:100
 msgid "Unlink from Active Directory"
-msgstr ""
+msgstr "Desvincular de Active Directory"
 
 #: ../firstboot/pages/linkToServer/__init__.py:101
 msgid "LDAP"
-msgstr ""
+msgstr "LDAP"
 
 #: ../firstboot/pages/linkToServer/__init__.py:102
 msgid "Active Directory"
-msgstr ""
+msgstr "Active Directory"
 
 #: ../firstboot/pages/linkToServer/__init__.py:103
 msgid "None"
-msgstr ""
+msgstr "Ninguno"
 
 #: ../firstboot/pages/linkToServer/__init__.py:133
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:198
 #: ../firstboot/pages/linkToChef/__init__.py:99
 msgid "The configuration file is valid."
-msgstr ""
+msgstr "El fichero de configuración es válido."
 
 #: ../firstboot/pages/linkToServer/__init__.py:151
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:216
 #: ../firstboot/pages/linkToChef/__init__.py:117
 msgid "Trying to connect..."
-msgstr ""
+msgstr "Intentando conectar..."
 
 #: ../firstboot/pages/localUsers/Dialogs.py:34
 msgid "New user"
-msgstr ""
+msgstr "Nuevo usuario"
 
 #: ../firstboot/pages/localUsers/Dialogs.py:38
 msgid "Type the new user information:"
-msgstr ""
+msgstr "Escriba la información sobre el nuevo usuario:"
 
 #: ../firstboot/pages/localUsers/Dialogs.py:41
 msgid "name"
-msgstr ""
+msgstr "nombre"
 
 #: ../firstboot/pages/localUsers/Dialogs.py:51
 msgid "login"
-msgstr ""
+msgstr "login"
 
 #: ../firstboot/pages/localUsers/Dialogs.py:61
 #: ../firstboot/serverconf/__init__.py:517
 #: ../firstboot/serverconf/__init__.py:557
 msgid "password"
-msgstr ""
+msgstr "contraseña"
 
 #: ../firstboot/pages/localUsers/Dialogs.py:72
 msgid "confirm"
-msgstr ""
+msgstr "confirmar"
 
 #: ../firstboot/pages/localUsers/Dialogs.py:105
 msgid "Remove user"
-msgstr ""
+msgstr "Eliminar usuario"
 
 #: ../firstboot/pages/localUsers/Dialogs.py:109
 #, python-format
