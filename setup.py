@@ -75,14 +75,14 @@ def update_config(values={}):
     return oldvalues
 
 
-def create_solo_rb(datadir):
+def update_solo_rb(datadir):
     try:
-        fout = file(datadir + 'solo.rb', 'w')
+        fout = file('data\solo.rb', 'w')
         line = "cookbook_path \"" + datadir + "cookbooks/\""
         fout.write(line)
         fout.close()
     except (OSError, IOError), e:
-        print ("ERROR: Can't create " + datadir + "solo.rb file")
+        print ("ERROR: Can't create data/solo.rb file")
         sys.exit(1)
 
 
