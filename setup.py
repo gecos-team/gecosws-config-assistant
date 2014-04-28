@@ -37,6 +37,19 @@ except ImportError:
     sys.exit(1)
 assert DistUtilsExtra.auto.__version__ >= '2.18', 'needs DistUtilsExtra.auto >= 2.18'
 
+def get_datafiles(datadir):
+    source = ''
+    datafiles = []
+    for root, dirs, files in os.walk(datadir):
+        for f in files:
+            source = os.path.join(root,f)
+        root_s = root.split('/')
+        root_s.remove(datadir)
+        root = root_s.join('/')
+        datafiles.append([root, source])
+    return datafiles
+
+datafiles = get_datafiles('data')
 
 def update_config(values={}):
 
@@ -178,13 +191,13 @@ workstation to different services',
         'bin/firstboot-chefconf.sh',
         'bin/firstboot-adconf.sh'
     ],
-
-    data_files=[
-       ('share/gecosws-config-assistant/media', glob.glob('data/media/*')),
-       ('share/gecosws-config-assistant/cookbooks', glob.glob('data/cookbooks/*')),
-       ('share/gecosws-config-assistant/ui', glob.glob('data/ui/*')),
-       #('/etc/xdg/autostart/', glob.glob('data/gecos-config-assistant.desktop')),
-    ],
+    data_files = datafiles,
+  #  data_files=[
+  #     ('share/gecosws-config-assistant/media', glob.glob('data/media/*')),
+  #     ('share/gecosws-config-assistant/cookbooks', glob.glob('data/cookbooks/*')),
+  #     ('share/gecosws-config-assistant/ui', glob.glob('data/ui/*')),
+  #     #('/etc/xdg/autostart/', glob.glob('data/gecos-config-assistant.desktop')),
+  #  ],
 
     cmdclass={
         'install': InstallAndUpdateDataDirectory,
