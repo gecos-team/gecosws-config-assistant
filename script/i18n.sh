@@ -1,9 +1,10 @@
 #!/bin/bash
 
 lang=$1
-appname="firstboot"
+appname="gecos-config-assistant"
 
-if [ "" == "$lang" ]; then
+if [ "" == "$lang" ] 
+then
     lang="es"
 fi
 
