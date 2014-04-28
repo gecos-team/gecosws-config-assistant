@@ -77,6 +77,8 @@ def update_config(values={}):
 
 def create_solo_rb(datadir):
     try:
+        if not os.path.exists('/etc/chef'):
+            os.makedirs('/etc/chef')
         fout = file('/etc/chef/solo.rb', 'w')
         line = "cookbook_path \"" + datadir + "cookbooks/\""
         fout.write(line)
