@@ -45,7 +45,7 @@ def get_datafiles(datadir):
             source = os.path.join(root,f)
         root_s = root.split('/')
         root_s.remove(datadir)
-        root = root_s.join('/')
+        root = str.join('/', root_s)
         datafiles.append([root, source])
     return datafiles
 
