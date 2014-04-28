@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.3.2-0gecos1) precise; urgency=low
+
+  * Added icon to desktop file
+
+ -- David Amian <damian@emergya.com>  Mon, 28 Apr 2014 23:26:42 +0200
+
 gecosws-config-assistant (0.3.1-0gecos1) precise; urgency=low
 
   * Added desktop file to datafiles
