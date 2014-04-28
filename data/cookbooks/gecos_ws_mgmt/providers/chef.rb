@@ -1,0 +1,107 @@
+#
+# Cookbook Name:: gecos_ws_mgmt
+# Recipe:: chef
+#
+# Copyright 2013, Limelight Networks, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+action :setup do
+  begin
+    package 'chef' do
+      action :install
+    end
+    if new_resource.chef_link
+      if not new_resource.chef_server_url.nil?
+        Chef::Log.info("Chef: Configurndo Chef")
+        template '/etc/chef/client.rb' do
+          source 'client.rb.erb'
+          owner 'root'
+          group 'root'
+          mode 00644
+          variables({
+            :chef_url => new_resource.chef_server_url,
+            :chef_admin_name => new_resource.chef_admin_name,
+            :chef_node_name => new_resource.chef_node_name
+          })
+        end
+        remote_file "Copy validation.pem" do
+          path "/etc/chef/validation.pem"
+          source "file://" + new_resource.chef_validation_pem
+          owner 'root'
+          group 'root'
+          mode 00644
+        end      
+        Chef::Log.info("Chef: Enlazando al servidor Chef")
+        execute 'chef-client' do
+          command 'chef-client'
+          action :run
+        end
+     
+#        Chef::Log.info("Activando servicio gecos-chef-client")
+#        service 'gecos-chef-client' do
+#          supports :status => true, :restart => true, :reload => true
+#          action [:enable, :start]
+#        end
+        Chef::Log.info("Chef: Creando fichero de control")
+        template "/etc/chef.control" do
+          source 'chef.control.erb'
+          owner "root"
+          group "root"
+          mode 00755
+          variables({
+            :chef_url => new_resource.chef_server_url,
+            :chef_admin_name => new_resource.chef_admin_name,
+            :chef_node_name => new_resource.chef_node_name
+          })
+        end 
+        Chef::Log.info("Chef: Enliminando validation.pem")
+        file "/etc/chef/validation.pem" do
+          action :delete
+        end
+      end 
+    else
+      Chef::Log.info("Chef: Configurndo Chef")
+      template '/etc/chef/client.rb' do
+        source 'client.rb.erb'   
+        owner 'root'   
+        group 'root'   
+        mode 00644
+        variables({
+          :chef_url => "CHEF_URL",
+          :chef_admin_name => "ADMIN_NAME",
+          :chef_node_name => "NODE_NAME"
+        })
+      end
+#      Chef::Log.info("Desactivando servicio gecos-chef-client")
+#      service 'gecos-chef-client' do
+#        supports :status => true, :restart => true, :reload => true
+#        action [:disable, :stop]
+#      end
+      Chef::Log.info("Chef: Elminando fichero de control")
+      file "/etc/chef.control" do
+        action :delete
+      end
+      Chef::Log.info("Chef: Eliminando client.pem")
+      file "/etc/chef/client.pem" do
+        action :delete
+      end
+      #TODO: Remove node and client from chef      
+    end
+  rescue
+    raise
+  end
+end
+
+

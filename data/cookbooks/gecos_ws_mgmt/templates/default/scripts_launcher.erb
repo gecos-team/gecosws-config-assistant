@@ -1,0 +1,41 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          script_launch
+# Required-Start:    $local_fs $syslog
+# Required-Stop:     $local_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: starts the scripts launcher
+# Description:       starts scripts and commands on startup or shutdown
+### END INIT INFO
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DESC=scripts_launcher
+
+set -e
+
+. /lib/lsb/init-functions
+
+case "$1" in
+	start)
+		echo -n "Launching $DESC on startup: "
+    <% @startup.each do |cmd| %>
+      <%= cmd %>;
+    <% end %>
+		;;
+
+	stop)
+		echo -n "Launching $DESC on shutdown: "
+    <% @shutdown.each do |cmd| %>
+      <%= cmd %>;
+    <% end %>
+		;;
+
+	*)
+		echo "Usage: $NAME {start|stop}" >&2
+		exit 1
+		;;
+esac
+
+exit 0
