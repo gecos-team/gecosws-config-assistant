@@ -194,7 +194,7 @@ def ad_is_configured():
 
 def create_solo_json(server_conf):
     json_solo = {}
-    json_solo['run_list'] = ["recipe[chef-client::upstart_service], recipe[gecos_ws_mgmt::local]"]
+    json_solo['run_list'] = ["recipe[ohai-gecos::default], recipe[chef-client::upstart_service], recipe[gecos_ws_mgmt::local]"]
     json_solo['gecos_ws_mgmt'] = {}
     json_solo['gecos_ws_mgmt']['misc_mgmt'] = {}
     json_solo['gecos_ws_mgmt']['network_mgmt'] = {}
@@ -314,7 +314,7 @@ def apply_changes():
         fp.write(json.dumps(json_solo,indent=2))
         fp.close()
     print filepath
-    #run_chef_solo(filepath)
+    run_chef_solo(filepath)
 
 def run_chef_solo(fp):
     try:

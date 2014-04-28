@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.2-1gecos1) precise; urgency=low
+
+  * Run chef-solo
+
+ -- David Amian  <damian@emergya.com>  Mon, 28 Apr 2014 21:07:22 +0200
+
 gecosws-config-assistant (0.2-0gecos1) precise; urgency=low
 
   * First functional release
