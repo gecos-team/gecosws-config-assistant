@@ -54,7 +54,7 @@ default[:gecos_ws_mgmt][:misc_mgmt][:local_admin_users_res][:local_admin_list] =
 default[:gecos_ws_mgmt][:misc_mgmt][:local_admin_users_res][:job_ids] = []
 
 default[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_server_url] = ''
-default[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_link] = ''
+default[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_link] = false
 default[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_validation_pem] = ''
 default[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_node_name] = ''
 default[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_admin_name] = ''

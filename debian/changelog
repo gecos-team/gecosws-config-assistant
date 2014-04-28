@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.2-2gecos1) precise; urgency=low
+
+  * fix default attributes 
+
+ -- David Amian <damian@emergya.com>  Mon, 28 Apr 2014 21:26:59 +0200
+
 gecosws-config-assistant (0.2-1gecos1) precise; urgency=low
 
   * Run chef-solo
