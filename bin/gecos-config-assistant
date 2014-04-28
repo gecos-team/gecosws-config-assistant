@@ -41,7 +41,7 @@ if os.path.abspath(__file__).startswith('/opt'):
         opt_path = path.replace('/usr', '/opt/extras.ubuntu.com/firstboot')
         python_path.insert(0, opt_path)
         sys.path.insert(0, opt_path)
-if (os.path.exists(os.path.join(PROJECT_ROOT_DIRECTORY, 'firstboot'))
+if (os.path.exists(os.path.join(PROJECT_ROOT_DIRECTORY, 'gecosws-config-assistant'))
     and PROJECT_ROOT_DIRECTORY not in sys.path):
     python_path.insert(0, PROJECT_ROOT_DIRECTORY)
     sys.path.insert(0, PROJECT_ROOT_DIRECTORY)
@@ -52,9 +52,9 @@ import firstboot
 from firstboot_lib.firstbootconfig import get_prefix
 
 if get_prefix() == '/usr/local':
-    gettext.bindtextdomain('firstboot', '/usr/local/share/locale')
+    gettext.bindtextdomain('gecosws-config-assistant', '/usr/local/share/locale')
 elif get_prefix() == '/usr':
-    gettext.textdomain('firstboot')
+    gettext.textdomain('gecosws-config-assistant')
 
 #def fix_psmouse():
 #    ''' There's a bug with the module psmouse, the trackpad stop working.
