@@ -76,16 +76,14 @@ def update_config(values={}):
 
 
 def create_solo_rb(datadir):
-    #try:
-    if not os.path.exists('/etc/chef'):
-        os.makedirs('/etc/chef')
-    fout = file('/etc/chef/solo.rb', 'w')
-    line = "cookbook_path \"" + datadir + "cookbooks/\""
-    fout.write(line)
-    fout.close()
-    #except (OSError, IOError), e:
-    #    print ("ERROR: Can't create /etc/chef/solo.rb file")
-    #    sys.exit(1)
+    try:
+        fout = file(datadir + 'solo.rb', 'w')
+        line = "cookbook_path \"" + datadir + "cookbooks/\""
+        fout.write(line)
+        fout.close()
+    except (OSError, IOError), e:
+        print ("ERROR: Can't create " + datadir + "solo.rb file")
+        sys.exit(1)
 
 
 def update_desktop_file(datadir):
