@@ -51,7 +51,7 @@ def get_datafiles(datadir):
     return datafiles
 
 datafiles = get_datafiles('data')
-datafiles.append(('share/applications/', glob.glob('data/gecos-config-assistant.desktop'))
+datafiles.append(('share/applications/', glob.glob('data/gecos-config-assistant.desktop')))
 
 def update_config(values={}):
 
