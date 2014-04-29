@@ -17,11 +17,10 @@
 # limitations under the License.
 #
 require 'json'
-require 'rest_client'
 
 action :setup do
   begin
-    gem_depends = [ 'rest_client' , 'json' ]
+    gem_depends = [ 'rest_client' ]
 
     gem_depends.each do |gem|
 
@@ -32,12 +31,12 @@ action :setup do
 
     end
     Gem.clear_paths
-    require 'json'
     require 'rest_client'
     if new_resource.gcc_link
       if not new_resource.uri_gcc.nil? and not new_resource.gcc_nodename.nil? and not new_resource.gcc_username.nil? and not new_resource.gcc_pwd_user.nil? and not new_resource.gcc_selected_ou.nil?
         Chef::Log.info("GCC: Configurndo GECOS Control Center")
-        response = RestClient.post new_resource.uri_gcc + '/register/computer/', {'node_id' => new_resource.gcc_nodename,'ou_name'=>new_resource.gcc_selected_ou}.to_json, :user => new_resource.gcc_username, :password => new_resource.gcc_pwd_user, :content_type => :json, :accept => :json
+        resource = RestClient::Resource.new(new_resource.uri_gcc + '/register/computer/', :user => new_resource.gcc_username, :password => new_resource.gcc_pwd_user)
+        response = resource.post :node_id => new_resource.gcc_nodename,:ou_name=>new_resource.gcc_selected_ou, :content_type => :json, :accept => :json
         if not response.code.between?(200,299)
           raise 'The GCC URI not response'  
         end
