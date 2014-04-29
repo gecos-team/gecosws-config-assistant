@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.3.5-0gecos1) precise; urgency=low
+
+  * Create /etc/chef if not exists 
+
+ -- David Amian <damian@emergya.com>  Tue, 29 Apr 2014 19:17:44 +0200
+
 gecosws-config-assistant (0.3.4-0gecos1) precise; urgency=low
 
   * Fix next page into pclabel 
