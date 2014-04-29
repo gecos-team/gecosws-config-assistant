@@ -1,0 +1,6 @@
+{
+  "run_list": [
+    "recipe[ohai-gecos]",
+    "recipe[gecos_ws_mgmt]"
+  ]
+}
