@@ -98,4 +98,4 @@ class PCLabelPage(PageWindow.PageWindow):
         load_page_callback(firstboot.pages.dateSync)
 
     def next_page(self, load_page_callback):
-        load_page_callback(firstboot.pages.linkToServer)
+        load_page_callback(firstboot.pages.linkToChef)

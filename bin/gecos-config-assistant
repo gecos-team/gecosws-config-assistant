@@ -47,7 +47,6 @@ if (os.path.exists(os.path.join(PROJECT_ROOT_DIRECTORY, 'gecosws-config-assistan
     sys.path.insert(0, PROJECT_ROOT_DIRECTORY)
 if python_path:
     os.putenv('PYTHONPATH', "%s:%s" % (os.getenv('PYTHONPATH', ''), ':'.join(python_path))) # for subprocesses
-
 import firstboot
 from firstboot_lib.firstbootconfig import get_prefix
 
