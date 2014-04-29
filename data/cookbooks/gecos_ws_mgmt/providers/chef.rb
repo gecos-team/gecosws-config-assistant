@@ -45,7 +45,7 @@ action :setup do
         end      
         Chef::Log.info("Chef: Enlazando al servidor Chef")
         execute 'chef-client' do
-          command 'chef-client'
+          command 'chef-client -j /usr/share/gecosws-config-assistant/base.json'
           action :run
         end
      
