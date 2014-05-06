@@ -362,6 +362,12 @@ def unlink_from_gcc(password):
     gcc_json = {}
     gcc_json = {'uri_gcc': gcc_conf.get_uri_gcc(), 'gcc_username' : gcc_conf.get_gcc_username(), 'gcc_pwd_user': password,'gcc_nodename': gcc_conf.get_gcc_nodename(),'gcc_link': gcc_conf.get_gcc_link(), 'gcc_selected_ou': 'without ou'}
     json_solo['gecos_ws_mgmt']['misc_mgmt']['gcc_res'] = gcc_json
+    (fd, filepath) = tempfile.mkstemp(dir='/tmp')
+    fp = os.fdopen(fd, "w+b")
+    if fp:
+        fp.write(json.dumps(json_solo,indent=2))
+        fp.close()
+    run_chef_solo(filepath)
     return []
 
 def unlink_from_chef():
