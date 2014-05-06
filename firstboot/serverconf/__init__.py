@@ -386,8 +386,7 @@ def unlink_from_chef():
     if fp:
         fp.write(json.dumps(json_solo,indent=2))
         fp.close()
-    print filepath
-#    run_chef_solo(filepath)
+    run_chef_solo(filepath)
     return []
 #    try:
 #
