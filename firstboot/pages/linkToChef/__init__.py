@@ -136,34 +136,30 @@ easily managed remotely.\n\n')
             elif self.ui.chkUnlinkChef.get_active():
                 server_conf = serverconf.get_server_conf(None)
                 ## TODO Implement unlink GCC an Chef into serverconf Class
-                if not serverconf.json_is_cached():
-                    gcc_flag = open(__GCC_FLAG__, 'r')
-                    content = gcc_flag.read()
-                    gcc_flag.close()
-                    gcc_flag_json = json.loads(content)
-                    server_conf.get_gcc_conf().set_gcc_username(gcc_flag_json['gcc_username'])
-                    server_conf.get_gcc_conf().set_uri_gcc(gcc_flag_json['uri_gcc'])
-                    server_conf.get_gcc_conf().set_gcc_nodename(gcc_flag_json['gcc_nodename'])
-                    result = serverconf.url_chef(_('Url Chef Certificate Required'), _('You need to enter url with certificate file\n in protocol://domain/resource format'))
-                    res = requests.get(result)
-                    if not res.ok:
-                        raise Exception(_("Can not download pem file"))
-                    if hasattr(res,'text'):
-                        pem = res.text
-                    else:
-                        pem = res.content
-#                    serverconf.create_chef_pem(pem.encode('base64'))
-                    chef_flag = open(__CHEF_FLAG__, 'r')
-                    content = chef_flag.read()
-                    chef_flag.close()
-                    chef_flag_json = json.loads(content)
-                    serverconf.url_chef
-                    server_conf.get_chef_conf().set_url(chef_flag_json['chef_server_url'])
-                    server_conf.get_chef_conf().set_node_name(chef_flag_json['chef_node_name'])
-                    server_conf.get_chef_conf().set_admin_name(chef_flag_json['chef_admin_name'])
-                password = serverconf.get_passwd_gcc(server_conf.get_gcc_conf().get_gcc_username())
+                gcc_flag = open(__GCC_FLAG__, 'r')
+                content = gcc_flag.read()
+                gcc_flag.close()
+                gcc_flag_json = json.loads(content)
+                server_conf.get_gcc_conf().set_uri_gcc(gcc_flag_json['uri_gcc'])
+                server_conf.get_gcc_conf().set_gcc_nodename(gcc_flag_json['gcc_nodename'])
+                
+                json_server = serverconf.validate_credentials(gcc_flag_json['uri_gcc'])
+                json_server = json.loads(json_server)
+                pem = json_server['chef']['chef_validation']
+                server_conf.get_gcc_conf().set_gcc_username(json_server['gcc']['gcc_username'])
+                serverconf.create_chef_pem(pem.encode('base64'))
+ 
+                chef_flag = open(__CHEF_FLAG__, 'r')
+                content = chef_flag.read()
+                chef_flag.close()
+                chef_flag_json = json.loads(content)
+                server_conf.get_chef_conf().set_url(chef_flag_json['chef_server_url'])
+                server_conf.get_chef_conf().set_node_name(chef_flag_json['chef_node_name'])
+                server_conf.get_chef_conf().set_admin_name(json_server['gcc']['gcc_username'])
+                server_conf.get_chef_conf().set_chef_link(False)
+                password = serverconf.ACTUAL_USER[1]
                 if password == None:
-                   raise Exception(_('Please insert a password'))
+                   raise Exception(_('Error in user and password'))
                 messages = []
                 messages += serverconf.unlink_from_gcc(password)
                 messages += serverconf.unlink_from_chef()

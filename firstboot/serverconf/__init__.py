@@ -55,10 +55,12 @@ __CHEF_PEM__ = '/etc/chef/validation.pem'
 __AD_CONF_SCRIPT__ = 'firstboot-adconf.sh'
 
 CREDENTIAL_CACHED = {}
+ACTUAL_USER = ()
 
 
 def validate_credentials(url):
     global CREDENTIAL_CACHED
+    global ACTUAL_USER
     url_parsed = urlparse.urlparse(url)
     user = ''
     password = ''
@@ -84,6 +86,7 @@ def validate_credentials(url):
                 CREDENTIAL_CACHED[hostname] = []
             credentials = CREDENTIAL_CACHED[hostname]
             credentials.append([user, password])
+            ACTUAL_USER = (user, password)
         else:
             raise ServerConfException(_('Authentication is failed.'))
     if hasattr(r,'text'):
@@ -383,6 +386,7 @@ def unlink_from_chef():
     if fp:
         fp.write(json.dumps(json_solo,indent=2))
         fp.close()
+    print filepath
 #    run_chef_solo(filepath)
     return []
 #    try:
