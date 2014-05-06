@@ -49,11 +49,11 @@ action :setup do
           action :run
         end
      
-#        Chef::Log.info("Activando servicio gecos-chef-client")
-#        service 'gecos-chef-client' do
-#          supports :status => true, :restart => true, :reload => true
-#          action [:enable, :start]
-#        end
+        Chef::Log.info("Activando servicio chef-client")
+        service 'chef-client' do
+          supports :status => true, :restart => true, :reload => true
+          action [:enable, :start]
+        end
         Chef::Log.info("Chef: Creando fichero de control")
         template "/etc/chef.control" do
           source 'chef.control.erb'
@@ -84,11 +84,33 @@ action :setup do
           :chef_node_name => "NODE_NAME"
         })
       end
-#      Chef::Log.info("Desactivando servicio gecos-chef-client")
-#      service 'gecos-chef-client' do
-#        supports :status => true, :restart => true, :reload => true
-#        action [:disable, :stop]
-#      end
+      Chef::Log.info("Chef: Configurndo Knife")
+      template '/etc/chef/knife.rb' do
+        source 'knife.rb.erb'
+        owner 'root'
+        group 'root'
+        mode 00644
+        variables({
+          :chef_url => new_resource.chef_server_url,,
+          :chef_admin_name => new_resource.chef_node_name
+        })
+      end
+      Chef::Log.info("Borrando nodo " + new_resource.chef_node_name)
+      execute 'Knife Delete' do
+        command 'knife node delete \'' + new_resource.chef_node_name + '\' -c /etc/chef/knife.rb -y'
+        action :run
+      end
+      Chef::Log.info("Borrando cliente " + new_resource.chef_node_name)
+      execute 'Knife Delete' do
+        command 'knife client delete \'' + new_resource.chef_node_name + '\' -c /etc/chef/knife.rb -y'
+        action :run
+      end
+
+      Chef::Log.info("Desactivando servicio chef-client")
+      service 'chef-client' do
+        supports :status => true, :restart => true, :reload => true
+        action [:disable, :stop]
+      end
       Chef::Log.info("Chef: Elminando fichero de control")
       file "/etc/chef.control" do
         action :delete
@@ -97,7 +119,14 @@ action :setup do
       file "/etc/chef/client.pem" do
         action :delete
       end
-      #TODO: Remove node and client from chef      
+      Chef::Log.info("Chef: Eliminando validation.pem")
+      file "/etc/chef/validation.pem" do
+        action :delete
+      end
+      Chef::Log.info("Chef: Eliminando knife.rb")
+      file "/etc/chef/knife.rb" do
+        action :delete
+      end
     end
   rescue
     raise
