@@ -41,7 +41,7 @@ if os.path.abspath(__file__).startswith('/opt'):
         opt_path = path.replace('/usr', '/opt/extras.ubuntu.com/firstboot')
         python_path.insert(0, opt_path)
         sys.path.insert(0, opt_path)
-if (os.path.exists(os.path.join(PROJECT_ROOT_DIRECTORY, 'gecosws-config-assistant'))
+if (os.path.exists(os.path.join(PROJECT_ROOT_DIRECTORY, 'firstboot'))
     and PROJECT_ROOT_DIRECTORY not in sys.path):
     python_path.insert(0, PROJECT_ROOT_DIRECTORY)
     sys.path.insert(0, PROJECT_ROOT_DIRECTORY)
