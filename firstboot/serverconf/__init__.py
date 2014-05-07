@@ -502,7 +502,8 @@ def select_ou(title, text, ous):
     result = dialog.run()
     retval = None
     if result == Gtk.ResponseType.OK:
-        retval = ou_combo.get_active()
+        model = ou_combo.get_model()
+        retval = model[ou_combo.get_active()]
     dialog.destroy()
     return retval
 
