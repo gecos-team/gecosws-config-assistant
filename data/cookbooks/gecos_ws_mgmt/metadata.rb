@@ -391,7 +391,7 @@ web_browser_js = {
       uniqueItems: true,
       items: {
         type: "object",
-        required: ["username"],
+        required: ["username", "plugins","bookmarks", "config", "certs"],
         properties: {
           username: {type: "string"},
           plugins: {
@@ -400,10 +400,11 @@ web_browser_js = {
             uniqueItems: true,
             items: {
               type: "object",
-              required: ["title", "uri"],
+              required: ["title", "uri", "action"],
               properties: {
                 title: {type: "string"},
-                uri: {type: "string"}
+                uri: {type: "string"},
+                action: {type: "string" ,pattern: "(add|remove)"}
               }
             }
           },
@@ -429,7 +430,7 @@ web_browser_js = {
               required: ["key", "value"],
               properties: {
                 key: {type: "string"},
-                value: {type: "string"}
+                value: {type: "any"}
               }
             }
           },
@@ -599,7 +600,7 @@ user_apps_autostart_js = {
   type: "object",
   required: ["users"],
   properties: {
-    autostart_files: {
+    users: {
       type: "array",
       minItems: 0,
       uniqueItems: true,
@@ -697,7 +698,7 @@ scripts_launch_js = {
 
 network_resource_js = {
   type: "object",
-  required: ["network_type"],
+  required: ["network_type", "dns_servers"],
   properties:
   {
     gateway: { type: "string",title: "Gateway" },
@@ -800,7 +801,7 @@ software_sources_js = {
 
 package_js = {
   type: "object",
-  required: ["package_list"],
+  required: ["package_list", "pkgs_to_remove"],
   properties:
   {package_list: {
       type:"array",

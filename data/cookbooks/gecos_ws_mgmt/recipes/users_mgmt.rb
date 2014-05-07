@@ -30,3 +30,9 @@ gecos_ws_mgmt_screensaver 'localhost screensaver' do
   job_ids node[:gecos_ws_mgmt][:users_mgmt][:screensaver_res][:job_ids]
   action :setup
 end
+
+gecos_ws_mgmt_web_browser 'web browser' do
+  users node[:gecos_ws_mgmt][:users_mgmt][:web_browser_res][:users]
+  job_ids node[:gecos_ws_mgmt][:users_mgmt][:web_browser_res][:job_ids]
+  action :setup
+end

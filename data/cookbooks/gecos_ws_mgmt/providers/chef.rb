@@ -91,7 +91,7 @@ action :setup do
         group 'root'
         mode 00644
         variables({
-          :chef_url => new_resource.chef_server_url,,
+          :chef_url => new_resource.chef_server_url,
           :chef_admin_name => new_resource.chef_node_name
         })
       end
