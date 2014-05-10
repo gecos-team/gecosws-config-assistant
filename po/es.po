@@ -54,7 +54,7 @@ msgid ""
 msgstr ""
 "Instala paquetes de software desde un repositorio seguro.\n"
 "\n"
-"Puede saltarse este paso si el puesto de trabajo va a ser controlado desde "
+"Puede saltarse este paso si la estación de trabajo va a ser controlada desde "
 "su servidor GECOS."
 
 #: ../firstboot/pages/network/__init__.py:37
@@ -70,7 +70,7 @@ msgid ""
 "This workstation needs a network connection in order to autenticate users, "
 "link to GECOS Control Center, and software installation."
 msgstr ""
-"Este puesto de trabajo necesita una conexión de red para autenticar los "
+"Esta estación de trabajo necesita una conexión de red para autenticar los "
 "usuarios, enlazar con el servidor GECOS e instalar software."
 
 #: ../firstboot/pages/network/__init__.py:57
@@ -121,7 +121,7 @@ msgstr "Hay algunos errores que debe corregir."
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:100
 msgid ""
 "These parameters are required in order to join an authentication server:"
-msgstr "Estos parámetros son necesarios para unirse a un servidor de autenticación:"
+msgstr "Estos parámetros son necesarios para vincularse a un servidor de autenticación:"
 
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:104
 msgid "Version"
@@ -175,19 +175,19 @@ msgid ""
 "Users in this workstation can be authenticated against a external system.\n"
 "\n"
 msgstr ""
-"Los usuarios de este puesto de trabajo pueden ser autenticados contra un sistema externo.\n"
+"Los usuarios de esta estación de trabajo pueden ser autenticados contra un sistema externo.\n"
 "\n"
 
 #: ../firstboot/pages/linkToServer/__init__.py:88
 msgid "This workstation currently uses a LDAP server for user authentication."
-msgstr "Este puesto de trabajo usa actualmente un servidor LDAP para autenticación de usuarios."
+msgstr "Esta estación de trabajo usa actualmente un servidor LDAP para autenticación de usuarios."
 
 #: ../firstboot/pages/linkToServer/__init__.py:90
 msgid ""
 "This workstation currently uses an Active Directory server for user "
 "authentication."
 msgstr ""
-"Este puesto de trabajo usa actualmente un servidor Active Directory "
+"Esta estación de trabajo usa actualmente un servidor Active Directory "
 "para autenticación de usuarios."
 
 #: ../firstboot/pages/linkToServer/__init__.py:92
@@ -263,19 +263,19 @@ msgstr "Eliminar usuario"
 #: ../firstboot/pages/localUsers/Dialogs.py:109
 #, python-format
 msgid "The user %s is going to be removed, are you sure?"
-msgstr ""
+msgstr "El usuario %s va a ser eliminado, ¿está seguro?"
 
 #: ../firstboot/pages/localUsers/Dialogs.py:112
 msgid "Remove the user home?"
-msgstr ""
+msgstr "¿Eliminar el directorio home del usuario?"
 
 #: ../firstboot/pages/localUsers/Dialogs.py:131
 msgid "Error"
-msgstr ""
+msgstr "Error"
 
 #: ../firstboot/pages/localUsers/__init__.py:42
 msgid "Manage local users"
-msgstr ""
+msgstr "Gestionar usuarios locales"
 
 #: ../firstboot/pages/localUsers/__init__.py:88
 msgid ""
@@ -286,55 +286,61 @@ msgid ""
 "\n"
 "Check default OEM users and change its passwords if needed."
 msgstr ""
+"Puede crear o borrar usuarios locales en esta estación de trabajo. \n"
+"\n"
+"No se requiere crear aquí aquellos usuarios que sean autenticados por "
+"servicios externos (AD, LDAP...)\n"
+"\n"
+"Compruebe los usuarios OEM por defecto y cambie sus contraseñas si lo necesita."
 
 #: ../firstboot/pages/localUsers/__init__.py:92
 msgid "Name"
-msgstr ""
+msgstr "Nombre"
 
 #: ../firstboot/pages/localUsers/__init__.py:94
 msgid "Confirm"
-msgstr ""
+msgstr "Confirmar"
 
 #: ../firstboot/pages/localUsers/__init__.py:95
 msgid "Groups"
-msgstr ""
+msgstr "Grupos"
 
 #: ../firstboot/pages/localUsers/__init__.py:96
 msgid "Add"
-msgstr ""
+msgstr "Añadir"
 
 #: ../firstboot/pages/localUsers/__init__.py:97
 msgid "Remove"
-msgstr ""
+msgstr "Eliminar"
 
 #: ../firstboot/pages/localUsers/__init__.py:98
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: ../firstboot/pages/localUsers/__init__.py:114
 msgid "User"
-msgstr ""
+msgstr "Usuario"
 
 #: ../firstboot/pages/localUsers/__init__.py:300
 msgid "Duplicated user"
-msgstr ""
+msgstr "Usuario duplicado"
 
 #: ../firstboot/pages/localUsers/__init__.py:368
 msgid "User login is empty or contains invalid characters."
-msgstr ""
+msgstr "El login de usuario está vacío o contiene caracteres no válidos."
 
 #: ../firstboot/pages/localUsers/__init__.py:372
 msgid "User password can not be empty."
-msgstr ""
+msgstr "La contraseña de usuario no puede estar vacía."
 
 #: ../firstboot/pages/localUsers/__init__.py:376
 msgid "Passwords do not match."
-msgstr ""
+msgstr "Las contraseñas no coinciden."
 
 #: ../firstboot/pages/pcLabel/__init__.py:37
 #: ../firstboot/pages/pcLabel/__init__.py:64
 msgid "Workstation Name"
-msgstr ""
+msgstr "Nombre de la estación de trabajo"
 
 #: ../firstboot/pages/pcLabel/__init__.py:60
 msgid ""
@@ -342,14 +348,17 @@ msgid ""
 "spaces or symbols. \n"
 "You will find this description in your GECOS server reports later."
 msgstr ""
+"Nombre de la estación de trabajo. Este texto no necesita ser único, y "
+"puede utilizar espacios o símbolos. \n"
+"Esta descripción aparecerá después en los informes del servidor GECOS."
 
 #: ../firstboot/pages/pcLabel/__init__.py:70
 msgid "PC label has been updated correctly."
-msgstr ""
+msgstr "La etiqueta del PC se ha actualizado correctamente."
 
 #: ../firstboot/pages/dateSync/__init__.py:41
 msgid "Date/Time Synchronization"
-msgstr ""
+msgstr "Sincronización de Fecha/Hora"
 
 #: ../firstboot/pages/dateSync/__init__.py:62
 msgid ""
@@ -357,49 +366,55 @@ msgid ""
 "Please, provide the name or IP address of a valid Network Time Protocol "
 "server."
 msgstr ""
+"Las estaciones de trabajo y el servidor de tiempo deben estar sincronizados.\n"
+"Por favor, indique el nombre o dirección IP de un servidor NTP válido."
 
 #: ../firstboot/pages/dateSync/__init__.py:66
 msgid "NTP Server"
-msgstr ""
+msgstr "Servidor NTP"
 
 #: ../firstboot/pages/dateSync/__init__.py:112
 msgid "Incorrect value for NTP Server"
-msgstr ""
+msgstr "Valor incorrecto para el servidor NTP"
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:69
 msgid "These parameters are required in order to join a Control Center:"
-msgstr ""
+msgstr "Estos parámetros son requeridos para vincularse al Centro de Control:"
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:72
 msgid ""
 "\"Control Center URL\": an existant URL in your server where GECOS Control "
 "Center is installed."
 msgstr ""
+"\"URL del Centro de Control\": una URL existente en el servidor donde el "
+"Centro de Control GECOS esté instalado."
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:73
 msgid ""
 "\"Username\": User with administrative privilees (This will not be "
 "workstation user)"
 msgstr ""
+"\"Nombre de usuario\": Usuario con privilegios de administración "
+"(no el usuario de la estación de trabajo)"
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:75
 msgid "Control Center Username"
-msgstr ""
+msgstr "Nombre de usuario del Centro de Control"
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:89
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:110
 #: ../firstboot/serverconf/__init__.py:473
 msgid "Select OU"
-msgstr ""
+msgstr "Seleccionar OU"
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:89
 msgid "Select the OU to link into GCC Ui"
-msgstr ""
+msgstr "Seleccionar OU para vincular a la GCC Ui"
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:97
 #: ../firstboot/pages/linkToChef/__init__.py:147
 msgid "Url Chef Certificate Required"
-msgstr ""
+msgstr "URL del certificado de Chef requerida"
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:97
 #: ../firstboot/pages/linkToChef/__init__.py:147
@@ -407,31 +422,33 @@ msgid ""
 "You need to enter url with certificate file\n"
 " in protocol://domain/resource format"
 msgstr ""
+"Necesita introducir la URL con el fichero de certificado\n"
+" con el formato protocolo://dominio/recurso"
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:101
 #: ../firstboot/pages/linkToChef/__init__.py:150
 msgid "Can not download pem file"
-msgstr ""
+msgstr "No se puede descargar el fichero pem"
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:110
 msgid "Enter the correct OU to link into GCC Ui"
-msgstr ""
+msgstr "Introducir el OU correcto para vincular con la GCC Ui"
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:114
 msgid "You need enter a OU"
-msgstr ""
+msgstr "Necesita introducir un OU"
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:178
 msgid "Chef URL must be valid URL and need certificate"
-msgstr ""
+msgstr "La URL de Chef debe ser una URL válida y necesita certificado"
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:182
 msgid "Some GCC attributes are incorrect or blank"
-msgstr ""
+msgstr "Algunos atributos de GCC son incorrectos o están vacíos"
 
 #: ../firstboot/pages/linkToChef/__init__.py:42
 msgid "Link workstation to GECOS Control Center"
-msgstr ""
+msgstr "Vincular la estación de trabajo al Centro de Control GECOS"
 
 #: ../firstboot/pages/linkToChef/__init__.py:76
 msgid ""
@@ -439,119 +456,132 @@ msgid ""
 "remotely.\n"
 "\n"
 msgstr ""
+"Cuando una estación de trabajo es vinculada a un Centro de Control, puede "
+"ser controlada fácilmente de manera remota.\n"
+"\n"
 
 #: ../firstboot/pages/linkToChef/__init__.py:80
 msgid "Unlink from Control Center"
-msgstr ""
+msgstr "Desvincular del Centro de Control"
 
 #: ../firstboot/pages/linkToChef/__init__.py:81
 msgid "Link to Control Center server?"
-msgstr ""
+msgstr "¿Vincular con el servidor del Centro de Control?"
 
 #: ../firstboot/pages/linkToChef/__init__.py:166
 msgid "Please insert a password"
-msgstr ""
+msgstr "Por favor introduzca una contraseña"
 
 #: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:60
 msgid ""
 "You must provide an unique valid short name for the workstation. Only ASCII "
 "letters, numbers and the hyphen (-) are allowed."
 msgstr ""
+"Debe indicar un nombre corto, válido y único para la estación de trabajo. "
+"Solo caracteres ASCII, números y el guión (-) están permitidos."
 
 #: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:64
 msgid "Hostname"
-msgstr ""
+msgstr "Nombre del host"
 
 #: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:85
 msgid "This name is already used."
-msgstr ""
+msgstr "Este nombre ya está en uso."
 
 #: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:102
 msgid "Host name can not be empty."
-msgstr ""
+msgstr "El nombre del host no puede ser vacío."
 
 #: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:106
 msgid "This name already exists in your organization."
-msgstr ""
+msgstr "Este nombre ya existe en su organización."
 
 #: ../firstboot/__init__.py:42
 msgid "Show debug messages (-vv debugs firstboot_lib also)"
-msgstr ""
+msgstr "Mostrar mensajes de depuración (-vv depura firstboot_lib también)"
 
 #: ../firstboot/__init__.py:46
 msgid "Debug mode. Force run the application after the first start"
-msgstr ""
+msgstr "Modo depuración. Forzar a ejecutar la aplicación tras el primer inicio"
 
 #: ../firstboot/__init__.py:50
 msgid "Use this URL by default in the \"Link to Server\" page."
-msgstr ""
+msgstr "Usar esta URL por defecto en la página \"Vincular con el servidor\"."
 
 #: ../firstboot/serverconf/__init__.py:79
 msgid "You need to enter your credentials to access the requested resource."
-msgstr ""
+msgstr "Necesita introducir sus credenciales para acceder al recurso solicitado."
 
 #: ../firstboot/serverconf/__init__.py:87
 msgid "Authentication is failed."
-msgstr ""
+msgstr "La autenticación falló."
 
 #: ../firstboot/serverconf/__init__.py:165
 msgid "Couldn't retrieve the host names list"
-msgstr ""
+msgstr "No se pudo recuperar la lista de nombres de host"
 
 #: ../firstboot/serverconf/__init__.py:294
 msgid ""
 "The Date/Time Syncronization parameters are incorrect, please got to Date/"
 "Time section or review your autconf file"
 msgstr ""
+"Los parámetros de sincronización de Fecha/Hora son incorrectos, por favor "
+"vaya a la sección Fecha/Hora o revise su fichero de autoconfiguración"
 
 #: ../firstboot/serverconf/__init__.py:297
 msgid ""
 "The GCC parameters are incorrect, please got to GCC section or review your "
 "autconf file"
 msgstr ""
+"Los parámetros de GCC son incorrectos, por favor vaya a la sección GCC o "
+"revise su fichero de autoconfiguración"
 
 #: ../firstboot/serverconf/__init__.py:300
 msgid ""
 "The Chef parameters are incorrect, please got to GCC section or review your "
 "autconf file"
 msgstr ""
+"Los parámetros de Chef son incorrectos, por favor vaya a la sección GCC o "
+"revise su fichero de autoconfiguración"
 
 #: ../firstboot/serverconf/__init__.py:303
 msgid ""
 "The authentication parameters are incorrect, please go to Authentication "
 "section or review your autconf file"
 msgstr ""
+"Los parámetros de autenticación son incorrectos, por favor vaya a la "
+"sección Autenticación o revise su fichero de autoconfiguración"
 
 #: ../firstboot/serverconf/__init__.py:306
 msgid "The Local Users parameters are incorrect, please go to Users section"
-msgstr ""
+msgstr "Los parámetros de Usuarios Locales son incorrectos, por favor vaya a la sección Usuarios"
 
 #: ../firstboot/serverconf/__init__.py:308
 #: ../firstboot/serverconf/__init__.py:329
 #: ../firstboot/serverconf/__init__.py:332
 msgid "Configuration Error"
-msgstr ""
+msgstr "Error de configuración"
 
 #: ../firstboot/serverconf/__init__.py:328
 msgid "An error has ocurred running chef-solo"
-msgstr ""
+msgstr "Ha ocurrido un error al ejecutar chef-solo"
 
 #: ../firstboot/serverconf/__init__.py:416
 msgid "Url Certificate"
-msgstr ""
+msgstr "URL del certificado"
 
 #: ../firstboot/serverconf/__init__.py:445
 msgid "OU Name"
-msgstr ""
+msgstr "Nombre OU"
 
 #: ../firstboot/serverconf/__init__.py:511
 msgid "GCC Password"
-msgstr ""
+msgstr "Contraseña de GCC"
 
 #: ../firstboot/serverconf/__init__.py:515
 msgid "Please insert GCC password for user "
-msgstr ""
+msgstr "Por favor introduzca la contraseña para el usuario de GCC "
 
 #: ../firstboot/serverconf/__init__.py:547
 msgid "user"
-msgstr ""
+msgstr "usuario"
