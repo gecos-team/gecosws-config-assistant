@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.3.7-0gecos1) precise; urgency=low
+
+  * Added language to chef-solo and chef-client calls 
+
+ -- David Amian <damian@emergya.com>  Sat, 10 May 2014 12:27:22 +0200
+
 gecosws-config-assistant (0.3.6-0gecos1) precise; urgency=low
 
   * Update cookbooks and added solo.rb 

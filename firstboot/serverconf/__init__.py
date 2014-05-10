@@ -324,7 +324,7 @@ def apply_changes():
 def run_chef_solo(fp):
     try:
         solo_rb = get_prefix() + '/share/gecosws-config-assistant/solo.rb'
-        cmd = '"chef-solo" "-c" "%s" "-j" "%s"' % (solo_rb, fp)
+        cmd = '"LANG=en_US.UTF-8 chef-solo" "-c" "%s" "-j" "%s"' % (solo_rb, fp)
         args = shlex.split(cmd)
         process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         exit_code = os.waitpid(process.pid, 0)
