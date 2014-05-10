@@ -391,7 +391,7 @@ web_browser_js = {
       uniqueItems: true,
       items: {
         type: "object",
-        required: ["username", "plugins","bookmarks", "config", "certs"],
+        required: ["username"],
         properties: {
           username: {type: "string"},
           plugins: {
@@ -801,7 +801,6 @@ software_sources_js = {
 
 package_js = {
   type: "object",
-  required: ["package_list", "pkgs_to_remove"],
   properties:
   {package_list: {
       type:"array",

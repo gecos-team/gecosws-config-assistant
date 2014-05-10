@@ -15,6 +15,12 @@ gecos_ws_mgmt_user_apps_autostart 'user apps autostart' do
   action :setup
 end
 
+gecos_ws_mgmt_user_launchers 'user launchers' do
+  users node[:gecos_ws_mgmt][:users_mgmt][:user_launchers_res][:users]
+  job_ids node[:gecos_ws_mgmt][:users_mgmt][:user_launchers_res][:job_ids]
+  action :setup
+end
+
 gecos_ws_mgmt_user_shared_folders 'user shared folders' do
   users node[:gecos_ws_mgmt][:users_mgmt][:user_shared_folders_res][:users]
   job_ids node[:gecos_ws_mgmt][:users_mgmt][:user_shared_folders_res][:job_ids]

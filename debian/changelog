@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.3.6-0gecos1) precise; urgency=low
+
+  * Update cookbooks and added solo.rb 
+
+ -- David Amian <damian@emergya.com>  Sat, 10 May 2014 12:23:46 +0200
+
 gecosws-config-assistant (0.3.5-0gecos1) precise; urgency=low
 
   * Create /etc/chef if not exists 

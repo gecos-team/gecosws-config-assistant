@@ -25,6 +25,7 @@ action :setup do
     gem_depends.each do |gem|
 
       r = gem_package gem do
+        gem_binary("/opt/chef/embedded/bin/gem")
         action :nothing
       end
       r.run_action(:install)
