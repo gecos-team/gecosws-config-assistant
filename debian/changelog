@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.3.8-2gecos0) precise; urgency=low
+
+  * Updated data files
+
+ -- David Amian <damian@emergya.com>  Thu, 15 May 2014 18:16:31 +0200
+
 gecosws-config-assistant (0.3.8-1gecos0) precise; urgency=low
 
   * Update ohai-gecos cookbook
