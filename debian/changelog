@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.3.8-2gecos1) precise; urgency=low
+
+  * Fix package name
+
+ -- David Amian <damian@emergya.com>  Thu, 15 May 2014 18:26:24 +0200
+
 gecosws-config-assistant (0.3.8-2gecos0) precise; urgency=low
 
   * Updated data files
