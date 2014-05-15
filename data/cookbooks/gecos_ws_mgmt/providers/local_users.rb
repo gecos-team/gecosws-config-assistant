@@ -29,8 +29,8 @@ action :setup do
         Chef::Log.info("Removing local user #{username}")
 #TODO1 : check if user is not logged before removing process
         user username do
-          action :remove
-        end
+          action :nothing
+        end.run_action(:remove)
       else
         Chef::Log.info("Managing local user #{username}")
         user username do
@@ -46,14 +46,15 @@ action :setup do
           directory user_home do
             owner username
             group username
-            action :create
-          end
+            action :nothing
+          end.run_action(:create)
           bash "copy skel to #{username}" do
+            action :nothing
             code <<-EOH 
               cp /etc/skel/.* #{user_home}
               chown -R #{username}: #{user_home}
               EOH
-          end
+          end.run_action(:run)
         end
 
         grps.each do |g|
@@ -62,23 +63,25 @@ action :setup do
             group "#{g}" do
               append true
               members username
-              action :modify
-            end
+              action :nothing
+            end.run_action(:modify)
           rescue ArgumentError => e
             Chef::Log.info("Group #{g} does not exist, ignoring..")
           end
         end
       end
     end
-
-    # TODO:
-    # save current job ids (new_resource.job_ids) as "ok"
-
-  rescue
-    # TODO:
-    # just save current job ids as "failed"
-    # save_failed_job_ids
-    raise
+    
+    job_ids = new_resource.job_ids
+    job_ids.each do |jid|
+      node.set['job_status'][jid]['status'] = 0
+    end
+  rescue Exception => e
+    job_ids = new_resource.job_ids
+    job_ids.each do |jid|
+      node.set['job_status'][jid]['status'] = 1
+      node.set['job_status'][jid]['message'] = e.message
+    end
   end
 end
 

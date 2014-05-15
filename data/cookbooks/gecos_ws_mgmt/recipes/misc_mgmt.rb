@@ -29,6 +29,15 @@ gecos_ws_mgmt_scripts_launch 'launch commands on startup/shutdown' do
   action :setup
 end
 
+gecos_ws_mgmt_auto_updates 'manage auto updates' do
+  onstart_update node[:gecos_ws_mgmt][:misc_mgmt][:auto_updates_res][:auto_updates_rules][:onstart_update]
+  onstop_update node[:gecos_ws_mgmt][:misc_mgmt][:auto_updates_res][:auto_updates_rules][:onstop_update]
+  days node[:gecos_ws_mgmt][:misc_mgmt][:auto_updates_res][:auto_updates_rules][:days]
+  date node[:gecos_ws_mgmt][:misc_mgmt][:auto_updates_res][:auto_updates_rules][:date]
+  job_ids node[:gecos_ws_mgmt][:misc_mgmt][:auto_updates_res][:job_ids]
+  action :setup
+end
+
 gecos_ws_mgmt_tz_date 'localtime' do
   server node[:gecos_ws_mgmt][:misc_mgmt][:tz_date_res][:server]
   job_ids node[:gecos_ws_mgmt][:misc_mgmt][:tz_date_res][:job_ids]
@@ -37,6 +46,12 @@ end
 
 gecos_ws_mgmt_desktop_background node[:gecos_ws_mgmt][:misc_mgmt][:desktop_background_res][:desktop_file] do
     action  :setup
+end
+
+gecos_ws_mgmt_local_groups 'add users to system local groups' do
+  groups_list node[:gecos_ws_mgmt][:misc_mgmt][:local_groups_res][:groups_list]
+  job_ids node[:gecos_ws_mgmt][:misc_mgmt][:local_groups_res][:job_ids]
+  action :setup
 end
 
 gecos_ws_mgmt_local_admin_users 'assert users list as sudoers' do

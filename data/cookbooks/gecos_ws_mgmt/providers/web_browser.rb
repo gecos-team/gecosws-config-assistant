@@ -26,12 +26,17 @@ action :setup do
     action :nothing
   end.run_action(:install)
 
-  chef_gem "sqlite3" do
-    action :nothing
-  end.run_action(:install)
+  gem_depends = [ 'sqlite3' ]
+  gem_depends.each do |gem|
+    r = gem_package gem do
+      gem_binary("/opt/chef/embedded/bin/gem")
+      action :nothing
+     end
+     r.run_action(:install)
+  end
+  Gem.clear_paths
 
   require "sqlite3"
-
 
   def plugin_id(username,ext_path,plugin_name,plugin_file,action_to_run)
 
@@ -159,7 +164,7 @@ action :setup do
           end
  
           bookmarks.each  do |bkm|
-            unless bkm.title.empty? 
+            unless bkm.name.empty? 
               date_now = Time.now.to_i*1000000
               url = db.get_first_value("SELECT url FROM moz_places WHERE url LIKE \'#{bkm.uri}\'")
               if !url.nil?
@@ -179,10 +184,10 @@ action :setup do
                 last_pos_folder = db.get_first_value("SELECT MAX(position) FROM moz_bookmarks WHERE id=#{id_folder_bookmarks}")
               end
 
-              db.execute("INSERT INTO moz_places (url,title,rev_host,visit_count,hidden,typed,last_visit_date) VALUES  (\'#{bkm.uri}\',\'#{bkm.title}\',\'#{bkm.uri.reverse}.\',1,0,1,#{date_now})")
+              db.execute("INSERT INTO moz_places (url,title,rev_host,visit_count,hidden,typed,last_visit_date) VALUES  (\'#{bkm.uri}\',\'#{bkm.name}\',\'#{bkm.uri.reverse}.\',1,0,1,#{date_now})")
                foreign_key = db.get_first_value("SELECT last_insert_rowid()")
  
-              db.execute("INSERT INTO moz_bookmarks (type,fk,parent,position,title,dateAdded,lastModified) VALUES (1,#{foreign_key},#{id_folder_bookmarks},#{last_pos_folder+1},\'#{bkm.title}\',#{date_now},#{date_now})") 
+              db.execute("INSERT INTO moz_bookmarks (type,fk,parent,position,title,dateAdded,lastModified) VALUES (1,#{foreign_key},#{id_folder_bookmarks},#{last_pos_folder+1},\'#{bkm.name}\',#{date_now},#{date_now})") 
 
             end
 
