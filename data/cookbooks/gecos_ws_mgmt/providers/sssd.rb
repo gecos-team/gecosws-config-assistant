@@ -25,7 +25,7 @@ action :setup do
     end
  
     if new_resource.enabled
-      if new_resources.methods.include?('workgroup') and new_resource.workgroup_url.empty?
+      if new_resource.methods.include?('workgroup') and new_resource.workgroup_url.empty?
         Chef::Log.info("SSSD sin configuracion correcta")
       else      
         Chef::Log.info("SSSD activado")

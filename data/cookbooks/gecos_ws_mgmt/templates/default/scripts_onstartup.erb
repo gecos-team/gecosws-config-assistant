@@ -4,10 +4,10 @@
 # Provides:          script_launch
 # Required-Start:    $local_fs $syslog
 # Required-Stop:     $local_fs $syslog
-# Default-Start:     2 3 4 5
-# Default-Stop:      0 1 6
+# Default-Start:     2 
+# Default-Stop:        
 # Short-Description: starts the scripts launcher
-# Description:       starts scripts and commands on startup or shutdown
+# Description:       starts scripts and commands on startup 
 ### END INIT INFO
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
@@ -19,21 +19,14 @@ set -e
 
 case "$1" in
 	start)
-		echo -n "Launching $DESC on startup: "
+		echo -n "Launching $DESC on startup: " 
     <% @startup.each do |cmd| %>
       <%= cmd %>;
     <% end %>
 		;;
 
-	stop)
-		echo -n "Launching $DESC on shutdown: "
-    <% @shutdown.each do |cmd| %>
-      <%= cmd %>;
-    <% end %>
-		;;
-
 	*)
-		echo "Usage: $NAME {start|stop}" >&2
+		echo "Usage: $NAME {start}" >&2
 		exit 1
 		;;
 esac

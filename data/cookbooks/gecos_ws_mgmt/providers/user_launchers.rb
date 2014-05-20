@@ -19,21 +19,26 @@ action :setup do
       homedir = `eval echo ~#{user.username}`.gsub("\n","")
       desktop_path = "#{homedir}/Escritorio/"
 
+      gid = Etc.getpwnam(username).gid
       user.launchers.each do |desktopfile|
-        if FileTest.exist? applications_path + desktopfile and not desktopfile.empty? 
+        if FileTest.exist? applications_path + desktopfile and not desktopfile.empty?
           FileUtils.cp "#{applications_path}#{desktopfile}",  desktop_path
+          FileUtils.chown(username, gid, desktop_path + desktopfile)
+          FileUtils.chmod 0755, desktop_path + desktopfile
         end
       end
 
     end
-    
-    # TODO:
-    # save current job ids (new_resource.job_ids) as "ok"
+    job_ids = new_resource.job_ids
+    job_ids.each do |jid|
+      node.set['job_status'][jid]['status'] = 0
+    end   
 
-  rescue
-    # TODO:
-    # just save current job ids as "failed"
-    # save_failed_job_ids
-    raise
+  rescue Exception => e
+    job_ids = new_resource.job_ids
+    job_ids.each do |jid|
+      node.set['job_status'][jid]['status'] = 1
+      node.set['job_status'][jid]['message'] = e.message
+    end
   end
 end

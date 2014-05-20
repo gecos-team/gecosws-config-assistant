@@ -125,7 +125,7 @@ action :setup do
      
           plugins.each do |plugin|
             
-            plugin_name = "#{plugin.title.gsub(" ","_")}.xpi"
+            plugin_name = "#{plugin.name.gsub(" ","_")}.xpi"
             plugin_file = "#{xdir}/#{plugin_name}"
             plugin_dir_temp = "#{plugin_file}_temp"
     

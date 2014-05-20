@@ -16,7 +16,7 @@ default[:gecos_ws_mgmt][:software_mgmt][:software_sources_res][:repo_list] = []
 default[:gecos_ws_mgmt][:software_mgmt][:software_sources_res][:job_ids] = []
 
 default[:gecos_ws_mgmt][:software_mgmt][:package_res][:package_list] = []
-default[:gecos_ws_mgmt][:software_mgmt][:package_res][:pkgs_to_remove] = []
+default[:gecos_ws_mgmt][:software_mgmt][:package_res][:pkgs_to_remove] = [] 
 default[:gecos_ws_mgmt][:software_mgmt][:package_res][:job_ids] = []
 
 default[:gecos_ws_mgmt][:software_mgmt][:app_config_res][:adobe_config] = {}  
@@ -31,6 +31,7 @@ default[:gecos_ws_mgmt][:printers_mgmt][:printers_res][:job_ids] = []
 default[:gecos_ws_mgmt][:misc_mgmt][:auto_updates_res][:auto_updates_rules][:onstop_update] = false
 default[:gecos_ws_mgmt][:misc_mgmt][:auto_updates_res][:auto_updates_rules][:onstart_update] = false
 default[:gecos_ws_mgmt][:misc_mgmt][:auto_updates_res][:auto_updates_rules][:days] = []
+default[:gecos_ws_mgmt][:misc_mgmt][:auto_updates_res][:auto_updates_rules][:date] = {}
 default[:gecos_ws_mgmt][:misc_mgmt][:auto_updates_res][:job_ids] = []
 
 default[:gecos_ws_mgmt][:misc_mgmt][:tz_date_res][:server] = ""

@@ -8,3 +8,51 @@
 # All rights reserved - EUPL License V 1.1
 # http://www.osor.eu/eupl
 #
+action :setup do
+  begin
+    
+    require 'etc'
+  
+    users = new_resource.users
+    users_to_add = []
+    users_to_remove = []
+  
+  # Default Samba group
+    GRP_SAMBA = 'sambashare'
+    samba_members = Etc.getgrnam(GRP_SAMBA).mem
+  
+    users.each do |user|
+      username = user.username
+      if user.can_share 
+        users_to_add << username
+      else
+        users_to_remove << username
+      end
+    end
+
+    samba_members = samba_members + users_to_add
+    samba_members = samba_members - users_to_remove
+    samba_members.uniq!
+
+    if samba_members.empty?
+      samba_members << 'nobody'
+    end
+
+    group GRP_SAMBA do
+      action :manage
+      members samba_members
+      append false
+    end
+
+    job_ids = new_resource.job_ids
+    job_ids.each do |jid|
+      node.set['job_status'][jid]['status'] = 0
+    end
+  rescue Exception => e
+    job_ids = new_resource.job_ids
+    job_ids.each do |jid|
+      node.set['job_status'][jid]['status'] = 1
+      node.set['job_status'][jid]['message'] = e.message
+    end
+  end
+end

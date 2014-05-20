@@ -30,9 +30,9 @@ class ActiveDirectoryProperties():
         msg = 'ServerConf: Key "%s" not found in the configuration file.'
         if not specific:
             try:
-                self.set_domain(conf['domain'])
+                self.set_domain(conf['fqdn'])
             except KeyError as e:
-                print msg % ('domain',)
+                print msg % ('fqdn',)
             try:
                 self.set_workgroup(conf['workgroup'])
             except KeyError as e:
@@ -154,9 +154,9 @@ class ActiveDirectoryConf():
         except KeyError as e:
             print msg % ('specific_conf',)
         try:
-            self._ad_properties.load_data(conf['auth_properties'])
+            self._ad_properties.load_data(conf['ad_properties'], self.get_specific_conf())
         except KeyError as e:
-            print msg % ('auth_properties',)
+            print msg % ('ad_properties',)
 
     def validate(self):
         return self._ad_properties.validate(self.get_specific_conf())

@@ -323,10 +323,12 @@ def apply_changes():
 
 def run_chef_solo(fp):
     try:
+        envs = os.environ
+        envs['LANG'] = 'es_ES.UTF-8'
         solo_rb = get_prefix() + '/share/gecosws-config-assistant/solo.rb'
-        cmd = '"LANG=en_US.UTF-8 chef-solo" "-c" "%s" "-j" "%s"' % (solo_rb, fp)
+        cmd = '"chef-solo" "-c" "%s" "-j" "%s"' % (solo_rb, fp)
         args = shlex.split(cmd)
-        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=envs)
         exit_code = os.waitpid(process.pid, 0)
         output = process.communicate()[0]
 
@@ -503,7 +505,7 @@ def select_ou(title, text, ous):
     retval = None
     if result == Gtk.ResponseType.OK:
         model = ou_combo.get_model()
-        retval = model[ou_combo.get_active()]
+        retval = model[ou_combo.get_active()][0]
     dialog.destroy()
     return retval
 
