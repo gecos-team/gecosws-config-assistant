@@ -487,9 +487,9 @@ def select_ou(title, text, ous):
     lblou = Gtk.Label(_('Select OU'))
     lblou.set_visible(True)
     hboxou.pack_start(lblou, False, False, False)
-    ou_store = Gtk.ListStore(str)
+    ou_store = Gtk.ListStore(str, str)
     for ou in ous:
-        ou_store.append([ou])
+        ou_store.append([ou[1], ou[0]])
 
     ou_combo = Gtk.ComboBox.new_with_model(ou_store)
     renderer_text = Gtk.CellRendererText()
@@ -505,7 +505,7 @@ def select_ou(title, text, ous):
     retval = None
     if result == Gtk.ResponseType.OK:
         model = ou_combo.get_model()
-        retval = model[ou_combo.get_active()][0]
+        retval = model[ou_combo.get_active()][1]
     dialog.destroy()
     return retval
 
