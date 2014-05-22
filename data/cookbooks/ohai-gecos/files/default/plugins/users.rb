@@ -35,8 +35,16 @@ if not users == ohai_gecos['users']
   begin
     resource = RestClient::Resource.new(gcc_control['uri_gcc'] + '/register/user/')
     response = resource.put :node_id => gcc_control['gcc_nodename'],:users=>users_report, :content_type => :json, :accept => :json
+    if not response.code.between?(200,299)
+      Ohai::Log.error('The GCC URI not response')
+    else
+      response_json = JSON.load(response.to_str)
+      if not response_json['ok']
+        Ohai::Log.error(response_json['message'])
+      end
+    end
   rescue Exception => e
-    puts e.message
+    Ohai::Log.error(e.message)
   end
 end
 

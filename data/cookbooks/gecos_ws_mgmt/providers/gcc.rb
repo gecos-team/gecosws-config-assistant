@@ -36,10 +36,19 @@ action :setup do
     if new_resource.gcc_link
       if not new_resource.uri_gcc.nil? and not new_resource.gcc_nodename.nil? and not new_resource.gcc_username.nil? and not new_resource.gcc_pwd_user.nil? and not new_resource.gcc_selected_ou.nil?
         Chef::Log.info("GCC: Configurndo GECOS Control Center")
-        resource = RestClient::Resource.new(new_resource.uri_gcc + '/register/computer/', :user => new_resource.gcc_username, :password => new_resource.gcc_pwd_user)
-        response = resource.post :node_id => new_resource.gcc_nodename,:ou_name=>new_resource.gcc_selected_ou, :content_type => :json, :accept => :json
-        if not response.code.between?(200,299)
-          raise 'The GCC URI not response'  
+        begin
+          resource = RestClient::Resource.new(new_resource.uri_gcc + '/register/computer/', :user => new_resource.gcc_username, :password => new_resource.gcc_pwd_user)
+          response = resource.post :node_id => new_resource.gcc_nodename,:ou_name=>new_resource.gcc_selected_ou, :content_type => :json, :accept => :json
+          if not response.code.between?(200,299)
+            Chef::Log.error('The GCC URI not response')  
+          else
+            response_json = JSON.load(response.to_str)
+            if not response_json['ok']
+              Chef::Log.error(response_json['message'])
+            end
+          end
+        rescue Exception => e
+          Chef::Log.error(e.message)
         end
         template "/etc/gcc.control" do
           source 'gcc.control.erb'
@@ -56,10 +65,19 @@ action :setup do
     else
       if not new_resource.uri_gcc.nil? and not new_resource.gcc_nodename.nil? and not new_resource.gcc_username.nil? and not new_resource.gcc_pwd_user.nil? and not new_resource.gcc_selected_ou.nil?
         Chef::Log.info("GCC: Desenlazando cliente de GECOS Control Center")
-        resource = RestClient::Resource.new(new_resource.uri_gcc + '/register/computer/', :user => new_resource.gcc_username, :password => new_resource.gcc_pwd_user)
-        response = resource.delete :node_id => new_resource.gcc_nodename, :content_type => :json, :accept => :json
-        if not response.code.between?(200,299)
-          raise 'The GCC URI not response' 
+        begin
+          resource = RestClient::Resource.new(new_resource.uri_gcc + '/register/computer/', :user => new_resource.gcc_username, :password => new_resource.gcc_pwd_user)
+          response = resource.delete :node_id => new_resource.gcc_nodename, :content_type => :json, :accept => :json
+          if not response.code.between?(200,299)
+            Chef::Log.error('The GCC URI not response')  
+          else
+            response_json = JSON.load(response.to_str)
+            if not response_json['ok']
+              Chef::Log.error(response_json['message'])
+            end
+          end
+        rescue Exception => e
+          Chef::Log.error(e.message)
         end
         file "/etc/gcc.control" do
           action :delete
