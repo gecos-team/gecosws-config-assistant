@@ -107,11 +107,12 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
                 self.chef_conf.set_url(self.gcc_conf.get_uri_gcc())
                 self.chef_conf.set_admin_name(self.gcc_conf.get_gcc_username())
 
-                result = serverconf.entry_ou(_('Select OU'),_('Enter the correct OU to link into GCC Ui'))
-                if result:
-                    self.gcc_conf.set_selected_ou(result)
-                else:
-                    raise serverconf.LinkToChefException(_("You need enter a OU"))
+                #result = serverconf.entry_ou(_('Select OU'),_('Enter the correct OU to link into GCC Ui'))
+                result = ''
+                #if result:
+                self.gcc_conf.set_selected_ou(result)
+                #else:
+                #    raise serverconf.LinkToChefException(_("You need enter a OU"))
             except Exception as e:
                 self.show_status(__STATUS_ERROR__, e)
     
