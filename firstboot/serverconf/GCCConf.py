@@ -33,6 +33,7 @@ class GCCConf():
         self._data['gcc_link'] = False
         self._data['gcc_pwd_user'] = ''
         self._data['selected_ou'] = ''
+        self._data['run'] = True
         self._data['ou_username'] = []
 
     def load_data(self, conf):
@@ -55,7 +56,7 @@ class GCCConf():
             print msg % ('gcc_link',)
 
     def validate(self):
-        valid = validation.is_url(self._data['uri_gcc']) and self._data['gcc_username'] != '' and self._data['gcc_nodename'] != '' and self._data['gcc_link'] != None and self._data['gcc_pwd_user'] != '' and self._data['ou_username'] != None and self._data['selected_ou'] != ''
+        valid = self._data['run'] == False or (validation.is_url(self._data['uri_gcc']) and self._data['gcc_username'] != '' and self._data['gcc_nodename'] != '' and self._data['gcc_link'] != None and self._data['gcc_pwd_user'] != '' and self._data['ou_username'] != None and self._data['selected_ou'] != '')
         return valid
 
     def get_uri_gcc(self):
@@ -102,6 +103,13 @@ class GCCConf():
 
     def get_ou_username(self):
         return self._data['ou_username']
+
+    def set_run(self, run_action):
+        self._data['run'] = run_action
+        return self
+
+    def get_run(self):
+        return self._data['run']
     
     def add_ou_username(self, ou_username):
         self._data['ou_username'].append(ou_username)

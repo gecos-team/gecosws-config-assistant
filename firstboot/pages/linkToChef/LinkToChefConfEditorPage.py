@@ -74,6 +74,8 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
         self.ui.lblUrlChef.set_label('Control Center URL')
         self.ui.lblUser.set_label(_('Control Center Username'))
         self.ui.lblPassword.set_label(_('Password'))
+        self.ui.chkLink.set_label(_('Link to an existing workstation?'))
+
 
     def previous_page(self, load_page_callback):
         load_page_callback(firstboot.pages.linkToChef)
@@ -82,93 +84,95 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
         self.gcc_conf.set_uri_gcc(self.ui.txtUrlChef.get_text())
         self.gcc_conf.set_gcc_username(self.ui.txtUser.get_text())
         self.gcc_conf.set_gcc_pwd_user(self.ui.txtPassword.get_text())
-        self.gcc_conf.set_gcc_link(True)
-        self.interfaces = interface.localifs()
-        self.interfaces.reverse()
-        if len(self.gcc_conf.get_ou_username()) >= 2:
-            result = serverconf.select_ou(_('Select OU'), _('Select the OU to link into GCC Ui'), self.gcc_conf.get_ou_username()) 
-            self.gcc_conf.set_selected_ou(result)
-        elif len(self.gcc_conf.get_ou_username()) == 1:
-            self.gcc_conf.set_selected_ou(self.gcc_conf.get_ou_username()[0])
-        for inter in self.interfaces:
-            if not inter[1].startswith('127.0'):
-                break
-        if not serverconf.json_is_cached():
-            result = serverconf.url_chef(_('Url Chef Certificate Required'), _('You need to enter url with certificate file\n in protocol://domain/resource format'))
-            try:
-                res = requests.get(result)
-                if not res.ok:
-                    raise serverconf.LinkToChefException(_("Can not download pem file"))
-                if hasattr(res,'text'):
-                    pem = res.text
-                else:
-                    pem = res.content
-                self.chef_conf.set_pem(pem.encode('base64'))
-                self.chef_conf.set_url(self.gcc_conf.get_uri_gcc())
-                self.chef_conf.set_admin_name(self.gcc_conf.get_gcc_username())
-
-                #result = serverconf.entry_ou(_('Select OU'),_('Enter the correct OU to link into GCC Ui'))
-                result = ''
-                #if result:
+        if not self.ui.chkLink.get_active():
+            self.gcc_conf.set_gcc_link(True)
+            self.gcc_conf.set_run(True)
+            self.interfaces = interface.localifs()
+            self.interfaces.reverse()
+            if len(self.gcc_conf.get_ou_username()) >= 2:
+                result = serverconf.select_ou(_('Select OU'), _('Select the OU to link into GCC Ui'), self.gcc_conf.get_ou_username()) 
                 self.gcc_conf.set_selected_ou(result)
-                #else:
-                #    raise serverconf.LinkToChefException(_("You need enter a OU"))
+            elif len(self.gcc_conf.get_ou_username()) == 1:
+                self.gcc_conf.set_selected_ou(self.gcc_conf.get_ou_username()[0])
+            for inter in self.interfaces:
+                if not inter[1].startswith('127.0'):
+                    break
+            if not serverconf.json_is_cached():
+                result = serverconf.url_chef(_('Url Chef Certificate Required'), _('You need to enter url with certificate file\n in protocol://domain/resource format'))
+                try:
+                    res = requests.get(result)
+                    if not res.ok:
+                        raise serverconf.LinkToChefException(_("Can not download pem file"))
+                    if hasattr(res,'text'):
+                        pem = res.text
+                    else:
+                        pem = res.content
+                    self.chef_conf.set_pem(pem.encode('base64'))
+                    self.chef_conf.set_url(self.gcc_conf.get_uri_gcc())
+                    self.chef_conf.set_admin_name(self.gcc_conf.get_gcc_username())
+
+                    #result = serverconf.entry_ou(_('Select OU'),_('Enter the correct OU to link into GCC Ui'))
+                    result = ''
+                    #if result:
+                    self.gcc_conf.set_selected_ou(result)
+                    #else:
+                    #    raise serverconf.LinkToChefException(_("You need enter a OU"))
+                except Exception as e:
+                    self.show_status(__STATUS_ERROR__, e)
+
+            mac = interface.getHwAddr(inter[0])
+            node_name = hashlib.md5(mac.encode()).hexdigest()
+            self.gcc_conf.set_gcc_nodename(node_name)
+            self.chef_conf.set_node_name(node_name)
+            self.chef_conf.set_chef_link(True)
+            self.chef_conf.set_chef_link_existing(False)
+            result, messages = self.validate_conf()
+            load_page_callback(LinkToChefResultsPage, {
+                'result': result,
+                'messages': messages
+             })
+        else:
+            try:
+                hostnames = serverconf.get_hostnames(self.gcc_conf.get_uri_gcc(), self.gcc_conf.get_gcc_username(), self.gcc_conf.get_gcc_pwd_user())
+                result = serverconf.select_node(_('Select Workstation'), _('Select a workstation to link'), hostnames)
+                if result == None:
+                    raise serverconf.LinkToChefException(_("You need selected a workstation"))
             except Exception as e:
                 self.show_status(__STATUS_ERROR__, e)
-    
+            self.gcc_conf.set_run(False)
+            self.chef_conf.set_node_name(result)
+            self.chef_conf.set_chef_link_existing(True)
+            self.chef_conf.set_chef_link(True)
 
-        mac = interface.getHwAddr(inter[0])
-        node_name = hashlib.md5(mac.encode()).hexdigest()
-        self.gcc_conf.set_gcc_nodename(node_name)
-        self.chef_conf.set_node_name(node_name)
-        self.chef_conf.set_chef_link(True)
-        result, messages = self.validate_conf()
-        load_page_callback(LinkToChefResultsPage, {
-            'result': result,
-            'messages': messages
-         })
+            if not serverconf.json_is_cached():
+                result = serverconf.url_chef(_('Url Chef Certificate Required'), _('You need to enter url with certificate file\n in protocol://domain/resource format'))
+                try:
+                    res = requests.get(result)
+                    if not res.ok:
+                        raise serverconf.LinkToChefException(_("Can not download pem file"))
+                    if hasattr(res,'text'):
+                        pem = res.text
+                    else:
+                        pem = res.content
+                    self.chef_conf.set_pem(pem.encode('base64'))
+                    self.chef_conf.set_url(self.gcc_conf.get_uri_gcc())
+                    self.chef_conf.set_admin_name(self.gcc_conf.get_gcc_username())
 
-        
-#        if not self.unlink_from_chef:
-#
-#            result, messages = self.validate_conf()
-#
-#            if result == True:
-#                result, messages = serverconf.setup_server(
-#                    server_conf=self.server_conf,
-#                    link_ldap=False,
-#                    unlink_ldap=False,
-#                    link_chef=not self.unlink_from_chef,
-#                    unlink_chef=self.unlink_from_chef
-#                )
-#
-#            load_page_callback(LinkToChefResultsPage, {
-#                'server_conf': self.server_conf,
-#                'result': result,
-#                'messages': messages
-#            })
-#
-#        else:
-#            result, messages = serverconf.setup_server(
-#                server_conf=self.server_conf,
-#                link_chef=not self.unlink_from_chef,
-#                unlink_chef=self.unlink_from_chef
-#            )
-#
-#            load_page_callback(LinkToChefResultsPage, {
-#                'result': result,
-#                'server_conf': self.server_conf,
-#                'messages': messages
-#            })
+                    #result = serverconf.entry_ou(_('Select OU'),_('Enter the correct OU to link into GCC Ui'))
+                    result = ''
+                    #if result:
+                    self.gcc_conf.set_selected_ou(result)
+                    #else:
+                    #    raise serverconf.LinkToChefException(_("You need enter a OU"))
+                except Exception as e:
+                    self.show_status(__STATUS_ERROR__, e)
 
-#    def on_serverConf_changed(self, entry):
-#        if not self.update_server_conf:
-#            return
-#        self.server_conf.get_chef_conf().set_url(self.ui.txtUrlChef.get_text())
-#   #     self.server_conf.get_chef_conf().set_pem_url(self.ui.txtUrlChefCert.get_text())
-#   #     self.server_conf.get_chef_conf().set_default_role(self.ui.txtDefaultRole.get_text())
-#        self.server_conf.get_chef_conf().set_hostname(self.ui.txtHostname.get_text())
-#
+            result, messages = self.validate_conf()
+            load_page_callback(LinkToChefResultsPage, {
+                'result': result,
+                'messages': messages
+             })
+
     def validate_conf(self):
 
         valid = True

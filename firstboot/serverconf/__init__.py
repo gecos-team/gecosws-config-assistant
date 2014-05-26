@@ -153,38 +153,38 @@ def create_conf_file(file_content):
 
     return filepath
 
-def get_chef_hostnames(chef_conf):
+# def get_chef_hostnames(chef_conf):
 
-    chef_url = chef_conf.get_url()
-    pem_file_path = create_chef_pem(chef_conf)
+#     chef_url = chef_conf.get_url()
+#     pem_file_path = create_chef_pem(chef_conf)
 
-    cmd = 'knife node list -u chef-validator -k %s -s %s' % (pem_file_path, chef_url)
-    args = shlex.split(cmd)
+#     cmd = 'knife node list -u chef-validator -k %s -s %s' % (pem_file_path, chef_url)
+#     args = shlex.split(cmd)
 
-    process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    exit_code = os.waitpid(process.pid, 0)
-    output = process.communicate()[0]
-    output = output.strip()
+#     process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+#     exit_code = os.waitpid(process.pid, 0)
+#     output = process.communicate()[0]
+#     output = output.strip()
 
-    names = []
-    if exit_code[1] != 0:
-        raise ServerConfException(_('Couldn\'t retrieve the host names list') + ': ' + output)
+#     names = []
+#     if exit_code[1] != 0:
+#         raise ServerConfException(_('Couldn\'t retrieve the host names list') + ': ' + output)
 
-    else:
-        try:
-            names = json.loads(output)
-        except ValueError as e:
-            names = output.split('\n')
+#     else:
+#         try:
+#             names = json.loads(output)
+#         except ValueError as e:
+#             names = output.split('\n')
 
-    hostnames = []
-    for name in names:
-        name = name.strip()
-        if name.startswith('WARNING') or name.startswith('ERROR'):
-            continue
-        hostnames.append(name)
+#     hostnames = []
+#     for name in names:
+#         name = name.strip()
+#         if name.startswith('WARNING') or name.startswith('ERROR'):
+#             continue
+#         hostnames.append(name)
 
-    os.remove(pem_file_path)
-    return hostnames
+#     os.remove(pem_file_path)
+#     return hostnames
 
 
 def ad_is_configured():
@@ -213,7 +213,8 @@ def create_solo_json(server_conf):
         if chef_admin_name == "":
             chef_admin_name = server_conf.get_gcc_conf().get_gcc_username()
         chef_link = server_conf.get_chef_conf().get_chef_link()
-        chef_json = {'chef_server_url':chef_url, 'chef_node_name': chef_node_name, 'chef_validation_pem': tmpfile, 'chef_link': chef_link, 'chef_admin_name': chef_admin_name}
+        chef_link_existing = server_conf.get_chef_conf().get_chef_link_existing()
+        chef_json = {'chef_server_url':chef_url, 'chef_node_name': chef_node_name, 'chef_validation_pem': tmpfile, 'chef_link': chef_link, 'chef_admin_name': chef_admin_name, 'chef_link_existing': chef_link_existing}
         json_solo['gecos_ws_mgmt']['misc_mgmt']['chef_conf_res'] = chef_json
     if server_conf.get_auth_conf().get_auth_type() != '':
         auth_type = server_conf.get_auth_conf().get_auth_type()
@@ -246,7 +247,7 @@ def create_solo_json(server_conf):
             json_solo['gecos_ws_mgmt']['network_mgmt']['sssd_res'] = sssd_ldap_json
     if server_conf.get_gcc_conf().get_uri_gcc() != '':
         gcc_conf = server_conf.get_gcc_conf()
-        gcc_json = {'uri_gcc': gcc_conf.get_uri_gcc(), 'gcc_username' : gcc_conf.get_gcc_username(),'gcc_pwd_user': gcc_conf.get_gcc_pwd_user(),'gcc_nodename': gcc_conf.get_gcc_nodename(),'gcc_link': gcc_conf.get_gcc_link(), 'gcc_selected_ou': gcc_conf.get_selected_ou()}
+        gcc_json = {'uri_gcc': gcc_conf.get_uri_gcc(), 'gcc_username' : gcc_conf.get_gcc_username(),'gcc_pwd_user': gcc_conf.get_gcc_pwd_user(),'gcc_nodename': gcc_conf.get_gcc_nodename(),'gcc_link': gcc_conf.get_gcc_link(), 'gcc_selected_ou': gcc_conf.get_selected_ou(), 'run_attr': gcc_conf.get_run()}
         json_solo['gecos_ws_mgmt']['misc_mgmt']['gcc_res'] = gcc_json
 
     if server_conf.get_users_conf().get_users_list():
@@ -473,6 +474,86 @@ def entry_ou(title, text):
     dialog.destroy()
     return retval
 
+def get_hostnames(uri_gcc, username_gcc, password_gcc):
+    #Implements code to call API rest to get node list
+    global CREDENTIAL_CACHED
+    global ACTUAL_USER
+    uri_gcc = uri_gcc + '/node/list/'
+    url_parsed = urlparse.urlparse(uri_gcc)
+    user = username_gcc
+    password = password_gcc
+    hostname = url_parsed.hostname
+    headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+    content = '' 
+    validate = False
+    if hostname in CREDENTIAL_CACHED:
+        credentials = CREDENTIAL_CACHED[hostname]
+        for cred in credentials:
+            user, password = cred[0], cred[1]
+            r = requests.get(url, auth=(user,password), headers=headers)
+            if r.ok:
+                validate = True
+
+    if not validate:
+
+        r = requests.get(url, auth=(user,password), headers=headers)
+        if r.ok:
+            if not CREDENTIAL_CACHED.has_key(hostname):
+                CREDENTIAL_CACHED[hostname] = []
+            credentials = CREDENTIAL_CACHED[hostname]
+            credentials.append([user, password])
+            ACTUAL_USER = (user, password)
+        else:
+            raise ServerConfException(_('Authentication is failed.'))
+    if hasattr(r,'text'):
+        content = r.text
+    else:  
+        content = r.content
+
+    arr_hostname = json.loads(content)
+
+    #Testing lines
+    # arr_hostname = []
+    # hostname = {'chef_id': '23c3cd0e88b5df0e9fe29a5200723cda', 'pclabel': 'test1'}
+    # arr_hostname.append(hostname)
+    # hostname = {'chef_id': 'cf5ecbd267b6c6558884edc9e023cf8b', 'pclabel': 'test2'}
+    # arr_hostname.append(hostname)
+    return arr_hostname
+
+def select_node(title, text, hostnames):
+    dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,
+                                   Gtk.ButtonsType.OK_CANCEL)
+    dialog.set_title(title)
+    dialog.set_position(Gtk.WindowPosition.CENTER)
+    dialog.set_default_response(Gtk.ResponseType.OK)
+    dialog.set_icon_name('dialog-password')
+    dialog.set_markup(text)
+
+    hboxws = Gtk.HBox()
+    lblws = Gtk.Label(_('Select Workstation'))
+    lblws.set_visible(True)
+    hboxws.pack_start(lblws, False, False, False)
+    ws_store = Gtk.ListStore(str, str)
+    for ws in hostnames:
+        ws_store.append([ws['pclabel'], ws['chef_id']])
+
+    ws_combo = Gtk.ComboBox.new_with_model(ws_store)
+    renderer_text = Gtk.CellRendererText()
+    ws_combo.pack_start(renderer_text, True)
+    ws_combo.add_attribute(renderer_text, "text", 0)    
+
+    ws_combo.show()
+    hboxws.pack_end(ws_combo, False, False, False)
+    hboxws.show()
+
+    dialog.get_message_area().pack_start(hboxws, False, False, False)
+    result = dialog.run()
+    retval = None
+    if result == Gtk.ResponseType.OK:
+        model = ws_combo.get_model()
+        retval = model[ws_combo.get_active()][1]
+    dialog.destroy()
+    return retval
 
 def select_ou(title, text, ous):
     dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,

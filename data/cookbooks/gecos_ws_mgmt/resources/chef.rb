@@ -14,6 +14,7 @@ default_action :setup
 
 attribute :chef_server_url,  :name_attribute => true, :kind_of => String
 attribute :chef_link, :kind_of => [ TrueClass, FalseClass ], :default => false
+attribute :chef_link_existing, :kind_of => [ TrueClass, FalseClass ], :default => false
 attribute :chef_node_name, :kind_of => String
 attribute :chef_admin_name, :kind_of => String
 attribute :chef_validation_pem, :kind_of => String

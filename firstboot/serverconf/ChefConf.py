@@ -30,6 +30,8 @@ class ChefConf():
         self._data['chef_server_uri'] = ''
         self._data['chef_validation'] = ''
         self._data['chef_link'] = False
+        self._data['chef_link_existing'] = False
+
 
     def load_data(self, conf):
         msg = 'ServerConf: Key "%s" not found in the configuration file.'
@@ -47,7 +49,7 @@ class ChefConf():
             print msg % ('chef_link',)
 
     def validate(self):
-        valid = validation.is_url(self._data['chef_server_uri']) and self._data['chef_validation'] != '' and self._data['chef_link'] != None
+        valid = validation.is_url(self._data['chef_server_uri']) and self._data['chef_validation'] != '' and self._data['chef_link'] != None and self._data['chef_link_existing'] != None
         return valid
 
     def get_url(self):
@@ -64,8 +66,16 @@ class ChefConf():
         self._data['chef_validation'] = pem
         return self
 
+
     # --- Next fields are not present in the JSON file but are
     # setted on runtime by Firstboot ---
+    def set_chef_link_existing(self, link_existing):
+        self._data['chef_link_existing'] = link_existing
+        return self
+
+    def get_chef_link_existing(self):
+        return self._data['chef_link_existing']
+
     def set_chef_link(self, chef_link):
         self._data['chef_link'] = chef_link
         return self

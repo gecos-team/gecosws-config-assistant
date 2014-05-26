@@ -23,6 +23,7 @@ gecos_ws_mgmt_chef node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_server
   chef_validation_pem node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_validation_pem]
   chef_node_name node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_node_name]
   chef_admin_name node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_admin_name]
+  chef_link_existing node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_link_existing]
   job_ids node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:job_ids]
   action  :setup
 end
@@ -32,6 +33,7 @@ gecos_ws_mgmt_gcc node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:uri_gcc] do
   gcc_nodename node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:gcc_nodename]
   gcc_username node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:gcc_username]
   gcc_pwd_user node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:gcc_pwd_user]
+  run_attr node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:run_attr]
   gcc_selected_ou node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:gcc_selected_ou]
   job_ids node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:job_ids]
   action  :setup
