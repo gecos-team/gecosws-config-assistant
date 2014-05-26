@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.4.1-0gecos1) precise; urgency=low
+
+  * Added Link to an existing workstation into Chef Server 
+
+ -- David Amian <damian@emergya.com>  Mon, 26 May 2014 19:27:09 +0200
+
 gecosws-config-assistant (0.4.0-0gecos2) precise; urgency=low
 
   * Fix gcc delete request
