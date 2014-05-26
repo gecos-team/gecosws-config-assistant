@@ -13,25 +13,30 @@ action :setup do
   begin
     groups_list = new_resource.groups_list
 
-	groups_list.each do |item|
-		gid = item.group
-		uids = item.users
+  	groups_list.each do |item|
+  		gid = item.group
+  		uids = item.users
 
-		group "#{gid}" do
-		  action :modify
-		  members uids
-		  append true
-		end
-	end
+  		group "#{gid}" do
+  		  members uids
+  		  append true
+  		  action :nothing
+      end.run_action(:modify)
+    end
 
-    # TODO:
     # save current job ids (new_resource.job_ids) as "ok"
-    # raise errors when both username/group not exists
+    job_ids = new_resource.job_ids
+    job_ids.each do |jid|
+      node.set['job_status'][jid]['status'] = 0
+    end
 
-  rescue
-    # TODO:
+  rescue Exception => e
     # just save current job ids as "failed"
     # save_failed_job_ids
-    raise
+    job_ids = new_resource.job_ids
+    job_ids.each do |jid|
+      node.set['job_status'][jid]['status'] = 1
+      node.set['job_status'][jid]['message'] = e.message
+    end
   end
 end

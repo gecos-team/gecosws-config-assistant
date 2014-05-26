@@ -12,10 +12,10 @@
 
 action :setup do
   begin
-    p = package "dconf-tools" do
+    package "dconf-tools" do
       action :nothing
-    end
-    p.run_action(:install) 
+    end.run_action(:install) 
+
     #if !new_resource.users.nil? and !new_resource.users.empty?
     if !new_resource.desktop_file.nil? and !new_resource.desktop_file.empty?
       #Chef::Log.info("Estableciendo fondo de escritorio #{new_resource.users[0].desktop_file}")
@@ -26,28 +26,28 @@ action :setup do
       end
       directory "/etc/dconf/profile" do
         recursive true
-        action :create
-      end
+        action :nothing
+      end.run_action(:create)
       directory "/etc/dconf/db/gecos.d/locks" do
         recursive true
-        action :create
-      end
+        action :nothing
+      end.run_action(:create)
       file "/etc/dconf/profile/user" do
         backup false
         content <<-eof
 system-db:gecos
 user-db:user
         eof
-        action :create
-      end
+        action :nothing
+      end.run_action(:create)
       file "/etc/dconf/db/gecos.d/locks/gecos.lock" do
         backup false
         content <<-eof
 /org/gnome/desktop/background/picture-uri
 /org/cinnamon/desktop/background/picture-uri
         eof
-        action :create
-      end
+        action :nothing
+      end.run_action(:create)
       file "/etc/dconf/db/gecos.d/gecos.key" do
         backup false
         content <<-eof
@@ -62,26 +62,41 @@ picture-uri='file://#{new_resource.desktop_file}'
 #        [org/cinnamon/desktop/background]
 #        picture-uri='file://#{new_resource.users[0].desktop_file}'
 #        eof
-        action :create
+        action :nothing
         notifies :run, "execute[update-dconf]", :delayed
-      end
+      end.run_action(:create)
     else
       file "/etc/dconf/db/gecos.d/locks/gecos.lock" do
         backup false
-        action :delete
-      end
+        action :nothing
+      end.run_action(:delete)
       file "/etc/dconf/db/gecos.d/gecos.key" do
         backup false
-        action :delete
-      end
+        action :nothing
+      end.run_action(:delete)
       file "/etc/dconf/profile/user" do
         backup false
-        action :delete
-      end 
+        action :nothing
+      end.run_action(:delete)
       execute "update-dconf" do
         command "dconf update"
-        action :run
-      end
+        action :nothing
+      end.run_action(:run)
+    end
+
+    # save current job ids (new_resource.job_ids) as "ok"
+    job_ids = new_resource.job_ids
+    job_ids.each do |jid|
+      node.set['job_status'][jid]['status'] = 0
+    end
+
+  rescue Exception => e
+    # just save current job ids as "failed"
+    # save_failed_job_ids
+    job_ids = new_resource.job_ids
+    job_ids.each do |jid|
+      node.set['job_status'][jid]['status'] = 1
+      node.set['job_status'][jid]['message'] = e.message
     end
   end
 end

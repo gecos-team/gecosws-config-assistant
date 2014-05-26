@@ -43,6 +43,18 @@ gecos_ws_mgmt_web_browser 'web browser' do
   action :setup
 end
 
+gecos_ws_mgmt_desktop_menu 'desktop menu' do
+  users node[:gecos_ws_mgmt][:users_mgmt][:desktop_menu_res][:users]
+  job_ids node[:gecos_ws_mgmt][:users_mgmt][:desktop_menu_res][:job_ids]
+  action :setup
+end
+
+gecos_ws_mgmt_file_browser 'file browser' do
+  users node[:gecos_ws_mgmt][:users_mgmt][:file_browser_res][:users]
+  job_ids node[:gecos_ws_mgmt][:users_mgmt][:file_browser_res][:job_ids]
+  action :setup
+end
+
 gecos_ws_mgmt_folder_sharing 'folder sharing' do
   users node[:gecos_ws_mgmt][:users_mgmt][:folder_sharing_res][:users]
   job_ids node[:gecos_ws_mgmt][:users_mgmt][:folder_sharing_res][:job_ids]

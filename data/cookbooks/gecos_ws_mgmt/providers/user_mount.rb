@@ -46,13 +46,15 @@ action :setup do
       action :nothing
     end.run_action(:create)
 
-
+    # save current job ids (new_resource.job_ids) as "ok"
     job_ids = new_resource.job_ids
     job_ids.each do |jid|
       node.set['job_status'][jid]['status'] = 0
-    end   
+    end
 
   rescue Exception => e
+    # just save current job ids as "failed"
+    # save_failed_job_ids
     job_ids = new_resource.job_ids
     job_ids.each do |jid|
       node.set['job_status'][jid]['status'] = 1

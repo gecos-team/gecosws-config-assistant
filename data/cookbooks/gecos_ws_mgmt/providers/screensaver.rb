@@ -10,7 +10,6 @@
 #
 
 action :setup do
-
   begin
   #  users = node[:gecos_ws_mgmt][:users_mgmt][:screensaver_res][:users] #if new_resource.users.nil?
     users = new_resource.users
@@ -61,11 +60,20 @@ action :setup do
         action :set
       end
     end
-    rescue
-      # TODO:
-      # just save current job ids as "failed"
-      # save_failed_job_ids
-      raise
-    end
-end
 
+    # save current job ids (new_resource.job_ids) as "ok"
+    job_ids = new_resource.job_ids
+    job_ids.each do |jid|
+      node.set['job_status'][jid]['status'] = 0
+    end
+
+  rescue Exception => e
+    # just save current job ids as "failed"
+    # save_failed_job_ids
+    job_ids = new_resource.job_ids
+    job_ids.each do |jid|
+      node.set['job_status'][jid]['status'] = 1
+      node.set['job_status'][jid]['message'] = e.message
+    end
+  end
+end

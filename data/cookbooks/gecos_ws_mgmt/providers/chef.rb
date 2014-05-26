@@ -20,8 +20,8 @@
 action :setup do
   begin
     package 'chef' do
-      action :install
-    end
+      action :nothing
+    end.run_action(:install)
     if not new_resource.chef_link_existing
       if new_resource.chef_link
         if not new_resource.chef_server_url.nil?
@@ -48,14 +48,16 @@ action :setup do
           execute 'chef-client' do
             environment 'LANG' => 'es_ES.UTF-8'
             command 'chef-client -j /usr/share/gecosws-config-assistant/base.json'
-            action :run
-          end
+            action :nothing
+          end.run_action(:run)
        
           Chef::Log.info("Activando servicio chef-client")
-          service 'chef-client' do
+          s = service 'chef-client' do
             supports :status => true, :restart => true, :reload => true
-            action [:enable, :start]
+            action :nothing
           end
+          s.run_action(:enable)
+          s.run_action(:start)
           Chef::Log.info("Chef: Creando fichero de control")
           template "/etc/chef.control" do
             source 'chef.control.erb'
@@ -70,8 +72,8 @@ action :setup do
           end 
           Chef::Log.info("Chef: Enliminando validation.pem")
           file "/etc/chef/validation.pem" do
-            action :delete
-          end
+            action :nothing
+          end.run_action(:delete)
         end 
       else
         Chef::Log.info("Chef: Configurndo Chef")
@@ -100,35 +102,37 @@ action :setup do
         Chef::Log.info("Borrando nodo " + new_resource.chef_node_name)
         execute 'Knife Delete' do
           command 'knife node delete \'' + new_resource.chef_node_name + '\' -c /etc/chef/knife.rb -y'
-          action :run
-        end
+          action :nothing
+        end.run_action(:run)
         Chef::Log.info("Borrando cliente " + new_resource.chef_node_name)
         execute 'Knife Delete' do
           command 'knife client delete \'' + new_resource.chef_node_name + '\' -c /etc/chef/knife.rb -y'
-          action :run
-        end
+          action :nothing
+        end.run_action(:run)
 
         Chef::Log.info("Desactivando servicio chef-client")
-        service 'chef-client' do
+        s = service 'chef-client' do
           supports :status => true, :restart => true, :reload => true
-          action [:disable, :stop]
+          action :nothing
         end
+        s.run_action(:disable)
+        s.run_action(:stop)
         Chef::Log.info("Chef: Elminando fichero de control")
         file "/etc/chef.control" do
-          action :delete
-        end
+          action :nothing
+        end.run_action(:delete)
         Chef::Log.info("Chef: Eliminando client.pem")
         file "/etc/chef/client.pem" do
-          action :delete
-        end
+          action :nothing
+        end.run_action(:delete)
         Chef::Log.info("Chef: Eliminando validation.pem")
         file "/etc/chef/validation.pem" do
-          action :delete
-        end
+          action :nothing
+        end.run_action(:delete)
         Chef::Log.info("Chef: Eliminando knife.rb")
         file "/etc/chef/knife.rb" do
-          action :delete
-        end
+          action :nothing
+        end.run_action(:delete)
       end
     else
       Chef::Log.info("Chef: Configurndo Knife")
@@ -169,8 +173,8 @@ action :setup do
       Chef::Log.info("Reregistrando el cliente " + new_resource.chef_node_name)
       execute 'Knife Reregrister' do
         command 'knife client reregister \'' + new_resource.chef_node_name + '\' -c /etc/chef/knife.rb > /etc/chef/client.pem'
-        action :run
-      end
+        action :nothing
+      end.run_action(:run)
     end
   rescue
     raise

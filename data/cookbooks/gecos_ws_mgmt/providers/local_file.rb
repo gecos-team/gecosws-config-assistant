@@ -19,13 +19,13 @@ action :setup do
          if ::File.file?(value.file)
            file value.file do
              backup makebackup
-             action :delete
-           end
+             action :nothing
+           end.run_action(:delete)
          elsif ::File.directory?(value.file)
            directory value.file do
              recursive true
-             action :delete
-           end
+             action :nothing
+           end.run_action(:delete)
          end
        end
       end
@@ -48,19 +48,26 @@ action :setup do
               owner file.user
               mode file.mode
               group file.group
-              action :create_if_missing
-           end
+              action :nothing
+           end.run_action(:create_if_missing)
         end
       end
     end
-    # TODO:
+    
     # save current job ids (new_resource.job_ids) as "ok"
+    job_ids = new_resource.job_ids
+    job_ids.each do |jid|
+      node.set['job_status'][jid]['status'] = 0
+    end
 
-  rescue
-    # TODO:
+  rescue Exception => e
     # just save current job ids as "failed"
     # save_failed_job_ids
-    raise
+    job_ids = new_resource.job_ids
+    job_ids.each do |jid|
+      node.set['job_status'][jid]['status'] = 1
+      node.set['job_status'][jid]['message'] = e.message
+    end
   end
 end
 

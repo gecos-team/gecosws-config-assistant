@@ -21,8 +21,8 @@ action :setup do
   begin
 
     package 'sssd' do
-      action :install
-    end
+      action :nothing
+    end.run_action(:install)
  
     if new_resource.enabled
       if new_resource.methods.include?('workgroup') and new_resource.workgroup_url.empty?
@@ -107,21 +107,37 @@ action :setup do
           notifies :run, 'execute[pam-auth-update]'
         end
   
-        service 'sssd' do
+        s = service 'sssd' do
           supports :status => true, :restart => true, :reload => true
-          action [:enable, :start]
+          action :nothing
         end
+        s.run_action(:enable)
+        s.run_action(:start)
       end 
     else
       Chef::Log.info("SSSD desactivado")
-      service 'sssd' do
+      s = service 'sssd' do
         supports :status => true, :restart => true, :reload => true
-        action [:disable, :stop]
-      end 
+        action :nothing
+      end
+      s.run_action(:disable)
+      s.run_action(:stop)
     end
 
-  rescue
-    raise
+    # save current job ids (new_resource.job_ids) as "ok"
+    job_ids = new_resource.job_ids
+    job_ids.each do |jid|
+      node.set['job_status'][jid]['status'] = 0
+    end
+
+  rescue Exception => e
+    # just save current job ids as "failed"
+    # save_failed_job_ids
+    job_ids = new_resource.job_ids
+    job_ids.each do |jid|
+      node.set['job_status'][jid]['status'] = 1
+      node.set['job_status'][jid]['message'] = e.message
+    end
   end
 end
 
