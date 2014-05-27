@@ -478,7 +478,7 @@ def get_hostnames(uri_gcc, username_gcc, password_gcc):
     #Implements code to call API rest to get node list
     global CREDENTIAL_CACHED
     global ACTUAL_USER
-    uri_gcc = uri_gcc + '/node/list/'
+    uri_gcc = uri_gcc + '/computers/list/'
     url_parsed = urlparse.urlparse(uri_gcc)
     user = username_gcc
     password = password_gcc
@@ -535,7 +535,7 @@ def select_node(title, text, hostnames):
     hboxws.pack_start(lblws, False, False, False)
     ws_store = Gtk.ListStore(str, str)
     for ws in hostnames:
-        ws_store.append([ws['pclabel'], ws['chef_id']])
+        ws_store.append([ws['name'], ws['node_chef_id']])
 
     ws_combo = Gtk.ComboBox.new_with_model(ws_store)
     renderer_text = Gtk.CellRendererText()

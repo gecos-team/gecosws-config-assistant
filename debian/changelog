@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.4.1-0gecos3) precise; urgency=low
+
+  *  Replace api
+
+ -- David Amian <damian@emergya.com>  Tue, 27 May 2014 19:15:20 +0200
+
 gecosws-config-assistant (0.4.1-0gecos2) precise; urgency=low
 
   * Update cookbooks 
