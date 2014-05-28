@@ -30,7 +30,6 @@ default[:gecos_ws_mgmt][:software_mgmt][:app_config_res][:thunderbird_config] = 
 default[:gecos_ws_mgmt][:software_mgmt][:app_config_res][:job_ids] = [] 
 default[:gecos_ws_mgmt][:software_mgmt][:app_config_res][:updated_by] = [] 
 
-
 default[:gecos_ws_mgmt][:printers_mgmt][:printers_res][:printers_list] = []
 default[:gecos_ws_mgmt][:printers_mgmt][:printers_res][:job_ids] = []
 default[:gecos_ws_mgmt][:printers_mgmt][:printers_res][:updated_by] = []
@@ -45,6 +44,12 @@ default[:gecos_ws_mgmt][:misc_mgmt][:auto_updates_res][:updated_by] = []
 default[:gecos_ws_mgmt][:misc_mgmt][:tz_date_res][:server] = ""
 default[:gecos_ws_mgmt][:misc_mgmt][:tz_date_res][:job_ids] = []
 default[:gecos_ws_mgmt][:misc_mgmt][:tz_date_res][:updated_by] = []
+
+default[:gecos_ws_mgmt][:misc_mgmt][:power_conf_res][:cpu_freq_gov] = ""
+default[:gecos_ws_mgmt][:misc_mgmt][:power_conf_res][:auto_shutdown] = {}
+default[:gecos_ws_mgmt][:misc_mgmt][:power_conf_res][:usb_autosuspend] = ""
+default[:gecos_ws_mgmt][:misc_mgmt][:power_conf_res][:job_ids] = []
+default[:gecos_ws_mgmt][:misc_mgmt][:power_conf_res][:updated_by] = []
 
 default[:gecos_ws_mgmt][:misc_mgmt][:local_users_res][:users_list] =[]
 default[:gecos_ws_mgmt][:misc_mgmt][:local_users_res][:job_ids] =[]

@@ -56,7 +56,7 @@ class GCCConf():
             print msg % ('gcc_link',)
 
     def validate(self):
-        valid = self._data['run'] == False or (validation.is_url(self._data['uri_gcc']) and self._data['gcc_username'] != '' and self._data['gcc_nodename'] != '' and self._data['gcc_link'] != None and self._data['gcc_pwd_user'] != '' and self._data['ou_username'] != None and self._data['selected_ou'] != '')
+        valid = self._data['run'] == False or (validation.is_url(self._data['uri_gcc']) and self._data['gcc_username'] != '' and self._data['gcc_nodename'] != '' and self._data['gcc_link'] != None and self._data['gcc_pwd_user'] != '' and self._data['ou_username'] != None)
         return valid
 
     def get_uri_gcc(self):

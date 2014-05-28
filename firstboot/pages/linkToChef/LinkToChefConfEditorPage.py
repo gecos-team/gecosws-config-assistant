@@ -93,7 +93,7 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
                 result = serverconf.select_ou(_('Select OU'), _('Select the OU to link into GCC Ui'), self.gcc_conf.get_ou_username()) 
                 self.gcc_conf.set_selected_ou(result)
             elif len(self.gcc_conf.get_ou_username()) == 1:
-                self.gcc_conf.set_selected_ou(self.gcc_conf.get_ou_username()[0])
+                self.gcc_conf.set_selected_ou(self.gcc_conf.get_ou_username()[0][0])
             for inter in self.interfaces:
                 if not inter[1].startswith('127.0'):
                     break

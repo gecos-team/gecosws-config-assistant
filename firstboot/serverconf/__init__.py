@@ -105,7 +105,11 @@ def get_json_content():
         fp = open(__JSON_CACHE__, 'r')
         content = fp.read()
         fp.close()
+
         conf = json.loads(content)
+        if conf["chef"]["chef_server_uri"] == "https://localhost/":
+            chef_uri = conf["gcc"]["uri_gcc"].split('//')[1].split(':')[0]
+            conf["chef"]["chef_server_uri"] = "https://" + chef_uri + '/'
         return conf
     else:
         return None
@@ -122,6 +126,9 @@ def get_json_autoconf(url):
     fp_cached.close()
     
     conf = json.loads(content)
+    if conf["chef"]["chef_server_uri"] == "https://localhost/":
+        chef_uri = conf["gcc"]["uri_gcc"].split('//')[1].split(':')[0]
+        conf["chef"]["chef_server_uri"] = "https://" + chef_uri + '/'
     return conf
 
 def get_server_conf(content):
