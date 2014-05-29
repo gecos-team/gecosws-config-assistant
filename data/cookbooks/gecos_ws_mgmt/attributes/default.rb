@@ -73,24 +73,6 @@ default[:gecos_ws_mgmt][:misc_mgmt][:local_admin_users_res][:local_admin_list] =
 default[:gecos_ws_mgmt][:misc_mgmt][:local_admin_users_res][:job_ids] = []
 default[:gecos_ws_mgmt][:misc_mgmt][:local_admin_users_res][:updated_by] = []
 
-default[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_server_url] = ''
-default[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_link] = false
-default[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_validation_pem] = ''
-default[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_node_name] = ''
-default[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_admin_name] = ''
-default[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:job_ids] = []
-default[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:updated_by] = []
-
-default[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:uri_gcc] = ''
-default[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:gcc_link] = false
-default[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:gcc_nodename] = ''
-default[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:gcc_username] = ''
-default[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:gcc_pwd_user] = ''
-default[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:gcc_selected_ou] = ''
-default[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:job_ids] = [] 
-default[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:updated_by] = [] 
-
-
 default[:gecos_ws_mgmt][:users_mgmt][:user_apps_autostart_res][:users] = []
 default[:gecos_ws_mgmt][:users_mgmt][:user_apps_autostart_res][:job_ids] = []
 default[:gecos_ws_mgmt][:users_mgmt][:user_apps_autostart_res][:updated_by] = []

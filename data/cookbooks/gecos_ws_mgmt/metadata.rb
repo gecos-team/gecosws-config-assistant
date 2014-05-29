@@ -1100,17 +1100,8 @@ shutdown_options_js = {
       items: {
         type: "string"
       }
-    }
-  },
-  job_ids: {
-    type: "array",
-    minItems: 0,
-    uniqueItems: true,
-    items: {
-      type: "string"
-    }
-  }, 
-  updated_by: updated_js
+    }, 
+    updated_by: updated_js
  }
 }
 

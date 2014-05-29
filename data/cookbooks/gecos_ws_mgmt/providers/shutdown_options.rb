@@ -1,0 +1,61 @@
+#
+# Cookbook Name:: gecos-ws-mgmt
+# Provider:: shutdown_options
+#
+# Copyright 2013, Junta de Andalucia
+# http://www.juntadeandalucia.es/
+#
+# All rights reserved - EUPL License V 1.1
+# http://www.osor.eu/eupl
+#
+
+action :setup do
+  begin
+    package "dconf-tools" do
+     action :nothing
+    end.run_action(:install) 
+
+    systemlock = new_resource.systemlock
+    users = new_resource.users
+
+    # System-level lock settings
+    system = gecos_ws_mgmt_system_settings "disable-log-out" do
+        provider "gecos_ws_mgmt_system_settings"
+        schema "org.cinnamon.desktop.lockdown"
+        type "boolean"
+        value "#{systemset}"
+        action :nothing
+    end
+    system.run_action(:lock) if systemlock
+    system.run_action(:unlock) if !systemlock
+
+    # User-level key values
+    users.each do |user|
+      username = user.username
+      disable_log_out = user.disable_log_out
+
+      gecos_ws_mgmt_desktop_settings "disable-log-out" do
+        provider "gecos_ws_mgmt_gsettings"
+        schema "org.cinnamon.desktop.lockdown"
+        type "boolean"
+        username username
+        value "#{disable_log_out}"
+      end.run_action(:set)
+    end
+    
+    # save current job ids (new_resource.job_ids) as "ok"
+    job_ids = new_resource.job_ids
+    job_ids.each do |jid|
+      node.set['job_status'][jid]['status'] = 0
+    end
+
+  rescue Exception => e
+    # just save current job ids as "failed"
+    # save_failed_job_ids
+    job_ids = new_resource.job_ids
+    job_ids.each do |jid|
+      node.set['job_status'][jid]['status'] = 1
+      node.set['job_status'][jid]['message'] = e.message
+    end
+  end
+end

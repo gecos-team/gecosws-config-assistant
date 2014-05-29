@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=GECOS Config Assistant
 Comment=GECOS Config Assistant application
-Categories=GNOME;Utility;
+Categories=Preferences;Settings;
 Exec=gecos-config-assistant-launcher
 X-GNOME-Autostart-Delay=3
 X-GNOME-Autostart-Phase=Desktop
