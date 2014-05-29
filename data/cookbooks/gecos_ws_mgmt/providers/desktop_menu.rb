@@ -10,7 +10,7 @@
 #
 
 require "rexml/document"
-require 'xdg'
+require "xdg"
 
 APPLICATIONS_DIR = "/usr/share/applications/"
 

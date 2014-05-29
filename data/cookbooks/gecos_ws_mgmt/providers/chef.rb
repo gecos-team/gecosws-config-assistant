@@ -46,7 +46,7 @@ action :setup do
           end      
           Chef::Log.info("Chef: Enlazando al servidor Chef")
           execute 'chef-client' do
-            environment 'LANG' => 'es_ES.UTF-8'
+            environment 'LANG' => 'es_ES.UTF-8', 'LC_ALL' => 'es_ES.UTF-8'
             command 'chef-client -j /usr/share/gecosws-config-assistant/base.json'
             action :run
           end

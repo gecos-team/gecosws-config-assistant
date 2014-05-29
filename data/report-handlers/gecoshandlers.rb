@@ -16,7 +16,7 @@ module GECOSReports
         end
         begin
           resource = RestClient::Resource.new(gcc_control['uri_gcc'] + '/chef/status/')
-          response = resource.put :node_id => gcc_control['gcc_nodename']
+          response = resource.put :node_id => gcc_control['gcc_nodename'], :gcc_username => gcc_control['gcc_username']
           if not response.code.between?(200,299)
             Chef::Log.error('The GCC URI not response')
           else

@@ -336,7 +336,9 @@ def run_chef_solo(fp):
         solo_rb = get_prefix() + '/share/gecosws-config-assistant/solo.rb'
         cmd = '"chef-solo" "-c" "%s" "-j" "%s"' % (solo_rb, fp)
         args = shlex.split(cmd)
-        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=envs)
+        log_chef_solo = open('/tmp/chef-solo', "w", 1)
+        log_chef_solo_err = open('/tmp/chef-solo-err', "w", 1)
+        process = subprocess.Popen(args, stdout=log_chef_solo, stderr=log_chef_solo_err, env=envs)
         exit_code = os.waitpid(process.pid, 0)
         output = process.communicate()[0]
 
