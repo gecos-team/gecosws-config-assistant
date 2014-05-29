@@ -53,3 +53,10 @@ if not node[:gecos_ws_mgmt][:network_mgmt][:sssd_res].nil?
     action  :setup
   end
 end
+if not node[:gecos_ws_mgmt][:misc_mgmt][:local_users_res].nil?
+  gecos_ws_mgmt_local_users 'manage local users' do
+    users_list node[:gecos_ws_mgmt][:misc_mgmt][:local_users_res][:users_list]
+    job_ids node[:gecos_ws_mgmt][:misc_mgmt][:local_users_res][:job_ids]
+    action :setup
+  end
+end  

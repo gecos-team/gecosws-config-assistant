@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.4.7-0gecos1) precise; urgency=low
+
+  * Fix python bugs 
+
+ -- David Amian <damian@emergya.com>  Fri, 30 May 2014 00:13:34 +0200
+
 gecosws-config-assistant (0.4.6-0gecos1) precise; urgency=low
 
   * fix chef-user
