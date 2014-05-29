@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.4.5-0gecos2) precise; urgency=low
+
+  * Added chef-user to run as login 
+
+ -- David Amian <damian@emergya.com>  Thu, 29 May 2014 18:59:02 +0200
+
 gecosws-config-assistant (0.4.5-0gecos1) precise; urgency=low
 
   * Update cookbooks and added logs 
