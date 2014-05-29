@@ -1075,16 +1075,30 @@ shutdown_options_js = {
   title: "Shutdown Options",
   type: "object",
   required: ["users"],
-  properties:
-  {users: {
-    type: "array",
-    title: "Users",
-    items: {
-      type: "object",
-      required: ["username","options"],
-      properties:{
-        username: {title: "Username", type: "string"},
-        options: {type: "array",items:{enum: ["shutdown","restart","close_session"],title: "Options", type:"string"}}
+  properties: { 
+    systemlock: { type: "boolean", title: "System-wide lockdown of the key" },
+    users: {
+      type: "array", 
+      title: "Users",
+      items: {
+        type: "object",
+        required: ["username", "disable_log_out"],
+        properties:{
+          username: { title: "Username", type: "string" },
+          disable_log_out: {
+            title: "Disable log out?",
+            type: "boolean",
+            default: false
+          }
+        }
+      }
+    },
+    job_ids: {
+      type: "array",
+      minItems: 0,
+      uniqueItems: true,
+      items: {
+        type: "string"
       }
     }
   },
