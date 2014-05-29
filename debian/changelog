@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.4.4-0gecos1) precise; urgency=low
+
+  * Removed bin unused files
+
+ -- David Amian <damian@emergya.com>  Thu, 29 May 2014 11:49:28 +0200
+
 gecosws-config-assistant (0.4.3-0gecos1) precise; urgency=low
 
   * Fix cookbooks 

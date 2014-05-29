@@ -188,10 +188,7 @@ workstation to different services',
 
     scripts=[
         'bin/gecos-config-assistant',
-        'bin/gecos-config-assistant-launcher',
-        'bin/firstboot-ldapconf.sh',
-        'bin/firstboot-chefconf.sh',
-        'bin/firstboot-adconf.sh'
+        'bin/gecos-config-assistant-launcher'
     ],
     data_files = datafiles,
   #  data_files=[
