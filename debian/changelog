@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.4.2-0gecos2) precise; urgency=low
+
+  * Update cookbooks
+
+ -- David Amian <damian@emergya.com>  Thu, 29 May 2014 09:57:51 +0200
+
 gecosws-config-assistant (0.4.2-0gecos1) precise; urgency=low
 
   * Fix chef_url if localhost
