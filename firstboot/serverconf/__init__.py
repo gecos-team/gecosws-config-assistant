@@ -245,7 +245,7 @@ def create_solo_json(server_conf):
             sssd_ad_json['user_ad'] = ad_prop.get_user_ad()
             sssd_ad_json['passwd_ad'] = ad_prop.get_passwd_ad()
             sssd_ad_json['enabled'] = server_conf.get_auth_conf().get_auth_link()
-            json_solo['gecos_ws_mgmt']['misc_mgmt']['sssd_res'] = sssd_ad_json
+            json_solo['gecos_ws_mgmt']['network_mgmt']['sssd_res'] = sssd_ad_json
             
         else:
             auth_prop = server_conf.get_auth_conf().get_auth_properties()
