@@ -233,7 +233,11 @@ workstation. \n\nUsers authenticated by external services (AD, LDAP...) director
             changeuser.set_user(user['login'])
             changeuser.set_name(user['name'])
             if update_passwd:
-                changeuser.set_password(user['password'])
+                cmd = '"openssl" "passwd" "-1" "%s"' % (user['password'])
+                args = shlex.split(cmd)
+                process = subprocess.Popen(args, stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+                output, errors = process.communicate()
+                changeuser.set_password(output.rstrip())
             changeuser.add_group(user['groups'])
             
             #avoid to add 2 or more modify entries for the same user
@@ -306,7 +310,11 @@ workstation. \n\nUsers authenticated by external services (AD, LDAP...) director
             newuser.set_actiontorun('create')
             newuser.set_user(login_info['login'])
             newuser.set_name(login_info['name'])
-            newuser.set_password(login_info['password'])
+            cmd = '"openssl" "passwd" "-1" "%s"' % (login_info['password'])
+            args = shlex.split(cmd)
+            process = subprocess.Popen(args, stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+            output, errors = process.communicate()
+            newuser.set_password(output.rstrip())
             for user in removeusers:
                 if newuser.get_user() == user.get_user():
                     if newuser.get_user() in createdusers.keys():
