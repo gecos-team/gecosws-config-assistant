@@ -241,7 +241,7 @@ def create_solo_json(server_conf):
                 sssd_ad_json = {'krb5_url': krb5_file, 'smb_url': smb_file, 'sssd_url': sssd_file, 'mkhomedir_url': pam_file}
             else:
                 ad_prop = auth_prop.get_ad_properties()
-                sssd_ad_json = {'domain_list': [ad_prop.get_domain()], 'workgroup' : ad_prop.get_workgroup()}
+                sssd_ad_json = {'domain_list': [{'domain_name':ad_prop.get_domain()}], 'workgroup' : ad_prop.get_workgroup()}
             sssd_ad_json['user_ad'] = ad_prop.get_user_ad()
             sssd_ad_json['passwd_ad'] = ad_prop.get_passwd_ad()
             sssd_ad_json['enabled'] = server_conf.get_auth_conf().get_auth_link()

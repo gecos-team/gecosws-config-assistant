@@ -37,7 +37,6 @@ action :setup do
           password passwd
           home user_home
           comment "GECOS managed user"
-          system true
           shell "/bin/bash"
           action :nothing
         end.run_action(:create)
