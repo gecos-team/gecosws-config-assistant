@@ -205,21 +205,29 @@ def create_solo_json(server_conf):
                 sssd_file = 'file://' + sssd_file
                 pam_file = create_conf_file(ad_prop.get_pam_conf())
                 pam_file = 'file://' + pam_file
-                sssd_ad_json = {'krb5_url': krb5_file, 'smb_url': smb_file, 'sssd_url': sssd_file, 'mkhomedir_url': pam_file}
+                sssd_ad_json = {'krb5_url': krb5_file, 'smb_url': smb_file, 'sssd_url': sssd_file, 'mkhomedir_url': pam_file, 'domain': {}}
             else:
                 ad_prop = auth_prop.get_ad_properties()
-                sssd_ad_json = {'domain': ad_prop.get_domain(), 'workgroup' : ad_prop.get_workgroup()}
-            sssd_ad_json['user_ad'] = ad_prop.get_user_ad()
-            sssd_ad_json['passwd_ad'] = ad_prop.get_passwd_ad()
+                sssd_ad_json = {'domain': {}}
             sssd_ad_json['enabled'] = server_conf.get_auth_conf().get_auth_link()
-            sssd_ad_json['auth_type'] = auth_type
+            sssd_ad_json['domain']['ad_user'] = ad_prop.get_user_ad()
+            sssd_ad_json['domain']['name'] = ad_prop.get_domain()
+            sssd_ad_json['domain']['ad_passwd'] = ad_prop.get_passwd_ad()
+            sssd_ad_json['domain']['type'] = auth_type
+            sssd_ad_json['domain']['workgroup'] = ad_prop.get_workgroup()
             json_solo['gecos_ws_mgmt']['network_mgmt']['sssd_res'] = sssd_ad_json
             
         else:
             auth_prop = server_conf.get_auth_conf().get_auth_properties()
-            sssd_ldap_json = {'uri': auth_prop.get_url(), 'base': auth_prop.get_basedn(), 'basegroup': auth_prop.get_basedngroup(), 'binddn': auth_prop.get_binddn(), 'bindpwd': auth_prop.get_password()}
+            sssd_ldap_json = {'domain':{}}
             sssd_ldap_json['enabled'] = server_conf.get_auth_conf().get_auth_link()
-            sssd_ldap_json['auth_type'] = auth_type
+            sssd_ldap_json['domain']['name'] = 'ldap_gecos_conf'
+            sssd_ldap_json['domain']['ldap_uri'] = auth_prop.get_url()
+            sssd_ldap_json['domain']['type'] = auth_type
+            sssd_ldap_json['domain']['search_base'] = auth_prop.get_basedn()
+            sssd_ldap_json['domain']['base_group'] = auth_prop.get_basedngroup()
+            sssd_ldap_json['domain']['bind_dn'] = auth_prop.get_binddn()
+            sssd_ldap_json['domain']['bind_pass'] = auth_prop.get_password()
             json_solo['gecos_ws_mgmt']['network_mgmt']['sssd_res'] = sssd_ldap_json
     if server_conf.get_gcc_conf().get_uri_gcc() != '':
         gcc_conf = server_conf.get_gcc_conf()
