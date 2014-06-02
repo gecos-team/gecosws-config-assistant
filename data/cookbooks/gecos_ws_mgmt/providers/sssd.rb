@@ -127,23 +127,21 @@ action :setup do
           notifies :run, 'execute[pam-auth-update]'
         end
   
-        s = service 'sssd' do
+        service 'sssd' do
           supports :status => true, :restart => true, :reload => true
-          action :nothing
+          action [:enable, :start]
         end
-        s.run_action(:enable)
-        s.run_action(:start)
+        
         file "/etc/gca-sssd.control" do
             action :create
         end
     else
       Chef::Log.info("SSSD desactivado")
-      s = service 'sssd' do
+      service 'sssd' do
         supports :status => true, :restart => true, :reload => true
-        action :nothing
+        action [:stop, :disable]
       end
-      s.run_action(:disable)
-      s.run_action(:stop)
+      
       file "/etc/gca-sssd.control" do
         action :delete
       end

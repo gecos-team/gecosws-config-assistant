@@ -49,8 +49,8 @@ __BIN_PATH__ = firstbootconfig.get_bin_path()
 __LDAP_CONF_SCRIPT__ = 'firstboot-ldapconf.sh'
 __CHEF_CONF_SCRIPT__ = 'firstboot-chefconf.sh'
 __GCC_FLAG__ = '/etc/gcc.control'
-__LDAP_FLAG__ = '/etc/ldap.control'
-__AD_FLAG__ = '/etc/ad.control'
+__LDAP_FLAG__ = '/etc/gca-sssd.control'
+__AD_FLAG__ = __LDAP_FLAG__
 __CHEF_PEM__ = '/etc/chef/validation.pem'
 __AD_CONF_SCRIPT__ = 'firstboot-adconf.sh'
 

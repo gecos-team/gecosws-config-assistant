@@ -78,16 +78,16 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.main_window.btnNext.set_sensitive(True)
 
         self.ui.chkUnlinkLDAP.set_visible(self.ldap_is_configured)
-        self.ui.chkUnlinkAD.set_visible(self.ad_is_configured)
+        self.ui.chkUnlinkAD.set_visible(False)
 
 
     def translate(self):
         desc = _('Users in this workstation can be authenticated against a external system.\n\n')
 
         if self.ldap_is_configured:
-            desc1 = _('This workstation currently uses a LDAP server for user authentication.')
+            desc1 = _('This workstation currently uses an authentication user method.')
         elif self.ad_is_configured:
-            desc1 = _('This workstation currently uses an Active Directory server for user authentication.')
+            desc1 = _('This workstation currently uses an authentication user method.')
         else:
             desc1 = _('No authentication system is currently configured.')
 
@@ -96,8 +96,8 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.ui.lblDescription.set_text(desc)
         self.ui.lblDescription1.set_text(desc1)
         self.ui.lblDescription2.set_text(desc2)
-        self.ui.chkUnlinkLDAP.set_label(_('Unlink from LDAP'))
-        self.ui.chkUnlinkAD.set_label(_('Unlink from Active Directory'))
+        self.ui.chkUnlinkLDAP.set_label(_('Unlink from authentication method'))
+        self.ui.chkUnlinkAD.set_label(_('Unlink from authentication method'))
         self.ui.radioLDAP.set_label(_('LDAP'))
         self.ui.radioAD.set_label(_('Active Directory'))
         self.ui.radioNone.set_label(_('None'))
