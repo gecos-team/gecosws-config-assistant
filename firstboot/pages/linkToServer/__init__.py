@@ -47,8 +47,8 @@ __STATUS_ERROR__ = 3
 __LDAP__ = 'ldap'
 __AD__ = 'ad'
 
-__AD_FLAG__ = '/etc/ad.control'
-__LDAP_FLAG__ = '/etc/ldap.control'
+__AD_FLAG__ = '/etc/gca-sssd.control'
+__LDAP_FLAG__ = __AD_FLAG__
 
 
 def get_page(main_window):
@@ -176,10 +176,10 @@ class LinkToServerPage(PageWindow.PageWindow):
 
                 if self.unlink_ldap:
                     auth_conf.set_auth_type('ldap')
-                    os.remove(__LDAP_FLAG__)
+                    #os.remove(__LDAP_FLAG__)
                 else:
                     auth_conf.set_auth_type('ad')
-                    os.remove(__AD_FLAG__)
+                    #os.remove(__AD_FLAG__)
 
             auth_conf.set_auth_link(False)
             load_page_callback(LinkToServerResultsPage, {

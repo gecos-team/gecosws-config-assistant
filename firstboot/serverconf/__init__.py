@@ -335,8 +335,15 @@ def unlink_from_sssd():
     json_solo['gecos_ws_mgmt'] = {}
     json_solo['gecos_ws_mgmt']['network_mgmt'] = {}
     sssd_json = {}
-    sssd_json['enabled'] = server_conf.get_auth_conf().get_auth_link()
+    sssd_json['enabled'] = False
+    sssd_json['domain'] = {}
     json_solo['gecos_ws_mgmt']['network_mgmt']['sssd_res'] = sssd_json
+    (fd, filepath) = tempfile.mkstemp(dir='/tmp')
+    fp = os.fdopen(fd, "w+b")
+    if fp:
+        fp.write(json.dumps(json_solo,indent=2))
+        fp.close()
+    run_chef_solo(filepath)
     return []
 
 
