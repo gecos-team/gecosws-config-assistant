@@ -25,27 +25,28 @@ action :setup do
     end.run_action(:install)
  
     if new_resource.enabled
-      if new_resource.methods.include?('workgroup') and new_resource.workgroup_url.empty?
-        Chef::Log.info("SSSD sin configuracion correcta")
-      else      
+      domain = new_resource.domain
         Chef::Log.info("SSSD activado")
-        Chef::Log.info("SSSD_setup: Configurando el grupo de trabajo #{new_resource.workgroup}")
-        new_resource.domain_list.each do |domain|
-          Chef::Log.info("SSSD_setup: Configurando el dominio #{domain.domain_name}")
-        end 
-  
-        # Have authconfig enable SSSD in the pam files
-        execute 'pam-auth-update' do
-          command 'pam-auth-update --package'
-          action :nothing
+      if domain.type == "ad" 
+        %w(workgroup name).each do |attrib|
+          raise "Falta atributo " + attrib unless domain.key?(attrib)
         end
-   
+
+        Chef::Log.info("SSSD_setup: Configurando el grupo de trabajo #{domain.workgroup}")
+        ad_user = domain.ad_user
+        ad_passwd =  domain.ad_passwd
+        execute "net-join-ads" do
+          command "net ads join -U #{ad_user}%#{ad_passwd}"
+          action :nothing 
+        end
+
         if new_resource.methods.include?('smb_url') and !new_resource.smb_url.nil?
           remote_file "/etc/samba/smb.conf" do
             source new_resource.smb_url
             owner 'root'
             group 'root'
             mode 00644
+            notifies :run, "execute[net-join-ads]", :delayed
           end
         else
           template '/etc/samba/smb.conf' do
@@ -54,9 +55,10 @@ action :setup do
             group 'root'
             mode 00644
             variables ({
-              :workgroup => new_resource.workgroup,
-              :realm => new_resource.domain_list[0].domain_name.upcase
+              :domain => domain,
+              :realm => domain.name.upcase
             })
+            notifies :run, "execute[net-join-ads]", :delayed
           end
         end
    
@@ -66,6 +68,7 @@ action :setup do
             owner 'root'
             group 'root'
             mode 00644
+            notifies :run, "execute[net-join-ads]", :delayed
           end
         else
           template '/etc/krb5.conf' do
@@ -74,12 +77,29 @@ action :setup do
             group 'root'
             mode 00644
             variables ({
-              :realm => new_resource.domain_list[0].domain_name.upcase,
-              :domain => new_resource.domain_list
+              :realm => domain.name.upcase,
+              :domain => domain
             })
+            notifies :run, "execute[net-join-ads]", :delayed
           end
         end
+
+      elsif domain.type == "ldap"
+        %w(name ldap_uri search_base).each do |attrib|
+          raise "Falta atributo " + attrib unless domain.key?(attrib)
+        end 
+      else
+        raise "No se ha especificado el tipo de dominio"
+      end
+        Chef::Log.info("SSSD_setup: Configurando el dominio #{domain.name}")
   
+        # Have authconfig enable SSSD in the pam files
+        execute 'pam-auth-update' do
+          command 'pam-auth-update --package'
+          action :nothing
+        end
+   
+
         if new_resource.methods.include?('sssd_url') and !new_resource.sssd_url.nil?
           remote_file "/etc/samba/sssd.conf" do
             source new_resource.sssd_url
@@ -94,7 +114,7 @@ action :setup do
             group 'root'
             mode 00600
             variables ({
-              :domain => new_resource.domain_list
+              :domain => domain
             })
           end
         end
@@ -113,7 +133,6 @@ action :setup do
         end
         s.run_action(:enable)
         s.run_action(:start)
-      end 
     else
       Chef::Log.info("SSSD desactivado")
       s = service 'sssd' do
@@ -131,6 +150,7 @@ action :setup do
     end
 
   rescue Exception => e
+    raise e.message
     # just save current job ids as "failed"
     # save_failed_job_ids
     job_ids = new_resource.job_ids

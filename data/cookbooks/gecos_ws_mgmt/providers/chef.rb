@@ -173,8 +173,8 @@ action :setup do
         action :run
       end
     end
-  rescue
-    raise
+  rescue Exception => e
+    raise e.message
   end
 end
 

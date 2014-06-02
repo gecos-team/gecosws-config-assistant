@@ -19,6 +19,7 @@ action :setup do
     users = new_resource.users_list
     users.each do |usrdata| 
       username = usrdata.user
+      fullname = usrdata.name
       passwd = usrdata.password
       actiontorun = usrdata.actiontorun
       grps = usrdata.groups
@@ -36,7 +37,7 @@ action :setup do
         user username do
           password passwd
           home user_home
-          comment "GECOS managed user"
+          comment fullname
           shell "/bin/bash"
           action :nothing
         end.run_action(:create)
@@ -80,6 +81,7 @@ action :setup do
   rescue Exception => e
     # just save current job ids as "failed"
     # save_failed_job_ids
+    raise e.message
     job_ids = new_resource.job_ids
     job_ids.each do |jid|
       node.set['job_status'][jid]['status'] = 1

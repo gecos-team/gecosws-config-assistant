@@ -46,23 +46,14 @@ if not node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res].nil?
 end
 
 if not node[:gecos_ws_mgmt][:network_mgmt][:sssd_res].nil?
-  domain_name='ldap_conf'
-  if node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:domain].nil?
-    domain_name=node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:domain]
-  end
-  d_list = [{"domain_name"=>domain_name,
-    "type"=>node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:auth_type],
-    "base_uri"=>node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:uri],
-    "search_base"=>node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:base],
-    "basegroup"=>node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:basegroup],
-    "binddn"=>node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:binddn],
-    "bindpwd"=>node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:bindpwd]
-    }]
-  gecos_ws_mgmt_sssd 'configure_sssd' do
-    domain_list d_list
+  gecos_ws_mgmt_sssd node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:domain] do
     enabled node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:enabled]
     workgroup node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:workgroup]
     job_ids node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:job_ids]
+    krb5_url node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:krb5_url]
+    smb_url node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:smb_url]
+    sssd_url node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:sssd_url]
+    mkhomedir_url node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:mkhomedir_url]
     action  :setup
   end
 end

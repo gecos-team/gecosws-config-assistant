@@ -24,6 +24,16 @@ action :setup do
       end.run_action(:run)
     end
 
+    template '/etc/default/ntpdate' do
+      source 'ntpdate.erb'
+      owner 'root'
+      group 'root'
+      mode 00644
+      variables ({
+        :ntp_server => new_resource.server
+      })
+    end
+
     # save current job ids (new_resource.job_ids) as "ok"
     job_ids = new_resource.job_ids
     job_ids.each do |jid|
@@ -31,6 +41,7 @@ action :setup do
     end
 
   rescue Exception => e
+    raise e.message
     # just save current job ids as "failed"
     # save_failed_job_ids
     job_ids = new_resource.job_ids
