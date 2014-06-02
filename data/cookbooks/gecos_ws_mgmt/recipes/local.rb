@@ -51,7 +51,8 @@ if not node[:gecos_ws_mgmt][:network_mgmt][:sssd_res].nil?
     not node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:sssd_url].nil? and
     not node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:mkhomedir_url].nil?
 
-    gecos_ws_mgmt_sssd node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:domain] do
+    gecos_ws_mgmt_sssd "configure sssd" do
+      domain node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:domain]
       enabled node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:enabled]
       job_ids node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:job_ids]
       krb5_url node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:krb5_url]
@@ -62,7 +63,8 @@ if not node[:gecos_ws_mgmt][:network_mgmt][:sssd_res].nil?
     end
 
   else
-    gecos_ws_mgmt_sssd node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:domain] do
+    gecos_ws_mgmt_sssd "configure sssd" do
+      domain node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:domain]
       enabled node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:enabled]
       job_ids node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:job_ids]
       action  :setup

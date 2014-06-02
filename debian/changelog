@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.5.2-0gecos3) precise; urgency=low
+
+  * Fix domain attr 
+
+ -- David Amian <damian@emergya.com>  Mon, 02 Jun 2014 19:31:52 +0200
+
 gecosws-config-assistant (0.5.2-0gecos2) precise; urgency=low
 
   * Fix sssd attributes 
