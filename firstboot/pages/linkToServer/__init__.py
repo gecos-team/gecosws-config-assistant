@@ -72,7 +72,7 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.ad_is_configured = serverconf.ad_is_configured()
         is_configured = self.ldap_is_configured or self.ad_is_configured
 
-
+        self.ui.radioNone.set_active(True)
         self.ui.boxUnlinkOptions.set_visible(is_configured)
         self.ui.boxAuthSection.set_visible(not is_configured)
         self.main_window.btnNext.set_sensitive(True)
@@ -159,9 +159,9 @@ class LinkToServerPage(PageWindow.PageWindow):
             messages = []
 # TODO Implements unlink from ldap or ad into serverconf class
             if self.unlink_ldap:
-                messages += serverconf.unlink_from_ldap()
+                messages += serverconf.unlink_from_sssd()
             else:
-                messages += serverconf.unlink_from_ad()
+                messages += serverconf.unlink_from_sssd()
             result = len(messages) == 0
             if result:
                 server_conf = serverconf.get_server_conf(None)
