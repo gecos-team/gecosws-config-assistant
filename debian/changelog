@@ -1,3 +1,12 @@
+gecosws-config-assistant (0.5.2-0gecos1) precise; urgency=low
+
+  * Added new sssd resource
+  * Added ntp servers to default ntp conf
+  * Added raise to local resources
+  * Set None as default auth method
+
+ -- David Amian <damian@emergya.com>  Mon, 02 Jun 2014 18:54:25 +0200
+
 gecosws-config-assistant (0.5.1-0gecos4) precise; urgency=low
 
   * Adding force yes to update
