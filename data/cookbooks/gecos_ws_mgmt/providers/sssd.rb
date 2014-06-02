@@ -133,6 +133,9 @@ action :setup do
         end
         s.run_action(:enable)
         s.run_action(:start)
+        file "/etc/gca-sssd.control" do
+            action :create
+        end
     else
       Chef::Log.info("SSSD desactivado")
       s = service 'sssd' do
@@ -141,6 +144,9 @@ action :setup do
       end
       s.run_action(:disable)
       s.run_action(:stop)
+      file "/etc/gca-sssd.control" do
+        action :delete
+      end
     end
 
     # save current job ids (new_resource.job_ids) as "ok"
