@@ -17,21 +17,20 @@ action :setup do
 
     ntp_server = new_resource.server 
 
-    unless ntp_server.nil?
+    unless ntp_server.nil? or ntp_server.empty?
       execute "ntpdate" do
         command "ntpdate-debian -u #{ntp_server}"
         action :nothing
       end.run_action(:run)
-    end
-
-    template '/etc/default/ntpdate' do
-      source 'ntpdate.erb'
-      owner 'root'
-      group 'root'
-      mode 00644
-      variables ({
-        :ntp_server => new_resource.server
-      })
+      template '/etc/default/ntpdate' do
+        source 'ntpdate.erb'
+        owner 'root'
+        group 'root'
+        mode 00644
+        variables ({
+          :ntp_server => new_resource.server
+        })
+      end 
     end
 
     # save current job ids (new_resource.job_ids) as "ok"
