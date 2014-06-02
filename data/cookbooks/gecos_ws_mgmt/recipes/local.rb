@@ -46,16 +46,29 @@ if not node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res].nil?
 end
 
 if not node[:gecos_ws_mgmt][:network_mgmt][:sssd_res].nil?
-  gecos_ws_mgmt_sssd node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:domain] do
-    enabled node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:enabled]
-    workgroup node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:workgroup]
-    job_ids node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:job_ids]
-    krb5_url node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:krb5_url]
-    smb_url node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:smb_url]
-    sssd_url node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:sssd_url]
-    mkhomedir_url node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:mkhomedir_url]
-    action  :setup
+  if not node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:krb5_url].nil? and 
+    not node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:smb_url].nil? and
+    not node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:sssd_url].nil? and
+    not node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:mkhomedir_url].nil?
+
+    gecos_ws_mgmt_sssd node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:domain] do
+      enabled node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:enabled]
+      job_ids node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:job_ids]
+      krb5_url node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:krb5_url]
+      smb_url node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:smb_url]
+      sssd_url node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:sssd_url]
+      mkhomedir_url node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:mkhomedir_url]
+      action :setup 
+    end
+
+  else
+    gecos_ws_mgmt_sssd node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:domain] do
+      enabled node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:enabled]
+      job_ids node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:job_ids]
+      action  :setup
+    end
   end
+
 end
 
 if not node[:gecos_ws_mgmt][:misc_mgmt][:local_users_res].nil?

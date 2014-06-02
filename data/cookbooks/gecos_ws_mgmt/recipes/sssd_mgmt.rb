@@ -9,7 +9,8 @@
 # http://www.osor.eu/eupl
 #
 
-gecos_ws_mgmt_sssd node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:domain] do
+gecos_ws_mgmt_sssd 'configure_sssd' do
+  domain node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:domain]
   enabled node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:enabled]
   job_ids node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:job_ids]
   action  :setup

@@ -12,7 +12,7 @@
 actions :setup
 default_action :setup
 
-attribute :domain,  :name_attribute => true, :kind_of => Hash
+attribute :domain, :kind_of => Hash
 attribute :enabled, :kind_of => [ TrueClass, FalseClass ], :default => false
 attribute :krb_url, :kind_of => String
 attribute :smb_url, :kind_of => String
