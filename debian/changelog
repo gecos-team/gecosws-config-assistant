@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.5.1-0gecos4) precise; urgency=low
+
+  * Adding force yes to update
+
+ -- David Amian <damian@emergya.com>  Mon, 02 Jun 2014 17:05:00 +0200
+
 gecosws-config-assistant (0.5.1-0gecos3) precise; urgency=low
 
   * Bumping version

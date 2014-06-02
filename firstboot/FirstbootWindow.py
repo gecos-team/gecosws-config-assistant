@@ -168,7 +168,7 @@ class FirstbootWindow(Window):
     def on_btnUpdate_Clicked(self, button):
         result = serverconf.message_box(_("Update GECOS Config Assistant"), _("Are you sure you want to update the GECOS Config Assistant?"))
         if result == 1:
-            retval = os.system("apt-get update && apt-get install gecosws-config-assistant")
+            retval = os.system("apt-get update && apt-get install gecosws-config-assistant --yes --force-yes")
             if retval != 0:
                 serverconf.display_errors(_("Update Error"),[_("An error occurred during the upgrade")])
             else:
