@@ -8,8 +8,7 @@ default[:gecos_ws_mgmt][:network_mgmt][:network_res][:users] = []
 default[:gecos_ws_mgmt][:network_mgmt][:network_res][:job_ids] = []
 default[:gecos_ws_mgmt][:network_mgmt][:network_res][:updated_by] = {}
 
-default[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:domain_list] = []
-default[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:workgroup] = ''
+default[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:auth_type] = ''
 default[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:enabled] = false
 default[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:job_ids] = []
 default[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:updated_by] = {}

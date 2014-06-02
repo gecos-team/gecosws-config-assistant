@@ -39,7 +39,7 @@ def is_domain(value):
     return m != None
 
 def is_url(value):
-    m = re.search(r'^(http|https|ftp|ftps|file|ldap)://(.+)', value)
+    m = re.search(r'^(http|https|ftp|ftps|file|ldap|ldaps)://(.+)', value)
     #print '> %s :: %s' % (m != None, value)
     return m != None
 

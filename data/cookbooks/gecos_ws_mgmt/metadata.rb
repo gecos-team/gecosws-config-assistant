@@ -29,7 +29,7 @@ updated_js = {
 sssd_js = {
   title: "Authenticate System",
   type: "object",
-  required: ["domain_list", "workgroup"],
+  required: ["auth_type", "enabled"],
   properties: {
     krb_url: { type: "string" , title: "Url Kerberos file configuration"},
     smb_url: { type: "string" , title: "Url Samba file configuration" },
@@ -51,6 +51,34 @@ sssd_js = {
     enabled: {
       title: "Enabled",
       type: "boolean", default: false
+    },
+    auth_type:{
+      title: "Authenticate type",
+      type: "string"
+    },
+    uri:{
+      title: "LDAP Uri",
+      type: "string"
+    },
+    basegroup:{
+      title: "Base Group",
+      type: "string"
+    },
+    base:{
+      title: "Search Base",
+      type: "string"
+    },
+    basegroup:{
+      title: "Base Group",
+      type: "string"
+    },
+    binddn:{
+      title: "BindDN",
+      type: "string"
+    },
+    bindpwd:{
+      title: "Bin Password",
+      type: "string"
     },
     job_ids: {
       type: "array",

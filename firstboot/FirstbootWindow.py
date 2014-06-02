@@ -39,6 +39,7 @@ import logging
 logger = logging.getLogger('gecosws-config-assistant')
 
 from firstboot import serverconf
+from firstboot_lib.firstbootconfig import get_version
 from firstboot_lib import Window, firstbootconfig, FirstbootEntry
 import pages
 import dbus
@@ -81,6 +82,8 @@ class FirstbootWindow(Window):
         self.btnPrev = self.ui.btnPrev
         self.btnApply = self.ui.btnApply
         self.btnNext = self.ui.btnNext
+        self.btnUpdate = self.ui.btnUpdate
+
 
         self.cmd_options = options
         self.fbe = FirstbootEntry.FirstbootEntry()
@@ -123,6 +126,9 @@ class FirstbootWindow(Window):
         self.ui.btnPrev.set_label(_('Previous'))
         self.ui.btnNext.set_label(_('Next'))
         self.ui.btnApply.set_label(_('Apply'))
+        self.ui.btnUpdate.set_label(_('Update GCA'))
+        self.ui.lblVersion.set_text(_('Version: ') + get_version())
+
 
     def on_btnClose_Clicked(self, button):
         self.destroy()
@@ -158,6 +164,13 @@ class FirstbootWindow(Window):
 
     def on_btnPrev_Clicked(self, button):
         self.current_page.previous_page(self.set_current_page)
+
+    def on_btnUpdate_Clicked(self, button):
+        result = serverconf.message_box(_("Update GECOS Config Assistant"), _("Are you sure to update the GECOS Config Assistant?"))
+        if result == 1:
+            retval = os.system("apt-get update && apt-get install gecosws-config-assistant")
+            if retval != 0:
+                serverconf.display_errors(_("Update Error"),[_("Problem occurred during the upgrade")])
 
     def on_btnApply_Clicked(self, button):
         self.current_page.next_page(self.set_current_page)
@@ -233,6 +246,7 @@ class FirstbootWindow(Window):
 
         self.ui.btnPrev.set_sensitive(True)
         self.ui.btnNext.set_sensitive(True)
+        self.ui.btnUpdate.set_sensitive(True)
         self.ui.btnApply.set_sensitive(True)
         self.translate()
 

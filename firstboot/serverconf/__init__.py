@@ -160,39 +160,6 @@ def create_conf_file(file_content):
 
     return filepath
 
-# def get_chef_hostnames(chef_conf):
-
-#     chef_url = chef_conf.get_url()
-#     pem_file_path = create_chef_pem(chef_conf)
-
-#     cmd = 'knife node list -u chef-validator -k %s -s %s' % (pem_file_path, chef_url)
-#     args = shlex.split(cmd)
-
-#     process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-#     exit_code = os.waitpid(process.pid, 0)
-#     output = process.communicate()[0]
-#     output = output.strip()
-
-#     names = []
-#     if exit_code[1] != 0:
-#         raise ServerConfException(_('Couldn\'t retrieve the host names list') + ': ' + output)
-
-#     else:
-#         try:
-#             names = json.loads(output)
-#         except ValueError as e:
-#             names = output.split('\n')
-
-#     hostnames = []
-#     for name in names:
-#         name = name.strip()
-#         if name.startswith('WARNING') or name.startswith('ERROR'):
-#             continue
-#         hostnames.append(name)
-
-#     os.remove(pem_file_path)
-#     return hostnames
-
 
 def ad_is_configured():
 
@@ -241,16 +208,18 @@ def create_solo_json(server_conf):
                 sssd_ad_json = {'krb5_url': krb5_file, 'smb_url': smb_file, 'sssd_url': sssd_file, 'mkhomedir_url': pam_file}
             else:
                 ad_prop = auth_prop.get_ad_properties()
-                sssd_ad_json = {'domain_list': [{'domain_name':ad_prop.get_domain()}], 'workgroup' : ad_prop.get_workgroup()}
+                sssd_ad_json = {'domain': ad_prop.get_domain(), 'workgroup' : ad_prop.get_workgroup()}
             sssd_ad_json['user_ad'] = ad_prop.get_user_ad()
             sssd_ad_json['passwd_ad'] = ad_prop.get_passwd_ad()
             sssd_ad_json['enabled'] = server_conf.get_auth_conf().get_auth_link()
+            sssd_ad_json['auth_type'] = auth_type
             json_solo['gecos_ws_mgmt']['network_mgmt']['sssd_res'] = sssd_ad_json
             
         else:
             auth_prop = server_conf.get_auth_conf().get_auth_properties()
             sssd_ldap_json = {'uri': auth_prop.get_url(), 'base': auth_prop.get_basedn(), 'basegroup': auth_prop.get_basedngroup(), 'binddn': auth_prop.get_binddn(), 'bindpwd': auth_prop.get_password()}
-            sssd_ldap_json['auth_link'] = server_conf.get_auth_conf().get_auth_link()
+            sssd_ldap_json['enabled'] = server_conf.get_auth_conf().get_auth_link()
+            sssd_ldap_json['auth_type'] = auth_type
             json_solo['gecos_ws_mgmt']['network_mgmt']['sssd_res'] = sssd_ldap_json
     if server_conf.get_gcc_conf().get_uri_gcc() != '':
         gcc_conf = server_conf.get_gcc_conf()
@@ -638,6 +607,22 @@ def get_passwd_gcc(username):
     dialog.destroy()
     return retval
     
+
+def message_box(title, text):
+    dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,
+                                   Gtk.ButtonsType.OK_CANCEL)
+    dialog.set_title(title)
+    dialog.set_position(Gtk.WindowPosition.CENTER)
+    dialog.set_default_response(Gtk.ResponseType.OK)
+    dialog.set_markup(text)
+    result = dialog.run()
+
+    retval = 0
+    if result == Gtk.ResponseType.OK:
+        retval = 1
+
+    dialog.destroy()
+    return retval
 
 def auth_dialog(title, text):
     dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,

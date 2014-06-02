@@ -46,13 +46,27 @@ if not node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res].nil?
 end
 
 if not node[:gecos_ws_mgmt][:network_mgmt][:sssd_res].nil?
-  gecos_ws_mgmt_sssd node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:domain_list] do
+  domain_name='ldap_conf'
+  if node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:domain].nil?
+    domain_name=node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:domain]
+  end
+  d_list = [{"domain_name"=>domain_name,
+    "type"=>node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:auth_type],
+    "base_uri"=>node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:uri],
+    "search_base"=>node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:base],
+    "basegroup"=>node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:basegroup],
+    "binddn"=>node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:binddn],
+    "bindpwd"=>node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:bindpwd]
+    }]
+  gecos_ws_mgmt_sssd 'configure_sssd' do
+    domain_list d_list
     enabled node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:enabled]
     workgroup node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:workgroup]
     job_ids node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:job_ids]
     action  :setup
   end
 end
+
 if not node[:gecos_ws_mgmt][:misc_mgmt][:local_users_res].nil?
   gecos_ws_mgmt_local_users 'manage local users' do
     users_list node[:gecos_ws_mgmt][:misc_mgmt][:local_users_res][:users_list]

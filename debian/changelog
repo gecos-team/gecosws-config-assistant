@@ -1,3 +1,10 @@
+gecosws-config-assistant (0.5.1-0gecos1) precise; urgency=low
+
+  * Added sssd attributes for ldap
+  * Added udpate button
+
+ -- David Amian <damian@emergya.com>  Mon, 02 Jun 2014 13:49:54 +0200
+
 gecosws-config-assistant (0.5.0-0gecos1) precise; urgency=low
 
   * Update cookbooks and fix sssd res 
