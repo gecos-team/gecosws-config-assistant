@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.5.2-0gecos4) precise; urgency=low
+
+  * Added flag control to sssd 
+
+ -- David Amian <damian@emergya.com>  Mon, 02 Jun 2014 19:59:39 +0200
+
 gecosws-config-assistant (0.5.2-0gecos3) precise; urgency=low
 
   * Fix domain attr 
