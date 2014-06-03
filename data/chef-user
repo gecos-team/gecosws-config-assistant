@@ -1,10 +1,11 @@
 #!/bin/bash
 if [ -f /etc/chef.control ]
 then
-  if [[ ! -f $HOME/.firstart ]]
+  if [[ -f $HOME/.firstart ]]
   then
     sudo chef-client
     sudo chef-client
+    [ -x /usr/bin/firstart ] && /usr/bin/firstart
     rm $HOME/.firstart
   else
     sudo chef-client
