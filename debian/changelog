@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.5.2-0gecos6) precise; urgency=low
+
+  * Fix cehf-user 
+
+ -- David Amian <damian@emergya.com>  Tue, 03 Jun 2014 19:17:08 +0200
+
 gecosws-config-assistant (0.5.2-0gecos5) precise; urgency=low
 
   * Fix flag system for sssd 
