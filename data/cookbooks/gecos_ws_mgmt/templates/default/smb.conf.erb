@@ -4,6 +4,6 @@
    client use spnego = yes
    kerberos method = secrets and keytab
    log file = /var/log/samba/%m.log
-   realm = <%= @realm %>
+   realm = <%= @domain.name.upcase %>
    security = ads
 

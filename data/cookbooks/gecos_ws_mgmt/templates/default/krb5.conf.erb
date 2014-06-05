@@ -1,5 +1,5 @@
 [libdefaults]
- default_realm = <%= @realm %>
+ default_realm = <%= @domain.name.upcase %>
  dns_lookup_realm = true
  dns_lookup_kdc = true
  ticket_lifetime = 24h
@@ -12,13 +12,13 @@
 
 [realms]
 # Definir solo si el DNS no funciona bien
-#<%= @realm %> = {
+#<%= @domain.name.upcase %> = {
 # kdc = srv1.<%= @domain.name %>
 # admin_server = srv1.<%= @domain.name %>
 #}
 
 [domain_realm]
 # Definir solo si el DNS no funciona bien
-# .<%= @domain.name %> = <%= @realm %>
-# <%= @domain.name %> = <%= @realm %>
+# .<%= @domain.name %> = <%= @domain.name.upcase %>
+# <%= @domain.name %> = <%= @domain.name.upcase %>
 

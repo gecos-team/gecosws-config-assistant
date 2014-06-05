@@ -483,13 +483,13 @@ def get_hostnames(uri_gcc, username_gcc, password_gcc):
         credentials = CREDENTIAL_CACHED[hostname]
         for cred in credentials:
             user, password = cred[0], cred[1]
-            r = requests.get(url, auth=(user,password), headers=headers)
+            r = requests.get(uri_gcc, auth=(user,password), headers=headers)
             if r.ok:
                 validate = True
 
     if not validate:
 
-        r = requests.get(url, auth=(user,password), headers=headers)
+        r = requests.get(uri_gcc, auth=(user,password), headers=headers)
         if r.ok:
             if not CREDENTIAL_CACHED.has_key(hostname):
                 CREDENTIAL_CACHED[hostname] = []

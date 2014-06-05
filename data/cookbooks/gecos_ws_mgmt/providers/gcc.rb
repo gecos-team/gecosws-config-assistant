@@ -84,6 +84,16 @@ action :setup do
         end
       end
     else
+      template "/etc/gcc.control" do
+        source 'gcc.control.erb'
+        owner "root"
+        group "root"
+        mode 00755
+        variables({
+          :uri_gcc => new_resource.uri_gcc,
+          :gcc_username => new_resource.gcc_username, 
+          :gcc_nodename => new_resource.gcc_nodename
+      })
       Chef::Log.info('Not running')
     end
 

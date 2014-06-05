@@ -132,6 +132,7 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
                 'messages': messages
              })
         else:
+            result = None
             try:
                 hostnames = serverconf.get_hostnames(self.gcc_conf.get_uri_gcc(), self.gcc_conf.get_gcc_username(), self.gcc_conf.get_gcc_pwd_user())
                 result = serverconf.select_node(_('Select Workstation'), _('Select a workstation to link'), hostnames)
@@ -141,6 +142,7 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
                 self.show_status(__STATUS_ERROR__, e)
             self.gcc_conf.set_run(False)
             self.chef_conf.set_node_name(result)
+            self.gcc_conf.set_gcc_nodename(result)
             self.chef_conf.set_chef_link_existing(True)
             self.chef_conf.set_chef_link(True)
 

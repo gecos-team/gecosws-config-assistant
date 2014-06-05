@@ -1,3 +1,10 @@
+gecosws-config-assistant (0.5.3-0gecos1) precise; urgency=low
+
+  * Fix typos
+  * Update cookbooks
+
+ -- David Amian <damian@emergya.com>  Thu, 05 Jun 2014 14:03:28 +0200
+
 gecosws-config-assistant (0.5.2-0gecos6) precise; urgency=low
 
   * Fix cehf-user 

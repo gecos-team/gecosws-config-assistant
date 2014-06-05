@@ -15,7 +15,7 @@
 if not node[:gecos_ws_mgmt][:misc_mgmt][:tz_date_res].nil?
   gecos_ws_mgmt_tz_date 'localtime' do
     server node[:gecos_ws_mgmt][:misc_mgmt][:tz_date_res][:server]
-    job_ids node[:gecos_ws_mgmt][:misc_mgmt][:tz_date_res][:job_ids]
+    job_ids []
     action :setup
   end
 end
@@ -27,7 +27,7 @@ if not node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res].nil?
     chef_node_name node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_node_name]
     chef_admin_name node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_admin_name]
     chef_link_existing node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_link_existing]
-    job_ids node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:job_ids]
+    job_ids []
     action  :setup
   end
 end
@@ -40,7 +40,7 @@ if not node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res].nil?
     gcc_pwd_user node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:gcc_pwd_user]
     run_attr node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:run_attr]
     gcc_selected_ou node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:gcc_selected_ou]
-    job_ids node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:job_ids]
+    job_ids []
     action  :setup
   end
 end
@@ -54,7 +54,7 @@ if not node[:gecos_ws_mgmt][:network_mgmt][:sssd_res].nil?
     gecos_ws_mgmt_sssd "configure sssd" do
       domain node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:domain]
       enabled node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:enabled]
-      job_ids node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:job_ids]
+      job_ids []
       krb5_url node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:krb5_url]
       smb_url node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:smb_url]
       sssd_url node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:sssd_url]
@@ -66,7 +66,7 @@ if not node[:gecos_ws_mgmt][:network_mgmt][:sssd_res].nil?
     gecos_ws_mgmt_sssd "configure sssd" do
       domain node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:domain]
       enabled node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:enabled]
-      job_ids node[:gecos_ws_mgmt][:network_mgmt][:sssd_res][:job_ids]
+      job_ids []
       action  :setup
     end
   end
@@ -76,7 +76,7 @@ end
 if not node[:gecos_ws_mgmt][:misc_mgmt][:local_users_res].nil?
   gecos_ws_mgmt_local_users 'manage local users' do
     users_list node[:gecos_ws_mgmt][:misc_mgmt][:local_users_res][:users_list]
-    job_ids node[:gecos_ws_mgmt][:misc_mgmt][:local_users_res][:job_ids]
+    job_ids []
     action :setup
   end
 end  

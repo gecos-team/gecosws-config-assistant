@@ -8,6 +8,7 @@ require 'etc'
 require 'rest_client'
 require 'json'
 users = []
+users_send = []
 # LikeWise create the user homes at /home/local/DOMAIN/
 homedirs = Dir["/home/*"] + Dir["/home/local/*/*"]
 homedirs.each do |homedir|
@@ -21,13 +22,14 @@ homedirs.each do |homedir|
       :gid      => entry.gid,
       :uid      => entry.uid
     )
+    users_send << entry.name
   rescue Exception => e
     puts 'User ' + user + ' doesn\'t exists'
   end
 end
 
 if not users == ohai_gecos['users']
-  users_report = users.join(',')
+  users_report = users_send.join(',')
   gcc_control = {}
   File.open('/etc/gcc.control', "r") do |f|
     gcc_control = JSON.load(f)

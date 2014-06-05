@@ -46,7 +46,7 @@ class Ini
 
     IO.foreach(path) do |line|
 
-      line = line.strip.split(/#/)[0]
+      line = line.strip.split("#")[0]
       if not line.nil?
         # read it only if the line doesn't begin with a "=" and is long enough
         unless line.length < 2 and line[0,1] == "="
@@ -59,7 +59,7 @@ class Ini
             inihash[headline] = {}
           else
   
-            key, value = line.split(/=/, 2)
+            key, value = line.split("=", 2)
   
             key = key.strip unless key.nil?
             value = value.strip unless value.nil?
