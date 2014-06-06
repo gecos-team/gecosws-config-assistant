@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.5.5-0gecos1) precise; urgency=low
+
+  * Fix unlink recipes 
+
+ -- David Amian <damian@emergya.com>  Fri, 06 Jun 2014 02:49:22 +0200
+
 gecosws-config-assistant (0.5.4-0gecos1) precise; urgency=low
 
   * Fix some Bugs about connection with GCC 

@@ -13,7 +13,8 @@ gecos_ws_mgmt_gcc "unlink" do
   gcc_nodename node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:gcc_nodename]
   uri_gcc node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:uri_gcc]
   gcc_pwd_user node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:gcc_pwd_user]
-  gcc_username node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:username]
+  gcc_username node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:gcc_username]
+  gcc_selected_ou node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:gcc_selected_ou]
   run_attr true
   job_ids []
   action  :setup
