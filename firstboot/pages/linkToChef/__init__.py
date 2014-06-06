@@ -142,12 +142,13 @@ easily managed remotely.\n\n')
                 gcc_flag_json = json.loads(content)
                 server_conf.get_gcc_conf().set_uri_gcc(gcc_flag_json['uri_gcc'])
                 server_conf.get_gcc_conf().set_gcc_nodename(gcc_flag_json['gcc_nodename'])
-                
-                json_server = serverconf.validate_credentials(gcc_flag_json['uri_gcc'])
+                server_conf.get_gcc_conf().set_gcc_link(False)
+                server_conf.get_gcc_conf().set_run(True)
+                json_server = serverconf.validate_credentials(gcc_flag_json['uri_gcc']+'/auth/config/')
                 json_server = json.loads(json_server)
                 pem = json_server['chef']['chef_validation']
                 server_conf.get_gcc_conf().set_gcc_username(json_server['gcc']['gcc_username'])
-                serverconf.create_chef_pem(pem.encode('base64'))
+                serverconf.create_pem(pem)
  
                 chef_flag = open(__CHEF_FLAG__, 'r')
                 content = chef_flag.read()

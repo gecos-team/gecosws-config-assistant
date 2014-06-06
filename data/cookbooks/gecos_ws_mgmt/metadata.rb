@@ -260,6 +260,7 @@ desktop_menu_js = {
           username: {type: "string"},
           desktop_files_include: {
             type: "array",
+            title: "Desktop Files to include",
             minItems: 0,
             uniqueItems: true,
             items: {
@@ -268,7 +269,7 @@ desktop_menu_js = {
           },
           desktop_files_exclude: {
             type: "array",
-            title: "Desktop Files",
+            title: "Desktop Files to exclude",
             minItems: 0,
             uniqueItems: true,
             items: {
@@ -614,7 +615,6 @@ auto_updates_js = {
         date: {
           title: "Date",
           type: "object",
-          required: ["day", "month", "hour", "minute"],
           properties: {
             day: {title: "Day", type: "integer", maximum: 31},
             month: {title: "Month", type: "integer", maximum: 12},
@@ -734,7 +734,7 @@ scripts_launch_js = {
 network_resource_js = {
   title: "Network Manager",
   type: "object",
-  required: ["network_type", "dns_servers"],
+  required: ["network_type", "dns_servers_array"],
   properties:
   {
     gateway: { type: "string",title: "Gateway" },
@@ -742,7 +742,7 @@ network_resource_js = {
     netmask: { type: "string", title: "Netmask" },
     network_type: { enum: ["wired","wireless"],type: "string", title: "Network Type" },
     use_dhcp: { type: "boolean" , title: "Use DHCP?"},
-    dns_servers: {
+    dns_servers_array: {
       type: "array",
       title: "DNS Servers",
       minItems: 0,
@@ -1063,17 +1063,16 @@ power_conf_js = {
     {cpu_freq_gov: {
        title: "CPU frequency governor", 
        type: "string",
-       enum: ["userspace","powersave","conservative","ondemand","performance"]
+       enum: ["userspace","powersave","conservative","ondemand","performance",""]
        },
     usb_autosuspend: 
       {
        title: "USB autosuspend",
        type: "string",  
-       enum: ["enable","disable"]
+       enum: ["enable","disable", ""]
        },
      auto_shutdown: {
        type: "object",
-       requited: ["hour","minute"],
        properties: {
          hour: {
            title: "Hour",
@@ -1147,8 +1146,8 @@ complete_js = {
           type: "object",
           required: ["network_res"],
           properties: {
-            network_res: network_resource_js,
-            sssd_res: sssd_js
+            network_res: network_resource_js
+            #sssd_res: sssd_js
           }
         },
         misc_mgmt: {

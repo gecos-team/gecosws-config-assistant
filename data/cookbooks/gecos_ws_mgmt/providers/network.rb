@@ -28,14 +28,14 @@ action :setup do
     require 'fileutils'
 
     # setup system connections
-    ip_address = node[:gecos_ws_mgmt][:network_mgmt][:network_res][:ip_address] if new_resource.ip_address.nil?
-    gateway = node[:gecos_ws_mgmt][:network_mgmt][:network_res][:gateway] if new_resource.gateway.nil?
-    netmask = node[:gecos_ws_mgmt][:network_mgmt][:network_res][:netmask] if new_resource.netmask.nil?
-    network_type = node[:gecos_ws_mgmt][:network_mgmt][:network_res][:network_type] if new_resource.network_type.nil?
-    use_dhcp = node[:gecos_ws_mgmt][:network_mgmt][:network_res][:use_dhcp] if new_resource.use_dhcp.nil?
-    dns_servers_array = node[:gecos_ws_mgmt][:network_mgmt][:network_res][:dns_servers] if new_resource.dns_servers.nil?
+    ip_address = new_resource.ip_address
+    gateway = new_resource.gateway
+    netmask = new_resource.netmask
+    network_type = new_resource.network_type
+    use_dhcp = new_resource.use_dhcp
+    dns_servers_array = new_resource.dns_servers_array
 
-    users_array = [] if not node[:gecos_ws_mgmt][:network_mgmt][:network_res][:users].nil?
+    users = new_resource.users
 
     nm_conn_backup_dir = '/etc/NetworkManager/system-connections/chef-backups'
     nm_conn_production_dir = '/etc/NetworkManager/system-connections/chef-conns'
@@ -156,6 +156,7 @@ action :setup do
   rescue Exception => e
     # just save current job ids as "failed"
     # save_failed_job_ids
+    Chef::Log.error(e.message)
     job_ids = new_resource.job_ids
     job_ids.each do |jid|
       node.set['job_status'][jid]['status'] = 1

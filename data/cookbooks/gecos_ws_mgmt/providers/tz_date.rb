@@ -40,6 +40,7 @@ action :setup do
     end
 
   rescue Exception => e
+    Chef::Log.error(e.message)
     raise e.message
     # just save current job ids as "failed"
     # save_failed_job_ids

@@ -16,6 +16,7 @@ action :setup do
     end.run_action(:install) 
 
     systemlock = new_resource.systemlock
+    systemset = new_resource.systemset
     users = new_resource.users
 
     # System-level lock settings
@@ -52,6 +53,7 @@ action :setup do
   rescue Exception => e
     # just save current job ids as "failed"
     # save_failed_job_ids
+    Chef::Log.error(e.message)
     job_ids = new_resource.job_ids
     job_ids.each do |jid|
       node.set['job_status'][jid]['status'] = 1

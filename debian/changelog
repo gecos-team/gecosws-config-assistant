@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.5.4-0gecos1) precise; urgency=low
+
+  * Fix some Bugs about connection with GCC 
+
+ -- David Amian <damian@emergya.com>  Fri, 06 Jun 2014 02:04:39 +0200
+
 gecosws-config-assistant (0.5.3-0gecos1) precise; urgency=low
 
   * Fix typos

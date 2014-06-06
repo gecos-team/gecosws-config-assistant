@@ -45,6 +45,8 @@ end
 
 gecos_ws_mgmt_shutdown_options 'shutdown options' do
   users node[:gecos_ws_mgmt][:users_mgmt][:shutdown_options_res][:users]
+  systemset node[:gecos_ws_mgmt][:users_mgmt][:shutdown_options_res][:systemset]
+  systemlock node[:gecos_ws_mgmt][:users_mgmt][:shutdown_options_res][:systemlock]
   job_ids node[:gecos_ws_mgmt][:users_mgmt][:shutdown_options_res][:job_ids]
   action :setup
 end

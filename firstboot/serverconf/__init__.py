@@ -137,6 +137,16 @@ def get_server_conf(content):
         server_conf.load_data(content)
     return server_conf
 
+def create_pem(pem_string):
+    content = pem_string
+    if not os.path.exists('/etc/chef/'):
+        os.makedirs('/etc/chef/')
+    fp = open(__CHEF_PEM__, "w+b")
+    if fp:
+        fp.write(content.decode('base64'))
+        fp.close()
+
+    return __CHEF_PEM__
 
 
 def create_chef_pem(chef_conf):

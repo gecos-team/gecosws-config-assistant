@@ -13,5 +13,6 @@ gecos_ws_mgmt_chef "unlink" do
   chef_validation_pem "chef_validation_pem"
   chef_node_name node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_node_name]
   chef_admin_name "chef_admin_name"
+  job_ids []
   action  :setup
 end

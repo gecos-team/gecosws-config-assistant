@@ -20,18 +20,18 @@ action :setup do
     if !new_resource.desktop_file.nil? and !new_resource.desktop_file.empty?
       #Chef::Log.info("Estableciendo fondo de escritorio #{new_resource.users[0].desktop_file}")
       Chef::Log.info("Estableciendo fondo de escritorio #{new_resource.desktop_file}")
-      execute "update-dconf" do
-        command "dconf update"
-        action :nothing
-      end
       directory "/etc/dconf/profile" do
         recursive true
         action :nothing
       end.run_action(:create)
-      directory "/etc/dconf/db/gecos.d/locks" do
+      directory "/etc/dconf/db/gecos.d/" do
         recursive true
         action :nothing
       end.run_action(:create)
+#      directory "/etc/dconf/db/gecos.d/locks" do
+#        recursive true
+#        action :nothing
+#      end.run_action(:create)
       file "/etc/dconf/profile/user" do
         backup false
         content <<-eof
@@ -40,14 +40,14 @@ user-db:user
         eof
         action :nothing
       end.run_action(:create)
-      file "/etc/dconf/db/gecos.d/locks/gecos.lock" do
-        backup false
-        content <<-eof
-/org/gnome/desktop/background/picture-uri
-/org/cinnamon/desktop/background/picture-uri
-        eof
-        action :nothing
-      end.run_action(:create)
+#      file "/etc/dconf/db/gecos.d/locks/gecos.lock" do
+#        backup false
+#        content <<-eof
+#/org/gnome/desktop/background/picture-uri
+#/org/cinnamon/desktop/background/picture-uri
+#        eof
+#        action :nothing
+#      end.run_action(:create)
       file "/etc/dconf/db/gecos.d/gecos.key" do
         backup false
         content <<-eof
@@ -63,13 +63,18 @@ picture-uri='file://#{new_resource.desktop_file}'
 #        picture-uri='file://#{new_resource.users[0].desktop_file}'
 #        eof
         action :nothing
-        notifies :run, "execute[update-dconf]", :delayed
+        #notifies :run, "execute[update-dconf]", :delayed
       end.run_action(:create)
-    else
-      file "/etc/dconf/db/gecos.d/locks/gecos.lock" do
-        backup false
+      execute "update-dconf" do
+        command "dconf update"
         action :nothing
-      end.run_action(:delete)
+      end.run_action(:run)
+
+    else
+#      file "/etc/dconf/db/gecos.d/locks/gecos.lock" do
+#        backup false
+#        action :nothing
+#      end.run_action(:delete)
       file "/etc/dconf/db/gecos.d/gecos.key" do
         backup false
         action :nothing
@@ -93,6 +98,7 @@ picture-uri='file://#{new_resource.desktop_file}'
   rescue Exception => e
     # just save current job ids as "failed"
     # save_failed_job_ids
+    Chef::Log.error(e.message)
     job_ids = new_resource.job_ids
     job_ids.each do |jid|
       node.set['job_status'][jid]['status'] = 1

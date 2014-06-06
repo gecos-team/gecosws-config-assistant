@@ -1,7 +1,7 @@
 default[:gecos_ws_mgmt][:network_mgmt][:network_res][:ip_address] = ''
 default[:gecos_ws_mgmt][:network_mgmt][:network_res][:gateway] = ''
 default[:gecos_ws_mgmt][:network_mgmt][:network_res][:netmask] = ''
-default[:gecos_ws_mgmt][:network_mgmt][:network_res][:dns_servers] = []
+default[:gecos_ws_mgmt][:network_mgmt][:network_res][:dns_servers_array] = []
 default[:gecos_ws_mgmt][:network_mgmt][:network_res][:network_type] = 'wired'
 default[:gecos_ws_mgmt][:network_mgmt][:network_res][:use_dhcp] = true
 default[:gecos_ws_mgmt][:network_mgmt][:network_res][:users] = []
@@ -121,6 +121,8 @@ default[:gecos_ws_mgmt][:users_mgmt][:folder_sync_res][:job_ids] = []
 default[:gecos_ws_mgmt][:users_mgmt][:folder_sync_res][:updated_by] = {}
 
 default[:gecos_ws_mgmt][:users_mgmt][:shutdown_options_res][:users] = []
+default[:gecos_ws_mgmt][:users_mgmt][:shutdown_options_res][:systemset] = false
+default[:gecos_ws_mgmt][:users_mgmt][:shutdown_options_res][:systemlock] = false
 default[:gecos_ws_mgmt][:users_mgmt][:shutdown_options_res][:job_ids] = []
 default[:gecos_ws_mgmt][:users_mgmt][:shutdown_options_res][:updated_by] = {}
 

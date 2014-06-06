@@ -26,7 +26,7 @@ action :setup do
 #     session = node["desktop_session"] 
       gecos_ws_mgmt_desktop_setting "idle-activation-enabled" do
         type "string"
-        value idle_enabled
+        value idle_enabled.to_s
         schema "org.cinnamon.desktop.screensaver"
         username user.username
         provider "gecos_ws_mgmt_gsettings"
@@ -35,7 +35,7 @@ action :setup do
   
       gecos_ws_mgmt_desktop_setting "lock-enabled" do
         type "string"
-        value lock_enabled
+        value lock_enabled.to_s
         schema "org.cinnamon.desktop.screensaver"
         username user.username
         provider "gecos_ws_mgmt_gsettings"
@@ -70,6 +70,7 @@ action :setup do
   rescue Exception => e
     # just save current job ids as "failed"
     # save_failed_job_ids
+    Chef::Log.error(e.message)
     job_ids = new_resource.job_ids
     job_ids.each do |jid|
       node.set['job_status'][jid]['status'] = 1
