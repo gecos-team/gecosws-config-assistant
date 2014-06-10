@@ -28,7 +28,7 @@ from firstboot_lib import PageWindow
 
 import gettext
 from gettext import gettext as _
-gettext.textdomain('firstboot')
+gettext.textdomain('gecosws-config-assistant')
 
 
 __REQUIRED__ = False
@@ -50,9 +50,6 @@ class LinkToServerResultsPage(PageWindow.PageWindow):
         self.ui.lblDescription.set_text('')
 
     def load_page(self, params=None):
-
-        if 'server_conf' in params:
-            self.server_conf = params['server_conf']
 
         if 'result' in params:
             self.result = params['result']

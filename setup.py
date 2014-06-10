@@ -33,10 +33,25 @@ try:
     from distutils.core import setup, Command
     from DistUtilsExtra.command import *
 except ImportError:
-    print >> sys.stderr, 'To build firstboot you need https://launchpad.net/python-distutils-extra'
+    print >> sys.stderr, 'To build gecos-config-assistant you need https://launchpad.net/python-distutils-extra'
     sys.exit(1)
 assert DistUtilsExtra.auto.__version__ >= '2.18', 'needs DistUtilsExtra.auto >= 2.18'
 
+def get_datafiles(datadir):
+    source = ''
+    datafiles = []
+    for root, dirs, files in os.walk(datadir):
+        sources = []
+        for f in files:
+            sources.append(os.path.join(root,f))
+        root_s = root.split('/')
+        root_s.remove(datadir)
+        root = str.join('/', root_s)
+        datafiles.append(['share/gecosws-config-assistant/'+root, sources])
+    return datafiles
+
+datafiles = get_datafiles('data')
+datafiles.append(('share/applications/', glob.glob('data/gecos-config-assistant.desktop')))
 
 def update_config(values={}):
 
@@ -62,10 +77,21 @@ def update_config(values={}):
     return oldvalues
 
 
+def create_solo_rb(datadir):
+    try:
+        fout = file('data\solo.rb', 'w')
+        line = "cookbook_path \"" + datadir + "cookbooks/\""
+        fout.write(line)
+        fout.close()
+    except (OSError, IOError), e:
+        print ("ERROR: Can't create data/solo.rb file")
+        sys.exit(1)
+
+
 def update_desktop_file(datadir):
 
     try:
-        fin = file('firstboot.desktop.in', 'r')
+        fin = file('gecos-config-assistant.desktop.in', 'r')
         fout = file(fin.name + '.new', 'w')
 
         for line in fin:
@@ -77,7 +103,7 @@ def update_desktop_file(datadir):
         fin.close()
         os.rename(fout.name, fin.name)
     except (OSError, IOError), e:
-        print ("ERROR: Can't find firstboot.desktop.in")
+        print ("ERROR: Can't find gecos-config-assistant.desktop.in")
         sys.exit(1)
 
 
@@ -88,11 +114,12 @@ def copy_pages(pages_path):
 class InstallAndUpdateDataDirectory(DistUtilsExtra.auto.install_auto):
     def run(self):
         values = {'__firstboot_data_directory__': "'%s'" % (
-                                        self.prefix + '/share/firstboot/'),
+                                        self.prefix + '/share/gecosws-config-assistant/'),
                   '__version__': "'%s'" % self.distribution.get_version(),
                   '__firstboot_prefix__': "'%s'" % self.prefix}
         previous_values = update_config(values)
-        update_desktop_file(self.prefix + '/share/firstboot/')
+        update_desktop_file(self.prefix + '/share/gecosws-config-assistant/')
+        create_solo_rb(self.prefix + '/share/gecosws-config-assistant/')
         DistUtilsExtra.auto.install_auto.run(self)
         update_config(previous_values)
 
@@ -118,14 +145,14 @@ class Clean(Command):
 ##################################################################################
 
 DistUtilsExtra.auto.setup(
-    name='firstboot',
-    version='0.3.3',
+    name='gecosws-config-assistant',
+    version='0.5.6-0gecos1',
     license='GPL-2',
-    author='Antonio Hernández',
-    author_email='ahernandez@emergya.com',
+    author='David Amian',
+    author_email='damian@emergya.com',
     description='First start assistant for helping to connect a GECOS \
 workstation to different services',
-    url='https://github.com/ahdiaz/gecos-firstboot',
+    url='https://github.com/gecos-team/gecosws-config-assistant',
 
     keywords=['python', 'gnome', 'guadalinex', 'gecos'],
 
@@ -160,27 +187,16 @@ workstation to different services',
         },
 
     scripts=[
-        'bin/firstboot',
-        'bin/firstboot-launcher',
-        'bin/firstboot-ldapconf.sh',
-        'bin/firstboot-chefconf.sh',
-        'bin/firstboot-adconf.sh'
+        'bin/gecos-config-assistant',
+        'bin/gecos-config-assistant-launcher'
     ],
-
-    data_files=[
-       ('share/firstboot/media', glob.glob('data/media/*')),
-       ('share/firstboot/pamd-ldap', glob.glob('data/pamd-ldap/nsswitch.conf')),
-       ('share/firstboot/pamd-ldap', glob.glob('data/pamd-ldap/ldap.conf')),
-       ('share/firstboot/pamd-ldap', glob.glob('data/pamd-ldap/nscd.conf')),
-       ('share/firstboot/pamd-ldap/pam.d', glob.glob('data/pamd-ldap/pam.d/*')),
-       ('share/firstboot/ui', glob.glob('data/ui/*')),
-       ('share/pam-configs/', glob.glob('data/my_mkhomedir')),
-       ('share/pam-configs/', glob.glob('data/my_groups')),
-       ('/etc/xdg/autostart/', glob.glob('data/firstboot.desktop')),
-       ('/opt/likewise/', glob.glob('data/debconf.likewise')),
-       ('share/firstboot/', glob.glob('data/debconf.ldap')),
-       ('/usr/sbin/', glob.glob('data/pam-auth-update.firstboot')),
-    ],
+    data_files = datafiles,
+  #  data_files=[
+  #     ('share/gecosws-config-assistant/media', glob.glob('data/media/*')),
+  #     ('share/gecosws-config-assistant/cookbooks', glob.glob('data/cookbooks/*')),
+  #     ('share/gecosws-config-assistant/ui', glob.glob('data/ui/*')),
+  #     #('/etc/xdg/autostart/', glob.glob('data/gecos-config-assistant.desktop')),
+  #  ],
 
     cmdclass={
         'install': InstallAndUpdateDataDirectory,

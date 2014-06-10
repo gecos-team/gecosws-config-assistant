@@ -24,7 +24,7 @@ from gi.repository import Gtk
 
 import gettext
 from gettext import gettext as _
-gettext.textdomain('firstboot')
+gettext.textdomain('gecosws-config-assistant')
 
 
 def new_user_dialog():

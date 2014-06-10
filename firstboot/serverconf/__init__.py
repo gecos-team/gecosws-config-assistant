@@ -21,22 +21,26 @@ __copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 
+import json
+import requests
 import os
 import subprocess
 import shlex
+import shutil
+import tempfile
 import urllib
 import urllib2
-import json
 import urlparse
-import tempfile
+
 
 from gi.repository import Gtk
 from firstboot_lib import firstbootconfig
 from ServerConf import ServerConf
 from gi.repository import Gtk
 import gettext
+from firstboot_lib.firstbootconfig import get_prefix
 from gettext import gettext as _
-gettext.textdomain('firstboot')
+gettext.textdomain('gecosws-config-assistant')
 
 
 __URLOPEN_TIMEOUT__ = 15
@@ -44,79 +48,51 @@ __JSON_CACHE__ = '/tmp/json_cached'
 __BIN_PATH__ = firstbootconfig.get_bin_path()
 __LDAP_CONF_SCRIPT__ = 'firstboot-ldapconf.sh'
 __CHEF_CONF_SCRIPT__ = 'firstboot-chefconf.sh'
+__GCC_FLAG__ = '/etc/gcc.control'
+__LDAP_FLAG__ = '/etc/gca-sssd.control'
+__AD_FLAG__ = __LDAP_FLAG__
+__CHEF_PEM__ = '/etc/chef/validation.pem'
 __AD_CONF_SCRIPT__ = 'firstboot-adconf.sh'
 
 CREDENTIAL_CACHED = {}
-
-
-def _install_opener(url, user, password, url_based_auth=True):
-    if not url_based_auth:
-        # Domain based auth
-        parsed_url = list(urlparse.urlparse(url))
-        top_level_url = '%s://%s' % (parsed_url[0], parsed_url[1])
-
-    else:
-        # URL based auth
-        top_level_url = url
-
-    pwmgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
-    pwmgr.add_password(None, top_level_url, user, password)
-    handler = urllib2.HTTPBasicAuthHandler(pwmgr)
-    opener = urllib2.build_opener(handler)
-    opener.open(url)
-    urllib2.install_opener(opener)
-
-
-def parse_url(url):
-    parsed_url = list(urlparse.urlparse(url))
-    if parsed_url[0] in ('http', 'https'):
-        query = urlparse.parse_qsl(parsed_url[4])
-        query.append(('v', ServerConf.VERSION))
-        query = urllib.urlencode(query)
-        parsed_url[4] = query
-    url = urlparse.urlunparse(parsed_url)
-    return url
+ACTUAL_USER = ()
 
 
 def validate_credentials(url):
     global CREDENTIAL_CACHED
+    global ACTUAL_USER
     url_parsed = urlparse.urlparse(url)
     user = ''
     password = ''
-    hostname = ''
-    if url_parsed.scheme == '':
-        if url_parsed.path == '':
-            hostname = url_parsed.hostname
-        else:
-            hostname = url_parsed.path
-    else:
-        hostname = url_parsed.hostname
+    hostname = url_parsed.hostname
+    headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 
+    validate = False
     if hostname in CREDENTIAL_CACHED:
-        validate_credentials = False
         credentials = CREDENTIAL_CACHED[hostname]
         for cred in credentials:
-            try:
-                _install_opener(url, cred[0], cred[1])
+            user, password = cred[0], cred[1]
+            r = requests.get(url, auth=(user,password), headers=headers)
+            if r.ok:
                 validate = True
-                user, password = cred[0], cred[1]
-                break
-            except urllib2.URLError as e:
-                print e
-                if hasattr(e, 'code') and e.code == 401 and e.msg == 'basic auth failed':
-                    continue
-        if not validate:
-            user, password = auth_dialog(_('Authentication Required'),
-                    _('You need to enter your credentials to access the requested resource.'))
-            _install_opener(url, user, password)
+
+    if not validate:
+
+        user, password = auth_dialog(_('Authentication Required'),
+            _('You need to enter your credentials to access the requested resource.'))
+        r = requests.get(url, auth=(user,password), headers=headers)
+        if r.ok:
+            if not CREDENTIAL_CACHED.has_key(hostname):
+                CREDENTIAL_CACHED[hostname] = []
             credentials = CREDENTIAL_CACHED[hostname]
             credentials.append([user, password])
-    else:
-        user, password = auth_dialog(_('Authentication Required'),
-                _('You need to enter your credentials to access the requested resource.'))
-        _install_opener(url, user, password)
-        CREDENTIAL_CACHED[hostname] = [[user, password]]
-    return user, password
+            ACTUAL_USER = (user, password)
+        else:
+            raise ServerConfException(_('Authentication is failed.'))
+    if hasattr(r,'text'):
+        return r.text
+    else:  
+        return r.content
 
 def json_is_cached():
     return os.path.exists(__JSON_CACHE__)
@@ -124,472 +100,554 @@ def json_is_cached():
 def clean_json_cached():
     return os.remove(__JSON_CACHE__)
 
-def get_server_conf(url):
-
-    is_cached = json_is_cached()
-
-    try:
-        if is_cached:
-            fp = open(__JSON_CACHE__, 'r')
-
-        else:
-            try:
-                url = parse_url(url)
-                user, password = validate_credentials(url)
-                fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
-
-            except urllib2.URLError as e:
-                if hasattr(e, 'code') and e.code == 401:
-                    user, password = validate_credentials(url)
-                    fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
-
-                else:
-                    raise e
-
-            fp_cached = open(__JSON_CACHE__, 'w')
-            for line in fp:
-                fp_cached.write(line)
-
-            fp_cached.close()
-            fp.close()
-            fp = open(__JSON_CACHE__, 'r')
-
+def get_json_content():
+    if json_is_cached():
+        fp = open(__JSON_CACHE__, 'r')
         content = fp.read()
         fp.close()
+
         conf = json.loads(content)
-
-        server_conf = ServerConf()
-        server_conf.load_data(conf)
-        return server_conf
-
-    except urllib2.URLError as e:
-        raise ServerConfException(e)
-
-    except ValueError as e:
-        raise ServerConfException(_('Configuration file is not valid.'))
-
-
-def get_chef_pem(chef_conf):
-    global CREDENTIAL_CACHED
-    url = chef_conf.get_pem_url()
-    user = ''
-    password = ''
-    try:
-        try:
-            url = parse_url(url)
-            user, password = validate_credentials(url)
-            chef_conf.set_user(user)
-            chef_conf.set_password(password)
-            fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
-
-        except urllib2.URLError as e:
-            if hasattr(e, 'code') and e.code == 401:
-                user, password = validate_credentials(url)
-                fp = urllib2.urlopen(url, timeout=__URLOPEN_TIMEOUT__)
-
-                chef_conf.set_user(user)
-                chef_conf.set_password(password)
-
-            else:
-                raise e
-
-        content = fp.read()
-
-        (fd, filepath) = tempfile.mkstemp(dir='/tmp')  # [suffix=''[, prefix='tmp'[, dir=None[, text=False]]]])
-        fp = os.fdopen(fd, "w+b")
-        if fp:
-            fp.write(content)
-            fp.close()
-
-        return filepath
-
-    except urllib2.URLError as e:
-        raise ServerConfException(e)
-
-
-def get_chef_hostnames(chef_conf):
-
-    chef_url = chef_conf.get_url()
-    pem_file_path = get_chef_pem(chef_conf)
-
-    cmd = 'knife node list -u chef-validator -k %s -s %s' % (pem_file_path, chef_url)
-    args = shlex.split(cmd)
-
-    process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    exit_code = os.waitpid(process.pid, 0)
-    output = process.communicate()[0]
-    output = output.strip()
-
-    names = []
-    if exit_code[1] != 0:
-        raise ServerConfException(_('Couldn\'t retrieve the host names list') + ': ' + output)
-
+        if conf["chef"]["chef_server_uri"] == "https://localhost/":
+            chef_uri = conf["gcc"]["uri_gcc"].split('//')[1].split(':')[0]
+            conf["chef"]["chef_server_uri"] = "https://" + chef_uri + '/'
+        return conf
     else:
-        try:
-            names = json.loads(output)
-        except ValueError as e:
-            names = output.split('\n')
+        return None
 
-    hostnames = []
-    for name in names:
-        name = name.strip()
-        if name.startswith('WARNING') or name.startswith('ERROR'):
-            continue
-        hostnames.append(name)
+def get_json_autoconf(url):
+    try:
+        content = validate_credentials(url)
+    except Exception as e:
+        raise e
+    if json_is_cached():
+        clean_json_cached()
+    fp_cached = open(__JSON_CACHE__, 'w')
+    fp_cached.write(content)
+    fp_cached.close()
+    
+    conf = json.loads(content)
+    if conf["chef"]["chef_server_uri"] == "https://localhost/":
+        chef_uri = conf["gcc"]["uri_gcc"].split('//')[1].split(':')[0]
+        conf["chef"]["chef_server_uri"] = "https://" + chef_uri + '/'
+    return conf
 
-    os.remove(pem_file_path)
-    return hostnames
+def get_server_conf(content):
+    server_conf = ServerConf.Instance()
+    if content != None:
+        server_conf.load_data(content)
+    return server_conf
+
+def create_pem(pem_string):
+    content = pem_string
+    if not os.path.exists('/etc/chef/'):
+        os.makedirs('/etc/chef/')
+    fp = open(__CHEF_PEM__, "w+b")
+    if fp:
+        fp.write(content.decode('base64'))
+        fp.close()
+
+    return __CHEF_PEM__
+
+
+def create_chef_pem(chef_conf):
+    content = chef_conf.get_pem()
+    if not os.path.exists('/etc/chef/'):
+        os.makedirs('/etc/chef/')
+    fp = open(__CHEF_PEM__, "w+b")
+    if fp:
+        fp.write(content.decode('base64'))
+        fp.close()
+
+    return __CHEF_PEM__
+
+
+def create_conf_file(file_content):
+    (fd, filepath) = tempfile.mkstemp(dir='/tmp')
+    fp = os.fdopen(fd, "w+b")
+    if fp:
+        fp.write(file_content.decode('base64'))
+        fp.close()
+
+    return filepath
 
 
 def ad_is_configured():
+
     try:
-        script = os.path.join(__BIN_PATH__, __AD_CONF_SCRIPT__)
-        if not os.path.exists(script):
-            raise LinkToADException(_("The Active Directory configuration script couldn't be found") + ': ' + script)
-        cmd = '"%s" "--query"' % (script,)
-        args = shlex.split(cmd)
-        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        exit_code = os.waitpid(process.pid, 0)
-        output = process.communicate()[0]
-        output = output.strip()
-        if exit_code[1] == 0:
-            ret = bool(int(output))
-            return ret
-
-        else:
-            raise LinkToADException(_('Active Directory setup error') + ': ' + output)
-
+        if not os.path.exists(__AD_FLAG__):
+            return False
+        return True
     except Exception as e:
         raise e
+
+
+def create_solo_json(server_conf):
+    json_solo = {}
+    json_solo['run_list'] = ["recipe[ohai-gecos::default]", "recipe[chef-client::upstart_service]", "recipe[gecos_ws_mgmt::local]"]
+    json_solo['gecos_ws_mgmt'] = {}
+    json_solo['gecos_ws_mgmt']['misc_mgmt'] = {}
+    json_solo['gecos_ws_mgmt']['network_mgmt'] = {}
+    if server_conf.get_ntp_conf().get_uri_ntp() != '':
+        json_solo['gecos_ws_mgmt']['misc_mgmt']['tz_date_res'] = {'server':server_conf.get_ntp_conf().get_uri_ntp()}
+    if server_conf.get_chef_conf().get_url() != '':
+        tmpfile = create_chef_pem(server_conf.get_chef_conf())
+        chef_url = server_conf.get_chef_conf().get_url()
+        chef_node_name = server_conf.get_chef_conf().get_node_name()
+        chef_admin_name = server_conf.get_chef_conf().get_admin_name()
+        if chef_admin_name == "":
+            chef_admin_name = server_conf.get_gcc_conf().get_gcc_username()
+        chef_link = server_conf.get_chef_conf().get_chef_link()
+        chef_link_existing = server_conf.get_chef_conf().get_chef_link_existing()
+        chef_json = {'chef_server_url':chef_url, 'chef_node_name': chef_node_name, 'chef_validation_pem': tmpfile, 'chef_link': chef_link, 'chef_admin_name': chef_admin_name, 'chef_link_existing': chef_link_existing}
+        json_solo['gecos_ws_mgmt']['misc_mgmt']['chef_conf_res'] = chef_json
+    if server_conf.get_auth_conf().get_auth_type() != '':
+        auth_type = server_conf.get_auth_conf().get_auth_type()
+        if auth_type == 'ad':
+            auth_prop = server_conf.get_auth_conf().get_auth_properties()
+            sssd_ad_json  = {}
+            if auth_prop.get_specific_conf():
+                ad_prop = auth_prop.get_ad_properties()
+                krb5_file = create_conf_file(ad_prop.get_krb5_conf())
+                krb5_file = 'file://' + krb5_file
+                smb_file = create_conf_file(ad_prop.get_smb_conf())
+                smb_file = 'file://' + smb_file
+                sssd_file = create_conf_file(ad_prop.get_sssd_conf())
+                sssd_file = 'file://' + sssd_file
+                pam_file = create_conf_file(ad_prop.get_pam_conf())
+                pam_file = 'file://' + pam_file
+                sssd_ad_json = {'krb5_url': krb5_file, 'smb_url': smb_file, 'sssd_url': sssd_file, 'mkhomedir_url': pam_file, 'domain': {}}
+            else:
+                ad_prop = auth_prop.get_ad_properties()
+                sssd_ad_json = {'domain': {}}
+            sssd_ad_json['enabled'] = server_conf.get_auth_conf().get_auth_link()
+            sssd_ad_json['domain']['ad_user'] = ad_prop.get_user_ad()
+            sssd_ad_json['domain']['name'] = ad_prop.get_domain()
+            sssd_ad_json['domain']['ad_passwd'] = ad_prop.get_passwd_ad()
+            sssd_ad_json['domain']['type'] = auth_type
+            sssd_ad_json['domain']['workgroup'] = ad_prop.get_workgroup()
+            json_solo['gecos_ws_mgmt']['network_mgmt']['sssd_res'] = sssd_ad_json
+            
+        else:
+            auth_prop = server_conf.get_auth_conf().get_auth_properties()
+            sssd_ldap_json = {'domain':{}}
+            sssd_ldap_json['enabled'] = server_conf.get_auth_conf().get_auth_link()
+            sssd_ldap_json['domain']['name'] = 'ldap_gecos_conf'
+            sssd_ldap_json['domain']['ldap_uri'] = auth_prop.get_url()
+            sssd_ldap_json['domain']['type'] = auth_type
+            sssd_ldap_json['domain']['search_base'] = auth_prop.get_basedn()
+            sssd_ldap_json['domain']['base_group'] = auth_prop.get_basedngroup()
+            sssd_ldap_json['domain']['bind_dn'] = auth_prop.get_binddn()
+            sssd_ldap_json['domain']['bind_pass'] = auth_prop.get_password()
+            json_solo['gecos_ws_mgmt']['network_mgmt']['sssd_res'] = sssd_ldap_json
+    if server_conf.get_gcc_conf().get_uri_gcc() != '':
+        gcc_conf = server_conf.get_gcc_conf()
+        gcc_json = {'uri_gcc': gcc_conf.get_uri_gcc(), 'gcc_username' : gcc_conf.get_gcc_username(),'gcc_pwd_user': gcc_conf.get_gcc_pwd_user(),'gcc_nodename': gcc_conf.get_gcc_nodename(),'gcc_link': gcc_conf.get_gcc_link(), 'gcc_selected_ou': gcc_conf.get_selected_ou(), 'run_attr': gcc_conf.get_run()}
+        json_solo['gecos_ws_mgmt']['misc_mgmt']['gcc_res'] = gcc_json
+
+    if server_conf.get_users_conf().get_users_list():
+        users_conf = server_conf.get_users_conf().get_users_list()
+        array_users = [] 
+        for user in users_conf:
+            user_json = {}
+            if user.get_actiontorun() == 'delete':
+                user_json = {'user': user.get_user(),'groups': user.get_groups(), 'actiontorun': user.get_actiontorun(),'deletehome':user.get_deletehome()}
+            else:
+                user_json = {'user': user.get_user(), 'password': user.get_password(), 'groups': user.get_groups(), 'actiontorun': user.get_actiontorun(),'name':user.get_name()}
+            array_users.append(user_json)
+
+        users_json = {'users_list': array_users}
+        json_solo['gecos_ws_mgmt']['misc_mgmt']['local_users_res'] = users_json
+
+
+
+    return json_solo
+
 
 
 def ldap_is_configured():
     try:
-
-        script = os.path.join(__BIN_PATH__, __LDAP_CONF_SCRIPT__)
-        if not os.path.exists(script):
-            raise LinkToLDAPException(_("The LDAP configuration script couldn't be found") + ': ' + script)
-
-        cmd = '"%s" "--query"' % (script,)
-        args = shlex.split(cmd)
-
-        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        exit_code = os.waitpid(process.pid, 0)
-        output = process.communicate()[0]
-        output = output.strip()
-
-        if exit_code[1] == 0:
-            ret = bool(int(output))
-            return ret
-
-        else:
-            raise LinkToLDAPException(_('LDAP setup error') + ': ' + output)
-
+        if not os.path.exists(__LDAP_FLAG__):
+            return False
+        return True
     except Exception as e:
         raise e
 
 
-def chef_is_configured():
+def gcc_is_configured():
     try:
-
-        script = os.path.join(__BIN_PATH__, __CHEF_CONF_SCRIPT__)
-        if not os.path.exists(script):
-            raise LinkToChefException(_("The Chef configuration script couldn't be found") + ': ' + script)
-
-        cmd = '"%s" "--query"' % (script,)
-        args = shlex.split(cmd)
-
-        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        exit_code = os.waitpid(process.pid, 0)
-        output = process.communicate()[0]
-        output = output.strip()
-
-        if exit_code[1] == 0:
-            ret = bool(int(output))
-            return ret
-
-        else:
-            raise LinkToChefException(_('Chef setup error') + ': ' + output)
+        if not os.path.exists(__GCC_FLAG__):
+            return False
+        return True
 
     except Exception as e:
         raise e
 
 
-def setup_server(server_conf, link_ldap=False, unlink_ldap=False,
-                link_chef=False, unlink_chef=False, link_ad=False, unlink_ad=False):
-
-    result = True
+def apply_changes():
+#TODO implements save the json to run chef solo and run it
+    server_conf = get_server_conf(None)
     messages = []
+    json_solo = create_solo_json(server_conf)
+    resources = json_solo['gecos_ws_mgmt']['misc_mgmt'].keys()
+    for res in resources:
+        if res == 'tz_date_res':
+            if not server_conf.get_ntp_conf().validate():
+                messages.append(_("The Date/Time Syncronization parameters are incorrect, please got to Date/Time section or review your autconf file"))
+        if res == 'gcc_res':
+            if not server_conf.get_gcc_conf().validate():
+                messages.append(_("The GCC parameters are incorrect, please got to GCC section or review your autconf file"))
+        if res == 'chef_conf_res':
+            if not server_conf.get_chef_conf().validate():
+                messages.append(_("The Chef parameters are incorrect, please got to GCC section or review your autconf file"))
+        if res == 'sssd_res':
+            if not server_conf.get_auth_conf().validate():
+                messages.append(_("The authentication parameters are incorrect, please go to Authentication section or review your autconf file"))
+        if res == 'local_users_res':
+            if not server_conf.get_users_conf().validate():
+                messages.append(_("The Local Users parameters are incorrect, please go to Users section"))
+    if len(messages) > 0:
+        display_errors(_("Configuration Error"),messages)
+        return 0    
+    (fd, filepath) = tempfile.mkstemp(dir='/tmp')
+    fp = os.fdopen(fd, "w+b")
+    if fp:
+        fp.write(json.dumps(json_solo,indent=2))
+        fp.close()
+    print filepath
+    run_chef_solo(filepath)
 
-    if unlink_ldap == True:
-        try:
-            ret = unlink_from_ldap()
-            if ret == True:
-                messages.append({'type': 'info', 'message': _('Workstation has been unlinked from LDAP.')})
-            else:
-                messages += ret
-        except Exception as e:
-            messages.append({'type': 'error', 'message': str(e)})
-
-    elif link_ldap == True:
-        try:
-            ret = link_to_ldap(server_conf.get_ldap_conf())
-            if ret == True:
-                messages.append({'type': 'info', 'message': _('The LDAP has been configured successfully.')})
-            else:
-                messages += ret
-        except Exception as e:
-            messages.append({'type': 'error', 'message': str(e)})
-
-    if unlink_ad == True:
-        try:
-            ret = unlink_from_ad()
-            if ret == True:
-                messages.append({'type': 'info', 'message': _('Workstation has been unlinked from the Active Directory.')})
-            else:
-                messages += ret
-        except Exception as e:
-            messages.append({'type': 'error', 'message': str(e)})
-
-    elif link_ad == True:
-        try:
-            ret = link_to_ad(server_conf.get_ad_conf())
-            if ret == True:
-                messages.append({'type': 'info', 'message': _('The Active Directory has been configured successfully.')})
-            else:
-                messages += ret
-        except Exception as e:
-            messages.append({'type': 'error', 'message': str(e)})
-
-    if unlink_chef == True:
-        try:
-            ret = unlink_from_chef()
-            if ret == True:
-                messages.append({'type': 'info', 'message': _('Workstation has been unlinked from Chef.')})
-            else:
-                messages += ret
-        except Exception as e:
-            messages.append({'type': 'error', 'message': str(e)})
-
-    elif link_chef == True:
-        try:
-            ret = link_to_chef(server_conf.get_chef_conf())
-            if ret == True:
-                messages.append({'type': 'info', 'message': _('The Chef client has been configured successfully.')})
-            else:
-                messages += ret
-        except Exception as e:
-            messages.append({'type': 'error', 'message': str(e)})
-
-    for msg in messages:
-        if msg['type'] == 'error':
-            result = False
-            break
-
-    return result, messages
-
-
-def link_to_ldap(ldap_conf):
-
-    url = ldap_conf.get_url()
-    basedn = ldap_conf.get_basedn()
-    basedngroup = ldap_conf.get_basedngroup()
-    binddn = ldap_conf.get_binddn()
-    password = ldap_conf.get_password()
-    errors = []
-
-    if len(url) == 0:
-        errors.append({'type': 'error', 'message': _('The LDAP URL cannot be empty.')})
-
-    if len(basedn) == 0:
-        errors.append({'type': 'error', 'message': _('The LDAP BaseDN cannot be empty.')})
-
-    if len(binddn) == 0:
-        errors.append({'type': 'error', 'message': _('The LDAP BindDN cannot be empty.')})
-
-    if len(errors) > 0:
-        return errors
-
+def run_chef_solo(fp):
     try:
-
-        script = os.path.join(__BIN_PATH__, __LDAP_CONF_SCRIPT__)
-        if not os.path.exists(script):
-            raise LinkToLDAPException(_("The LDAP configuration script couldn't be found") + ': ' + script)
-
-        cmd = '"%s" "%s" "%s" "%s" "%s" "%s"' % (script, url, basedn, basedngroup, binddn, password)
+        envs = os.environ
+        envs['LANG'] = 'es_ES.UTF-8'
+        solo_rb = get_prefix() + '/share/gecosws-config-assistant/solo.rb'
+        cmd = '"chef-solo" "-c" "%s" "-j" "%s"' % (solo_rb, fp)
         args = shlex.split(cmd)
-
-        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        log_chef_solo = open('/tmp/chef-solo', "w", 1)
+        log_chef_solo_err = open('/tmp/chef-solo-err', "w", 1)
+        process = subprocess.Popen(args, stdout=log_chef_solo, stderr=log_chef_solo_err, env=envs)
         exit_code = os.waitpid(process.pid, 0)
         output = process.communicate()[0]
 
         if exit_code[1] != 0:
-            raise LinkToLDAPException(_('LDAP setup error') + ': ' + output)
+            messages = [(_('An error has ocurred running chef-solo'))]
+            display_errors(_("Configuration Error"), messages)
 
     except Exception as e:
-        raise e
+        display_errors(_("Configuration Error"), [e.message])
+         
 
-    return True
-
-
-def link_to_ad(ad_conf):
-
-    fqdn = ad_conf.get_fqdn()
-    dns_domain = ad_conf.get_dns_domain()
-    user = ad_conf.get_user()
-    passwd = ad_conf.get_passwd()
-    errors = []
-
-    if len(fqdn) == 0:
-        errors.append({'type': 'error', 'message': _('The Active Directory URL cannot be empty.')})
-
-    if len(dns_domain) == 0:
-        errors.append({'type': 'error', 'message': _('The DNS Domain cannot be empty.')})
-    if len(user) == 0:
-        errors.append({'type': 'error', 'message': _('The administrator user cannot be empty.')})
-    if len(passwd) == 0:
-        errors.append({'type': 'error', 'message': _('The administrator password cannot be empty.')})
-
-    if len(errors) > 0:
-        return errors
-
-    try:
-
-        script = os.path.join(__BIN_PATH__, __AD_CONF_SCRIPT__)
-        if not os.path.exists(script):
-            raise LinkToADException(_("The Active Directory configuration script couldn't be found") + ': ' + script)
-
-        cmd = '"%s" "%s" "%s" "%s" "%s"' % (script, fqdn, dns_domain, user, passwd)
-        args = shlex.split(cmd)
-
-        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        exit_code = os.waitpid(process.pid, 0)
-        output = process.communicate()[0]
-
-        if exit_code[1] != 0:
-            raise LinkToADException(_('Active Directory setup error') + ': ' + output)
-
-    except Exception as e:
-        raise e
-
-    return True
+def unlink_from_sssd():
+#TODO implement unlink from ldap calling chef-solo
+    server_conf = get_server_conf(None)
+    json_solo = {}
+    json_solo['run_list'] = ["recipe[gecos_ws_mgmt::unlink_from_sssd]"]
+    json_solo['gecos_ws_mgmt'] = {}
+    json_solo['gecos_ws_mgmt']['network_mgmt'] = {}
+    sssd_json = {}
+    sssd_json['enabled'] = False
+    sssd_json['domain'] = {}
+    json_solo['gecos_ws_mgmt']['network_mgmt']['sssd_res'] = sssd_json
+    (fd, filepath) = tempfile.mkstemp(dir='/tmp')
+    fp = os.fdopen(fd, "w+b")
+    if fp:
+        fp.write(json.dumps(json_solo,indent=2))
+        fp.close()
+    run_chef_solo(filepath)
+    return []
 
 
-def unlink_from_ldap():
-
-    try:
-
-        script = os.path.join(__BIN_PATH__, __LDAP_CONF_SCRIPT__)
-        if not os.path.exists(script):
-            raise LinkToLDAPException("The file could not be found: " + script)
-
-        cmd = '"%s" "--restore"' % (script,)
-        args = shlex.split(cmd)
-
-        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        exit_code = os.waitpid(process.pid, 0)
-        output = process.communicate()[0]
-
-        if exit_code[1] != 0:
-            raise LinkToLDAPException(_('An error has ocurred unlinking from LDAP') + ': ' + output)
-
-    except Exception as e:
-        raise e
-
-    return True
-
-
-def unlink_from_ad():
-
-    try:
-
-        script = os.path.join(__BIN_PATH__, __AD_CONF_SCRIPT__)
-        if not os.path.exists(script):
-            raise LinkToADException("The file could not be found: " + script)
-
-        cmd = '"%s" "--restore"' % (script,)
-        args = shlex.split(cmd)
-
-        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        exit_code = os.waitpid(process.pid, 0)
-        output = process.communicate()[0]
-
-        if exit_code[1] != 0:
-            raise LinkToADException(_('An error has ocurred unlinking from Active Directory') + ': ' + output)
-
-    except Exception as e:
-        raise e
-
-    return True
-
-
-def link_to_chef(chef_conf):
-
-    url = chef_conf.get_url()
-    pemurl = chef_conf.get_pem_url()
-    role = chef_conf.get_default_role()
-    hostname = chef_conf.get_hostname()
-    user = chef_conf.get_user()
-    password = chef_conf.get_password()
-    errors = []
-
-    if len(url) == 0:
-        errors.append({'type': 'error', 'message': _('The Chef URL cannot be empty.')})
-
-    if len(pemurl) == 0:
-        errors.append({'type': 'error', 'message': _('The Chef certificate URL cannot be empty.')})
-
-    if len(hostname) == 0:
-        errors.append({'type': 'error', 'message': _('The Chef host name cannot be empty.')})
-
-    if len(errors) > 0:
-        return errors
-
-    try:
-
-        script = os.path.join(__BIN_PATH__, __CHEF_CONF_SCRIPT__)
-        if not os.path.exists(script):
-            raise LinkToChefException(_("The Chef configuration script couldn't be found") + ': ' + script)
-
-        cmd = '"%s" "%s" "%s" "%s" "%s" "%s" "%s"' % (script, url, pemurl, hostname, user, password, role)
-        args = shlex.split(cmd)
-
-        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        exit_code = os.waitpid(process.pid, 0)
-        output = process.communicate()[0]
-
-        if exit_code[1] != 0:
-            raise LinkToChefException(_('Chef setup error') + ': ' + output)
-
-    except Exception as e:
-        raise e
-
-    return True
-
+def unlink_from_gcc(password):
+#TODO Implement unlink from gcc server
+    server_conf = get_server_conf(None)
+    json_solo = {}
+    json_solo['run_list'] = ["recipe[gecos_ws_mgmt::unlink_from_gcc]"]
+    json_solo['gecos_ws_mgmt'] = {}
+    json_solo['gecos_ws_mgmt']['misc_mgmt'] = {}
+    gcc_conf = server_conf.get_gcc_conf()
+    gcc_json = {}
+    gcc_json = {'uri_gcc': gcc_conf.get_uri_gcc(), 'gcc_username' : gcc_conf.get_gcc_username(), 'gcc_pwd_user': password,'gcc_nodename': gcc_conf.get_gcc_nodename(),'gcc_link': gcc_conf.get_gcc_link(), 'gcc_selected_ou': 'without ou'}
+    json_solo['gecos_ws_mgmt']['misc_mgmt']['gcc_res'] = gcc_json
+    (fd, filepath) = tempfile.mkstemp(dir='/tmp')
+    fp = os.fdopen(fd, "w+b")
+    if fp:
+        fp.write(json.dumps(json_solo,indent=2))
+        fp.close()
+    run_chef_solo(filepath)
+    return []
 
 def unlink_from_chef():
+#TODO Implement unlink from chef server
+    server_conf = get_server_conf(None)
+    json_solo = {}
+    json_solo['run_list'] = ["recipe[gecos_ws_mgmt::unlink_from_chef]"]
+    json_solo['gecos_ws_mgmt'] = {}
+    json_solo['gecos_ws_mgmt']['misc_mgmt'] = {}
+    chef_url = server_conf.get_chef_conf().get_url()
+    chef_node_name = server_conf.get_chef_conf().get_node_name()
+    chef_admin_name = server_conf.get_chef_conf().get_admin_name()
+    if chef_admin_name == "":
+        chef_admin_name = server_conf.get_gcc_conf().get_gcc_username()
+    chef_link = server_conf.get_chef_conf().get_chef_link()
+    chef_json = {}
+    chef_json = {'chef_server_url':chef_url, 'chef_node_name': chef_node_name, 'chef_validation_pem': __CHEF_PEM__, 'chef_link': chef_link, 'chef_admin_name': chef_admin_name}
+    chef_json['chef_link'] = server_conf.get_chef_conf().get_chef_link()
+    json_solo['gecos_ws_mgmt']['misc_mgmt']['chef_conf_res'] = chef_json
+    (fd, filepath) = tempfile.mkstemp(dir='/tmp')
+    fp = os.fdopen(fd, "w+b")
+    if fp:
+        fp.write(json.dumps(json_solo,indent=2))
+        fp.close()
+    run_chef_solo(filepath)
+    return []
+#    try:
+#
+#        script = os.path.join(__BIN_PATH__, __CHEF_CONF_SCRIPT__)
+#        if not os.path.exists(script):
+#            raise LinkToChefException("The file could not be found: " + script)
+#
+#        cmd = '"%s" "--restore"' % (script,)
+#        args = shlex.split(cmd)
+#
+#        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+#        exit_code = os.waitpid(process.pid, 0)
+#        output = process.communicate()[0]
+#
+#        if exit_code[1] != 0:
+#            raise LinkToChefException(_('An error has ocurred unlinking from Chef') + ': ' + output)
+#
+#    except Exception as e:
+#        raise e
+#
+#    return True
 
-    try:
+def url_chef(title, text):
+    dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,
+                                   Gtk.ButtonsType.OK_CANCEL)
+    dialog.set_title(title)
+    dialog.set_position(Gtk.WindowPosition.CENTER)
+    dialog.set_default_response(Gtk.ResponseType.OK)
+    dialog.set_icon_name('dialog-password')
+    dialog.set_markup(text)
 
-        script = os.path.join(__BIN_PATH__, __CHEF_CONF_SCRIPT__)
-        if not os.path.exists(script):
-            raise LinkToChefException("The file could not be found: " + script)
+    hboxurl = Gtk.HBox()
+    lblurl = Gtk.Label(_('Url Certificate'))
+    lblurl.set_visible(True)
+    hboxurl.pack_start(lblurl, False, False, False)
+    url = Gtk.Entry()
+    url.set_activates_default(True)
+    url.show()
+    hboxurl.pack_end(url, False, False, False)
+    hboxurl.show()
 
-        cmd = '"%s" "--restore"' % (script,)
-        args = shlex.split(cmd)
+    dialog.get_message_area().pack_start(hboxurl, False, False, False)
+    result = dialog.run()
+    retval = None
+    if result == Gtk.ResponseType.OK:
+        retval = url.get_text()
+    dialog.destroy()
+    return retval
 
-        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        exit_code = os.waitpid(process.pid, 0)
-        output = process.communicate()[0]
 
-        if exit_code[1] != 0:
-            raise LinkToChefException(_('An error has ocurred unlinking from Chef') + ': ' + output)
 
-    except Exception as e:
-        raise e
+def entry_ou(title, text):
+    dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,
+                                   Gtk.ButtonsType.OK_CANCEL)
+    dialog.set_title(title)
+    dialog.set_position(Gtk.WindowPosition.CENTER)
+    dialog.set_default_response(Gtk.ResponseType.OK)
+    dialog.set_icon_name('dialog-password')
+    dialog.set_markup(text)
 
-    return True
+    hboxou = Gtk.HBox()
+    lblou = Gtk.Label(_('OU Name'))
+    lblou.set_visible(True)
+    hboxou.pack_start(lblou, False, False, False)
+    ou = Gtk.Entry()
+    ou.set_activates_default(True)
+    ou.show()
+    hboxou.pack_end(ou, False, False, False)
+    hboxou.show()
 
+    dialog.get_message_area().pack_start(hboxou, False, False, False)
+    result = dialog.run()
+    retval = None
+    if result == Gtk.ResponseType.OK:
+        retval = ou.get_text()
+    dialog.destroy()
+    return retval
+
+def get_hostnames(uri_gcc, username_gcc, password_gcc):
+    #Implements code to call API rest to get node list
+    global CREDENTIAL_CACHED
+    global ACTUAL_USER
+    uri_gcc = uri_gcc + '/computers/list/'
+    url_parsed = urlparse.urlparse(uri_gcc)
+    user = username_gcc
+    password = password_gcc
+    hostname = url_parsed.hostname
+    headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+    content = '' 
+    validate = False
+    if hostname in CREDENTIAL_CACHED:
+        credentials = CREDENTIAL_CACHED[hostname]
+        for cred in credentials:
+            user, password = cred[0], cred[1]
+            r = requests.get(uri_gcc, auth=(user,password), headers=headers)
+            if r.ok:
+                validate = True
+
+    if not validate:
+
+        r = requests.get(uri_gcc, auth=(user,password), headers=headers)
+        if r.ok:
+            if not CREDENTIAL_CACHED.has_key(hostname):
+                CREDENTIAL_CACHED[hostname] = []
+            credentials = CREDENTIAL_CACHED[hostname]
+            credentials.append([user, password])
+            ACTUAL_USER = (user, password)
+        else:
+            raise ServerConfException(_('Authentication is failed.'))
+    if hasattr(r,'text'):
+        content = r.text
+    else:  
+        content = r.content
+
+    arr_hostname = json.loads(content)
+
+    #Testing lines
+    # arr_hostname = []
+    # hostname = {'chef_id': '23c3cd0e88b5df0e9fe29a5200723cda', 'pclabel': 'test1'}
+    # arr_hostname.append(hostname)
+    # hostname = {'chef_id': 'cf5ecbd267b6c6558884edc9e023cf8b', 'pclabel': 'test2'}
+    # arr_hostname.append(hostname)
+    return arr_hostname
+
+def select_node(title, text, hostnames):
+    dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,
+                                   Gtk.ButtonsType.OK_CANCEL)
+    dialog.set_title(title)
+    dialog.set_position(Gtk.WindowPosition.CENTER)
+    dialog.set_default_response(Gtk.ResponseType.OK)
+    dialog.set_icon_name('dialog-password')
+    dialog.set_markup(text)
+
+    hboxws = Gtk.HBox()
+    lblws = Gtk.Label(_('Select Workstation'))
+    lblws.set_visible(True)
+    hboxws.pack_start(lblws, False, False, False)
+    ws_store = Gtk.ListStore(str, str)
+    for ws in hostnames:
+        ws_store.append([ws['name'], ws['node_chef_id']])
+
+    ws_combo = Gtk.ComboBox.new_with_model(ws_store)
+    renderer_text = Gtk.CellRendererText()
+    ws_combo.pack_start(renderer_text, True)
+    ws_combo.add_attribute(renderer_text, "text", 0)    
+
+    ws_combo.show()
+    hboxws.pack_end(ws_combo, False, False, False)
+    hboxws.show()
+
+    dialog.get_message_area().pack_start(hboxws, False, False, False)
+    result = dialog.run()
+    retval = None
+    if result == Gtk.ResponseType.OK:
+        model = ws_combo.get_model()
+        retval = model[ws_combo.get_active()][1]
+    dialog.destroy()
+    return retval
+
+def select_ou(title, text, ous):
+    dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,
+                                   Gtk.ButtonsType.OK_CANCEL)
+    dialog.set_title(title)
+    dialog.set_position(Gtk.WindowPosition.CENTER)
+    dialog.set_default_response(Gtk.ResponseType.OK)
+    dialog.set_icon_name('dialog-password')
+    dialog.set_markup(text)
+
+    hboxou = Gtk.HBox()
+    lblou = Gtk.Label(_('Select OU'))
+    lblou.set_visible(True)
+    hboxou.pack_start(lblou, False, False, False)
+    ou_store = Gtk.ListStore(str, str)
+    for ou in ous:
+        ou_store.append([ou[1], ou[0]])
+
+    ou_combo = Gtk.ComboBox.new_with_model(ou_store)
+    renderer_text = Gtk.CellRendererText()
+    ou_combo.pack_start(renderer_text, True)
+    ou_combo.add_attribute(renderer_text, "text", 0)    
+
+    ou_combo.show()
+    hboxou.pack_end(ou_combo, False, False, False)
+    hboxou.show()
+
+    dialog.get_message_area().pack_start(hboxou, False, False, False)
+    result = dialog.run()
+    retval = None
+    if result == Gtk.ResponseType.OK:
+        model = ou_combo.get_model()
+        retval = model[ou_combo.get_active()][1]
+    dialog.destroy()
+    return retval
+
+
+def display_errors(title, messages):
+    text = ''
+    for message in messages:
+        text += message + '\n'
+    dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK,text)
+    dialog.set_title(title)
+    result = dialog.run()
+    dialog.destroy()
+    return result 
+
+def get_passwd_gcc(username):
+    dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,
+                                   Gtk.ButtonsType.OK_CANCEL)
+    dialog.set_title(_('GCC Password'))
+    dialog.set_position(Gtk.WindowPosition.CENTER)
+    dialog.set_default_response(Gtk.ResponseType.OK)
+    dialog.set_icon_name('dialog-password')
+    dialog.set_markup(_('Please insert GCC password for user ') + username )
+    hboxpwd = Gtk.HBox()
+    lblpwd = Gtk.Label(_('password'))
+    lblpwd.set_visible(True)
+    hboxpwd.pack_start(lblpwd, False, False, False)
+    pwd = Gtk.Entry()
+    pwd.set_activates_default(True)
+    pwd.set_visibility(False)
+    pwd.show()
+    hboxpwd.pack_end(pwd, False, False, False)
+    hboxpwd.show()
+    dialog.get_message_area().pack_start(hboxpwd, False, False, False)
+    result = dialog.run()
+
+    retval = None
+    if result == Gtk.ResponseType.OK:
+        retval = pwd.get_text()
+
+    dialog.destroy()
+    return retval
+    
+
+def message_box(title, text):
+    dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,
+                                   Gtk.ButtonsType.OK_CANCEL)
+    dialog.set_title(title)
+    dialog.set_position(Gtk.WindowPosition.CENTER)
+    dialog.set_default_response(Gtk.ResponseType.OK)
+    dialog.set_markup(text)
+    result = dialog.run()
+
+    retval = 0
+    if result == Gtk.ResponseType.OK:
+        retval = 1
+
+    dialog.destroy()
+    return retval
 
 def auth_dialog(title, text):
     dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,

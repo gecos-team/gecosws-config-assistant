@@ -17,52 +17,103 @@
 # limitations under the License.
 #
 require 'json'
-require 'rest_client'
 
 action :setup do
   begin
+    gem_depends = [ 'rest_client' ]
 
-    if new_resource.gcc_link
-      if not new_resource.uri_gcc.nil? and not new_resource.gcc_nodename.nil? and not new_resource.gcc_username.nil? and not new_resource.gcc_pwd_user.nil? and not new_resource.gcc_selected_ou.nil?
-        Chef::Log.info("GCC: Configurndo GECOS Control Center")
-        response = RestClient.post new_resource.uri_gcc + '/register/computer/', {'node_name' => new_resource.gcc_nodename,'ou'=>new_resource.gcc_selected_ou}.to_json, :user => new_resource.gcc_username, :password => new_resource.gcc_pwd_user, :content_type => :json, :accept => :json
-        if not response.code.between?(200,299)
-          raise 'The GCC URI not response'  
-        end
-        template "/etc/gcc.control" do
-          source 'gcc.control.erb'
-          owner "root"
-          group "root"
-          mode 00755
-          variables({
-            :uri_gcc => new_resource.uri_gcc,
-            :gcc_username => new_resource.gcc_username, 
-            :gcc_nodename => new_resource.gcc_nodename
-          })
-        end 
-      end
-    else
-      if not new_resource.uri_gcc.nil? and not new_resource.gcc_nodename.nil? and not new_resource.gcc_username.nil? and not new_resource.gcc_pwd_user.nil? and not new_resource.gcc_selected_ou.nil?
-        Chef::Log.info("GCC: Desenlazando cliente de GECOS Control Center")
-        response = RestClient.post new_resource.uri_gcc + '/delete/computer/', {'node_name' => new_resource.gcc_nodename,'ou'=>new_resource.gcc_selected_ou}.to_json, :user => new_resource.gcc_username, :password => new_resource.gcc_pwd_user, :content_type => :json, :accept => :json
-        if not response.code.between?(200,299)
-          raise 'The GCC URI not response' 
-        end
-        file "/etc/gcc.control" do
-          action :delete
-        end
-      end
+    gem_depends.each do |gem|
+      gem_package gem do
+        gem_binary("/opt/chef/embedded/bin/gem")
+        action :nothing
+      end.run_action(:install)
     end
 
-    #@chefapi = ChefApi::API.new({server:'https://192.168.13.224', client_name: 'test', key_file: '/etc/chef/validation.pem'})
-    #puts @chefapi.get_request('/nodes')      
-    # TODO:
+    Gem.clear_paths
+    require 'rest_client'
+    if new_resource.run_attr
+      if new_resource.gcc_link
+        if not new_resource.uri_gcc.nil? and not new_resource.gcc_nodename.nil? and not new_resource.gcc_username.nil? and not new_resource.gcc_pwd_user.nil? and not new_resource.gcc_selected_ou.nil?
+          Chef::Log.info("GCC: Configurndo GECOS Control Center")
+          begin
+            resource = RestClient::Resource.new(new_resource.uri_gcc + '/register/computer/', :user => new_resource.gcc_username, :password => new_resource.gcc_pwd_user)
+            response = resource.post :node_id => new_resource.gcc_nodename,:ou_id=>new_resource.gcc_selected_ou, :content_type => :json, :accept => :json
+            if not response.code.between?(200,299)
+              Chef::Log.error('The GCC URI not response')  
+            else
+              response_json = JSON.load(response.to_str)
+              if not response_json['ok']
+                Chef::Log.error(response_json['message'])
+              end
+            end
+          rescue Exception => e
+            Chef::Log.error(e.message)
+          end
+          template "/etc/gcc.control" do
+            source 'gcc.control.erb'
+            owner "root"
+            group "root"
+            mode 00755
+            variables({
+              :uri_gcc => new_resource.uri_gcc,
+              :gcc_username => new_resource.gcc_username, 
+              :gcc_nodename => new_resource.gcc_nodename
+            })
+          end 
+        end
+      else
+        if not new_resource.uri_gcc.nil? and not new_resource.gcc_nodename.nil? and not new_resource.gcc_username.nil? and not new_resource.gcc_pwd_user.nil? and not new_resource.gcc_selected_ou.nil?
+          Chef::Log.info("GCC: Desenlazando cliente de GECOS Control Center")
+          begin
+            resource = RestClient::Resource.new(new_resource.uri_gcc + '/register/computer/?node_id=' + new_resource.gcc_nodename, :user => new_resource.gcc_username, :password => new_resource.gcc_pwd_user)
+            response = resource.delete
+            if not response.code.between?(200,299)
+              Chef::Log.error('The GCC URI not response')  
+            else
+              response_json = JSON.load(response.to_str)
+              if not response_json['ok']
+                Chef::Log.error(response_json['message'])
+              end
+            end
+          rescue Exception => e
+            Chef::Log.error(e.message)
+          end
+          file "/etc/gcc.control" do
+            action :nothing
+          end.run_action(:delete)
+        end
+      end
+    else
+      template "/etc/gcc.control" do
+        source 'gcc.control.erb'
+        owner "root"
+        group "root"
+        mode 00755
+        variables({
+          :uri_gcc => new_resource.uri_gcc,
+          :gcc_username => new_resource.gcc_username, 
+          :gcc_nodename => new_resource.gcc_nodename
+        })
+      end
+      Chef::Log.info('Not running')
+    end
+
     # save current job ids (new_resource.job_ids) as "ok"
-  rescue
-  # TODO:
-  # just save current job ids as "failed"
-  # save_failed_job_ids
-    raise
+    job_ids = new_resource.job_ids
+    job_ids.each do |jid|
+      node.set['job_status'][jid]['status'] = 0
+    end
+
+  rescue Exception => e
+    # just save current job ids as "failed"
+    # save_failed_job_ids
+    Chef::Log.error(e.message)
+    raise e.message
+    job_ids = new_resource.job_ids
+    job_ids.each do |jid|
+      node.set['job_status'][jid]['status'] = 1
+      node.set['job_status'][jid]['message'] = e.message
+    end
   end
 end
 

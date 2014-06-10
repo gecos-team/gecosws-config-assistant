@@ -10,25 +10,45 @@
 #
 
 action :setup do
-
   begin
-
     package 'ntpdate' do
       action :nothing
     end.run_action(:install)
+
     ntp_server = new_resource.server 
-    unless ntp_server.nil?
+
+    unless ntp_server.nil? or ntp_server.empty?
       execute "ntpdate" do
         command "ntpdate-debian -u #{ntp_server}"
-        action :run
-      end
+        action :nothing
+      end.run_action(:run)
+      template '/etc/default/ntpdate' do
+        source 'ntpdate.erb'
+        owner 'root'
+        group 'root'
+        mode 00644
+        variables ({
+          :ntp_server => new_resource.server
+        })
+      end 
     end
-  rescue
-    # TODO:
+
+    # save current job ids (new_resource.job_ids) as "ok"
+    job_ids = new_resource.job_ids
+    job_ids.each do |jid|
+      node.set['job_status'][jid]['status'] = 0
+    end
+
+  rescue Exception => e
+    Chef::Log.error(e.message)
+    raise e.message
     # just save current job ids as "failed"
     # save_failed_job_ids
-    raise
+    job_ids = new_resource.job_ids
+    job_ids.each do |jid|
+      node.set['job_status'][jid]['status'] = 1
+      node.set['job_status'][jid]['message'] = e.message
+    end
   end
-
 end
 

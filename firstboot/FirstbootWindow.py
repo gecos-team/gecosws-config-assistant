@@ -23,7 +23,7 @@ __license__ = "GPL-2"
 
 import gettext
 from gettext import gettext as _
-gettext.textdomain('firstboot')
+gettext.textdomain('gecosws-config-assistant')
 
 import math
 import shlex
@@ -36,15 +36,17 @@ from gi.repository import Gio
 from gi.repository import GdkPixbuf
 from gi.repository import GObject
 import logging
-logger = logging.getLogger('firstboot')
+logger = logging.getLogger('gecosws-config-assistant')
 
+from firstboot import serverconf
+from firstboot_lib.firstbootconfig import get_version
 from firstboot_lib import Window, firstbootconfig, FirstbootEntry
 import pages
 import dbus
 from dbus.mainloop.glib import DBusGMainLoop
 
 
-__DESKTOP_FILE__ = '/etc/xdg/autostart/firstboot.desktop'
+__DESKTOP_FILE__ = '/etc/xdg/autostart/gecos-config-assistant.desktop'
 
 NM_DBUS_SERVICE = 'org.freedesktop.NetworkManager'
 NM_DBUS_OBJECT_PATH = '/org/freedesktop/NetworkManager'
@@ -70,7 +72,7 @@ class FirstbootWindow(Window):
     def finish_initializing(self, builder, options=None):   # pylint: disable=E1002
         """Set up the main window"""
         super(FirstbootWindow, self).finish_initializing(builder)
-        self.connect("delete_event", self.on_delete_event)
+#        self.connect("delete_event", self.on_delete_event)
 
         screen = Gdk.Screen.get_default()
         sw = math.floor(screen.width() - screen.width() / 6)
@@ -78,7 +80,10 @@ class FirstbootWindow(Window):
         self.resize(sw, sh)
 
         self.btnPrev = self.ui.btnPrev
+        self.btnApply = self.ui.btnApply
         self.btnNext = self.ui.btnNext
+        self.btnUpdate = self.ui.btnUpdate
+
 
         self.cmd_options = options
         self.fbe = FirstbootEntry.FirstbootEntry()
@@ -116,38 +121,42 @@ class FirstbootWindow(Window):
         self.on_nm_state_changed(state)
 
     def translate(self):
-        self.set_title(_('First Boot Assistant'))
+        self.set_title(_('GECOS Config Assistant'))
         self.ui.lblDescription.set_text('')
         self.ui.btnPrev.set_label(_('Previous'))
         self.ui.btnNext.set_label(_('Next'))
+        self.ui.btnApply.set_label(_('Apply'))
+        self.ui.btnUpdate.set_label(_('Update this assistant'))
+        self.ui.lblVersion.set_text(_('Version: ') + get_version())
+
 
     def on_btnClose_Clicked(self, button):
         self.destroy()
 
-    def on_delete_event(self, widget, data=None):
-        return self.confirm_exit()
-
+#    def on_delete_event(self, widget, data=None):
+#        return self.confirm_exit()
+#
     def confirm_exit(self):
 
         if self.fully_configured == True:
             if os.path.exists(__DESKTOP_FILE__):
-                os.rename(__DESKTOP_FILE__, '/tmp/firstboot.desktop')
+                os.rename(__DESKTOP_FILE__, '/tmp/gecos-config-assistant.desktop')
             return False
 
-        dialog = Gtk.MessageDialog(self,
-            Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
-            Gtk.MessageType.INFO, Gtk.ButtonsType.YES_NO,
-            _("Are you sure you have fully configured this workstation?"))
-
-        result = dialog.run()
-        dialog.destroy()
-        retval = True
-
-        if result == Gtk.ResponseType.YES:
-            if os.path.exists(__DESKTOP_FILE__):
-                os.rename(__DESKTOP_FILE__, '/tmp/firstboot.desktop')
-            retval = False
-
+#        dialog = Gtk.MessageDialog(self,
+#            Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+#            Gtk.MessageType.INFO, Gtk.ButtonsType.YES_NO,
+#            _("Are you sure you have fully configured this workstation?"))
+#
+#        result = dialog.run()
+#        dialog.destroy()
+#        retval = True
+#
+#        if result == Gtk.ResponseType.YES:
+#            if os.path.exists(__DESKTOP_FILE__):
+#                os.rename(__DESKTOP_FILE__, '/tmp/gecos-config-assistant.desktop')
+#            retval = False
+#
         return False
 
     def on_btnIndex_Clicked(self, button, page_name, module=None):
@@ -156,10 +165,23 @@ class FirstbootWindow(Window):
     def on_btnPrev_Clicked(self, button):
         self.current_page.previous_page(self.set_current_page)
 
+    def on_btnUpdate_Clicked(self, button):
+        result = serverconf.message_box(_("Update GECOS Config Assistant"), _("Are you sure you want to update the GECOS Config Assistant?"))
+        if result == 1:
+            retval = os.system("apt-get update && apt-get install gecosws-config-assistant --yes --force-yes")
+            if retval != 0:
+                serverconf.display_errors(_("Update Error"),[_("An error occurred during the upgrade")])
+            else:
+                serverconf.message_box(_("Update GECOS Config Assistant"), _("GECOS Config Assistant has been udpated. Please restart GCA"))
+
+    def on_btnApply_Clicked(self, button):
+        self.current_page.next_page(self.set_current_page)
+        serverconf.apply_changes()
+
     def on_btnNext_Clicked(self, button):
         if self.is_last_page == True:
-            if not self.confirm_exit():
-                self.destroy()
+            #if not self.confirm_exit():
+            self.destroy()
             return
         self.current_page.next_page(self.set_current_page)
 
@@ -226,6 +248,8 @@ class FirstbootWindow(Window):
 
         self.ui.btnPrev.set_sensitive(True)
         self.ui.btnNext.set_sensitive(True)
+        self.ui.btnUpdate.set_sensitive(True)
+        self.ui.btnApply.set_sensitive(True)
         self.translate()
 
         try:

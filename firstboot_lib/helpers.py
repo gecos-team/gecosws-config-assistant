@@ -32,7 +32,7 @@ from . Builder import Builder
 
 import gettext
 from gettext import gettext as _
-gettext.textdomain('firstboot')
+gettext.textdomain('gecosws-config-assistant')
 
 def get_builder(builder_file_name):
     """Return a fully-instantiated Gtk.Builder instance from specified ui

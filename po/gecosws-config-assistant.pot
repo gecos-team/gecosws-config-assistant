@@ -1,0 +1,543 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-04-28 17:11+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../firstboot/FirstbootWindow.py:121
+msgid "GECOS Config Assistant"
+msgstr ""
+
+#: ../firstboot/FirstbootWindow.py:123
+msgid "Previous"
+msgstr ""
+
+#: ../firstboot/FirstbootWindow.py:124
+msgid "Next"
+msgstr ""
+
+#: ../firstboot/FirstbootWindow.py:125
+#: ../firstboot/pages/localUsers/__init__.py:99
+msgid "Apply"
+msgstr ""
+
+#: ../firstboot/pages/installSoftware/__init__.py:35
+#: ../firstboot/pages/installSoftware/__init__.py:52
+msgid "Install software"
+msgstr ""
+
+#: ../firstboot/pages/installSoftware/__init__.py:49
+msgid "Close"
+msgstr ""
+
+#: ../firstboot/pages/installSoftware/__init__.py:53
+msgid ""
+"Install software packages from a safe repository.\n"
+"\n"
+"You can skip this step if this workstation will be managed from your GECOS "
+"server."
+msgstr ""
+
+#: ../firstboot/pages/network/__init__.py:37
+msgid "Configure the network"
+msgstr ""
+
+#: ../firstboot/pages/network/__init__.py:54
+msgid "Configure a network interface"
+msgstr ""
+
+#: ../firstboot/pages/network/__init__.py:55
+msgid ""
+"This workstation needs a network connection in order to autenticate users, "
+"link to GECOS Control Center, and software installation."
+msgstr ""
+
+#: ../firstboot/pages/network/__init__.py:57
+msgid "Available network cards are listed below:"
+msgstr ""
+
+#: ../firstboot/pages/network/__init__.py:72
+msgid "Interface"
+msgstr ""
+
+#: ../firstboot/pages/network/__init__.py:78
+msgid "IP"
+msgstr ""
+
+#: ../firstboot/pages/autoConfig/__init__.py:40
+msgid "Auto Configuration"
+msgstr ""
+
+#: ../firstboot/pages/autoConfig/__init__.py:77
+msgid ""
+"Parameters can be filled automatically if an autoconfiguration file is "
+"available in your GECOS Control Center"
+msgstr ""
+
+#: ../firstboot/pages/autoConfig/__init__.py:80
+msgid "Download a new file with default configuration parameters."
+msgstr ""
+
+#: ../firstboot/pages/autoConfig/__init__.py:81
+msgid "Control Center URL"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/LinkToServerResultsPage.py:67
+#: ../firstboot/pages/linkToServer/__init__.py:139
+#: ../firstboot/pages/linkToChef/LinkToChefResultsPage.py:69
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:204
+#: ../firstboot/pages/linkToChef/__init__.py:105
+msgid "The configuration was updated successfully."
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/LinkToServerResultsPage.py:72
+#: ../firstboot/pages/linkToChef/LinkToChefResultsPage.py:74
+msgid "There are some errors you must fix."
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:100
+msgid ""
+"These parameters are required in order to join an authentication server:"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:104
+msgid "Version"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:105
+msgid "Organization"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:106
+msgid "Notes"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:108
+msgid "Base DN for users"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:109
+msgid "Base DN for groups"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:111
+#: ../firstboot/pages/localUsers/__init__.py:93
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:76
+msgid "Password"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:113
+msgid "Workgroup"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:114
+msgid "Change specific configuration from server?"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:135
+#: ../firstboot/serverconf/__init__.py:78
+msgid "Authentication Required"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:136
+msgid "Please, provide administration credentials for the Active Directory."
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/__init__.py:40
+msgid "Select authentication method"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/__init__.py:85
+msgid ""
+"Users in this workstation can be authenticated against a external system.\n"
+"\n"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/__init__.py:88
+msgid "This workstation currently uses a LDAP server for user authentication."
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/__init__.py:90
+msgid ""
+"This workstation currently uses an Active Directory server for user "
+"authentication."
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/__init__.py:92
+msgid "No authentication system is currently configured."
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/__init__.py:94
+msgid "Select the authentication method you would like to use:"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/__init__.py:99
+msgid "Unlink from LDAP"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/__init__.py:100
+msgid "Unlink from Active Directory"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/__init__.py:101
+msgid "LDAP"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/__init__.py:102
+msgid "Active Directory"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/__init__.py:103
+msgid "None"
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/__init__.py:133
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:198
+#: ../firstboot/pages/linkToChef/__init__.py:99
+msgid "The configuration file is valid."
+msgstr ""
+
+#: ../firstboot/pages/linkToServer/__init__.py:151
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:216
+#: ../firstboot/pages/linkToChef/__init__.py:117
+msgid "Trying to connect..."
+msgstr ""
+
+#: ../firstboot/pages/localUsers/Dialogs.py:34
+msgid "New user"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/Dialogs.py:38
+msgid "Type the new user information:"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/Dialogs.py:41
+msgid "name"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/Dialogs.py:51
+msgid "login"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/Dialogs.py:61
+#: ../firstboot/serverconf/__init__.py:517
+#: ../firstboot/serverconf/__init__.py:557
+msgid "password"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/Dialogs.py:72
+msgid "confirm"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/Dialogs.py:105
+msgid "Remove user"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/Dialogs.py:109
+#, python-format
+msgid "The user %s is going to be removed, are you sure?"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/Dialogs.py:112
+msgid "Remove the user home?"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/Dialogs.py:131
+msgid "Error"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:42
+msgid "Manage local users"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:88
+msgid ""
+"You can create or delete local users on thisworkstation. \n"
+"\n"
+"Users authenticated by external services (AD, LDAP...) directory do not need "
+"to be created here\n"
+"\n"
+"Check default OEM users and change its passwords if needed."
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:92
+msgid "Name"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:94
+msgid "Confirm"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:95
+msgid "Groups"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:96
+msgid "Add"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:97
+msgid "Remove"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:98
+msgid "Cancel"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:114
+msgid "User"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:300
+msgid "Duplicated user"
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:368
+msgid "User login is empty or contains invalid characters."
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:372
+msgid "User password can not be empty."
+msgstr ""
+
+#: ../firstboot/pages/localUsers/__init__.py:376
+msgid "Passwords do not match."
+msgstr ""
+
+#: ../firstboot/pages/pcLabel/__init__.py:37
+#: ../firstboot/pages/pcLabel/__init__.py:64
+msgid "Workstation Name"
+msgstr ""
+
+#: ../firstboot/pages/pcLabel/__init__.py:60
+msgid ""
+"Workstation name. This text doesn't need to be unique, and you can use "
+"spaces or symbols. \n"
+"You will find this description in your GECOS server reports later."
+msgstr ""
+
+#: ../firstboot/pages/pcLabel/__init__.py:70
+msgid "PC label has been updated correctly."
+msgstr ""
+
+#: ../firstboot/pages/dateSync/__init__.py:41
+msgid "Date/Time Synchronization"
+msgstr ""
+
+#: ../firstboot/pages/dateSync/__init__.py:62
+msgid ""
+"Workstations and server time must be synchronized.\n"
+"Please, provide the name or IP address of a valid Network Time Protocol "
+"server."
+msgstr ""
+
+#: ../firstboot/pages/dateSync/__init__.py:66
+msgid "NTP Server"
+msgstr ""
+
+#: ../firstboot/pages/dateSync/__init__.py:112
+msgid "Incorrect value for NTP Server"
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:69
+msgid "These parameters are required in order to join a Control Center:"
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:72
+msgid ""
+"\"Control Center URL\": an existant URL in your server where GECOS Control "
+"Center is installed."
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:73
+msgid ""
+"\"Username\": User with administrative privilees (This will not be "
+"workstation user)"
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:75
+msgid "Control Center Username"
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:89
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:110
+#: ../firstboot/serverconf/__init__.py:473
+msgid "Select OU"
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:89
+msgid "Select the OU to link into GCC Ui"
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:97
+#: ../firstboot/pages/linkToChef/__init__.py:147
+msgid "Url Chef Certificate Required"
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:97
+#: ../firstboot/pages/linkToChef/__init__.py:147
+msgid ""
+"You need to enter url with certificate file\n"
+" in protocol://domain/resource format"
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:101
+#: ../firstboot/pages/linkToChef/__init__.py:150
+msgid "Can not download pem file"
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:110
+msgid "Enter the correct OU to link into GCC Ui"
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:114
+msgid "You need enter a OU"
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:178
+msgid "Chef URL must be valid URL and need certificate"
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:182
+msgid "Some GCC attributes are incorrect or blank"
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/__init__.py:42
+msgid "Link workstation to GECOS Control Center"
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/__init__.py:76
+msgid ""
+"When a workstation is linked to a Control Center can be easily managed "
+"remotely.\n"
+"\n"
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/__init__.py:80
+msgid "Unlink from Control Center"
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/__init__.py:81
+msgid "Link to Control Center server?"
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/__init__.py:166
+msgid "Please insert a password"
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:60
+msgid ""
+"You must provide an unique valid short name for the workstation. Only ASCII "
+"letters, numbers and the hyphen (-) are allowed."
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:64
+msgid "Hostname"
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:85
+msgid "This name is already used."
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:102
+msgid "Host name can not be empty."
+msgstr ""
+
+#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:106
+msgid "This name already exists in your organization."
+msgstr ""
+
+#: ../firstboot/__init__.py:42
+msgid "Show debug messages (-vv debugs firstboot_lib also)"
+msgstr ""
+
+#: ../firstboot/__init__.py:46
+msgid "Debug mode. Force run the application after the first start"
+msgstr ""
+
+#: ../firstboot/__init__.py:50
+msgid "Use this URL by default in the \"Link to Server\" page."
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:79
+msgid "You need to enter your credentials to access the requested resource."
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:87
+msgid "Authentication is failed."
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:165
+msgid "Couldn't retrieve the host names list"
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:294
+msgid ""
+"The Date/Time Syncronization parameters are incorrect, please got to Date/"
+"Time section or review your autconf file"
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:297
+msgid ""
+"The GCC parameters are incorrect, please got to GCC section or review your "
+"autconf file"
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:300
+msgid ""
+"The Chef parameters are incorrect, please got to GCC section or review your "
+"autconf file"
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:303
+msgid ""
+"The authentication parameters are incorrect, please go to Authentication "
+"section or review your autconf file"
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:306
+msgid "The Local Users parameters are incorrect, please go to Users section"
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:308
+#: ../firstboot/serverconf/__init__.py:329
+#: ../firstboot/serverconf/__init__.py:332
+msgid "Configuration Error"
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:328
+msgid "An error has ocurred running chef-solo"
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:416
+msgid "Url Certificate"
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:445
+msgid "OU Name"
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:511
+msgid "GCC Password"
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:515
+msgid "Please insert GCC password for user "
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:547
+msgid "user"
+msgstr ""

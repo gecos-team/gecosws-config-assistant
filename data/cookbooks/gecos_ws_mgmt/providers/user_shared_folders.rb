@@ -25,13 +25,13 @@ action :setup do
         file gtkbookmark_file do
           owner user.username
           group user.username
-          action :create
-        end
+          action :nothing
+        end.run_action(:create)
       end
 
       user.gtkbookmarks.each do |bookmark|
         if bookmark.uri.match(pattern)
-          line_to_add = "#{bookmark.uri} #{bookmark.title}"
+          line_to_add = "#{bookmark.uri} #{bookmark.uri}"
           
           Chef::Log.info("Agregando accesos directos a carpetas compartidas")         
           add_to_file = Chef::Util::FileEdit.new gtkbookmark_file
@@ -42,14 +42,20 @@ action :setup do
       end
    end
 
-    # TODO:
     # save current job ids (new_resource.job_ids) as "ok"
+    job_ids = new_resource.job_ids
+    job_ids.each do |jid|
+      node.set['job_status'][jid]['status'] = 0
+    end
 
-  rescue
-    # TODO:
+  rescue Exception => e
     # just save current job ids as "failed"
     # save_failed_job_ids
-    raise
+    Chef::Log.error(e.message)
+    job_ids = new_resource.job_ids
+    job_ids.each do |jid|
+      node.set['job_status'][jid]['status'] = 1
+      node.set['job_status'][jid]['message'] = e.message
+    end
   end
 end
-

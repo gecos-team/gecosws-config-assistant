@@ -1,0 +1,19 @@
+Source: gecosws-config-assistant
+Section: utils
+Priority: optional
+Maintainer: David Amián <damian@emergya.com>
+Uploaders: David Amián <damian@emergya.com>
+Build-Depends: debhelper (>= 8), cdbs (>=0.4.43), python-all-dev (>=2.3.5-11), python-support
+Build-Depends-Indep: gettext, python-distutils-extra
+Standards-Version: 3.8.3
+Homepage: https://github.com/gecos-team/gecosws-config-assistant
+Vcs-Browser: https://github.com/gecos-team/gecosws-config-assistant
+Vcs-Bzr: https://github.com/gecos-team/gecosws-config-assistant
+XS-Python-Version: current
+
+Package: gecosws-config-assistant
+Architecture: all
+Depends: ${misc:Depends}, python, python-requests, python-xdg, synaptic
+Description: Aplicacion para configurar los clientes de GECOS
+ Aplicacion encargada de configurar un cliente de GECOS permitiendo configurar
+ red, conexion con LDAP y servidor.

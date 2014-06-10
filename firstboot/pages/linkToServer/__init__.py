@@ -28,10 +28,11 @@ import firstboot.pages
 import LinkToServerConfEditorPage
 from firstboot_lib import PageWindow
 from firstboot import serverconf
+from firstboot.serverconf import AuthConf
 
 import gettext
 from gettext import gettext as _
-gettext.textdomain('firstboot')
+gettext.textdomain('gecosws-config-assistant')
 
 
 __REQUIRED__ = True
@@ -45,6 +46,9 @@ __STATUS_ERROR__ = 3
 
 __LDAP__ = 'ldap'
 __AD__ = 'ad'
+
+__AD_FLAG__ = '/etc/gca-sssd.control'
+__LDAP_FLAG__ = __AD_FLAG__
 
 
 def get_page(main_window):
@@ -68,22 +72,22 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.ad_is_configured = serverconf.ad_is_configured()
         is_configured = self.ldap_is_configured or self.ad_is_configured
 
-
+        self.ui.radioNone.set_active(True)
         self.ui.boxUnlinkOptions.set_visible(is_configured)
         self.ui.boxAuthSection.set_visible(not is_configured)
         self.main_window.btnNext.set_sensitive(True)
 
         self.ui.chkUnlinkLDAP.set_visible(self.ldap_is_configured)
-        self.ui.chkUnlinkAD.set_visible(self.ad_is_configured)
+        self.ui.chkUnlinkAD.set_visible(False)
 
 
     def translate(self):
         desc = _('Users in this workstation can be authenticated against a external system.\n\n')
 
         if self.ldap_is_configured:
-            desc1 = _('This workstation currently uses a LDAP server for user authentication.')
+            desc1 = _('This workstation currently uses an authentication user method.')
         elif self.ad_is_configured:
-            desc1 = _('This workstation currently uses an Active Directory server for user authentication.')
+            desc1 = _('This workstation currently uses an authentication user method.')
         else:
             desc1 = _('No authentication system is currently configured.')
 
@@ -92,8 +96,8 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.ui.lblDescription.set_text(desc)
         self.ui.lblDescription1.set_text(desc1)
         self.ui.lblDescription2.set_text(desc2)
-        self.ui.chkUnlinkLDAP.set_label(_('Unlink from LDAP'))
-        self.ui.chkUnlinkAD.set_label(_('Unlink from Active Directory'))
+        self.ui.chkUnlinkLDAP.set_label(_('Unlink from authentication method'))
+        self.ui.chkUnlinkAD.set_label(_('Unlink from authentication method'))
         self.ui.radioLDAP.set_label(_('LDAP'))
         self.ui.radioAD.set_label(_('Active Directory'))
         self.ui.radioNone.set_label(_('None'))
@@ -152,21 +156,42 @@ class LinkToServerPage(PageWindow.PageWindow):
 
     def next_page(self, load_page_callback):
         if self.unlink_ldap == True or self.unlink_ad == True:
-            server_conf = None
-            result, messages = serverconf.setup_server(
-                server_conf=server_conf,
-                unlink_ldap=self.unlink_ldap,
-                unlink_ad=self.unlink_ad
-            )
+            messages = []
+# TODO Implements unlink from ldap or ad into serverconf class
+            if self.unlink_ldap:
+                messages += serverconf.unlink_from_sssd()
+            else:
+                messages += serverconf.unlink_from_sssd()
+            result = len(messages) == 0
+            if result:
+                server_conf = serverconf.get_server_conf(None)
+                auth_conf = server_conf.get_auth_conf()
+                content = serverconf.get_json_content()
+                if content != None:
+                    auth_conf_cached = AuthConf.AuthConf()
+                    auth_conf_cached.load_data(content['auth'])
+                    server_conf.set_auth_conf(auth_conf_cached)
+                else:
+                    server_conf.set_auth_conf(AuthConf.AuthConf())
 
+                if self.unlink_ldap:
+                    auth_conf.set_auth_type('ldap')
+                    #os.remove(__LDAP_FLAG__)
+                else:
+                    auth_conf.set_auth_type('ad')
+                    #os.remove(__AD_FLAG__)
+
+            auth_conf.set_auth_link(False)
             load_page_callback(LinkToServerResultsPage, {
-                'result': result,
-                'server_conf': server_conf,
-                'messages': messages
+                'result': True,
+                'messages': None
             })
             return
-
+        
         if self.ui.radioNone.get_active() or (self.ldap_is_configured or self.ad_is_configured):
+            if self.ui.radioNone.get_active():
+                server_conf = serverconf.get_server_conf(None)
+                server_conf.set_auth_conf(AuthConf.AuthConf())
             self.emit('status-changed', 'linkToServer', True)
             load_page_callback(firstboot.pages.localUsers)
             return
@@ -174,12 +199,9 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.show_status()
 
         try:
-            server_conf = None
-            if self.json_cached:
-                server_conf = serverconf.get_server_conf(None)
+            server_conf = serverconf.get_server_conf(None)
 
             load_page_callback(LinkToServerConfEditorPage, {
-                'server_conf': server_conf,
                 'ldap_is_configured': self.ldap_is_configured,
                 'auth_method': self.get_auth_method(),
                 'ad_is_configured': self.ad_is_configured,

@@ -29,18 +29,22 @@ def is_empty(value):
     #print '> %s :: %s' % (ret, value)
     return ret
 
-
 def is_qname(value):
-    m = re.search('^[a-zA-Z][\w-]+$', value)
+    m = re.search(r'^[a-zA-Z][\w-]+$', value)
     #print '> %s :: %s' % (m != None, value)
     return m != None
 
+def is_domain(value):
+    m = re.search(r'[a-zA-Z0-9]{3,}\.[a-z]{2,3}$', value)
+    return m != None
 
 def is_url(value):
-    m = re.search('^(http|https|ftp|ftps|file|ldap)://(.+)', value)
+    m = re.search(r'^(http|https|ftp|ftps|file|ldap|ldaps)://(.+)', value)
     #print '> %s :: %s' % (m != None, value)
     return m != None
 
+def is_auth_type(value):
+    return value == 'ldap' or value == 'ad'
 
 def is_password(value):
     """ Maybe not necesary """

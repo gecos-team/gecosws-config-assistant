@@ -27,10 +27,11 @@ import subprocess
 from gi.repository import Gtk
 from firstboot_lib import PageWindow
 from firstboot import serverconf
+import firstboot.validation as validation
 
 import gettext
 from gettext import gettext as _
-gettext.textdomain('firstboot')
+gettext.textdomain('gecosws-config-assistant')
 
 import firstboot.pages
 
@@ -54,11 +55,8 @@ class DateSyncPage(PageWindow.PageWindow):
 
     def load_page(self, params=None):
         self.emit('status-changed', 'dateSync', not __REQUIRED__)
-
-
-        if serverconf.json_is_cached():
-            self.serverconf = serverconf.get_server_conf(None)
-            self.ui.txtHost.set_text(self.serverconf.get_ntp_conf().get_host())
+        self.serverconf = serverconf.get_server_conf(None)
+        self.ui.txtHost.set_text(self.serverconf.get_ntp_conf().get_uri_ntp())
 
     def translate(self):
         desc = _('Workstations and server time must be synchronized.\nPlease,\
@@ -66,11 +64,11 @@ class DateSyncPage(PageWindow.PageWindow):
 
         self.ui.lblDescription.set_text(desc)
         self.ui.lblHost.set_label(_('NTP Server'))
-        self.ui.btnSync.set_label(_('Synchronize'))
-
+        #self.ui.btnSync.set_label(_('Synchronize'))
 
     def on_btnSync_clicked(self, widget):
-
+        pass
+        """
         self.ui.btnSync.set_sensitive(False)
         cmd = 'ntpdate -u %s' % (self.ui.txtHost.get_text(),)
         args = shlex.split(cmd)
@@ -83,6 +81,7 @@ class DateSyncPage(PageWindow.PageWindow):
 
         self.ui.btnSync.set_sensitive(True)
         self.set_status(exit_code, output)
+        """
 
     def set_status(self, code, description=''):
 
@@ -105,4 +104,11 @@ class DateSyncPage(PageWindow.PageWindow):
         load_page_callback(firstboot.pages.network)
 
     def next_page(self, load_page_callback):
-        load_page_callback(firstboot.pages.linkToChef)
+        if validation.is_domain(self.ui.txtHost.get_text()):
+            self.serverconf.get_ntp_conf().set_uri_ntp(self.ui.txtHost.get_text())
+            #print self.serverconf.get_ntp_conf().get_uri_ntp()
+            load_page_callback(firstboot.pages.pcLabel)
+        else:
+            self.set_status(1, str(_('Incorrect value for NTP Server')))
+        
+        

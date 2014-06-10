@@ -22,32 +22,73 @@ __license__ = "GPL-2"
 
 
 import firstboot.serverconf
-from LdapConf import LdapConf
 from ChefConf import ChefConf
-from ActiveDirectoryConf import ActiveDirectoryConf
+from GCCConf import GCCConf
+from AuthConf import AuthConf
 from DateSyncConf import DateSyncConf
+from UsersConf import UsersConf
+
+class Singleton:
+    """
+    A non-thread-safe helper class to ease implementing singletons.
+    This should be used as a decorator -- not a metaclass -- to the
+    class that should be a singleton.
+
+    The decorated class can define one `__init__` function that
+    takes only the `self` argument. Other than that, there are
+    no restrictions that apply to the decorated class.
+
+    To get the singleton instance, use the `Instance` method. Trying
+    to use `__call__` will result in a `TypeError` being raised.
+
+    Limitations: The decorated class cannot be inherited from.
+
+    """
+
+    def __init__(self, decorated):
+        self._decorated = decorated
+
+    def Instance(self):
+        """
+        Returns the singleton instance. Upon its first call, it creates a
+        new instance of the decorated class and calls its `__init__` method.
+        On all subsequent calls, the already created instance is returned.
+
+        """
+        try:
+            return self._instance
+        except AttributeError:
+            self._instance = self._decorated()
+            return self._instance
+
+    def __call__(self):
+        raise TypeError('Singletons must be accessed through `Instance()`.')
+
+    def __instancecheck__(self, inst):
+        return isinstance(inst, self._decorated)
 
 
+@Singleton
 class ServerConf():
 
     # Version of the configuration JSON file
-    VERSION = '1.3'
 
     def __init__(self):
         self._data = {}
-        self._data['version'] = ServerConf.VERSION
+        self.VERSION = '0.2.0'
+        self._data['version'] = self.VERSION
         self._data['organization'] = ''
-        self._data['notes'] = ''
-        self._ldap_conf = LdapConf()
         self._chef_conf = ChefConf()
-        self._ad_conf = ActiveDirectoryConf()
+        self._gcc_conf = GCCConf()
+        self._auth_conf = AuthConf()
         self._ntp_conf = DateSyncConf()
+        self._users_conf = UsersConf()
 
     def load_data(self, conf):
         msg = 'ServerConf: Key "%s" not found in the configuration file.'
         try:
             v = conf['version']
-            if v != ServerConf.VERSION:
+            if v != self.VERSION:
                 print 'WARNING: ServerConf and AUTOCONFIG_JSON version mismatch!'
         except KeyError as e:
             print msg % ('version',)
@@ -56,32 +97,28 @@ class ServerConf():
         except KeyError as e:
             print msg % ('organization',)
         try:
-            self.set_notes(conf['notes'])
-        except KeyError as e:
-            print msg % ('notes',)
-        try:
-            self._ldap_conf.load_data(conf['pamldap'])
-        except KeyError as e:
-            print msg % ('pamldap',)
-        try:
             self._chef_conf.load_data(conf['chef'])
         except KeyError as e:
             print msg % ('chef',)
         try:
-            self._ad_conf.load_data(conf['ad'])
+            self._gcc_conf.load_data(conf['gcc'])
         except KeyError as e:
-            print msg % ('ad',)
+            print msg % ('gcc',)
         try:
-            self._ntp_conf.load_data(conf['ntp'])
+            self._auth_conf.load_data(conf['auth'])
+        except KeyError as e:
+            print msg % ('auth',)
+        try:
+            self._ntp_conf.load_data(conf['uri_ntp'])
         except KeyError as e:
             print msg % ('ntp',)
 
     def validate(self):
         valid = len(self._data['version']) > 0 \
-            and self._ldap_conf.validate() \
             and self._chef_conf.validate() \
-            and self._ad_conf.validate() \
-            and self._ntp_conf.validate()
+            and self._auth_conf.validate() \
+            and self._ntp_conf.validate() \
+            and self._gcc_conf.validate()
         return valid
 
     def get_version(self):
@@ -98,18 +135,8 @@ class ServerConf():
         self._data['organization'] = organization
         return self
 
-    def get_notes(self):
-        return self._data['notes'].encode('utf-8')
-
-    def set_notes(self, notes):
-        self._data['notes'] = notes
-        return self
-
-    def get_ad_conf(self):
-        return self._ad_conf
-
-    def get_ldap_conf(self):
-        return self._ldap_conf
+    def get_auth_conf(self):
+        return self._auth_conf
 
     def get_chef_conf(self):
         return self._chef_conf
@@ -117,3 +144,28 @@ class ServerConf():
     def get_ntp_conf(self):
         return self._ntp_conf
 
+    def get_gcc_conf(self):
+        return self._gcc_conf
+
+    def get_users_conf(self):
+        return self._users_conf
+
+    def set_auth_conf(self, auth_conf):
+        self._auth_conf = auth_conf
+        return self
+
+    def set_chef_conf(self, chef_conf):
+        self._chef_conf = chef_conf
+        return self
+
+    def set_ntp_conf(self, ntp_conf):
+        self._ntp_conf = ntp_conf
+        return self
+
+    def set_gcc_conf(self, gcc_conf):
+        self._gcc_conf = gcc_conf
+        return gcc_conf
+
+    def set_users_conf(self, user_conf):
+        self._users_conf = user_conf
+        return self

@@ -32,14 +32,21 @@ action :setup do
 
     end
     
-    # TODO:
     # save current job ids (new_resource.job_ids) as "ok"
+    job_ids = new_resource.job_ids
+    job_ids.each do |jid|
+      node.set['job_status'][jid]['status'] = 0
+    end
 
-  rescue
-    # TODO:
+  rescue Exception => e
     # just save current job ids as "failed"
     # save_failed_job_ids
-    raise
+    Chef::Log.error(e.message)
+    job_ids = new_resource.job_ids
+    job_ids.each do |jid|
+      node.set['job_status'][jid]['status'] = 1
+      node.set['job_status'][jid]['message'] = e.message
+    end
   end
 end
 

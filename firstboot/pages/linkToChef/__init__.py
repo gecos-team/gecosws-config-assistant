@@ -28,10 +28,13 @@ import firstboot.pages
 import LinkToChefConfEditorPage
 from firstboot_lib import PageWindow
 from firstboot import serverconf
+from firstboot.serverconf import GCCConf, ChefConf
 
+import requests
+import json
 import gettext
 from gettext import gettext as _
-gettext.textdomain('firstboot')
+gettext.textdomain('gecosws-config-assistant')
 
 
 __REQUIRED__ = True
@@ -43,6 +46,9 @@ __STATUS_CONFIG_CHANGED__ = 1
 __STATUS_CONNECTING__ = 2
 __STATUS_ERROR__ = 3
 
+__GCC_FLAG__ = '/etc/gcc.control'
+__CHEF_FLAG__ = '/etc/chef.control'
+
 
 def get_page(main_window):
 
@@ -53,26 +59,18 @@ def get_page(main_window):
 class LinkToChefPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToChefPage"
 
-#    def load_page(self, params=None):
-#        if serverconf.json_is_cached() and not self.chef_is_configured:
-#            self.json_cached = True
-#            server_conf = serverconf.get_server_conf(None)
-#            self.emit('page-changed', LinkToChefConfEditorPage, {
-#                    'server_conf': server_conf,
-#                    'chef_is_configured': self.chef_is_configured,
-#                    'unlink_from_chef': False
-#            })
-#
-#        else:
-#            self.json_cached = False
+    def load_page(self, params=None):
+        pass
+
 
     def finish_initializing(self):
-        self.chef_is_configured = serverconf.chef_is_configured()
-        self.json_cached = serverconf.json_is_cached()
+        self.gcc_is_configured = serverconf.gcc_is_configured()
+        server_conf = serverconf.get_server_conf(None)
         self.show_status()
-
-        self.ui.chkUnlinkChef.set_visible(self.chef_is_configured)
-        self.ui.chkLinkChef.set_visible(not self.chef_is_configured)
+        if server_conf.get_gcc_conf().get_gcc_link():
+            self.emit('page-changed', LinkToChefConfEditorPage,{})
+        self.ui.chkUnlinkChef.set_visible(self.gcc_is_configured)
+        self.ui.chkLinkChef.set_visible(not self.gcc_is_configured)
 
     def translate(self):
         desc = _('When a workstation is linked to a Control Center can be \
@@ -120,11 +118,11 @@ easily managed remotely.\n\n')
             self.ui.lblStatus.set_visible(True)
 
     def previous_page(self, load_page_callback):
-        load_page_callback(firstboot.pages.dateSync)
+        load_page_callback(firstboot.pages.pcLabel)
 
     def next_page(self, load_page_callback):
         if (self.ui.chkLinkChef.get_visible() and not self.ui.chkLinkChef.get_active()) or \
-            (self.chef_is_configured and not self.ui.chkUnlinkChef.get_active()):
+            (self.gcc_is_configured and not self.ui.chkUnlinkChef.get_active()):
             self.emit('status-changed', 'linkToChef', True)
             load_page_callback(firstboot.pages.linkToServer)
             return
@@ -132,27 +130,55 @@ easily managed remotely.\n\n')
         try:
             server_conf = None
 
-            if not self.chef_is_configured:
-                if self.json_cached:
-                    server_conf = serverconf.get_server_conf(None)
-
-                load_page_callback(LinkToChefConfEditorPage, {
-                    'server_conf': server_conf,
-                    'chef_is_configured': self.chef_is_configured,
-                    'unlink_from_chef': self.ui.chkUnlinkChef.get_active()
-                })
+            if not self.gcc_is_configured:
+                load_page_callback(LinkToChefConfEditorPage)
 
             elif self.ui.chkUnlinkChef.get_active():
-
-                result, messages = serverconf.setup_server(
-                    server_conf=server_conf,
-                    link_chef=False,
-                    unlink_chef=True
-                )
-
+                server_conf = serverconf.get_server_conf(None)
+                ## TODO Implement unlink GCC an Chef into serverconf Class
+                gcc_flag = open(__GCC_FLAG__, 'r')
+                content = gcc_flag.read()
+                gcc_flag.close()
+                gcc_flag_json = json.loads(content)
+                server_conf.get_gcc_conf().set_uri_gcc(gcc_flag_json['uri_gcc'])
+                server_conf.get_gcc_conf().set_gcc_nodename(gcc_flag_json['gcc_nodename'])
+                server_conf.get_gcc_conf().set_gcc_link(False)
+                server_conf.get_gcc_conf().set_run(True)
+                json_server = serverconf.validate_credentials(gcc_flag_json['uri_gcc']+'/auth/config/')
+                json_server = json.loads(json_server)
+                pem = json_server['chef']['chef_validation']
+                server_conf.get_gcc_conf().set_gcc_username(json_server['gcc']['gcc_username'])
+                serverconf.create_pem(pem)
+ 
+                chef_flag = open(__CHEF_FLAG__, 'r')
+                content = chef_flag.read()
+                chef_flag.close()
+                chef_flag_json = json.loads(content)
+                server_conf.get_chef_conf().set_url(chef_flag_json['chef_server_url'])
+                server_conf.get_chef_conf().set_node_name(chef_flag_json['chef_node_name'])
+                server_conf.get_chef_conf().set_admin_name(json_server['gcc']['gcc_username'])
+                server_conf.get_chef_conf().set_chef_link(False)
+                password = serverconf.ACTUAL_USER[1]
+                if password == None:
+                   raise Exception(_('Error in user and password'))
+                messages = []
+                messages += serverconf.unlink_from_gcc(password)
+                messages += serverconf.unlink_from_chef()
+                result = len(messages) == 0
+                if result:
+                    content = serverconf.get_json_content()
+                    if content != None:
+                        gcc_conf_cached = GCCConf.GCCConf()
+                        gcc_conf_cached.load_data(content['gcc'])
+                        chef_conf_cached = ChefConf.ChefConf()
+                        chef_conf_cached.load_data(content['chef'])
+                        server_conf.set_chef_conf(chef_conf_cached)
+                        server_conf.set_gcc_conf(gcc_conf_cached)
+                    else:
+                        server_conf.set_chef_conf(ChefConf.ChefConf())
+                        server_conf.set_gcc_conf(GCCConf.GCCConf())
                 load_page_callback(LinkToChefResultsPage, {
-                    'result': result,
-                    'server_conf': server_conf,
+                    'result': True,
                     'messages': messages
                 })
 

@@ -27,78 +27,76 @@ class ChefConf():
 
     def __init__(self):
         self._data = {}
-        self._data['chef_server_url'] = ''
-        self._data['chef_validation_url'] = ''
-        self._data['chef_default_role'] = ''
+        self._data['chef_server_uri'] = ''
+        self._data['chef_validation'] = ''
+        self._data['chef_link'] = False
+        self._data['chef_link_existing'] = False
+
 
     def load_data(self, conf):
         msg = 'ServerConf: Key "%s" not found in the configuration file.'
         try:
-            self.set_url(conf['chef_server_url'])
+            self.set_url(conf['chef_server_uri'])
         except KeyError as e:
-            print msg % ('chef_server_url',)
+            print msg % ('chef_server_uri',)
         try:
-            self.set_pem_url(conf['chef_validation_url'])
+            self.set_pem(conf['chef_validation'])
         except KeyError as e:
-            print msg % ('chef_validation_url',)
+            print msg % ('chef_validation',)
         try:
-            self.set_default_role(conf['chef_default_role'])
+            self.set_chef_link(conf['chef_link'])
         except KeyError as e:
-            print msg % ('chef_default_role',)
+            print msg % ('chef_link',)
 
     def validate(self):
-        valid = validation.is_url(self._data['chef_server_url']) \
-            and validation.is_url(self._data['chef_validation_url']) \
-            and validation.is_qname(self._data['chef_default_role'])
+        valid = validation.is_url(self._data['chef_server_uri']) and self._data['chef_validation'] != '' and self._data['chef_link'] != None and self._data['chef_link_existing'] != None
         return valid
 
     def get_url(self):
-        return self._data['chef_server_url'].encode('utf-8')
+        return self._data['chef_server_uri'].encode('utf-8')
 
     def set_url(self, url):
-        self._data['chef_server_url'] = url
+        self._data['chef_server_uri'] = url
         return self
 
-    def get_pem_url(self):
-        return self._data['chef_validation_url'].encode('utf-8')
+    def get_pem(self):
+        return self._data['chef_validation'].encode('utf-8')
 
-    def set_pem_url(self, pem_url):
-        self._data['chef_validation_url'] = pem_url
+    def set_pem(self, pem):
+        self._data['chef_validation'] = pem
         return self
 
-    def get_default_role(self):
-        return self._data['chef_default_role'].encode('utf-8')
-
-    def set_default_role(self, default_role):
-        self._data['chef_default_role'] = default_role
-        return self
 
     # --- Next fields are not present in the JSON file but are
     # setted on runtime by Firstboot ---
-
-    def get_hostname(self):
-        if not 'hostname' in self._data:
-            self._data['hostname'] = ''
-        return self._data['hostname'].encode('utf-8')
-
-    def set_hostname(self, hostname):
-        self._data['hostname'] = hostname
+    def set_chef_link_existing(self, link_existing):
+        self._data['chef_link_existing'] = link_existing
         return self
 
-    def get_user(self):
-        if not 'user' in self._data:
-            self._data['user'] = ''
-        return self._data['user'].encode('utf-8')
+    def get_chef_link_existing(self):
+        return self._data['chef_link_existing']
 
-    def set_user(self, user):
-        self._data['user'] = user
+    def set_chef_link(self, chef_link):
+        self._data['chef_link'] = chef_link
         return self
 
-    def get_password(self):
-        if not 'password' in self._data:
-            self._data['password'] = ''
-        return self._data['password'].encode('utf-8')
+    def get_chef_link(self):
+        return self._data['chef_link']
+        
+    def get_node_name(self):
+        if not 'node_name' in self._data:
+            self._data['node_name'] = ''
+        return self._data['node_name'].encode('utf-8')
 
-    def set_password(self, password):
-        self._data['password'] = password
+    def set_node_name(self, node_name):
+        self._data['node_name'] = node_name
+        return self
+
+    def get_admin_name(self):
+        if not 'chef_admin_name' in self._data:
+            self._data['chef_admin_name'] = ''
+        return self._data['chef_admin_name'].encode('utf-8')
+
+    def set_admin_name(self, admin_name):
+        self._data['chef_admin_name'] = admin_name
         return self

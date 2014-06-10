@@ -1,0 +1,30 @@
+#! /bin/sh
+
+### BEGIN INIT INFO
+# Required-Start: $remote_fs
+# Required-Stop:  $remote_fs
+# Should-Start:   $network $syslog
+# Default-Start:  <%= @arrinit %>
+# Default-Stop: <% @arrhalt.each do |arr|;%> <%= arr %><% ;end %>  
+### END INIT INFO
+
+NAME=auto_update
+
+set -e
+
+case "$1" in
+  start|stop)
+        echo -n "Starting $DESC: "
+        apt-get update >> <%= @log_file %> 2>> <%= @err_file %>
+         apt-get autoclean -y >> <%= @log_file %> 2>> <%= @err_file %>
+         DEBCONF_PRIORITY=critical DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y --assume-yes --force-yes >> <%= @log_file %> 2>> <%= @err_file %>
+        echo "$NAME."
+        ;;
+  *)
+        N=/etc/init.d/$SNAME
+        echo "Usage: $N {start}" >&2
+        exit 1
+        ;;
+esac
+
+exit 0

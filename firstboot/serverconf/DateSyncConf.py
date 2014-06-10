@@ -27,23 +27,23 @@ class DateSyncConf():
 
     def __init__(self):
         self._data = {}
-        self._data['host'] = ''
+        self._data['uri_ntp'] = ''
 
     def load_data(self, conf):
         msg = 'DateSyncConf: Key "%s" not found in the configuration file.'
         try:
-            self.set_host(conf['host'])
+            self.set_uri_ntp(conf)
         except KeyError as e:
-            print msg % ('host',)
+            print msg % ('uri_ntp',)
 
     def validate(self):
-        valid = validation.is_qname(self._data['host'])
+        valid = validation.is_domain(self._data['uri_ntp'])
         return valid
 
-    def get_host(self):
-        return self._data['host'].encode('utf-8')
+    def get_uri_ntp(self):
+        return self._data['uri_ntp'].encode('utf-8')
 
-    def set_host(self, host):
-        self._data['host'] = host
+    def set_uri_ntp(self, uri_ntp):
+        self._data['uri_ntp'] = uri_ntp
         return self
 

@@ -27,14 +27,14 @@ from firstboot_lib import PageWindow
 
 import gettext
 from gettext import gettext as _
-gettext.textdomain('firstboot')
+gettext.textdomain('gecosws-config-assistant')
 
 import firstboot.pages
 
 
 __REQUIRED__ = False
 
-__TITLE__ = _('Describe this workstation')
+__TITLE__ = _('Workstation Name')
 
 __LABEL_FILE__ = '/etc/pclabel'
 
@@ -57,11 +57,11 @@ class PCLabelPage(PageWindow.PageWindow):
         self.emit('status-changed', 'pcLabel', not __REQUIRED__)
 
     def translate(self):
-        desc = _('Describe this workstation. This text doesn\'t need to be unique, and you can use spaces or symbols. \
+        desc = _('Workstation name. This text doesn\'t need to be unique, and you can use spaces or symbols. \
 \nYou will find this description in your GECOS server reports later.')
 
         self.ui.lblDescription.set_text(desc)
-        self.ui.lblLabel.set_label(_('Description'))
+        self.ui.lblLabel.set_label(_('Workstation Name'))
 
     def on_txtLabel_changed(self, entry):
         try:
@@ -98,4 +98,4 @@ class PCLabelPage(PageWindow.PageWindow):
         load_page_callback(firstboot.pages.dateSync)
 
     def next_page(self, load_page_callback):
-        load_page_callback(firstboot.pages.linkToServer)
+        load_page_callback(firstboot.pages.linkToChef)
