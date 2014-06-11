@@ -27,9 +27,11 @@ gecos_ws_mgmt_user_shared_folders 'user shared folders' do
   action :setup
 end
 
-#gecos_ws_mgmt_desktop_background node[:gecos_ws_mgmt][:users_mgmt][:desktop_background_res][:users] do
-#    action  :setup
-#end
+gecos_ws_mgmt_desktop_background 'desktop background' do
+  users node[:gecos_ws_mgmt][:users_mgmt][:desktop_background_res][:users]
+  job_ids node[:gecos_ws_mgmt][:users_mgmt][:desktop_background_res][:job_ids]
+  action  :setup
+end
 
 gecos_ws_mgmt_screensaver 'localhost screensaver' do
   users node[:gecos_ws_mgmt][:users_mgmt][:screensaver_res][:users]

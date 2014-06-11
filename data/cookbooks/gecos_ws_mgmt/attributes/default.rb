@@ -88,9 +88,9 @@ default[:gecos_ws_mgmt][:users_mgmt][:file_browser_res][:users] = []
 default[:gecos_ws_mgmt][:users_mgmt][:file_browser_res][:job_ids] = []
 default[:gecos_ws_mgmt][:users_mgmt][:file_browser_res][:updated_by] = {}
 
-default[:gecos_ws_mgmt][:misc_mgmt][:desktop_background_res][:desktop_file] = ''
-default[:gecos_ws_mgmt][:misc_mgmt][:desktop_background_res][:job_ids] = []
-default[:gecos_ws_mgmt][:misc_mgmt][:desktop_background_res][:updated_by] = {}
+default[:gecos_ws_mgmt][:users_mgmt][:desktop_background_res][:users] = []
+default[:gecos_ws_mgmt][:users_mgmt][:desktop_background_res][:job_ids] = []
+default[:gecos_ws_mgmt][:users_mgmt][:desktop_background_res][:updated_by] = {}
 
 default[:gecos_ws_mgmt][:users_mgmt][:user_launchers_res][:users] = []
 default[:gecos_ws_mgmt][:users_mgmt][:user_launchers_res][:job_ids] = []

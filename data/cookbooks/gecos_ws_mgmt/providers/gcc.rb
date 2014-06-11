@@ -37,7 +37,7 @@ action :setup do
           Chef::Log.info("GCC: Configurndo GECOS Control Center")
           begin
             resource = RestClient::Resource.new(new_resource.uri_gcc + '/register/computer/', :user => new_resource.gcc_username, :password => new_resource.gcc_pwd_user)
-            response = resource.post :node_id => new_resource.gcc_nodename,:ou_name=>new_resource.gcc_selected_ou, :content_type => :json, :accept => :json
+            response = resource.post :node_id => new_resource.gcc_nodename,:ou_id=>new_resource.gcc_selected_ou, :content_type => :json, :accept => :json
             if not response.code.between?(200,299)
               Chef::Log.error('The GCC URI not response')  
             else

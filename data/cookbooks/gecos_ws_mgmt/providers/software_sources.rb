@@ -14,6 +14,7 @@ action :setup do
     
     current_lists = []
     remote_lists = []    
+    remote_lists.push("gecosv2.list")
 
     Dir.foreach('/etc/apt/sources.list.d') do |item|
       next if item == '.' or item == '..'
