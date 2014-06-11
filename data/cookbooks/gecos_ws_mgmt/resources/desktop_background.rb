@@ -12,5 +12,5 @@
 actions :setup
 default_action :setup
 
-attribute :desktop_file, :name_attribute => true, :kind_of => String
+attribute :users , :kind_of => Array
 attribute :job_ids, :kind_of => Array

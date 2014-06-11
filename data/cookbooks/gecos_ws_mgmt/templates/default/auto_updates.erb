@@ -4,8 +4,12 @@
 # Required-Start: $remote_fs
 # Required-Stop:  $remote_fs
 # Should-Start:   $network $syslog
+<% if not @arrinit.nil? %>
 # Default-Start:  <%= @arrinit %>
+<% end %>
+<% if not @arrhalt.nil? %>
 # Default-Stop: <% @arrhalt.each do |arr|;%> <%= arr %><% ;end %>  
+<% end %>
 ### END INIT INFO
 
 NAME=auto_update

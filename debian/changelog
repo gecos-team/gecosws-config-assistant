@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.5.7-0gecos1) precise; urgency=low
+
+  * Updated cookbooks
+
+ -- David Amian <damian@emergya.com>  Wed, 11 Jun 2014 14:17:34 +0200
+
 gecosws-config-assistant (0.5.6-0gecos1) precise; urgency=low
 
   * Merged with master and to freeze into precise version

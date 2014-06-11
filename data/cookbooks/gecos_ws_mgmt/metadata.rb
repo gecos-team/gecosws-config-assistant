@@ -330,56 +330,54 @@ user_launchers_js = {
   }
 }
 
-desktop_background_js = {
-  title: "Desktop Background",
-  type: "object",
-  required: ["desktop_file"],
-  properties: {
-    desktop_file: {type: "string", title: "Desktop File"},
-    job_ids: {
-      type: "array",
-      minItems: 0,
-      uniqueItems: true,
-      items: {
-        type: "string"
-      }
-    }, 
-    updated_by: updated_js
-  }
-}
 #desktop_background_js = {
+#  title: "Desktop Background",
 #  type: "object",
-#  required: ["users"],
+#  required: ["desktop_file"],
 #  properties: {
-#    users: {
+#    desktop_file: {type: "string", title: "Desktop File"},
+#    job_ids: {
 #      type: "array",
 #      minItems: 0,
 #      uniqueItems: true,
 #      items: {
-#        type: "object",
-#        required: ["username", "desktop_file"],
-#        properties: {
-#          username: {type: "string"},
-#          desktop_file: {type: "string"}
-#        }
+#        type: "string"
 #      }
-#    },
-#    job_ids: {
-#        type: "array",
-#        minItems: 0,
-#        uniqueItems: true,
-#        items: {
-#          type: "object",
-#          required: ["id"],
-#          properties: {
-#            id: { type: "string" },
-#            status: { type: "string" }
-#          }
-#        }
-#    }
+#    }, 
+#    updated_by: updated_js
 #  }
 #}
-#
+desktop_background_js = {
+  type: "object",
+  title: "Desktop Background",
+  required: ["users"],
+  properties: {
+    users: {
+      title: "Users",
+      type: "array",
+      minItems: 0,
+      uniqueItems: true,
+      items: {
+        type: "object",
+        required: ["username", "desktop_file"],
+        properties: {
+          username: {type: "string", title: "Username"},
+          desktop_file: {type: "string", title: "Desktop File"}
+        }
+      }
+    },
+    job_ids: {
+        type: "array",
+        minItems: 0,
+        uniqueItems: true,
+        items: {
+          type: "string",
+        }
+    },
+    updated_by: updated_js
+  }
+}
+
 
 file_browser_js = {
   title: "File Browser",
@@ -908,6 +906,7 @@ local_users_js = {
           actiontorun: {enum: ["create","modify","delete"],type: "string"},
           groups: { title: "Groups", type: "array",items: { type: "string" } },
           user: { title: "User", type: "string" },
+          name: { title: "Full Name", type: "string" },
           password: { title: "Password", type: "string"}
         }
      }
@@ -1152,13 +1151,13 @@ complete_js = {
         },
         misc_mgmt: {
           type: "object",
-          required: ["tz_date_res", "desktop_background_res", "scripts_launch_res", "local_users_res", "local_groups_res", "local_file_res", "local_admin_users_res", "auto_updates_res","power_conf_res"],
+          required: ["tz_date_res", "scripts_launch_res", "local_users_res", "local_groups_res", "local_file_res", "local_admin_users_res", "auto_updates_res","power_conf_res"],
           properties: {
             tz_date_res: tz_date_js,
             scripts_launch_res: scripts_launch_js,
             local_users_res: local_users_js,
             local_file_res: local_file_js,
-            desktop_background_res: desktop_background_js,
+           # desktop_background_res: desktop_background_js,
             auto_updates_res: auto_updates_js,
             local_groups_res: local_groups_js,
             power_conf_res: power_conf_js,
@@ -1183,13 +1182,13 @@ complete_js = {
         },
         users_mgmt: {
           type: "object",
-          required: ["user_apps_autostart_res", "user_shared_folders_res", "web_browser_res", "file_browser_res", "user_launchers_res", "desktop_menu_res", "desktop_control_res", "folder_sharing_res", "screensaver_res","folder_sync_res", "user_mount_res","shutdown_options_res"],
+          required: ["user_apps_autostart_res", "user_shared_folders_res", "web_browser_res", "file_browser_res", "user_launchers_res", "desktop_menu_res", "desktop_control_res", "folder_sharing_res", "screensaver_res","folder_sync_res", "user_mount_res","shutdown_options_res","desktop_background_res"],
           properties: {
             user_shared_folders_res: user_shared_folders_js,
             web_browser_res: web_browser_js,
             file_browser_res: file_browser_js,
             user_launchers_res: user_launchers_js,
-            #desktop_background_res: desktop_background_js,
+            desktop_background_res: desktop_background_js,
             desktop_menu_res: desktop_menu_js,
             desktop_control_res: desktop_control_js,
             user_apps_autostart_res: user_apps_autostart_js,

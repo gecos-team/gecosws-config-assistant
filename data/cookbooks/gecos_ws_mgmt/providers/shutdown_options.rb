@@ -20,15 +20,15 @@ action :setup do
     users = new_resource.users
 
     # System-level lock settings
-    system = gecos_ws_mgmt_system_settings "disable-log-out" do
-        provider "gecos_ws_mgmt_system_settings"
-        schema "org.cinnamon.desktop.lockdown"
-        type "boolean"
-        value "#{systemset}"
-        action :nothing
-    end
-    system.run_action(:lock) if systemlock
-    system.run_action(:unlock) if !systemlock
+    #system = gecos_ws_mgmt_system_settings "disable-log-out" do
+    #    provider "gecos_ws_mgmt_system_settings"
+    #    schema "org.cinnamon.desktop.lockdown"
+    #    type "boolean"
+    #    value "#{systemset}"
+    #    action :nothing
+    #end
+    #system.run_action(:lock) if systemlock
+    #system.run_action(:unlock) if !systemlock
 
     # User-level key values
     users.each do |user|
