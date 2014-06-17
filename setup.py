@@ -202,6 +202,5 @@ workstation to different services',
         'install': InstallAndUpdateDataDirectory,
         "build": build_extra.build_extra,
         "build_i18n":  build_i18n.build_i18n,
-        "clean": [clean_i18n.clean_i18n, Clean],
     }
 )
