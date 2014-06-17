@@ -9,7 +9,7 @@ Standards-Version: 3.8.3
 Homepage: https://github.com/gecos-team/gecosws-config-assistant
 Vcs-Browser: https://github.com/gecos-team/gecosws-config-assistant
 Vcs-Bzr: https://github.com/gecos-team/gecosws-config-assistant
-XS-Python-Version: current
+X-Python-Version: current
 
 Package: gecosws-config-assistant
 Architecture: all
