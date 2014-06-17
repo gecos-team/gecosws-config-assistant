@@ -2,11 +2,11 @@
 export DH_VERBOSE=1
 
 %:
-    dh $@ --with python2
+	dh $@ --with python2
 
 override_dh_auto_clean:
-    dh_auto_clean
-    rm -rf build .*egg-info
+	dh_auto_clean
+	rm -rf build .*egg-info
 
 override_dh_auto_test:
 ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
@@ -16,4 +16,4 @@ else
 endif
 
 override_dh_installdocs:
-    dh_installdocs -Xtests
+	dh_installdocs -Xtests
