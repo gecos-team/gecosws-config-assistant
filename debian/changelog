@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.5.7-0gecos3) trusty; urgency=low
+
+  * Fix rules 
+
+ -- David Amian <damian@emergya.com>  Tue, 17 Jun 2014 17:54:45 +0200
+
 gecosws-config-assistant (0.5.7-0gecos2) precise; urgency=low
 
   * Updated cookbooks
