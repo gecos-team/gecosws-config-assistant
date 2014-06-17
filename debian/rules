@@ -2,4 +2,18 @@
 export DH_VERBOSE=1
 
 %:
-	dh $@ --with python2
+    dh $@ --with python2
+
+override_dh_auto_clean:
+    dh_auto_clean
+    rm -rf build .*egg-info
+
+override_dh_auto_test:
+ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
+    cd feedparser && python ./feedparsertest.py
+else
+    @echo "nocheck set, not running tests"
+endif
+
+override_dh_installdocs:
+    dh_installdocs -Xtests
