@@ -121,4 +121,4 @@ link to GECOS Control Center, and software installation.'))
         cell.set_property('text', value)
 
     def next_page(self, load_page_callback):
-        load_page_callback(firstboot.pages.dateSync)
+        load_page_callback(firstboot.pages.autoConfig)

@@ -24,6 +24,7 @@ __license__ = "GPL-2"
 import os
 from gi.repository import Gtk
 
+
 import firstboot.pages
 import LinkToServerConfEditorPage
 from firstboot_lib import PageWindow
@@ -152,7 +153,7 @@ class LinkToServerPage(PageWindow.PageWindow):
             self.ui.lblStatus.set_visible(True)
 
     def previous_page(self, load_page_callback):
-        load_page_callback(firstboot.pages.LinkToChef)
+        load_page_callback(firstboot.pages.linkToChef)
 
     def next_page(self, load_page_callback):
         if self.unlink_ldap == True or self.unlink_ad == True:

@@ -101,7 +101,7 @@ class DateSyncPage(PageWindow.PageWindow):
         self.ui.lblStatus.set_label(description)
 
     def previous_page(self, load_page_callback):
-        load_page_callback(firstboot.pages.network)
+        load_page_callback(firstboot.pages.autoConfig)
 
     def next_page(self, load_page_callback):
         if validation.is_domain(self.ui.txtHost.get_text()):
