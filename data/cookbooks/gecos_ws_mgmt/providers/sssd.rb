@@ -120,6 +120,7 @@ action :setup do
         end
   
         service 'sssd' do
+          provider Chef::Provider::Service::Upstart
           supports :status => true, :restart => true, :reload => true
           action [:enable, :start]
         end
@@ -130,6 +131,7 @@ action :setup do
     else
       Chef::Log.info("SSSD desactivado")
       service 'sssd' do
+        provider Chef::Provider::Service::Upstart
         supports :status => true, :restart => true, :reload => true
         action [:stop, :disable]
       end
