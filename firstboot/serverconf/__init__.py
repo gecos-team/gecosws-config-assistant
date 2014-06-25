@@ -49,6 +49,7 @@ __BIN_PATH__ = firstbootconfig.get_bin_path()
 __LDAP_CONF_SCRIPT__ = 'firstboot-ldapconf.sh'
 __CHEF_CONF_SCRIPT__ = 'firstboot-chefconf.sh'
 __GCC_FLAG__ = '/etc/gcc.control'
+__CHEF_FLAG__ = '/etc/chef.control'
 __LDAP_FLAG__ = '/etc/gca-sssd.control'
 __AD_FLAG__ = __LDAP_FLAG__
 __CHEF_PEM__ = '/etc/chef/validation.pem'
@@ -189,7 +190,7 @@ def create_solo_json(server_conf):
     json_solo['gecos_ws_mgmt']['network_mgmt'] = {}
     if server_conf.get_ntp_conf().get_uri_ntp() != '':
         json_solo['gecos_ws_mgmt']['misc_mgmt']['tz_date_res'] = {'server':server_conf.get_ntp_conf().get_uri_ntp()}
-    if server_conf.get_chef_conf().get_url() != '':
+    if server_conf.get_chef_conf().get_url() != '' and not chef_is_configured():
         tmpfile = create_chef_pem(server_conf.get_chef_conf())
         chef_url = server_conf.get_chef_conf().get_url()
         chef_node_name = server_conf.get_chef_conf().get_node_name()
@@ -200,7 +201,7 @@ def create_solo_json(server_conf):
         chef_link_existing = server_conf.get_chef_conf().get_chef_link_existing()
         chef_json = {'chef_server_url':chef_url, 'chef_node_name': chef_node_name, 'chef_validation_pem': tmpfile, 'chef_link': chef_link, 'chef_admin_name': chef_admin_name, 'chef_link_existing': chef_link_existing}
         json_solo['gecos_ws_mgmt']['misc_mgmt']['chef_conf_res'] = chef_json
-    if server_conf.get_auth_conf().get_auth_type() != '':
+    if server_conf.get_auth_conf().get_auth_type() != '' and not ad_is_configured():
         auth_type = server_conf.get_auth_conf().get_auth_type()
         if auth_type == 'ad':
             auth_prop = server_conf.get_auth_conf().get_auth_properties()
@@ -239,7 +240,7 @@ def create_solo_json(server_conf):
             sssd_ldap_json['domain']['bind_dn'] = auth_prop.get_binddn()
             sssd_ldap_json['domain']['bind_pass'] = auth_prop.get_password()
             json_solo['gecos_ws_mgmt']['network_mgmt']['sssd_res'] = sssd_ldap_json
-    if server_conf.get_gcc_conf().get_uri_gcc() != '':
+    if server_conf.get_gcc_conf().get_uri_gcc() != '' and not gcc_is_configured():
         gcc_conf = server_conf.get_gcc_conf()
         gcc_json = {'uri_gcc': gcc_conf.get_uri_gcc(), 'gcc_username' : gcc_conf.get_gcc_username(),'gcc_pwd_user': gcc_conf.get_gcc_pwd_user(),'gcc_nodename': gcc_conf.get_gcc_nodename(),'gcc_link': gcc_conf.get_gcc_link(), 'gcc_selected_ou': gcc_conf.get_selected_ou(), 'run_attr': gcc_conf.get_run()}
         json_solo['gecos_ws_mgmt']['misc_mgmt']['gcc_res'] = gcc_json
@@ -282,6 +283,16 @@ def gcc_is_configured():
     except Exception as e:
         raise e
 
+def chef_is_configured():
+    try:
+        if not os.path.exists(__CHEF_FLAG__):
+            return False
+        return True
+
+    except Exception as e:
+        raise e
+
+
 
 def apply_changes():
 #TODO implements save the json to run chef solo and run it
@@ -293,10 +304,10 @@ def apply_changes():
         if res == 'tz_date_res':
             if not server_conf.get_ntp_conf().validate():
                 messages.append(_("The Date/Time Syncronization parameters are incorrect, please got to Date/Time section or review your autconf file"))
-        if res == 'gcc_res':
+        if res == 'gcc_res' and not gcc_is_configured():
             if not server_conf.get_gcc_conf().validate():
                 messages.append(_("The GCC parameters are incorrect, please got to GCC section or review your autconf file"))
-        if res == 'chef_conf_res':
+        if res == 'chef_conf_res' and not chef_is_configured():
             if not server_conf.get_chef_conf().validate():
                 messages.append(_("The Chef parameters are incorrect, please got to GCC section or review your autconf file"))
         if res == 'sssd_res':
@@ -332,6 +343,12 @@ def run_chef_solo(fp):
         if exit_code[1] != 0:
             messages = [(_('An error has ocurred running chef-solo'))]
             display_errors(_("Configuration Error"), messages)
+            if ad_is_configured():
+                unlink_from_sssd()
+            if gcc_is_configured():
+                unlink_from_gcc()
+            if chef_is_configured():
+                unlink_from_chef()
 
     except Exception as e:
         display_errors(_("Configuration Error"), [e.message])
