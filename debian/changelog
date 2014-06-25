@@ -1,3 +1,12 @@
+gecosws-config-assistant (0.5.7-0gecos4) trusty; urgency=low
+
+  * Launch exceptions if the connection with GCC its fails
+  * Added provider Upstart for services
+  * Added username gcc for GCC tasks
+  * Control if the services are configured
+
+ -- David Amian <damian@emergya.com>  Wed, 25 Jun 2014 16:09:29 +0200
+
 gecosws-config-assistant (0.5.7-0gecos3) trusty; urgency=low
 
   * Fix rules 
