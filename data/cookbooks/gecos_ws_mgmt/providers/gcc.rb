@@ -75,7 +75,6 @@ action :setup do
               response_json = JSON.load(response.to_str)
               if not response_json['ok']
                 Chef::Log.error(response_json['message'])
-                raise Exception.new(response_json['message'])
               end
             end
           rescue Exception => e
