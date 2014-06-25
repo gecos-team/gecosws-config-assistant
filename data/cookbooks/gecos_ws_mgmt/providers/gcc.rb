@@ -44,10 +44,12 @@ action :setup do
               response_json = JSON.load(response.to_str)
               if not response_json['ok']
                 Chef::Log.error(response_json['message'])
+                raise Exception.new(response_json['message'])
               end
             end
           rescue Exception => e
             Chef::Log.error(e.message)
+            raise e
           end
           template "/etc/gcc.control" do
             source 'gcc.control.erb'
@@ -73,10 +75,12 @@ action :setup do
               response_json = JSON.load(response.to_str)
               if not response_json['ok']
                 Chef::Log.error(response_json['message'])
+                raise Exception.new(response_json['message'])
               end
             end
           rescue Exception => e
             Chef::Log.error(e.message)
+            raise e
           end
           file "/etc/gcc.control" do
             action :nothing
