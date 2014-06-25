@@ -1,3 +1,10 @@
+gecosws-config-assistant (0.5.7-0gecos5) trusty; urgency=low
+
+  * Added control hostname lenght
+  * Fix unlink call
+
+ -- David Amian <damian@emergya.com>  Wed, 25 Jun 2014 17:39:19 +0200
+
 gecosws-config-assistant (0.5.7-0gecos4) trusty; urgency=low
 
   * Launch exceptions if the connection with GCC its fails

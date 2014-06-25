@@ -343,10 +343,10 @@ def run_chef_solo(fp):
         if exit_code[1] != 0:
             messages = [(_('An error has ocurred running chef-solo'))]
             display_errors(_("Configuration Error"), messages)
+            if gcc_is_configured():
+                unlink_from_gcc(server_conf.get_gcc_conf().get_gcc_username())
             if ad_is_configured():
                 unlink_from_sssd()
-            if gcc_is_configured():
-                unlink_from_gcc()
             if chef_is_configured():
                 unlink_from_chef()
 

@@ -23,6 +23,8 @@ __license__ = "GPL-2"
 
 import os
 from gi.repository import Gtk
+import socket
+
 
 
 import firstboot.pages
@@ -156,9 +158,9 @@ class LinkToServerPage(PageWindow.PageWindow):
         load_page_callback(firstboot.pages.linkToChef)
 
     def next_page(self, load_page_callback):
+
         if self.unlink_ldap == True or self.unlink_ad == True:
             messages = []
-# TODO Implements unlink from ldap or ad into serverconf class
             if self.unlink_ldap:
                 messages += serverconf.unlink_from_sssd()
             else:
@@ -200,6 +202,8 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.show_status()
 
         try:
+            if len(socket.gethostname()) > 19:
+                raise Exception(_("The hostname can't not be longer than 19 characters"))
             server_conf = serverconf.get_server_conf(None)
 
             load_page_callback(LinkToServerConfEditorPage, {
