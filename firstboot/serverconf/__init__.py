@@ -339,7 +339,7 @@ def run_chef_solo(fp):
         process = subprocess.Popen(args, stdout=log_chef_solo, stderr=log_chef_solo_err, env=envs)
         exit_code = os.waitpid(process.pid, 0)
         output = process.communicate()[0]
-
+        server_conf = get_server_conf(None)
         if exit_code[1] != 0:
             messages = [(_('An error has ocurred running chef-solo'))]
             display_errors(_("Configuration Error"), messages)
