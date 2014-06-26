@@ -1,3 +1,11 @@
+gecosws-config-assistant (0.5.8-0gecos1) trusty; urgency=low
+
+  * Check if are defaults params
+  * Fix undo changes if chef-solo fails
+  * Added user and passwd to validate function
+
+ -- David Amian <damian@emergya.com>  Thu, 26 Jun 2014 14:24:19 +0200
+
 gecosws-config-assistant (0.5.7-0gecos5) trusty; urgency=low
 
   * Added control hostname lenght
