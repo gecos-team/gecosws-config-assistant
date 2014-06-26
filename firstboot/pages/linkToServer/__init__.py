@@ -74,6 +74,14 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.ldap_is_configured = serverconf.ldap_is_configured()
         self.ad_is_configured = serverconf.ad_is_configured()
         is_configured = self.ldap_is_configured or self.ad_is_configured
+        server_conf = serverconf.get_server_conf(None)
+        auth_type = server_conf.get_auth_conf().get_auth_type()
+        if not is_configured and auth_type != '':
+            load_page_callback(LinkToServerConfEditorPage, {
+                'ldap_is_configured': self.ldap_is_configured,
+                'auth_method': auth_type,
+                'ad_is_configured': self.ad_is_configured,
+            })
 
         self.ui.radioNone.set_active(True)
         self.ui.boxUnlinkOptions.set_visible(is_configured)

@@ -67,8 +67,8 @@ class LinkToChefPage(PageWindow.PageWindow):
         self.gcc_is_configured = serverconf.gcc_is_configured()
         server_conf = serverconf.get_server_conf(None)
         self.show_status()
-        if server_conf.get_gcc_conf().get_gcc_link():
-            self.emit('page-changed', LinkToChefConfEditorPage,{})
+        if server_conf.get_gcc_conf().get_gcc_link() and not self.gcc_is_configured:
+            load_page_callback(LinkToChefConfEditorPage)
         self.ui.chkUnlinkChef.set_visible(self.gcc_is_configured)
         self.ui.chkLinkChef.set_visible(not self.gcc_is_configured)
 
