@@ -131,9 +131,9 @@ class ActiveDirectoryProperties():
 
     def validate(self, specific):
         if specific:
-            return self.get_pam_conf() != '' and self.get_smb_conf() != '' and self.get_krb5_conf() != '' and self.get_sssd_conf() != ''
+            return self.get_pam_conf() != '' and self.get_smb_conf() != '' and self.get_krb5_conf() != '' and self.get_sssd_conf() != '' and get_user_ad() != '' and get_passwd_ad() != ''
         else:
-            return self.get_domain() != '' and self.get_workgroup() != ''
+            return self.get_domain() != '' and self.get_workgroup() != '' and get_user_ad() != '' and get_passwd_ad() != ''
 
 
     def __str__(self):
