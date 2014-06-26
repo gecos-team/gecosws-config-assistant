@@ -341,13 +341,19 @@ def run_chef_solo(fp):
         output = process.communicate()[0]
         server_conf = get_server_conf(None)
         if exit_code[1] != 0:
+            json_server = validate_credentials(server_conf.get_gcc_conf().get_uri_gcc()+'/auth/config/')
+            json_server = json.loads(json_server)
+            pem = json_server['chef']['chef_validation']
+            serverconf.create_pem(pem)
             messages = [(_('An error has ocurred running chef-solo'))]
             display_errors(_("Configuration Error"), messages)
             if gcc_is_configured():
+                server_conf.get_gcc_conf().set_gcc_link(False)
                 unlink_from_gcc(server_conf.get_gcc_conf().get_gcc_username())
             if ad_is_configured():
                 unlink_from_sssd()
             if chef_is_configured():
+                server_conf.get_chef_conf().set_chef_link(False)
                 unlink_from_chef()
 
     except Exception as e:
