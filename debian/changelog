@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.5.9-0gecos3) trusty; urgency=low
+
+  * Fix serverconf 
+
+ -- David Amian <damian@emergya.com>  Fri, 27 Jun 2014 12:56:56 +0200
+
 gecosws-config-assistant (0.5.9-0gecos2) trusty; urgency=low
 
   * Fix validate into AD Class

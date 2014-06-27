@@ -344,7 +344,7 @@ def run_chef_solo(fp):
             json_server = validate_credentials(server_conf.get_gcc_conf().get_uri_gcc()+'/auth/config/')
             json_server = json.loads(json_server)
             pem = json_server['chef']['chef_validation']
-            serverconf.create_pem(pem)
+            create_pem(pem)
             messages = [(_('An error has ocurred running chef-solo'))]
             display_errors(_("Configuration Error"), messages)
             if gcc_is_configured():
