@@ -64,18 +64,8 @@ class LinkToServerPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToServerPage"
 
     def load_page(self, params=None):
-        self.ldap_is_configured = serverconf.ldap_is_configured()
-        self.ad_is_configured = serverconf.ad_is_configured()
-        is_configured = self.ldap_is_configured or self.ad_is_configured
-        server_conf = serverconf.get_server_conf(None)
-        auth_type = server_conf.get_auth_conf().get_auth_type()
-        if not is_configured and auth_type != '':
-            self.emit('page-changed',LinkToServerConfEditorPage, {
-                'ldap_is_configured': self.ldap_is_configured,
-                'auth_method': auth_type,
-                'ad_is_configured': self.ad_is_configured,
-            })
-
+        pass
+       
 
     def finish_initializing(self):
 
@@ -98,6 +88,13 @@ class LinkToServerPage(PageWindow.PageWindow):
 
         self.ui.chkUnlinkLDAP.set_visible(self.ldap_is_configured)
         self.ui.chkUnlinkAD.set_visible(False)
+
+        if not is_configured and auth_type != '':
+            if auth_type == 'ad':
+                self.ui.radioAD.set_active(True)
+            else:
+                self.ui.radioLDAP.set_active(True)
+
 
 
     def translate(self):

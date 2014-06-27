@@ -1,3 +1,10 @@
+gecosws-config-assistant (0.5.9-0gecos2) trusty; urgency=low
+
+  * Fix validate into AD Class
+  * Set active options buttons if there are defaults attrs
+
+ -- David Amian <damian@emergya.com>  Fri, 27 Jun 2014 12:26:31 +0200
+
 gecosws-config-assistant (0.5.9-0gecos1) trusty; urgency=low
 
   * Emits signals in load_page function if there are defautls params 

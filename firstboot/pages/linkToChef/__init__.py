@@ -60,10 +60,7 @@ class LinkToChefPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToChefPage"
     
     def load_page(self, params=None):
-        self.gcc_is_configured = serverconf.gcc_is_configured()
-        server_conf = serverconf.get_server_conf(None)
-        if server_conf.get_gcc_conf().get_gcc_link() and not self.gcc_is_configured:
-            self.emit('page-changed',LinkToChefConfEditorPage, {})
+        pass
 
 
 
@@ -73,6 +70,9 @@ class LinkToChefPage(PageWindow.PageWindow):
         self.show_status()
         self.ui.chkUnlinkChef.set_visible(self.gcc_is_configured)
         self.ui.chkLinkChef.set_visible(not self.gcc_is_configured)
+        if server_conf.get_gcc_conf().get_gcc_link() and not self.gcc_is_configured:
+            self.ui.chkLinkChef.set_active(True)
+
 
 
     def translate(self):
@@ -126,6 +126,10 @@ easily managed remotely.\n\n')
     def next_page(self, load_page_callback):
         if (self.ui.chkLinkChef.get_visible() and not self.ui.chkLinkChef.get_active()) or \
             (self.gcc_is_configured and not self.ui.chkUnlinkChef.get_active()):
+            if self.ui.chkLinkChef.get_visible() and not self.ui.chkLinkChef.get_active():
+                server_conf = serverconf.get_server_conf(None)
+                server_conf.set_gcc_conf(GCCConf.GCCConf())
+                server_conf.set_chef_conf(ChefConf.ChefConf())
             self.emit('status-changed', 'linkToChef', True)
             load_page_callback(firstboot.pages.linkToServer)
             return
