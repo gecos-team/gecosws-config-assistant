@@ -27,7 +27,7 @@ from gi.repository import Gtk
 import firstboot.pages
 import LinkToChefConfEditorPage
 from firstboot_lib import PageWindow
-from firstboot import serverconf
+from firstboot import serverconf, FirstbootWindow
 from firstboot.serverconf import GCCConf, ChefConf
 
 import requests
@@ -58,19 +58,22 @@ def get_page(main_window):
 
 class LinkToChefPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToChefPage"
-
+    
     def load_page(self, params=None):
-        pass
+        self.gcc_is_configured = serverconf.gcc_is_configured()
+        server_conf = serverconf.get_server_conf(None)
+        if server_conf.get_gcc_conf().get_gcc_link() and not self.gcc_is_configured:
+            self.emit('page-changed',LinkToChefConfEditorPage, {})
+
 
 
     def finish_initializing(self):
         self.gcc_is_configured = serverconf.gcc_is_configured()
         server_conf = serverconf.get_server_conf(None)
         self.show_status()
-        if server_conf.get_gcc_conf().get_gcc_link() and not self.gcc_is_configured:
-            load_page_callback(LinkToChefConfEditorPage)
         self.ui.chkUnlinkChef.set_visible(self.gcc_is_configured)
         self.ui.chkLinkChef.set_visible(not self.gcc_is_configured)
+
 
     def translate(self):
         desc = _('When a workstation is linked to a Control Center can be \

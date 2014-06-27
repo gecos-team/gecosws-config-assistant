@@ -37,7 +37,7 @@ class PageWindow(Gtk.Window):
 
     __gsignals__ = {
         'page-changed': (
-            GObject.SignalFlags.RUN_LAST,
+            GObject.SignalFlags.RUN_FIRST,
             None,
             (GObject.TYPE_PYOBJECT, GObject.TYPE_PYOBJECT)
         ),

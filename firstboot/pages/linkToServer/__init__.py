@@ -63,6 +63,20 @@ def get_page(main_window):
 class LinkToServerPage(PageWindow.PageWindow):
     __gtype_name__ = "LinkToServerPage"
 
+    def load_page(self, params=None):
+        self.ldap_is_configured = serverconf.ldap_is_configured()
+        self.ad_is_configured = serverconf.ad_is_configured()
+        is_configured = self.ldap_is_configured or self.ad_is_configured
+        server_conf = serverconf.get_server_conf(None)
+        auth_type = server_conf.get_auth_conf().get_auth_type()
+        if not is_configured and auth_type != '':
+            self.emit('page-changed',LinkToServerConfEditorPage, {
+                'ldap_is_configured': self.ldap_is_configured,
+                'auth_method': auth_type,
+                'ad_is_configured': self.ad_is_configured,
+            })
+
+
     def finish_initializing(self):
 
         self.show_status()
@@ -76,13 +90,7 @@ class LinkToServerPage(PageWindow.PageWindow):
         is_configured = self.ldap_is_configured or self.ad_is_configured
         server_conf = serverconf.get_server_conf(None)
         auth_type = server_conf.get_auth_conf().get_auth_type()
-        if not is_configured and auth_type != '':
-            load_page_callback(LinkToServerConfEditorPage, {
-                'ldap_is_configured': self.ldap_is_configured,
-                'auth_method': auth_type,
-                'ad_is_configured': self.ad_is_configured,
-            })
-
+        
         self.ui.radioNone.set_active(True)
         self.ui.boxUnlinkOptions.set_visible(is_configured)
         self.ui.boxAuthSection.set_visible(not is_configured)

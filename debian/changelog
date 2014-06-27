@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.5.9-0gecos1) trusty; urgency=low
+
+  * Emits signals in load_page function if there are defautls params 
+
+ -- David Amian <damian@emergya.com>  Fri, 27 Jun 2014 10:14:15 +0200
+
 gecosws-config-assistant (0.5.8-0gecos2) trusty; urgency=low
 
   * Fix unlink if fails chef-solo
