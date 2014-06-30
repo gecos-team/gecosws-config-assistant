@@ -21,6 +21,7 @@ __copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 import firstboot.validation as validation
+import socket
 
 class ActiveDirectoryProperties():
     def __init__(self):
@@ -130,6 +131,8 @@ class ActiveDirectoryProperties():
 
 
     def validate(self, specific):
+        if len(socket.gethostname()) > 19:
+            return False
         if specific:
             return self.get_pam_conf() != '' and self.get_smb_conf() != '' and self.get_krb5_conf() != '' and self.get_sssd_conf() != '' and self.get_user_ad() != '' and self.get_passwd_ad() != ''
         else:
