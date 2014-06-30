@@ -92,7 +92,8 @@ class FirstbootWindow(Window):
         self.set_icon_from_file(iconfile)
 
         self.pages = {}
-        self.buttons = {}
+        # self.buttons = {}
+        self.hboxs = {}
         self.current_page = None
         self.is_last_page = False
         self.fully_configured = False
@@ -105,6 +106,7 @@ class FirstbootWindow(Window):
         self.show_applications()
 
         self.set_focus(self.ui.btnNext)
+        self.ui.box3.set_spacing(10)
 
         # Register changes on NetworkManager so we will
         # know the connection state.
@@ -175,7 +177,7 @@ class FirstbootWindow(Window):
                 serverconf.message_box(_("Update GECOS Config Assistant"), _("GECOS Config Assistant has been udpated. Please restart GCA"))
 
     def on_btnApply_Clicked(self, button):
-        self.current_page.next_page(self.set_current_page)
+        #self.current_page.next_page(self.set_current_page)
         serverconf.apply_changes()
 
     def on_btnNext_Clicked(self, button):
@@ -188,8 +190,8 @@ class FirstbootWindow(Window):
     def build_index(self):
 
         self.pages = {}
-        self.buttons = {}
-
+        # self.buttons = {}
+        self.ui.boxIndex.set_spacing(10)
         children = self.ui.boxIndex.get_children()
         for child in children:
             self.ui.boxIndex.remove(child)
@@ -197,26 +199,29 @@ class FirstbootWindow(Window):
         for page_name in pages.pages:
             try:
                 module = __import__('firstboot.pages.%s' % page_name, fromlist=['firstboot.pages'])
-                button = self.new_index_button(module.__TITLE__, page_name)
+                hbox = self.new_index_button(module.__TITLE__, page_name)
+               
                 self.pages[page_name] = {
                     'id': page_name,
-                    'button': button,
+                    #'button': button,
                     'module': module,
                     'enabled': True,
                     'instance': None,
                     'configured': not module.__REQUIRED__
                 }
-                self.buttons[page_name] = button
+                self.hboxs[page_name] = hbox
+                
+                
 
             except ImportError, e:
                 print e
 
     def new_index_button(self, page_title, page_name):
 
-        button = Gtk.Button()
-        button.set_relief(Gtk.ReliefStyle.NONE)
-        button.set_property('focus-on-click', False)
-        button.set_property('xalign', 0)
+        # button = Gtk.Button()
+        # button.set_relief(Gtk.ReliefStyle.NONE)
+        # button.set_property('focus-on-click', False)
+        # button.set_property('xalign', 0)
 
         image_file = firstbootconfig.get_data_file('media', '%s' % ('arrow_right_32.png',))
         pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(image_file, 8, 8)
@@ -236,20 +241,22 @@ class FirstbootWindow(Window):
         hbox.pack_start(label, False, True, 0)
         hbox.show()
 
-        button.add(hbox)
+        #button.add(hbox)
 
-        self.ui.boxIndex.pack_start(button, False, True, 0)
-        button.connect('clicked', self.on_btnIndex_Clicked, page_name)
-        button.show()
+        self.ui.boxIndex.pack_start(hbox, False, True, 0)
+        #self.ui.boxIndex.add(hbox)
 
-        return button
+        #button.connect('clicked', self.on_btnIndex_Clicked, page_name)
+        # button.show()
+
+        return hbox
 
     def set_current_page(self, module, params=None):
 
         self.ui.btnPrev.set_sensitive(True)
         self.ui.btnNext.set_sensitive(True)
         self.ui.btnUpdate.set_sensitive(True)
-        self.ui.btnApply.set_sensitive(True)
+        self.ui.btnApply.set_sensitive(False)
         self.translate()
 
         try:
@@ -272,11 +279,12 @@ class FirstbootWindow(Window):
         page_name = module.__name__.split('.')[-1]
         self.is_last_page = (page_name == pages.pages[-1])
 
-        if page_name in self.buttons:
-            for button_name in self.buttons:
-                self.button_set_inactive(self.buttons[button_name])
-            button = self.buttons[page_name]
-            self.button_set_active(button)
+        if page_name in self.hboxs:
+            
+            for hbox_name in self.hboxs:
+                self.hbox_set_inactive(self.hboxs[hbox_name])
+            hbox = self.hboxs[page_name]
+            self.hbox_set_active(hbox)
 
         for child in self.ui.swContent.get_children():
             self.ui.swContent.remove(child)
@@ -304,6 +312,13 @@ class FirstbootWindow(Window):
                 break
         return configured
 
+    def hbox_set_active(self, hbox): 
+        image = hbox.get_children()[0]
+        image.show()
+        label = hbox.get_children()[1]
+        label.set_padding(0, 0)
+        label.set_markup('<b>%s</b>' % (label.get_text(),))
+
     def button_set_active(self, button):
         hbox = button.get_children()[0]
         image = hbox.get_children()[0]
@@ -311,6 +326,13 @@ class FirstbootWindow(Window):
         label = hbox.get_children()[1]
         label.set_padding(0, 0)
         label.set_markup('<b>%s</b>' % (label.get_text(),))
+
+    def hbox_set_inactive(self, hbox):
+        image = hbox.get_children()[0]
+        image.hide()
+        label = hbox.get_children()[1]
+        label.set_padding(10, 0)
+        label.set_markup(label.get_text())
 
     def button_set_inactive(self, button):
         hbox = button.get_children()[0]
@@ -328,10 +350,10 @@ class FirstbootWindow(Window):
 
         linked = state == NM_STATE_CONNECTED_GLOBAL
 
-        for button_name in self.buttons:
-            if button_name in ['linkToServer', 'linkToChef', 'installSoftware']:
-                self.buttons[button_name].set_sensitive(linked)
-                self.pages[button_name]['enabled'] = linked
+        # for button_name in self.buttons:
+        #     if button_name in ['linkToServer', 'linkToChef', 'installSoftware']:
+        #         self.buttons[button_name].set_sensitive(linked)
+        #         self.pages[button_name]['enabled'] = linked
 
         self.emit('link-status', linked)
 
