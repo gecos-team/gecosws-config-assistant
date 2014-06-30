@@ -1,3 +1,13 @@
+gecosws-config-assistant (0.6.0-0gecos1) trusty; urgency=low
+
+  * Added len of hostname to validate function into AD 
+  * Enable Apply button into the last page
+  * Set not required download autoconf file
+  * Changed left buttons to labels with markups
+  * Added more padding
+
+ -- David Amian <damian@emergya.com>  Mon, 30 Jun 2014 20:01:52 +0200
+
 gecosws-config-assistant (0.5.9-0gecos3) trusty; urgency=low
 
   * Fix serverconf 
