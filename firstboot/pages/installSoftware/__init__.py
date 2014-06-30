@@ -47,6 +47,8 @@ class InstallSoftwarePage(PageWindow.PageWindow):
     def load_page(self, params=None):
         self.emit('status-changed', 'localUsers', not __REQUIRED__)
         self.main_window.btnNext.set_label(_('Close'))
+        self.main_window.btnApply.set_sensitive(True)
+
 
     def translate(self):
         self.ui.btnInstallSoftware.set_label(_('Install software'))
