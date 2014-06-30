@@ -83,6 +83,9 @@ class DateSyncPage(PageWindow.PageWindow):
         self.set_status(exit_code, output)
         """
 
+    def on_txtHost_changed(self,widget):
+        self.serverconf.get_ntp_conf().set_uri_ntp(self.ui.txtHost.get_text())
+
     def set_status(self, code, description=''):
 
         self.ui.imgStatus.set_visible(code != None)
