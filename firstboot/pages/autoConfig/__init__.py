@@ -66,18 +66,21 @@ class AutoConfigPage(PageWindow.PageWindow):
             url = ''
 
         self.ui.txtGCC.set_text(url)
-        if serverconf.json_is_cached():
-            self.ui.boxCheckAutoconf.set_visible(True)
-            self.ui.chkAutoconf.set_visible(True)
-            self.ui.txtGCC.set_sensitive(False)
+        self.ui.boxCheckAutoconf.set_visible(True)
+        self.ui.chkAutoconf.set_visible(True)
+        self.ui.txtGCC.set_sensitive(False)
 #            content = serverconf.get_json_content()
+        if serverconf.json_is_cached():
             self.serverconf = serverconf.get_server_conf(None)
 
     def translate(self):
         desc = _('Parameters can be filled automatically if an autoconfiguration file is available in your GECOS Control Center')
+        if serverconf.json_is_cached():
+            self.ui.chkAutoconf.set_label(_('Default parameters are cached, download again?'))
+        else:
+            self.ui.chkAutoconf.set_label(_('Download a file with default configuration parameters.'))
 
         self.ui.lblDescription.set_text(desc)
-        self.ui.chkAutoconf.set_label(_('Download a new file with default configuration parameters.'))
         self.ui.lblGCC.set_label(_('Control Center URL'))
 
     def on_chkAutoconf_toggled(self, widget):
@@ -105,7 +108,7 @@ class AutoConfigPage(PageWindow.PageWindow):
         load_page_callback(firstboot.pages.network)
 
     def next_page(self, load_page_callback):
-        if not serverconf.json_is_cached() or (serverconf.json_is_cached() and self.ui.chkAutoconf.get_active()):
+        if self.ui.chkAutoconf.get_active():
            url = self.ui.txtGCC.get_text()
            if url != '' and url != None:
                try:
