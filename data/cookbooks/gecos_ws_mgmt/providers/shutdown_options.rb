@@ -31,8 +31,10 @@ action :setup do
     #system.run_action(:unlock) if !systemlock
 
     # User-level key values
-    users.each do |user|
-      username = user.username
+    users.each_key do |user_key|
+      username = user_key
+      user = users[user_key]
+
       disable_log_out = user.disable_log_out
 
       gecos_ws_mgmt_desktop_settings "disable-log-out" do

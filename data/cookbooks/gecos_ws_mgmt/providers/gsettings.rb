@@ -36,11 +36,13 @@ action :set do
   unless dbus_address.nil?
     execute "set key" do
       command "sudo -iu #{new_resource.username} DBUS_SESSION_BUS_ADDRESS=\"#{dbus_address}\" gsettings set #{new_resource.schema} #{new_resource.name} #{new_resource.value}"
-    end
+      action :nothing
+    end.run_action(:run)
   else
     execute "set key" do
+      action :nothing
       command "xvfb-run -w 0 sudo -iu #{new_resource.username} gsettings set #{new_resource.schema} #{new_resource.name} #{new_resource.value}"
-    end
+    end.run_action(:run)
   end
 end
 
@@ -48,12 +50,14 @@ action :unset do
   dbus_address = @dbus_address
   unless dbus_address.nil?
     execute "unset key" do
+      action :nothing
       command "sudo -iu #{new_resource.username} DBUS_SESSION_BUS_ADDRESS=\"#{@dbus_address}\" gsettings reset #{new_resource.schema} #{new_resource.name}"
-    end
+    end.run_action(:run)
   else
     execute "unset key" do
+      action :nothing
       command "xvfb-run -w 0 sudo -iu #{new_resource.username} gsettings reset #{new_resource.schema} #{new_resource.name}"
-    end
+    end.run_Action(:run)
   end
 end
 

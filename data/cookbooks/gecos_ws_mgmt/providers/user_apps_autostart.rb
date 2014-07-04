@@ -14,8 +14,10 @@ action :setup do
     users = new_resource.users 
     desktop_path = "/usr/share/applications/"
 
-    users.each do |user|
-      username = user.username
+    users.each_key do |user_key|
+      username = user_key
+      user = users[user_key]
+
       homedir = `eval echo ~#{user.username}`.gsub("\n","")
       autostart_path = "#{homedir}/.config/autostart/"
       unless Kernel::test('d', autostart_path)

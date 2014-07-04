@@ -28,11 +28,11 @@ action :setup do
           uri repo.uri
           distribution repo.distribution
           components repo.components
-          action "add"
+          action :nothing
           key repo.repo_key
           keyserver repo.key_server
           deb_src repo.deb_src 
-        end
+        end.run_action(:add)
       end
     end
 

@@ -12,7 +12,10 @@
 action :setup do
   begin
     pattern = '(smb|nfs|ftp)(:\/\/)([\S]*\/.*)'
-    new_resource.users.each do |user|
+    users = new_resource.users
+    users.each_key do |user_key|
+      username = user_key
+      user = users[user_key]
    
       homedir = `eval echo ~#{user.username}`.gsub("\n","")
       gtkbookmark_file =  "#{homedir}/.gtk-bookmarks"

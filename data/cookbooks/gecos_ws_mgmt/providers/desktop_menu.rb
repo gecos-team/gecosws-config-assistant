@@ -104,8 +104,10 @@ action :setup do
     xdg_menu = Menu.new XDG::CONST::XDG["XDG CONFIG DIRS"][0] + "/menus/" + xdg_menu_name
     xdg_menu.build
 
-    users.each do |user|
-      username = user.username     
+    users.each_key do |user_key|
+      username = user_key 
+      user = users[user_key]
+
       desktop_files_include = user.desktop_files_include
       desktop_files_exclude = user.desktop_files_exclude
       homedir = Etc.getpwnam(username).dir

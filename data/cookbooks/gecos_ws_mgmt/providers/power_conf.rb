@@ -39,6 +39,7 @@ action :setup do
 
     unless auto_shutdown.empty?
       service "cron" do
+        provider Chef::Provider::Service::Upstart
         supports :restart => true
         action :nothing
       end.run_action(:nothing)

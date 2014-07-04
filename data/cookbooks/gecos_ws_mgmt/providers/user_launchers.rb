@@ -14,8 +14,10 @@ action :setup do
     users = new_resource.users 
     applications_path = "/usr/share/applications/"
 
-    users.each do |user|
-      username = user.username
+    users.each_key do |user_key|
+      username = user_key
+      user = users[user_key]
+
       homedir = `eval echo ~#{user.username}`.gsub("\n","")
       desktop_path = "#{homedir}/Escritorio/"
 

@@ -11,5 +11,5 @@
 actions :setup
 default_action :setup
 
-attribute :users, :kind_of => Array
+attribute :users, :kind_of => Hash
 attribute :job_ids, :kind_of => Array

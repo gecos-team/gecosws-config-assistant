@@ -13,8 +13,10 @@ action :setup do
   begin
   #  users = node[:gecos_ws_mgmt][:users_mgmt][:screensaver_res][:users] #if new_resource.users.nil?
     users = new_resource.users
-    users.each do |user|
-      username = user.username
+    users.each_key do |user_key|
+      username = user_key 
+      user = users[user_key]
+
       idle_enabled = user.idle_enabled
       idle_delay = user.idle_delay
       lock_enabled = user.lock_enabled
@@ -28,37 +30,37 @@ action :setup do
         type "string"
         value idle_enabled.to_s
         schema "org.cinnamon.desktop.screensaver"
-        username user.username
+        username username
         provider "gecos_ws_mgmt_gsettings"
-        action :set
-      end
+        action :nothing
+      end.run_action(:set)
   
       gecos_ws_mgmt_desktop_setting "lock-enabled" do
         type "string"
         value lock_enabled.to_s
         schema "org.cinnamon.desktop.screensaver"
-        username user.username
+        username username
         provider "gecos_ws_mgmt_gsettings"
-        action :set
-      end
+        action :nothing
+      end.run_action(:set)
   
       gecos_ws_mgmt_desktop_setting "idle-delay" do
         type "string"
         value idle_delay
         schema "org.cinnamon.desktop.session"
-        username user.username
+        username username
         provider "gecos_ws_mgmt_gsettings"
-        action :set
-      end
+        action :nothing
+      end.run_action(:set)
   
       gecos_ws_mgmt_desktop_setting "lock-delay" do
         type "string"
         value lock_delay
         schema "org.cinnamon.desktop.screensaver"
-        username user.username
+        username username
         provider "gecos_ws_mgmt_gsettings"
-        action :set
-      end
+        action :nothing
+      end.run_action(:set)
     end
 
     # save current job ids (new_resource.job_ids) as "ok"

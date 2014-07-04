@@ -25,7 +25,8 @@ action :setup do
 
     granted_users = Array.new
 
-    userslist.each do |user|
+    userslist.each_key do |user_key|
+      user = userslist[user_ley]
       next if user.can_mount == false
       granted_users << user.username
 

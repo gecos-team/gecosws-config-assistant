@@ -40,7 +40,8 @@ action :setup do
              owner file.user
              mode file.mode
              group file.group
-           end
+             action :nothing
+           end.run_action(:create)
          else
            grp_members = ::Etc.getgrnam(file.group).mem 
            remote_file file.file_dest do

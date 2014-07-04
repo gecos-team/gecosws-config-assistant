@@ -14,7 +14,9 @@ action :setup do
     
     if new_resource.package_list.any? 
       Chef::Log.info("Instalando lista de paquetes")      
-      package new_resource.package_list.join(" ")
+      package new_resource.package_list.join(" ") do
+        action :nothing
+      end.run_action(:install)
     end
 
     if new_resource.pkgs_to_remove.any?

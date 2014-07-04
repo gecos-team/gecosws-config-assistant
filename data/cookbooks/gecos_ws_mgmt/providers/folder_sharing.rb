@@ -21,8 +21,9 @@ action :setup do
     GRP_SAMBA = 'sambashare'
     samba_members = Etc.getgrnam(GRP_SAMBA).mem
   
-    users.each do |user|
-      username = user.username
+    users.each_key do |user_key|
+      username = user_key 
+      user = users[user_key]
       if user.can_share 
         users_to_add << username
       else

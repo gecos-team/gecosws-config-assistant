@@ -25,10 +25,11 @@ action :setup do
       end.run_action(:create)
 
       bash "enable on start scripts" do
+        action :nothing
         code <<-EOH
         update-rc.d scripts-onstartup start 60 2 .
         EOH
-      end
+      end.run_action(:run)
     else
       file "/etc/init.d/scripts-onstartup" do
         action :nothing
@@ -50,10 +51,11 @@ action :setup do
       end.run_action(:create)
 
       bash "enable on shutdown scripts" do
+        action :nothing
         code <<-EOH
         update-rc.d scripts-onshutdown stop 15 6 0 .
         EOH
-      end
+      end.run_action(:run)
     else
       file "/etc/init.d/scripts-onshutdown" do
         action :nothing

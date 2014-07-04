@@ -39,10 +39,11 @@ action :setup do
 
       if onstart_update
         bash "enable on start auto_update script" do
+          action :nothing
           code <<-EOH
           update-rc.d auto_updates start 60 2 .
           EOH
-        end
+        end.run_action(:run)
       else
         link "/etc/rc2.d/S60auto_updates" do
           action :nothing
@@ -52,10 +53,11 @@ action :setup do
       
       if onstop_update 
         bash "enable on stop auto_update script" do
+          action :nothing
           code <<-EOH
         update-rc.d auto_updates start 60 6 0 .
         EOH
-        end
+        end.run_action(:run)
       else
         link "/etc/rc6.d/S60auto_updates" do
           action :nothing

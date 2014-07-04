@@ -41,8 +41,9 @@ system-db:#{dconfdb}
   end.run_action(:create)
 
   execute "update-dconf" do
+    action :nothing
     command "dconf update"
-  end
+  end.run_action(:run)
 end
 
 # Removes a system-level dconf fixed value
@@ -57,8 +58,9 @@ action :unset do
   end.run_action(:delete)
 
   execute "update-dconf" do
+    action :nothing
     command "dconf update"
-  end
+  end.run_action(:run)
 end
 
 # It prevents users for changing the value of a dconf key
@@ -93,8 +95,9 @@ user-db:user
   end.run_action(:create)
 
   execute "update-dconf" do
+    action :nothing
     command "dconf update"
-  end
+  end.run_action(:run)
 end
 
 # It removes the dconf key system-level locking
@@ -109,6 +112,7 @@ action :unlock do
   end.run_action(:delete)
 
   execute "update-dconf" do
+    action :nothing
     command "dconf update"
-  end
+  end.run_action(:run)
 end
