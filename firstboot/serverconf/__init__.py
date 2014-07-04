@@ -56,13 +56,12 @@ __LDAP_FLAG__ = '/etc/gca-sssd.control'
 __AD_FLAG__ = __LDAP_FLAG__
 __CHEF_PEM__ = '/etc/chef/validation.pem'
 __AD_CONF_SCRIPT__ = 'firstboot-adconf.sh'
-__REST_FLAG__ = False
 
 CREDENTIAL_CACHED = {}
 ACTUAL_USER = ()
 
 
-def validate_credentials(url):
+def validate_credentials(url, err_chef_solo=False):
     global CREDENTIAL_CACHED
     global ACTUAL_USER
     url_parsed = urlparse.urlparse(url)
@@ -81,8 +80,11 @@ def validate_credentials(url):
                 validate = True
 
     if not validate:
-
-        user, password = auth_dialog(_('Authentication Required'),
+        if err_chef_solo:
+            user, password = auth_dialog(_('Authentication Required'),
+            _('You need to enter your GCC credentials to restoring the Workstation.'))
+        else:
+            user, password = auth_dialog(_('Authentication Required'),
             _('You need to enter your credentials to access the requested resource.'))
         r = requests.get(url, auth=(user,password), headers=headers)
         if r.ok:
@@ -332,7 +334,7 @@ def apply_changes():
         fp.write(json.dumps(json_solo,indent=2))
         fp.close()
     print filepath
-    run_chef_solo(filepath, False)
+    run_chef_solo(filepath, _("Configuring the client, this may take several minutes.\nPlease wait a moment"))
 
 
 def destroy_pgbar(widget, response, dialog, thread):
@@ -343,20 +345,14 @@ def destroy_pgbar(widget, response, dialog, thread):
     else:
         dialog.hide()
 
-def run_chef_solo(fp, rest_flag):
+def run_chef_solo(fp, message):
     try:
         thread = ChefSolo(fp)
         dialog = Gtk.Dialog(_('Configuring the client'), None,
                 Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, (Gtk.STOCK_OK, Gtk.ResponseType.OK))
         description = Gtk.Label();
         progressbar = Gtk.ProgressBar();
-        if rest_flag == False:
-            __REST_FLAG__==False
-        if rest_flag!=__REST_FLAG__ and rest_flag == True:
-            __REST_FLAG__==True
-            description.set_text(_("Restauring default configuration"))
-        else:
-            description.set_text(_("Configuring the client, this may take several minutes.\nPlease wait a moment"))
+        description.set_text(message)
         box = Gtk.VBox();
         content_area = dialog.get_content_area()
         content_area.set_spacing(10)
@@ -366,11 +362,7 @@ def run_chef_solo(fp, rest_flag):
         box.pack_start(description,False,False,10)
         box.pack_start(progressbar, False, False, 10)
         dialog.connect("delete-event", destroy_pgbar, None, thread)
-        if rest_flag == True and __REST_FLAG__==True:
-            dialog.hide()
-        else:
-            dialog.show_all()
-        
+        dialog.show_all()  
         dialog.get_children()[0].set_spacing(10)
         dialog.get_children()[0].get_children()[0].set_margin_right(10)
         dialog.get_children()[0].get_children()[1].set_spacing(10)
@@ -389,13 +381,12 @@ def run_chef_solo(fp, rest_flag):
                 Gtk.main_iteration()
         button.set_sensitive(True)
         progressbar.set_fraction(1.0)
-        progressbar.set_text('asdasd')
         exit_code = thread.get_exit_code()
         server_conf = get_server_conf(None)
         description.set_text(_("The client has been configured"))
         if exit_code[1] != 0:
             dialog.hide()
-            json_server = validate_credentials(server_conf.get_gcc_conf().get_uri_gcc()+'/auth/config/')
+            json_server = validate_credentials(server_conf.get_gcc_conf().get_uri_gcc()+'/auth/config/', True)
             json_server = json.loads(json_server)
             pem = json_server['chef']['chef_validation']
             create_pem(pem)
@@ -430,7 +421,7 @@ def unlink_from_sssd():
     if fp:
         fp.write(json.dumps(json_solo,indent=2))
         fp.close()
-    run_chef_solo(filepath, True)
+    run_chef_solo(filepath, _("Restoring authentication configuration"))
     return []
 
 
@@ -450,7 +441,7 @@ def unlink_from_gcc(password):
     if fp:
         fp.write(json.dumps(json_solo,indent=2))
         fp.close()
-    run_chef_solo(filepath, True)
+    run_chef_solo(filepath, _("Restoring GCC configuration"))
     return []
 
 def unlink_from_chef():
@@ -475,7 +466,7 @@ def unlink_from_chef():
     if fp:
         fp.write(json.dumps(json_solo,indent=2))
         fp.close()
-    run_chef_solo(filepath, True)
+    run_chef_solo(filepath, _("Restoring Server configuration"))
     return []
 #    try:
 #
