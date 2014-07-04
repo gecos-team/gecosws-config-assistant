@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.6.2-0gecos2) trusty; urgency=low
+
+  * Fix dialogs text 
+
+ -- David Amian <damian@emergya.com>  Fri, 04 Jul 2014 15:00:37 +0200
+
 gecosws-config-assistant (0.6.2-0gecos1) trusty; urgency=low
 
   * Added control for chef-solo run when unlink node
