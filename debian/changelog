@@ -1,3 +1,10 @@
+gecosws-config-assistant (0.6.2-0gecos1) trusty; urgency=low
+
+  * Added control for chef-solo run when unlink node
+  * Fix chars number for AD
+
+ -- David Amian <damian@emergya.com>  Fri, 04 Jul 2014 13:56:34 +0200
+
 gecosws-config-assistant (0.6.1-0gecos1) trusty; urgency=low
 
   * Added threads to show process of chef-solo run into a dialog window
