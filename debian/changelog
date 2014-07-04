@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.6.1-0gecos1) trusty; urgency=low
+
+  * Added threads to show process of chef-solo run into a dialog window
+
+ -- David Amian <damian@emergya.com>  Fri, 04 Jul 2014 11:08:34 +0200
+
 gecosws-config-assistant (0.6.0-0gecos1) trusty; urgency=low
 
   * Added len of hostname to validate function into AD 
