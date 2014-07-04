@@ -56,6 +56,7 @@ __LDAP_FLAG__ = '/etc/gca-sssd.control'
 __AD_FLAG__ = __LDAP_FLAG__
 __CHEF_PEM__ = '/etc/chef/validation.pem'
 __AD_CONF_SCRIPT__ = 'firstboot-adconf.sh'
+__REST_FLAG__ = False
 
 CREDENTIAL_CACHED = {}
 ACTUAL_USER = ()
@@ -331,13 +332,10 @@ def apply_changes():
         fp.write(json.dumps(json_solo,indent=2))
         fp.close()
     print filepath
-    run_chef_solo(filepath)
+    run_chef_solo(filepath, False)
 
-def destroy_pgbar_2(widget):
-    return True
 
 def destroy_pgbar(widget, response, dialog, thread):
-    # import ipdb;ipdb.set_trace()
     if dialog == None:
         dialog = widget
     if thread.isAlive():
@@ -345,14 +343,21 @@ def destroy_pgbar(widget, response, dialog, thread):
     else:
         dialog.hide()
 
-def run_chef_solo(fp):
+def run_chef_solo(fp, rest_flag):
     try:
         thread = ChefSolo(fp)
-        progressbar = Gtk.ProgressBar();
-        description = Gtk.Label();
-        box = Gtk.VBox();
         dialog = Gtk.Dialog(_('Configuring the client'), None,
                 Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, (Gtk.STOCK_OK, Gtk.ResponseType.OK))
+        description = Gtk.Label();
+        progressbar = Gtk.ProgressBar();
+        if rest_flag == False:
+            __REST_FLAG__==False
+        if rest_flag!=__REST_FLAG__ and rest_flag == True:
+            __REST_FLAG__==True
+            description.set_text(_("Restauring default configuration"))
+        else:
+            description.set_text(_("Configuring the client, this may take several minutes.\nPlease wait a moment"))
+        box = Gtk.VBox();
         content_area = dialog.get_content_area()
         content_area.set_spacing(10)
         content_area.pack_start(Gtk.Fixed(),False,False,0)
@@ -361,8 +366,11 @@ def run_chef_solo(fp):
         box.pack_start(description,False,False,10)
         box.pack_start(progressbar, False, False, 10)
         dialog.connect("delete-event", destroy_pgbar, None, thread)
-        dialog.show_all()
-        description.set_text(_("Configuring the client, this may take several minutes.\nPlease wait a moment"))
+        if rest_flag == True and __REST_FLAG__==True:
+            dialog.hide()
+        else:
+            dialog.show_all()
+        
         dialog.get_children()[0].set_spacing(10)
         dialog.get_children()[0].get_children()[0].set_margin_right(10)
         dialog.get_children()[0].get_children()[1].set_spacing(10)
@@ -394,12 +402,12 @@ def run_chef_solo(fp):
             messages = [(_('An error has ocurred running chef-solo'))]
             display_errors(_("Configuration Error"), messages)
             if gcc_is_configured():
-                server_conf.get_gcc_conf().set_gcc_link(False)
+                #server_conf.get_gcc_conf().set_gcc_link(False)
                 unlink_from_gcc(server_conf.get_gcc_conf().get_gcc_username())
             if ad_is_configured():
                 unlink_from_sssd()
             if chef_is_configured():
-                server_conf.get_chef_conf().set_chef_link(False)
+                #server_conf.get_chef_conf().set_chef_link(False)
                 unlink_from_chef()
 
     except Exception as e:
@@ -422,7 +430,7 @@ def unlink_from_sssd():
     if fp:
         fp.write(json.dumps(json_solo,indent=2))
         fp.close()
-    run_chef_solo(filepath)
+    run_chef_solo(filepath, True)
     return []
 
 
@@ -435,14 +443,14 @@ def unlink_from_gcc(password):
     json_solo['gecos_ws_mgmt']['misc_mgmt'] = {}
     gcc_conf = server_conf.get_gcc_conf()
     gcc_json = {}
-    gcc_json = {'uri_gcc': gcc_conf.get_uri_gcc(), 'gcc_username' : gcc_conf.get_gcc_username(), 'gcc_pwd_user': password,'gcc_nodename': gcc_conf.get_gcc_nodename(),'gcc_link': gcc_conf.get_gcc_link(), 'gcc_selected_ou': 'without ou'}
+    gcc_json = {'uri_gcc': gcc_conf.get_uri_gcc(), 'gcc_username' : gcc_conf.get_gcc_username(), 'gcc_pwd_user': password,'gcc_nodename': gcc_conf.get_gcc_nodename(),'gcc_link': False, 'gcc_selected_ou': 'without ou'}
     json_solo['gecos_ws_mgmt']['misc_mgmt']['gcc_res'] = gcc_json
     (fd, filepath) = tempfile.mkstemp(dir='/tmp')
     fp = os.fdopen(fd, "w+b")
     if fp:
         fp.write(json.dumps(json_solo,indent=2))
         fp.close()
-    run_chef_solo(filepath)
+    run_chef_solo(filepath, True)
     return []
 
 def unlink_from_chef():
@@ -459,15 +467,15 @@ def unlink_from_chef():
         chef_admin_name = server_conf.get_gcc_conf().get_gcc_username()
     chef_link = server_conf.get_chef_conf().get_chef_link()
     chef_json = {}
-    chef_json = {'chef_server_url':chef_url, 'chef_node_name': chef_node_name, 'chef_validation_pem': __CHEF_PEM__, 'chef_link': chef_link, 'chef_admin_name': chef_admin_name}
-    chef_json['chef_link'] = server_conf.get_chef_conf().get_chef_link()
+    chef_json = {'chef_server_url':chef_url, 'chef_node_name': chef_node_name, 'chef_validation_pem': __CHEF_PEM__, 'chef_link': False, 'chef_admin_name': chef_admin_name}
+    chef_json['chef_link'] = False
     json_solo['gecos_ws_mgmt']['misc_mgmt']['chef_conf_res'] = chef_json
     (fd, filepath) = tempfile.mkstemp(dir='/tmp')
     fp = os.fdopen(fd, "w+b")
     if fp:
         fp.write(json.dumps(json_solo,indent=2))
         fp.close()
-    run_chef_solo(filepath)
+    run_chef_solo(filepath, True)
     return []
 #    try:
 #
