@@ -28,15 +28,17 @@ import subprocess
 import shlex
 import shutil
 import tempfile
+import time
 import urllib
 import urllib2
 import urlparse
 
 
-from gi.repository import Gtk
+from gi.repository import Gtk, Gdk
 from firstboot_lib import firstbootconfig
 from ServerConf import ServerConf
-from gi.repository import Gtk
+from ChefSolo import ChefSolo
+
 import gettext
 from firstboot_lib.firstbootconfig import get_prefix
 from gettext import gettext as _
@@ -331,20 +333,60 @@ def apply_changes():
     print filepath
     run_chef_solo(filepath)
 
+def destroy_pgbar_2(widget):
+    return True
+
+def destroy_pgbar(widget, response, dialog, thread):
+    # import ipdb;ipdb.set_trace()
+    if dialog == None:
+        dialog = widget
+    if thread.isAlive():
+        return True
+    else:
+        dialog.hide()
+
 def run_chef_solo(fp):
     try:
-        envs = os.environ
-        envs['LANG'] = 'es_ES.UTF-8'
-        solo_rb = get_prefix() + '/share/gecosws-config-assistant/solo.rb'
-        cmd = '"chef-solo" "-c" "%s" "-j" "%s"' % (solo_rb, fp)
-        args = shlex.split(cmd)
-        log_chef_solo = open('/tmp/chef-solo', "w", 1)
-        log_chef_solo_err = open('/tmp/chef-solo-err', "w", 1)
-        process = subprocess.Popen(args, stdout=log_chef_solo, stderr=log_chef_solo_err, env=envs)
-        exit_code = os.waitpid(process.pid, 0)
-        output = process.communicate()[0]
+        thread = ChefSolo(fp)
+        progressbar = Gtk.ProgressBar();
+        description = Gtk.Label();
+        box = Gtk.VBox();
+        dialog = Gtk.Dialog(_('Configuring the client'), None,
+                Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, (Gtk.STOCK_OK, Gtk.ResponseType.OK))
+        content_area = dialog.get_content_area()
+        content_area.set_spacing(10)
+        content_area.pack_start(Gtk.Fixed(),False,False,0)
+        content_area.pack_start(box,False,False,0)
+        content_area.pack_start(Gtk.Fixed(),False,False,0)
+        box.pack_start(description,False,False,10)
+        box.pack_start(progressbar, False, False, 10)
+        dialog.connect("delete-event", destroy_pgbar, None, thread)
+        dialog.show_all()
+        description.set_text(_("Configuring the client, this may take several minutes.\nPlease wait a moment"))
+        dialog.get_children()[0].set_spacing(10)
+        dialog.get_children()[0].get_children()[0].set_margin_right(10)
+        dialog.get_children()[0].get_children()[1].set_spacing(10)
+        dialog.get_children()[0].get_children()[2].set_margin_right(10)
+        
+        button = dialog.get_children()[0].get_children()[3].get_children()[0]
+        button.set_sensitive(False)
+        button.connect("clicked", destroy_pgbar, None, dialog, thread )
+        
+        thread.daemon = True 
+        thread.start()
+        while thread.isAlive():
+            time.sleep(0.09)
+            progressbar.pulse() 
+            while Gtk.events_pending():
+                Gtk.main_iteration()
+        button.set_sensitive(True)
+        progressbar.set_fraction(1.0)
+        progressbar.set_text('asdasd')
+        exit_code = thread.get_exit_code()
         server_conf = get_server_conf(None)
+        description.set_text(_("The client has been configured"))
         if exit_code[1] != 0:
+            dialog.hide()
             json_server = validate_credentials(server_conf.get_gcc_conf().get_uri_gcc()+'/auth/config/')
             json_server = json.loads(json_server)
             pem = json_server['chef']['chef_validation']
