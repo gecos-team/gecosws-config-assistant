@@ -215,8 +215,8 @@ class LinkToServerPage(PageWindow.PageWindow):
         self.show_status()
 
         try:
-            if len(socket.gethostname()) > 19:
-                raise Exception(_("The hostname can't not be longer than 19 characters"))
+            if len(socket.gethostname()) > 15:
+                raise Exception(_("The hostname can't not be longer than 15 characters"))
             server_conf = serverconf.get_server_conf(None)
 
             load_page_callback(LinkToServerConfEditorPage, {
