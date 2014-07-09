@@ -6,8 +6,8 @@ debug_level = 0
 
 [nss]
 
-[pam]
-
+[pam] 
+<% if @enabled %>
 <% if @domain.type == "ad" %>
 [domain/<%= @domain.name %>]
 # La enumeracion no esta recomendada en entornos con muchos usuarios
@@ -44,4 +44,5 @@ ldap_default_authtok = <%= @domain.bind_passwd %>
 ldap_group_search_base = <%= @domain.base_group %>
 <% end %>
 override_homedir = /home/%u
+<% end %>
 <% end %>

@@ -82,54 +82,87 @@ action :setup do
         end
       end
 
-        if new_resource.methods.include?('sssd_url') and !new_resource.sssd_url.nil?
-          remote_file "/etc/samba/sssd.conf" do
-            source new_resource.sssd_url
+      if new_resource.methods.include?('sssd_url') and !new_resource.sssd_url.nil?
+        remote_file "/etc/samba/sssd.conf" do
+          source new_resource.sssd_url
+          owner 'root'
+          group 'root'
+          mode 00600
+          notifies :restart, "service[sssd]", :delayed
+        end
+      else
+        template '/etc/sssd/sssd.conf' do
+          source 'sssd.conf.erb'
+          owner 'root'
+          group 'root'
+          mode 00600
+          variables ({
+            :domain => domain,
+            :enabled => new_resource.enabled
+          })
+          notifies :restart, "service[sssd]", :delayed
+        end
+      end
+
+      Chef::Log.info("SSSD_setup: Configurando el dominio #{domain.name}")
+
+      # Have authconfig enable SSSD in the pam files
+      execute 'pam-auth-update' do
+        command 'pam-auth-update --package'
+        action :nothing
+      end
+
+      cookbook_file '/usr/share/pam-configs/my_mkhomedir' do
+        source 'my_mkhomedir'
+        owner 'root'
+        group 'root'
+        mode 00644
+        notifies :run, 'execute[pam-auth-update]'
+      end
+
+      service 'sssd' do
+        provider Chef::Provider::Service::Upstart
+        supports :status => true, :restart => true, :reload => true
+        action [:enable, :start]
+      end
+      
+      file "/etc/gca-sssd.control" do
+          action :create
+      end
+    else
+      Chef::Log.info("SSSD desactivado")
+      domain = new_resource.domain
+      if domain.type == "ad"
+        execute "net-join-ads" do
+          command "net ads join -U #{domain.ad_user}%#{domain.ad_passwd}"
+          action :nothing
+          only_if { domain.key?('ad_user') and domain.key?('ad_passwd') }
+        end.run_action(:run)
+        res = [['/etc/samba/smb.conf','smb.conf.erb'],
+               ['/etc/krb5.conf','krb5.conf.erb']]
+        res.each do |dst,src|
+          template dst do
+            source src
             owner 'root'
             group 'root'
-            mode 00600
-            notifies :restart, "service[sssd]", :delayed
-          end
-        else
-          template '/etc/sssd/sssd.conf' do
-            source 'sssd.conf.erb'
-            owner 'root'
-            group 'root'
-            mode 00600
+            mode 00644
             variables ({
               :domain => domain
             })
-            notifies :restart, "service[sssd]", :delayed
+            notifies :run, "execute[net-join-ads]", :delayed
           end
-        end
-
-        Chef::Log.info("SSSD_setup: Configurando el dominio #{domain.name}")
-  
-        # Have authconfig enable SSSD in the pam files
-        execute 'pam-auth-update' do
-          command 'pam-auth-update --package'
-          action :nothing
-        end
-  
-        cookbook_file '/usr/share/pam-configs/my_mkhomedir' do
-          source 'my_mkhomedir'
-          owner 'root'
-          group 'root'
-          mode 00644
-          notifies :run, 'execute[pam-auth-update]'
-        end
-  
-        service 'sssd' do
-          provider Chef::Provider::Service::Upstart
-          supports :status => true, :restart => true, :reload => true
-          action [:enable, :start]
-        end
-        
-        file "/etc/gca-sssd.control" do
-            action :create
-        end
-    else
-      Chef::Log.info("SSSD desactivado")
+      end
+      template '/etc/sssd/sssd.conf' do
+        source 'sssd.conf.erb'
+        owner 'root'
+        group 'root'
+        mode 00600
+        variables ({
+          :domain => {},
+          :enabled => new_resource.enabled
+        })
+        notifies :restart, "service[sssd]", :delayed
+      end
       service 'sssd' do
         provider Chef::Provider::Service::Upstart
         supports :status => true, :restart => true, :reload => true
