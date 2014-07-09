@@ -28,6 +28,7 @@ import socket
 
 
 import firstboot.pages
+import json
 import LinkToServerConfEditorPage
 from firstboot_lib import PageWindow
 from firstboot import serverconf
@@ -52,6 +53,7 @@ __AD__ = 'ad'
 
 __AD_FLAG__ = '/etc/gca-sssd.control'
 __LDAP_FLAG__ = __AD_FLAG__
+__AUTH_FLAG__ = __AD_FLAG__
 
 
 def get_page(main_window):
@@ -174,10 +176,21 @@ class LinkToServerPage(PageWindow.PageWindow):
 
         if self.unlink_ldap == True or self.unlink_ad == True:
             messages = []
-            if self.unlink_ldap:
+
+            auth_flag = open(__AUTH_FLAG__, 'r')
+            content = auth_flag.read()
+            auth_flag.close()
+            auth_flag_json = json.loads(content)
+            server_conf = serverconf.get_server_conf(None)
+            server_conf.get_auth_conf().set_auth_type(auth_flag_json['auth_type'])
+            if auth_flag_json['auth_type'] == 'ad':
+                retval = serverconf.auth_dialog(_('Authentication Required'),
+                _('Please, provide administration credentials for the Active Directory.'))
+                ad_conf = server_conf.get_auth_conf().get_auth_properties()
+                ad_conf.get_ad_properties().set_user_ad(retval[0])
+                ad_conf.get_ad_properties().set_passwd_ad(retval[1])
                 messages += serverconf.unlink_from_sssd()
-            else:
-                messages += serverconf.unlink_from_sssd()
+                
             result = len(messages) == 0
             if result:
                 server_conf = serverconf.get_server_conf(None)

@@ -126,16 +126,17 @@ action :setup do
         action [:enable, :start]
       end
       
-      file "/etc/gca-sssd.control" do
-          action :create
+      template "/etc/gca-sssd.control" do
+        source 'gca-sssd.control.erb'
+        variables ({:auth_type => domain.type})
       end
     else
       Chef::Log.info("SSSD desactivado")
       domain = new_resource.domain
       if not domain.nil?
         if domain.type == "ad"
-          execute "net-join-ads" do
-            command "net ads join -U #{domain.ad_user}%#{domain.ad_passwd}"
+          execute "net-leave-ads" do
+            command "net ads leave -U #{domain.ad_user}%#{domain.ad_passwd}"
             action :nothing
             only_if { domain.key?('ad_user') and domain.key?('ad_passwd') }
           end.run_action(:run)
@@ -150,7 +151,7 @@ action :setup do
               variables ({
                 :domain => domain
               })
-              notifies :run, "execute[net-join-ads]", :delayed
+             
             end
           end
         end
