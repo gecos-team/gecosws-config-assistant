@@ -135,6 +135,8 @@ def get_json_autoconf(url):
     fp_cached.close()
     
     conf = json.loads(content)
+    if ACTUAL_USER != ():
+        conf["gcc"]["gcc_pwd_user"] = ACTUAL_USER[1]
     if conf["chef"]["chef_server_uri"] == "https://localhost/":
         chef_uri = conf["gcc"]["uri_gcc"].split('//')[1].split(':')[0]
         conf["chef"]["chef_server_uri"] = "https://" + chef_uri + '/'

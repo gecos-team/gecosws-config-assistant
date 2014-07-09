@@ -54,6 +54,8 @@ class GCCConf():
             self.set_gcc_link(conf['gcc_link'])
         except KeyError as e:
             print msg % ('gcc_link',)
+        if conf.has_key('gcc_pwd_user'):
+            self.set_gcc_pwd_user(conf['gcc_pwd_user'])
 
     def validate(self):
         valid = self._data['run'] == False or (validation.is_url(self._data['uri_gcc']) and self._data['gcc_username'] != '' and self._data['gcc_nodename'] != '' and self._data['gcc_link'] != None and self._data['gcc_pwd_user'] != '' and self._data['ou_username'] != None)
