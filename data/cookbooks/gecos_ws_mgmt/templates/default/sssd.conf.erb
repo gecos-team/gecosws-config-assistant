@@ -1,6 +1,10 @@
 [sssd]
 config_file_version = 2
+<%if @enabled %>
 domains = <%= @domain.name %>
+<% else %>
+domains = DEFAULT
+<% end %>
 services = nss, pam, pac
 debug_level = 0
 
