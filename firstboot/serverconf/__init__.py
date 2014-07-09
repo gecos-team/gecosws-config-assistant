@@ -113,9 +113,12 @@ def get_json_content():
         fp.close()
 
         conf = json.loads(content)
+        if ACTUAL_USER != ():
+            conf["gcc"]["gcc_pwd_user"] = ACTUAL_USER[1]
         if conf["chef"]["chef_server_uri"] == "https://localhost/":
             chef_uri = conf["gcc"]["uri_gcc"].split('//')[1].split(':')[0]
             conf["chef"]["chef_server_uri"] = "https://" + chef_uri + '/'
+
         return conf
     else:
         return None
@@ -446,7 +449,7 @@ def unlink_from_sssd():
         sssd_json['domain']['ad_passwd'] = ad_prop.get_passwd_ad()
         sssd_json['domain']['workgroup'] = 'default'
         sssd_json['domain']['name'] = 'default'
-        
+
     else:
         sssd_json['domain'] = {}
         sssd_json['domain']['type'] = auth_type
