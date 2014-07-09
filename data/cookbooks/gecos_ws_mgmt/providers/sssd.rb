@@ -151,6 +151,7 @@ action :setup do
             })
             notifies :run, "execute[net-join-ads]", :delayed
           end
+        end
       end
       template '/etc/sssd/sssd.conf' do
         source 'sssd.conf.erb'
