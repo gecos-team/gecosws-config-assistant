@@ -132,24 +132,26 @@ action :setup do
     else
       Chef::Log.info("SSSD desactivado")
       domain = new_resource.domain
-      if domain.type == "ad"
-        execute "net-join-ads" do
-          command "net ads join -U #{domain.ad_user}%#{domain.ad_passwd}"
-          action :nothing
-          only_if { domain.key?('ad_user') and domain.key?('ad_passwd') }
-        end.run_action(:run)
-        res = [['/etc/samba/smb.conf','smb.conf.erb'],
-               ['/etc/krb5.conf','krb5.conf.erb']]
-        res.each do |dst,src|
-          template dst do
-            source src
-            owner 'root'
-            group 'root'
-            mode 00644
-            variables ({
-              :domain => domain
-            })
-            notifies :run, "execute[net-join-ads]", :delayed
+      if not domain.nil?
+        if domain.type == "ad"
+          execute "net-join-ads" do
+            command "net ads join -U #{domain.ad_user}%#{domain.ad_passwd}"
+            action :nothing
+            only_if { domain.key?('ad_user') and domain.key?('ad_passwd') }
+          end.run_action(:run)
+          res = [['/etc/samba/smb.conf','smb.conf.erb'],
+                 ['/etc/krb5.conf','krb5.conf.erb']]
+          res.each do |dst,src|
+            template dst do
+              source src
+              owner 'root'
+              group 'root'
+              mode 00644
+              variables ({
+                :domain => domain
+              })
+              notifies :run, "execute[net-join-ads]", :delayed
+            end
           end
         end
       end

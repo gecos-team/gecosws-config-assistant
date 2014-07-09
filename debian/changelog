@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.6.3-0gecos3) trusty; urgency=low
+
+  * Fix sssd resource
+
+ -- David Amian <damian@emergya.com>  Wed, 09 Jul 2014 12:36:54 +0200
+
 gecosws-config-assistant (0.6.3-0gecos2) trusty; urgency=low
 
   * Fix end into a block code
