@@ -24,6 +24,7 @@ firstboot/__init__.py
 firstboot/serverconf/LdapConf.py
 firstboot/serverconf/DateSyncConf.py
 firstboot/serverconf/UsersConf.py
+firstboot/serverconf/ChefSolo.py
 firstboot/serverconf/GCCConf.py
 firstboot/serverconf/ServerConf.py
 firstboot/serverconf/ActiveDirectoryConf.py
