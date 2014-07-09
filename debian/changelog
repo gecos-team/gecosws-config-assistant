@@ -1,3 +1,11 @@
+gecosws-config-assistant (0.6.3-0gecos1) trusty; urgency=low
+
+  * Added unlink from sssd
+  * Fix loop if error in unlink and get attributes from flag files
+  * Added spanish translation
+
+ -- David Amian <damian@emergya.com>  Wed, 09 Jul 2014 11:35:48 +0200
+
 gecosws-config-assistant (0.6.2-0gecos2) trusty; urgency=low
 
   * Fix dialogs text 
