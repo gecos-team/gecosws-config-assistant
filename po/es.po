@@ -3,7 +3,6 @@
 # This file is distributed under the same license as the gecosws-config-assistant package.
 # David Amian <damian@emergya.com>, 2014.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: gecosws-config-assistant 0.0.1\n"
@@ -40,14 +39,12 @@ msgid "Update this assistant"
 msgstr "Actualizar este asistente"
 
 #: ../firstboot/FirstbootWindow.py:132
-#, fuzzy
 msgid "Version: "
 msgstr "Versión"
 
 #: ../firstboot/FirstbootWindow.py:171 ../firstboot/FirstbootWindow.py:177
-#, fuzzy
 msgid "Update GECOS Config Assistant"
-msgstr "Asistente de configuración de GECOS"
+msgstr "Actualizar GECOS Config Assistant"
 
 #: ../firstboot/FirstbootWindow.py:171
 msgid "Are you sure you want to update the GECOS Config Assistant?"
@@ -58,9 +55,8 @@ msgid "Update Error"
 msgstr "Error de actualización"
 
 #: ../firstboot/FirstbootWindow.py:175
-#, fuzzy
 msgid "An error occurred during the upgrade"
-msgstr "Ha ocurrido un error al ejecutar chef-solo"
+msgstr "Se ha producido un error durante la actualización"
 
 #: ../firstboot/FirstbootWindow.py:177
 msgid "GECOS Config Assistant has been udpated. Please restart GCA"
@@ -132,10 +128,9 @@ msgid "Default parameters are cached, download again?"
 msgstr "Parámetros por defecto cacheados, ¿descargar de nuevo?"
 
 #: ../firstboot/pages/autoConfig/__init__.py:81
-#, fuzzy
 msgid "Download a file with default configuration parameters."
 msgstr ""
-"Descargar un nuevo fichero con los parámetros de configuración por defecto."
+"Descargar un archivo con los parámetros de configuración por defecto."
 
 #: ../firstboot/pages/autoConfig/__init__.py:84
 msgid "Control Center URL"
@@ -221,10 +216,9 @@ msgstr ""
 
 #: ../firstboot/pages/linkToServer/__init__.py:104
 #: ../firstboot/pages/linkToServer/__init__.py:106
-#, fuzzy
 msgid "This workstation currently uses an authentication user method."
 msgstr ""
-"Esta estación de trabajo usa actualmente un servidor LDAP para autenticación "
+"Esta estación de trabajo utiliza actualmente un método de autenticación "
 "de usuarios."
 
 #: ../firstboot/pages/linkToServer/__init__.py:108
@@ -237,9 +231,8 @@ msgstr "Seleccione el método de autenticación que desee usar:"
 
 #: ../firstboot/pages/linkToServer/__init__.py:115
 #: ../firstboot/pages/linkToServer/__init__.py:116
-#, fuzzy
 msgid "Unlink from authentication method"
-msgstr "Seleccionar método de autenticación"
+msgstr "Desvincular del método de autenticación"
 
 #: ../firstboot/pages/linkToServer/__init__.py:117
 msgid "LDAP"
@@ -476,19 +469,16 @@ msgstr "No se puede descargar el fichero pem"
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:138
 #: ../firstboot/serverconf/__init__.py:604
-#, fuzzy
 msgid "Select Workstation"
-msgstr "Nombre de la estación de trabajo"
+msgstr "Seleccione la estación de trabajo"
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:138
-#, fuzzy
 msgid "Select a workstation to link"
-msgstr "Seleccionar método de autenticación"
+msgstr "Seleccione una estación de trabajo para vincular"
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:140
-#, fuzzy
 msgid "You need selected a workstation"
-msgstr "Necesita introducir un OU"
+msgstr "Necesita seleccionar una estación de trabajo"
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:185
 msgid "Chef URL must be valid URL and need certificate"
@@ -521,9 +511,8 @@ msgid "Link to Control Center server?"
 msgstr "¿Vincular con el servidor del Centro de Control?"
 
 #: ../firstboot/pages/linkToChef/__init__.py:170
-#, fuzzy
 msgid "Error in user and password"
-msgstr "Por favor introduzca una contraseña"
+msgstr "Error en el usuario y la contraseña"
 
 #: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:60
 msgid ""
@@ -562,10 +551,9 @@ msgid "Use this URL by default in the \"Link to Server\" page."
 msgstr "Usar esta URL por defecto en la página \"Vincular con el servidor\"."
 
 #: ../firstboot/serverconf/__init__.py:85
-#, fuzzy
 msgid "You need to enter your GCC credentials to restoring the Workstation."
 msgstr ""
-"Necesita introducir sus credenciales para acceder al recurso solicitado."
+"Es necesario introducir las credenciales del GCC para restaurar la estación de trabajo."
 
 #: ../firstboot/serverconf/__init__.py:88
 msgid "You need to enter your credentials to access the requested resource."
@@ -630,9 +618,8 @@ msgstr ""
 "Por favor, espere un momento"
 
 #: ../firstboot/serverconf/__init__.py:351
-#, fuzzy
 msgid "Configuring the client"
-msgstr "Configurar la red"
+msgstr "Configuración del cliente"
 
 #: ../firstboot/serverconf/__init__.py:386
 msgid "The client has been configured"
@@ -643,19 +630,16 @@ msgid "An error has ocurred running chef-solo"
 msgstr "Ha ocurrido un error al ejecutar chef-solo"
 
 #: ../firstboot/serverconf/__init__.py:424
-#, fuzzy
 msgid "Restoring authentication configuration"
 msgstr "Seleccionar método de autenticación"
 
 #: ../firstboot/serverconf/__init__.py:444
-#, fuzzy
 msgid "Restoring GCC configuration"
-msgstr "Auto Configuración"
+msgstr "Restaurara configuración de GCC"
 
 #: ../firstboot/serverconf/__init__.py:469
-#, fuzzy
 msgid "Restoring Server configuration"
-msgstr "Auto Configuración"
+msgstr "Restaurar la configuración del servidor"
 
 #: ../firstboot/serverconf/__init__.py:502
 msgid "Url Certificate"
