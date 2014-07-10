@@ -395,35 +395,41 @@ def run_chef_solo(fp, message, unlink=False):
 
             server_conf = get_server_conf(None)
             ## TODO Implement unlink GCC an Chef into serverconf Class
+
+            if chef_is_configured():
+                if not server_conf.get_chef_conf().validate():
+                    chef_flag = open(__CHEF_FLAG__, 'r')
+                    content = chef_flag.read()
+                    chef_flag.close()
+                    chef_flag_json = json.loads(content)
+                    server_conf.get_chef_conf().set_url(chef_flag_json['chef_server_url'])
+                    server_conf.get_chef_conf().set_node_name(chef_flag_json['chef_node_name'])
+                    json_server = validate_credentials(chef_flag_json['chef_server_url'])
+                    json_server = json.loads(json_server)
+                    server_conf.get_chef_conf().set_admin_name(json_server['gcc']['gcc_username'])
+                unlink_from_chef()
                         
             if gcc_is_configured():
-                gcc_flag = open(__GCC_FLAG__, 'r')
-                content = gcc_flag.read()
-                gcc_flag.close()
-                gcc_flag_json = json.loads(content)
-                server_conf.get_gcc_conf().set_uri_gcc(gcc_flag_json['uri_gcc'])
-                server_conf.get_gcc_conf().set_gcc_nodename(gcc_flag_json['gcc_nodename'])
-                server_conf.get_gcc_conf().set_run(True)
-                json_server = validate_credentials(gcc_flag_json['uri_gcc']+'/auth/config/')
-                json_server = json.loads(json_server)
-                pem = json_server['chef']['chef_validation']
-                server_conf.get_gcc_conf().set_gcc_username(json_server['gcc']['gcc_username'])
+                pem = ''
+                if not server_conf.get_gcc_conf().validate():
+                    gcc_flag = open(__GCC_FLAG__, 'r')
+                    content = gcc_flag.read()
+                    gcc_flag.close()
+                    gcc_flag_json = json.loads(content)
+                    server_conf.get_gcc_conf().set_uri_gcc(gcc_flag_json['uri_gcc'])
+                    server_conf.get_gcc_conf().set_gcc_nodename(gcc_flag_json['gcc_nodename'])
+                    server_conf.get_gcc_conf().set_run(True)
+                    json_server = validate_credentials(gcc_flag_json['uri_gcc']+'/auth/config/')
+                    json_server = json.loads(json_server)
+                    pem = json_server['chef']['chef_validation']
+                    server_conf.get_gcc_conf().set_gcc_username(json_server['gcc']['gcc_username'])
+                else:
+                    pem = server_conf.get_chef_conf().get_pem()
                 create_pem(pem)
                 unlink_from_gcc(server_conf.get_gcc_conf().get_gcc_username())
             if ad_is_configured():
                 unlink_from_sssd()
-            if chef_is_configured():
-                chef_flag = open(__CHEF_FLAG__, 'r')
-                content = chef_flag.read()
-                chef_flag.close()
-                chef_flag_json = json.loads(content)
-                server_conf.get_chef_conf().set_url(chef_flag_json['chef_server_url'])
-                server_conf.get_chef_conf().set_node_name(chef_flag_json['chef_node_name'])
-                server_conf.get_chef_conf().set_admin_name(json_server['gcc']['gcc_username'])
-                password = ACTUAL_USER[1]
-                if password == None:
-                   raise Exception(_('Error in user and password'))
-                unlink_from_chef()
+            
         if exit_code[1] != 0 and unlink:
             messages = [(_('An error has ocurred while unlink running'))]
             display_errors(_("Configuration Error"), messages)  
