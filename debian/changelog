@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.6.5-0gecos1) trusty; urgency=low
+
+  * Fix link to exists node 
+
+ -- David Amian <damian@emergya.es>  Tue, 15 Jul 2014 12:20:52 +0200
+
 gecosws-config-assistant (0.6.4-0gecos4) trusty; urgency=low
 
   * Fix unlink if fails in apply

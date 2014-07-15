@@ -87,18 +87,40 @@ action :setup do
         end
       end
     else
-      template "/etc/gcc.control" do
-        source 'gcc.control.erb'
-        owner "root"
-        group "root"
-        mode 00755
-        variables({
-          :uri_gcc => new_resource.uri_gcc,
-          :gcc_username => new_resource.gcc_username, 
-          :gcc_nodename => new_resource.gcc_nodename
-        })
+      if new_resource.gcc_link
+        if not new_resource.uri_gcc.nil? and not new_resource.gcc_nodename.nil? and not new_resource.gcc_username.nil? and not new_resource.gcc_pwd_user.nil? and not new_resource.gcc_selected_ou.nil?
+          Chef::Log.info("GCC: Configurndo GECOS Control Center")
+          begin
+            resource = RestClient::Resource.new(new_resource.uri_gcc + '/register/computer/', :user => new_resource.gcc_username, :password => new_resource.gcc_pwd_user)
+            response = resource.put :node_id => new_resource.gcc_nodename, :content_type => :json, :accept => :json
+            if not response.code.between?(200,299)
+              Chef::Log.error('The GCC URI not response')  
+            else
+              response_json = JSON.load(response.to_str)
+              if not response_json['ok']
+                Chef::Log.error(response_json['message'])
+                raise Exception.new(response_json['message'])
+              end
+            end
+          rescue Exception => e
+            Chef::Log.error(e.message)
+            raise e
+          end
+
+          template "/etc/gcc.control" do
+            source 'gcc.control.erb'
+            owner "root"
+            group "root"
+            mode 00755
+            variables({
+              :uri_gcc => new_resource.uri_gcc,
+              :gcc_username => new_resource.gcc_username, 
+              :gcc_nodename => new_resource.gcc_nodename
+            })
+          end
+        end
       end
-      Chef::Log.info('Not running')
+      Chef::Log.info('Updating node')
     end
 
     # save current job ids (new_resource.job_ids) as "ok"
