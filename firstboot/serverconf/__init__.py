@@ -647,6 +647,11 @@ def select_node(title, text, hostnames):
     dialog.set_icon_name('dialog-password')
     dialog.set_markup(text)
 
+    hbosearch = Gtk.HBox()
+    lblsearch = Gtk.Label(_('Pattern search'))
+    lblsearch.set_visible(True)
+    hbosearch.pack_start(lblsearch, False, False, 10)
+
     hboxws = Gtk.HBox()
     lblws = Gtk.Label(_('Select Workstation'))
     lblws.set_visible(True)
@@ -660,6 +665,15 @@ def select_node(title, text, hostnames):
     ws_combo.pack_start(renderer_text, True)
     ws_combo.add_attribute(renderer_text, "text", 0)    
 
+    search = Gtk.Entry()
+    search.set_activates_default(True)
+    search.show()
+    hbosearch.pack_start(search, False, False, False)
+    hbosearch.show()
+    dialog.get_message_area().pack_start(hbosearch, False, False, False)
+    
+    search.connect('changed', search_ws, ws_combo, hostnames)
+
     ws_combo.show()
     hboxws.pack_end(ws_combo, False, False, False)
     hboxws.show()
@@ -669,7 +683,9 @@ def select_node(title, text, hostnames):
     retval = None
     if result == Gtk.ResponseType.OK:
         model = ws_combo.get_model()
-        retval = model[ws_combo.get_active()][1]
+        retval = hostnames[0]['node_chef_id']
+        if not ws_combo.get_active() == -1:
+            retval = model[ws_combo.get_active()][1]
     dialog.destroy()
     return retval
 
@@ -682,18 +698,34 @@ def select_ou(title, text, ous):
     dialog.set_icon_name('dialog-password')
     dialog.set_markup(text)
 
+    hbosearch = Gtk.HBox()
+    lblsearch = Gtk.Label(_('Pattern search'))
+    lblsearch.set_visible(True)
+    hbosearch.pack_start(lblsearch, False, False, 10)
+
     hboxou = Gtk.HBox()
     lblou = Gtk.Label(_('Select OU'))
     lblou.set_visible(True)
-    hboxou.pack_start(lblou, False, False, False)
+    hboxou.pack_start(lblou, False, False, 10)
     ou_store = Gtk.ListStore(str, str)
     for ou in ous:
         ou_store.append([ou[1], ou[0]])
+
 
     ou_combo = Gtk.ComboBox.new_with_model(ou_store)
     renderer_text = Gtk.CellRendererText()
     ou_combo.pack_start(renderer_text, True)
     ou_combo.add_attribute(renderer_text, "text", 0)    
+
+    search = Gtk.Entry()
+    search.set_activates_default(True)
+    search.show()
+    hbosearch.pack_start(search, False, False, False)
+    hbosearch.show()
+    dialog.get_message_area().pack_start(hbosearch, False, False, False)
+    
+    search.connect('changed', search_ou, ou_combo, ous)
+
 
     ou_combo.show()
     hboxou.pack_end(ou_combo, False, False, False)
@@ -704,10 +736,46 @@ def select_ou(title, text, ous):
     retval = None
     if result == Gtk.ResponseType.OK:
         model = ou_combo.get_model()
-        retval = model[ou_combo.get_active()][1]
+        retval = ous[0][0]
+        if not ou_combo.get_active() == -1:
+            retval = model[ou_combo.get_active()][1]
+    else:
+        retval = ous[0][0]
     dialog.destroy()
     return retval
 
+def search_ws(widget, combo, hostnames):
+    hostnames_search = hostnames
+    text = widget.get_text()
+    if len(text) >= 3:
+        hostnames_search = []
+        for base_ws  in hostnames:
+            if text in base_ws['name']:
+                hostnames_search.append(base_ws)
+
+    ws_store = Gtk.ListStore(str, str)
+    for ws in hostnames_search:
+        ws_store.append([ws['name'], ws['node_chef_id']])
+
+    combo.set_model(ws_store)
+    combo.show_all()
+
+
+def search_ou(widget, combo, ous):
+    ous_search = ous
+    text = widget.get_text()
+    if len(text) >= 3:
+        ous_search = []
+        for base_ou  in ous:
+            if text in base_ou[1]:
+                ous_search.append(base_ou)
+
+    ou_store = Gtk.ListStore(str, str)
+    for ou in ous_search:
+        ou_store.append([ou[1], ou[0]])
+
+    combo.set_model(ou_store)
+    combo.show_all()
 
 def display_errors(title, messages):
     text = ''

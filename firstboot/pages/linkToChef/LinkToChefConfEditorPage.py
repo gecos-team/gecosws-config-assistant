@@ -138,42 +138,43 @@ class LinkToChefConfEditorPage(PageWindow.PageWindow):
                 result = serverconf.select_node(_('Select Workstation'), _('Select a workstation to link'), hostnames)
                 if result == None:
                     raise serverconf.LinkToChefException(_("You need selected a workstation"))
+                self.gcc_conf.set_run(False)
+                self.chef_conf.set_node_name(result)
+                self.gcc_conf.set_gcc_nodename(result)
+                self.chef_conf.set_chef_link_existing(True)
+                self.chef_conf.set_chef_link(True)
+
+                if not serverconf.json_is_cached():
+                    result = serverconf.url_chef(_('Url Chef Certificate Required'), _('You need to enter url with certificate file\n in protocol://domain/resource format'))
+                    try:
+                        res = requests.get(result)
+                        if not res.ok:
+                            raise serverconf.LinkToChefException(_("Can not download pem file"))
+                        if hasattr(res,'text'):
+                            pem = res.text
+                        else:
+                            pem = res.content
+                        self.chef_conf.set_pem(pem.encode('base64'))
+                        self.chef_conf.set_url(self.gcc_conf.get_uri_gcc())
+                        self.chef_conf.set_admin_name(self.gcc_conf.get_gcc_username())
+
+                        #result = serverconf.entry_ou(_('Select OU'),_('Enter the correct OU to link into GCC Ui'))
+                        result = ''
+                        #if result:
+                        self.gcc_conf.set_selected_ou(result)
+                        #else:
+                        #    raise serverconf.LinkToChefException(_("You need enter a OU"))
+                    except Exception as e:
+                        self.show_status(__STATUS_ERROR__, e)
+
+                result, messages = self.validate_conf()
+                load_page_callback(LinkToChefResultsPage, {
+                    'result': result,
+                    'messages': messages
+                 })
             except Exception as e:
                 self.show_status(__STATUS_ERROR__, e)
-            self.gcc_conf.set_run(False)
-            self.chef_conf.set_node_name(result)
-            self.gcc_conf.set_gcc_nodename(result)
-            self.chef_conf.set_chef_link_existing(True)
-            self.chef_conf.set_chef_link(True)
-
-            if not serverconf.json_is_cached():
-                result = serverconf.url_chef(_('Url Chef Certificate Required'), _('You need to enter url with certificate file\n in protocol://domain/resource format'))
-                try:
-                    res = requests.get(result)
-                    if not res.ok:
-                        raise serverconf.LinkToChefException(_("Can not download pem file"))
-                    if hasattr(res,'text'):
-                        pem = res.text
-                    else:
-                        pem = res.content
-                    self.chef_conf.set_pem(pem.encode('base64'))
-                    self.chef_conf.set_url(self.gcc_conf.get_uri_gcc())
-                    self.chef_conf.set_admin_name(self.gcc_conf.get_gcc_username())
-
-                    #result = serverconf.entry_ou(_('Select OU'),_('Enter the correct OU to link into GCC Ui'))
-                    result = ''
-                    #if result:
-                    self.gcc_conf.set_selected_ou(result)
-                    #else:
-                    #    raise serverconf.LinkToChefException(_("You need enter a OU"))
-                except Exception as e:
-                    self.show_status(__STATUS_ERROR__, e)
-
-            result, messages = self.validate_conf()
-            load_page_callback(LinkToChefResultsPage, {
-                'result': result,
-                'messages': messages
-             })
+            
 
     def validate_conf(self):
 
