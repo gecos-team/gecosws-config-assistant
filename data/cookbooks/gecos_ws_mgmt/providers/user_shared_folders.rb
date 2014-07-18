@@ -17,31 +17,33 @@ action :setup do
       username = user_key
       user = users[user_key]
    
-      homedir = `eval echo ~#{user.username}`.gsub("\n","")
-      gtkbookmark_file =  "#{homedir}/.gtk-bookmarks"
-
-      if ::File.exists? gtkbookmark_file
-        clean_file = Chef::Util::FileEdit.new gtkbookmark_file
-        clean_file.search_file_delete_line(pattern)
-        clean_file.write_file
-      else
-        file gtkbookmark_file do
-          owner user.username
-          group user.username
-          action :nothing
-        end.run_action(:create)
-      end
-
-      user.gtkbookmarks.each do |bookmark|
-        if bookmark.uri.match(pattern)
-          line_to_add = "#{bookmark.uri} #{bookmark.uri}"
-          
-          Chef::Log.info("Agregando accesos directos a carpetas compartidas")         
-          add_to_file = Chef::Util::FileEdit.new gtkbookmark_file
-          add_to_file.insert_line_if_no_match(pattern, line_to_add)
-          add_to_file.write_file
+      homedir = `eval echo ~#{username}`.gsub("\n","")
+      gtkbookmark_files =  ["#{homedir}/.config/gtk-3.0/bookmarks", "#{homedir}/.gtk-bookmarks"]
+      gtkbookmark_files.each do |gtkbook|
+        if ::File.exists? gtkbook
+          clean_file = Chef::Util::FileEdit.new gtkbook
+          clean_file.search_file_delete_line(pattern)
+          clean_file.write_file
+        else
+          file gtkbook do
+            owner username
+            group username
+            action :nothing
+          end.run_action(:create)
         end
+      
 
+        user.gtkbookmarks.each do |bookmark|
+          if bookmark.uri.match(pattern)
+            line_to_add = "#{bookmark.uri} #{bookmark.uri}"
+            
+            Chef::Log.info("Agregando accesos directos a carpetas compartidas")
+            ::File.open(gtkbook, 'a') do |file|
+              file.puts line_to_add
+            end
+          end
+
+        end
       end
    end
 
@@ -60,5 +62,10 @@ action :setup do
       node.set['job_status'][jid]['status'] = 1
       node.set['job_status'][jid]['message'] = e.message
     end
+  ensure
+    gecos_ws_mgmt_jobids "users_mgmt" do
+      provider "gecos_ws_mgmt_jobids"
+      resource "user_shared_folders_res"
+    end.run_action(:reset)
   end
 end

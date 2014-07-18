@@ -49,6 +49,11 @@ action :setup do
       node.set['job_status'][jid]['status'] = 1
       node.set['job_status'][jid]['message'] = e.message
     end
+  ensure
+    gecos_ws_mgmt_jobids "misc_mgmt" do
+      provider "gecos_ws_mgmt_jobids"
+      resource "tz_date_res"
+    end.run_action(:reset)
   end
 end
 

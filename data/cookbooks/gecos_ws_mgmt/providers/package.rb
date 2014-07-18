@@ -13,17 +13,21 @@ action :setup do
   begin
     
     if new_resource.package_list.any? 
-      Chef::Log.info("Instalando lista de paquetes")      
-      package new_resource.package_list.join(" ") do
-        action :nothing
-      end.run_action(:install)
+      Chef::Log.info("Instalando lista de paquetes")
+      new_resource.package_list.each do |pkg|
+        package pkg do
+          action :nothing
+        end.run_action(:install)
+      end
     end
 
     if new_resource.pkgs_to_remove.any?
       Chef::Log.info("Desinstalando paquetes no asignados al nodo")
-      package new_resource.pkgs_to_remove.join(" ") do
-        action :nothing
-      end.run_action(:purge)
+      new_resource.pkgs_to_remove.each do |pkg|
+        package pkg do
+          action :nothing
+        end.run_action(:purge)
+      end
     end
 
     # save current job ids (new_resource.job_ids) as "ok"
@@ -41,6 +45,11 @@ action :setup do
       node.set['job_status'][jid]['status'] = 1
       node.set['job_status'][jid]['message'] = e.message
     end
+  ensure
+    gecos_ws_mgmt_jobids "software_mgmt" do
+      provider "gecos_ws_mgmt_jobids"
+      resource "package_res"
+    end.run_action(:reset)
   end
 end
 

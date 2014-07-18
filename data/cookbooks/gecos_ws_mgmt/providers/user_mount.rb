@@ -26,9 +26,10 @@ action :setup do
     granted_users = Array.new
 
     userslist.each_key do |user_key|
-      user = userslist[user_ley]
+      username = user_key
+      user = userslist[user_key]
       next if user.can_mount == false
-      granted_users << user.username
+      granted_users << username
 
     end
 
@@ -62,5 +63,10 @@ action :setup do
       node.set['job_status'][jid]['status'] = 1
       node.set['job_status'][jid]['message'] = e.message
     end
+  ensure
+    gecos_ws_mgmt_jobids "users_mgmt" do
+      provider "gecos_ws_mgmt_jobids"
+      resource "user_mount_res"
+    end.run_action(:reset)
   end
 end

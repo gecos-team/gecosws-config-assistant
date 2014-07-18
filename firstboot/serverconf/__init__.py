@@ -195,9 +195,10 @@ def ad_is_configured():
 def create_solo_json(server_conf):
     json_solo = {}
     json_solo['run_list'] = ["recipe[ohai-gecos::default]", "recipe[chef-client::upstart_service]", "recipe[gecos_ws_mgmt::local]"]
+    json_solo_sssd['run_list'] = ["recipe[ohai-gecos::default]", "recipe[chef-client::upstart_service]", "recipe[gecos_ws_mgmt::local]"]
     json_solo['gecos_ws_mgmt'] = {}
     json_solo['gecos_ws_mgmt']['misc_mgmt'] = {}
-    json_solo['gecos_ws_mgmt']['network_mgmt'] = {}
+    json_solo_sssd['gecos_ws_mgmt']['network_mgmt'] = {}
     if server_conf.get_ntp_conf().get_uri_ntp() != '':
         json_solo['gecos_ws_mgmt']['misc_mgmt']['tz_date_res'] = {'server':server_conf.get_ntp_conf().get_uri_ntp()}
     if server_conf.get_chef_conf().get_url() != '' and not chef_is_configured():
@@ -236,7 +237,7 @@ def create_solo_json(server_conf):
             sssd_ad_json['domain']['ad_passwd'] = ad_prop.get_passwd_ad()
             sssd_ad_json['domain']['type'] = auth_type
             sssd_ad_json['domain']['workgroup'] = ad_prop.get_workgroup()
-            json_solo['gecos_ws_mgmt']['network_mgmt']['sssd_res'] = sssd_ad_json
+            json_solo_sssd['gecos_ws_mgmt']['network_mgmt']['sssd_res'] = sssd_ad_json
             
         else:
             auth_prop = server_conf.get_auth_conf().get_auth_properties()
@@ -249,7 +250,7 @@ def create_solo_json(server_conf):
             sssd_ldap_json['domain']['base_group'] = auth_prop.get_basedngroup()
             sssd_ldap_json['domain']['bind_dn'] = auth_prop.get_binddn()
             sssd_ldap_json['domain']['bind_pass'] = auth_prop.get_password()
-            json_solo['gecos_ws_mgmt']['network_mgmt']['sssd_res'] = sssd_ldap_json
+            json_solo_sssd['gecos_ws_mgmt']['network_mgmt']['sssd_res'] = sssd_ldap_json
     if server_conf.get_gcc_conf().get_uri_gcc() != '' and not gcc_is_configured():
         gcc_conf = server_conf.get_gcc_conf()
         gcc_json = {'uri_gcc': gcc_conf.get_uri_gcc(), 'gcc_username' : gcc_conf.get_gcc_username(),'gcc_pwd_user': gcc_conf.get_gcc_pwd_user(),'gcc_nodename': gcc_conf.get_gcc_nodename(),'gcc_link': gcc_conf.get_gcc_link(), 'gcc_selected_ou': gcc_conf.get_selected_ou(), 'run_attr': gcc_conf.get_run()}
@@ -271,7 +272,7 @@ def create_solo_json(server_conf):
 
 
 
-    return json_solo
+    return json_solo ,json_solo_sssd
 
 
 
@@ -308,7 +309,7 @@ def apply_changes():
 #TODO implements save the json to run chef solo and run it
     server_conf = get_server_conf(None)
     messages = []
-    json_solo = create_solo_json(server_conf)
+    json_solo, json_solo_sssd = create_solo_json(server_conf)
     resources = json_solo['gecos_ws_mgmt']['misc_mgmt'].keys()
     for res in resources:
         if res == 'tz_date_res':
@@ -324,7 +325,7 @@ def apply_changes():
             if not server_conf.get_users_conf().validate():
                 messages.append(_("The Local Users parameters are incorrect, please go to Users section"))
 
-    resources = json_solo['gecos_ws_mgmt']['network_mgmt'].keys()
+    resources = json_solo_sssd['gecos_ws_mgmt']['network_mgmt'].keys()
     for res in resources:
         if res == 'sssd_res':
             if not server_conf.get_auth_conf().validate():
@@ -339,7 +340,15 @@ def apply_changes():
         fp.write(json.dumps(json_solo,indent=2))
         fp.close()
     print filepath
-    run_chef_solo(filepath, _("Configuring the client, this may take several minutes.\nPlease wait a moment"))
+    run_chef_solo(filepath, _("Configuring the client to link with Gecos Control Center, this may take several minutes.\nPlease wait a moment"))
+
+    (fd, filepath) = tempfile.mkstemp(dir='/tmp')
+    fp = os.fdopen(fd, "w+b")
+    if fp:
+        fp.write(json.dumps(json_solo_sssd,indent=2))
+        fp.close()
+    print filepath
+    run_chef_solo(filepath, _("Configuring the client to link authentication method, this may take several minutes.\nPlease wait a moment"), False, True)
 
 
 def destroy_pgbar(widget, response, dialog, thread):
@@ -350,7 +359,7 @@ def destroy_pgbar(widget, response, dialog, thread):
     else:
         dialog.hide()
 
-def run_chef_solo(fp, message, unlink=False):
+def run_chef_solo(fp, message, unlink=False, jsssd=False):
     try:
         thread = ChefSolo(fp)
         dialog = Gtk.Dialog(_('Configuring the client'), None,
@@ -395,41 +404,43 @@ def run_chef_solo(fp, message, unlink=False):
 
             server_conf = get_server_conf(None)
             ## TODO Implement unlink GCC an Chef into serverconf Class
+            if not jsssd:
+                if chef_is_configured():
+                    if not server_conf.get_chef_conf().validate():
+                        chef_flag = open(__CHEF_FLAG__, 'r')
+                        content = chef_flag.read()
+                        chef_flag.close()
+                        chef_flag_json = json.loads(content)
+                        server_conf.get_chef_conf().set_url(chef_flag_json['chef_server_url'])
+                        server_conf.get_chef_conf().set_node_name(chef_flag_json['chef_node_name'])
+                        json_server = validate_credentials(chef_flag_json['chef_server_url'])
+                        json_server = json.loads(json_server)
+                        server_conf.get_chef_conf().set_admin_name(json_server['gcc']['gcc_username'])
+                    unlink_from_chef()
+                            
+                if gcc_is_configured():
+                    pem = ''
+                    if not server_conf.get_gcc_conf().validate():
+                        gcc_flag = open(__GCC_FLAG__, 'r')
+                        content = gcc_flag.read()
+                        gcc_flag.close()
+                        gcc_flag_json = json.loads(content)
+                        server_conf.get_gcc_conf().set_uri_gcc(gcc_flag_json['uri_gcc'])
+                        server_conf.get_gcc_conf().set_gcc_nodename(gcc_flag_json['gcc_nodename'])
+                        server_conf.get_gcc_conf().set_run(True)
+                        json_server = validate_credentials(gcc_flag_json['uri_gcc']+'/auth/config/')
+                        json_server = json.loads(json_server)
+                        pem = json_server['chef']['chef_validation']
+                        server_conf.get_gcc_conf().set_gcc_username(json_server['gcc']['gcc_username'])
+                    else:
+                        pem = server_conf.get_chef_conf().get_pem()
+                    create_pem(pem)
+                    unlink_from_gcc(server_conf.get_gcc_conf().get_gcc_username())
+            else:
+                if ad_is_configured():
+                    unlink_from_sssd(False)
 
-            if chef_is_configured():
-                if not server_conf.get_chef_conf().validate():
-                    chef_flag = open(__CHEF_FLAG__, 'r')
-                    content = chef_flag.read()
-                    chef_flag.close()
-                    chef_flag_json = json.loads(content)
-                    server_conf.get_chef_conf().set_url(chef_flag_json['chef_server_url'])
-                    server_conf.get_chef_conf().set_node_name(chef_flag_json['chef_node_name'])
-                    json_server = validate_credentials(chef_flag_json['chef_server_url'])
-                    json_server = json.loads(json_server)
-                    server_conf.get_chef_conf().set_admin_name(json_server['gcc']['gcc_username'])
-                unlink_from_chef()
-                        
-            if gcc_is_configured():
-                pem = ''
-                if not server_conf.get_gcc_conf().validate():
-                    gcc_flag = open(__GCC_FLAG__, 'r')
-                    content = gcc_flag.read()
-                    gcc_flag.close()
-                    gcc_flag_json = json.loads(content)
-                    server_conf.get_gcc_conf().set_uri_gcc(gcc_flag_json['uri_gcc'])
-                    server_conf.get_gcc_conf().set_gcc_nodename(gcc_flag_json['gcc_nodename'])
-                    server_conf.get_gcc_conf().set_run(True)
-                    json_server = validate_credentials(gcc_flag_json['uri_gcc']+'/auth/config/')
-                    json_server = json.loads(json_server)
-                    pem = json_server['chef']['chef_validation']
-                    server_conf.get_gcc_conf().set_gcc_username(json_server['gcc']['gcc_username'])
-                else:
-                    pem = server_conf.get_chef_conf().get_pem()
-                create_pem(pem)
-                unlink_from_gcc(server_conf.get_gcc_conf().get_gcc_username())
-            if ad_is_configured():
-                unlink_from_sssd()
-            
+                
         if exit_code[1] != 0 and unlink:
             messages = [(_('An error has ocurred while unlink running'))]
             display_errors(_("Configuration Error"), messages)  
@@ -438,7 +449,7 @@ def run_chef_solo(fp, message, unlink=False):
         display_errors(_("Configuration Error"), [e.message])
          
 
-def unlink_from_sssd():
+def unlink_from_sssd(leave=True):
 #TODO implement unlink from ldap calling chef-solo
     server_conf = get_server_conf(None)
     json_solo = {}
@@ -461,6 +472,11 @@ def unlink_from_sssd():
     else:
         sssd_json['domain'] = {}
         sssd_json['domain']['type'] = auth_type
+
+    if leave:
+        sssd_json['domain']['leave'] = True
+    else:
+        sssd_json['domain']['leave'] = False
     
     json_solo['gecos_ws_mgmt']['network_mgmt']['sssd_res'] = sssd_json
     (fd, filepath) = tempfile.mkstemp(dir='/tmp')

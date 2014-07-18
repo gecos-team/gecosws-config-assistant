@@ -3,7 +3,7 @@ maintainer        "Roberto C. Morano"
 maintainer_email  "rcmorano@emergya.com"
 license           "Apache 2.0"
 description       "Cookbook for GECOS workstations administration"
-version           "0.2.6"
+version           "0.2.8"
 
 depends "apt"
 depends "chef-client"
@@ -19,7 +19,7 @@ updated_js = {
   type: "object",
   properties: {
     group: {title: "Groups", type: "array", items: {type:"string"}},
-    user: {title: "Users", type: "array", items: {type:"string"}},
+    user: {type:"string"},
     computer: {type:"string"},
     ou: {title: "Ous", type: "array", items: {type:"string"}}
   }
@@ -139,7 +139,7 @@ screensaver_js = {
             },
             idle_delay: {
               type: "string",
-              title: "Idle Delay"
+              title: "Idle Delay (sec)"
             },
             lock_enabled: {
               type: "boolean",
@@ -147,7 +147,7 @@ screensaver_js = {
             },
             lock_delay: {
               type: "string",
-              title: "Lock Delay"
+              title: "Lock Delay (sec)"
             }, 
             updated_by: updated_js
           }
@@ -450,6 +450,7 @@ web_browser_js = {
                 required: ["key", "value"],
                 properties: {
                   key: {type: "string", title: "Key"},
+                  #Changed to three types of config
                   value: {type: ["string","boolean","number"], title: "Value"}
                 }
               }
@@ -951,7 +952,7 @@ local_file_js = {
       required: ["file_orig","file_dest"],
       properties:{
         file_orig: {type: "string", title: "Url File"},
-        file_dest: {type: "string", title: "Path destination"},
+        file_dest: {type: "string", title: "File path destination"},
         user: {type: "string", title:"User"},
         group: {type: "string", title: "Group"},
         mode: {type: "string", title: "Mode"},
@@ -1160,7 +1161,7 @@ complete_js = {
           required: ["user_apps_autostart_res", "user_shared_folders_res", "web_browser_res", "file_browser_res", "user_launchers_res", "desktop_menu_res", "desktop_control_res", "folder_sharing_res", "screensaver_res","folder_sync_res", "user_mount_res","shutdown_options_res","desktop_background_res"],
           properties: {
             user_shared_folders_res: user_shared_folders_js,
-            web_browser_res: web_browser_js,
+            #web_browser_res: web_browser_js,
             file_browser_res: file_browser_js,
             user_launchers_res: user_launchers_js,
             desktop_background_res: desktop_background_js,

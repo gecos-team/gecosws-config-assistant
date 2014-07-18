@@ -1,14 +1,14 @@
 #cron file to manage system upgrades
 
 <% unless @date_cron.empty?    %>  
-<%= @date_cron.minute %> <%= @date_cron.hour %> <%= @date_cron.day %> <%= @date_cron.month %> * /etc/init.d/auto_updates start
+<%= @date_cron.minute %> <%= @date_cron.hour %> <%= @date_cron.day %> <%= @date_cron.month %> * root /etc/init.d/auto_updates start
 <% end %>
 <% unless @days_cron.empty? %>
   <% @days_cron.each do |dc| %>
     <% @days_map.each do |k,v| %>
       <% ks = k.to_s %> 
       <% if ks == dc.day %>
-<%= dc.minute %> <%= dc.hour %> * * <%= v %> /etc/init.d/auto_updates start
+<%= dc.minute %> <%= dc.hour %> * * <%= v %> root /etc/init.d/auto_updates start
       <% end %>
     <% end%>
   <% end %>

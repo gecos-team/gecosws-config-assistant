@@ -105,7 +105,7 @@ default[:gecos_ws_mgmt][:users_mgmt][:screensaver_res][:job_ids] = []
 default[:gecos_ws_mgmt][:users_mgmt][:user_mount_res][:users] = {}
 default[:gecos_ws_mgmt][:users_mgmt][:user_mount_res][:job_ids] = []
 
-default[:gecos_ws_mgmt][:users_mgmt][:folder_sync_res][:users] = []
+default[:gecos_ws_mgmt][:users_mgmt][:folder_sync_res][:users] = {}
 default[:gecos_ws_mgmt][:users_mgmt][:folder_sync_res][:job_ids] = []
 
 default[:gecos_ws_mgmt][:users_mgmt][:shutdown_options_res][:users] = {}
