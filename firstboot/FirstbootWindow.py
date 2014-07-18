@@ -133,31 +133,29 @@ class FirstbootWindow(Window):
 
 
     def on_btnClose_Clicked(self, button):
-        self.destroy()
+        if self.confirm_exit():
+            self.destroy()
+        return
 
-#    def on_delete_event(self, widget, data=None):
-#        return self.confirm_exit()
+    def on_delete_event(self, widget, data=None):
+        return self.confirm_exit()
+        
 #
     def confirm_exit(self):
 
-        if self.fully_configured == True:
-            if os.path.exists(__DESKTOP_FILE__):
-                os.rename(__DESKTOP_FILE__, '/tmp/gecos-config-assistant.desktop')
-            return False
+        # if self.fully_configured == True:
+        #     if os.path.exists(__DESKTOP_FILE__):
+        #         os.rename(__DESKTOP_FILE__, '/tmp/gecos-config-assistant.desktop')
+        #     return False
 
-#        dialog = Gtk.MessageDialog(self,
-#            Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
-#            Gtk.MessageType.INFO, Gtk.ButtonsType.YES_NO,
-#            _("Are you sure you have fully configured this workstation?"))
-#
-#        result = dialog.run()
-#        dialog.destroy()
-#        retval = True
-#
-#        if result == Gtk.ResponseType.YES:
-#            if os.path.exists(__DESKTOP_FILE__):
-#                os.rename(__DESKTOP_FILE__, '/tmp/gecos-config-assistant.desktop')
-#            retval = False
+        dialog = Gtk.MessageDialog(self,Gtk.DialogFlags.MODAL |
+        Gtk.DialogFlags.DESTROY_WITH_PARENT,Gtk.MessageType.INFO, Gtk.ButtonsType.YES_NO,_("Are you sure you close Gecos Config Assistant?"))
+
+        result = dialog.run()
+        dialog.destroy()
+
+        if result == Gtk.ResponseType.YES:
+           return True
 #
         return False
 
@@ -182,8 +180,8 @@ class FirstbootWindow(Window):
 
     def on_btnNext_Clicked(self, button):
         if self.is_last_page == True:
-            #if not self.confirm_exit():
-            self.destroy()
+            if self.confirm_exit():
+                self.destroy()
             return
         self.current_page.next_page(self.set_current_page)
 

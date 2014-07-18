@@ -194,9 +194,11 @@ def ad_is_configured():
 
 def create_solo_json(server_conf):
     json_solo = {}
+    json_solo_sssd = {}
     json_solo['run_list'] = ["recipe[ohai-gecos::default]", "recipe[chef-client::upstart_service]", "recipe[gecos_ws_mgmt::local]"]
     json_solo_sssd['run_list'] = ["recipe[ohai-gecos::default]", "recipe[chef-client::upstart_service]", "recipe[gecos_ws_mgmt::local]"]
     json_solo['gecos_ws_mgmt'] = {}
+    json_solo_sssd['gecos_ws_mgmt'] = {}
     json_solo['gecos_ws_mgmt']['misc_mgmt'] = {}
     json_solo_sssd['gecos_ws_mgmt']['network_mgmt'] = {}
     if server_conf.get_ntp_conf().get_uri_ntp() != '':
