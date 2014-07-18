@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.6.7-0gecos1) trusty; urgency=low
+
+  * Separate GCC configuration process and SSSD configuration process. Update recipes 
+
+ -- David Amian <damian@emergya.es>  Fri, 18 Jul 2014 10:19:28 +0200
+
 gecosws-config-assistant (0.6.6-0gecos1) trusty; urgency=low
 
   * Update version with search
