@@ -1,0 +1,73 @@
+{
+  "connections":[
+    {
+      "name":"Wifi1",
+      "mac_address": "00:27:0e:2a:b9:aa",
+      "conn_config": {
+        "use_dhcp":false,
+        "addresses":[
+          {"ip_addr":"192.168.1.1","netmask":"2.2.2.2"},
+          {"ip_addr":"192.168.1.2","netmask":"2.2.2.2"}
+        ],
+          "gateway": "192.168.1.1"
+      },
+      "dns_servers":[
+      "192.168.1.1",
+      "192.168.3.1"
+      ],
+      "conn_type":{
+        "net_type": "wireless",
+        "essid": "redwifi",
+        "security": {
+          "sec_type":"WPA_PSK",
+          "enc_pass": "contrasenacompleja"
+        }
+      }
+    },
+    {
+      "name":"Wifi2",
+      "mac_address": "00:27:0e:2a:b9:aa",
+      "conn_config": {
+        "use_dhcp":false,
+        "addresses":[
+          {"ip_addr":"192.168.1.1","netmask":"2.2.2.2"},
+          {"ip_addr":"192.168.1.2","netmask":"2.2.2.2"}
+        ],
+          "gateway": "192.168.1.1"
+      },
+      "dns_servers":[
+      "192.168.1.1",
+      "192.168.3.1"
+      ],
+      "conn_type":{
+        "net_type": "wireless",
+        "essid": "redwifi",
+        "security": {
+          "sec_type":"WEP",
+          "enc_pass": "contrasenacompleja",
+          "auth_type": "OpenSystem"
+        }
+      }
+    },
+    {
+      "name":"Wifi2",
+      "mac_address": "00:27:0e:2a:b9:aa",
+      "conn_config": {
+        "use_dhcp":false,
+
+        "addresses":[
+          {"ip_addr":"192.168.1.1","netmask":"2.2.2.2"},
+          {"ip_addr":"192.168.1.2","netmask":"2.2.2.2"}
+        ],
+          "gateway": "192.168.1.1"
+      },
+      "dns_servers":[
+      "192.168.1.1",
+      "192.168.3.1"
+      ],
+      "conn_type":{
+        "net_type": "wired"
+      }
+    }
+  ]
+}

@@ -16,4 +16,6 @@ attribute :onstop_update, :kind_of => [NilClass, TrueClass, FalseClass]
 attribute :days, :kind_of => Array
 attribute :date, :kind_of => Object
 attribute :job_ids, :kind_of => Array
+attribute :support_os, :kind_of => Array
+
 

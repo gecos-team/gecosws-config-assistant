@@ -15,104 +15,109 @@ action :setup do
       action :nothing
     end.run_action(:install)
 
-    if !new_resource.users.nil? and !new_resource.users.empty?
-      users = new_resource.users
-#     if !new_resource.desktop_file.nil? and !new_resource.desktop_file.empty?
-      users.each_key do |user_key|
-        username = user_key 
-        user = users[user_key]
-        Chef::Log.info("Estableciendo fondo de escritorio #{user.desktop_file}")
-        desktop_file = user.desktop_file
-        gecos_ws_mgmt_desktop_setting "picture-uri" do
-          type "string"
-          value "file://" + desktop_file.to_s
-          schema "org.cinnamon.desktop.background"
-          username username
-          provider "gecos_ws_mgmt_gsettings"
-          action :nothing
-        end.run_action(:set)
+    os = `lsb_release -d`.split(":")[1].chomp().lstrip()
+    if new_resource.support_os.include?(os)
 
-        gecos_ws_mgmt_desktop_setting "picture-uri" do
-          type "string"
-          value "file://" + desktop_file.to_s
-          schema "org.gnome.desktop.background"
-          username username
-          provider "gecos_ws_mgmt_gsettings"
-          action :nothing
-        end.run_action(:set)
+      if !new_resource.users.nil? and !new_resource.users.empty?
+        users = new_resource.users
+  #     if !new_resource.desktop_file.nil? and !new_resource.desktop_file.empty?
+        users.each_key do |user_key|
+          username = user_key 
+          user = users[user_key]
+          Chef::Log.info("Estableciendo fondo de escritorio #{user.desktop_file}")
+          desktop_file = user.desktop_file
+          gecos_ws_mgmt_desktop_setting "picture-uri" do
+            type "string"
+            value "file://" + desktop_file.to_s
+            schema "org.cinnamon.desktop.background"
+            username username
+            provider "gecos_ws_mgmt_gsettings"
+            action :nothing
+          end.run_action(:set)
 
+          gecos_ws_mgmt_desktop_setting "picture-uri" do
+            type "string"
+            value "file://" + desktop_file.to_s
+            schema "org.gnome.desktop.background"
+            username username
+            provider "gecos_ws_mgmt_gsettings"
+            action :nothing
+          end.run_action(:set)
+
+        end
+
+  #       Chef::Log.info("Estableciendo fondo de escritorio #{new_resource.desktop_file}")
+  #       directory "/etc/dconf/profile" do
+  #         recursive true
+  #         action :nothing
+  #       end.run_action(:create)
+  #       directory "/etc/dconf/db/gecos.d/" do
+  #         recursive true
+  #         action :nothing
+  #       end.run_action(:create)
+  # #      directory "/etc/dconf/db/gecos.d/locks" do
+  # #        recursive true
+  # #        action :nothing
+  # #      end.run_action(:create)
+  #       file "/etc/dconf/profile/user" do
+  #         backup false
+  #         content <<-eof
+  # system-db:gecos
+  # user-db:user
+  #         eof
+  #         action :nothing
+  #       end.run_action(:create)
+  # #      file "/etc/dconf/db/gecos.d/locks/gecos.lock" do
+  # #        backup false
+  # #        content <<-eof
+  # #/org/gnome/desktop/background/picture-uri
+  # #/org/cinnamon/desktop/background/picture-uri
+  # #        eof
+  # #        action :nothing
+  # #      end.run_action(:create)
+  #       file "/etc/dconf/db/gecos.d/gecos.key" do
+  #         backup false
+  #         content <<-eof
+  # [org/gnome/desktop/background]
+  # picture-uri='file://#{new_resource.desktop_file}'
+  # [org/cinnamon/desktop/background]
+  # picture-uri='file://#{new_resource.desktop_file}'
+  #         eof
+  # #        content <<-eof
+  # #        [org/gnome/desktop/background]
+  # #        picture-uri='file://#{new_resource.users[0].desktop_file}'
+  # #        [org/cinnamon/desktop/background]
+  # #        picture-uri='file://#{new_resource.users[0].desktop_file}'
+  # #        eof
+  #         action :nothing
+  #         #notifies :run, "execute[update-dconf]", :delayed
+  #       end.run_action(:create)
+  #       execute "update-dconf" do
+  #         command "dconf update"
+  #         action :nothing
+  #       end.run_action(:run)
+
+  #     else
+  # #      file "/etc/dconf/db/gecos.d/locks/gecos.lock" do
+  # #        backup false
+  # #        action :nothing
+  # #      end.run_action(:delete)
+  #       file "/etc/dconf/db/gecos.d/gecos.key" do
+  #         backup false
+  #         action :nothing
+  #       end.run_action(:delete)
+  #       file "/etc/dconf/profile/user" do
+  #         backup false
+  #         action :nothing
+  #       end.run_action(:delete)
+  #       execute "update-dconf" do
+  #         command "dconf update"
+  #         action :nothing
+  #       end.run_action(:run)
       end
-
-#       Chef::Log.info("Estableciendo fondo de escritorio #{new_resource.desktop_file}")
-#       directory "/etc/dconf/profile" do
-#         recursive true
-#         action :nothing
-#       end.run_action(:create)
-#       directory "/etc/dconf/db/gecos.d/" do
-#         recursive true
-#         action :nothing
-#       end.run_action(:create)
-# #      directory "/etc/dconf/db/gecos.d/locks" do
-# #        recursive true
-# #        action :nothing
-# #      end.run_action(:create)
-#       file "/etc/dconf/profile/user" do
-#         backup false
-#         content <<-eof
-# system-db:gecos
-# user-db:user
-#         eof
-#         action :nothing
-#       end.run_action(:create)
-# #      file "/etc/dconf/db/gecos.d/locks/gecos.lock" do
-# #        backup false
-# #        content <<-eof
-# #/org/gnome/desktop/background/picture-uri
-# #/org/cinnamon/desktop/background/picture-uri
-# #        eof
-# #        action :nothing
-# #      end.run_action(:create)
-#       file "/etc/dconf/db/gecos.d/gecos.key" do
-#         backup false
-#         content <<-eof
-# [org/gnome/desktop/background]
-# picture-uri='file://#{new_resource.desktop_file}'
-# [org/cinnamon/desktop/background]
-# picture-uri='file://#{new_resource.desktop_file}'
-#         eof
-# #        content <<-eof
-# #        [org/gnome/desktop/background]
-# #        picture-uri='file://#{new_resource.users[0].desktop_file}'
-# #        [org/cinnamon/desktop/background]
-# #        picture-uri='file://#{new_resource.users[0].desktop_file}'
-# #        eof
-#         action :nothing
-#         #notifies :run, "execute[update-dconf]", :delayed
-#       end.run_action(:create)
-#       execute "update-dconf" do
-#         command "dconf update"
-#         action :nothing
-#       end.run_action(:run)
-
-#     else
-# #      file "/etc/dconf/db/gecos.d/locks/gecos.lock" do
-# #        backup false
-# #        action :nothing
-# #      end.run_action(:delete)
-#       file "/etc/dconf/db/gecos.d/gecos.key" do
-#         backup false
-#         action :nothing
-#       end.run_action(:delete)
-#       file "/etc/dconf/profile/user" do
-#         backup false
-#         action :nothing
-#       end.run_action(:delete)
-#       execute "update-dconf" do
-#         command "dconf update"
-#         action :nothing
-#       end.run_action(:run)
+    else
+      Chef::Log.info("This resource are not support into your OS")
     end
-
     # save current job ids (new_resource.job_ids) as "ok"
     job_ids = new_resource.job_ids
     job_ids.each do |jid|
@@ -129,9 +134,9 @@ action :setup do
       node.set['job_status'][jid]['message'] = e.message
     end
   ensure
-    gecos_ws_mgmt_jobids "users_mgmt" do
+    gecos_ws_mgmt_jobids "desktop_background_res" do
       provider "gecos_ws_mgmt_jobids"
-      resource "desktop_background_res"
+      recipe "users_mgmt"
     end.run_action(:reset)
   end
 end

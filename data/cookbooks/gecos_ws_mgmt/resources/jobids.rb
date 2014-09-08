@@ -12,5 +12,5 @@
 
 actions :reset
  
-attribute :recipe, :kind_of => String, :name_attribute => true, :required => true
-attribute :resource, :kind_of => String, :required => true
+attribute :recipe, :kind_of => String, :required => true
+attribute :resource, :kind_of => String,  :name_attribute => true, :required => true

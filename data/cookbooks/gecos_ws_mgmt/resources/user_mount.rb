@@ -12,3 +12,4 @@ actions :setup
 
 attribute :users, :kind_of => Hash
 attribute :job_ids, :kind_of => Array
+attribute :support_os, :kind_of => Array

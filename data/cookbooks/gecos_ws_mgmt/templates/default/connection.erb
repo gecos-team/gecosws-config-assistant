@@ -1,0 +1,52 @@
+<%# Physical setup %>
+[connection]
+id=<%= @connection[:name] %>
+uuid=<%= @uuid %>
+read-only=true
+<%# Wired connection %>
+<% if @connection[:net_type] == 'wired' %>
+type=802-3-ethernet
+
+[802-3-ethernet]
+duplex=full
+mac-address=<%= @connection[:mac_address] %>
+<%# Wireless connection %>
+<% elsif @connection[:net_type] == 'wireless' %>
+type=802-11-wireless
+
+[802-11-wireless]
+ssid=<%= @connection[:essid] %>
+mode=infrastructure
+mac-address=<%= @connection[:mac_address] %>
+<% if @connection[:security][:sec_type] == 'WPA_PSK' %>
+security=802-11-wireless-security
+
+[802-11-wireless-security]
+key-mgmt=wpa-psk
+auth-alg=open
+psk=<%= @connection[:security][:enc_pass] %>
+<% elsif @connection[:security][:sec_type] != 'WEP' %>
+security=802-11-wireless-security
+
+[802-11-wireless-security]
+key-mgmt=none
+auth-alg=<%= @connection[:security][:auth_type] %>
+wep-key0=<%= @connection[:security][:enc_pass] %>
+wep-key-type=1
+<% end %>
+<% end %>
+
+<%# Config setup %>
+[ipv6]
+method=auto
+
+[ipv4]
+<% if @connection[:use_dhcp] %>
+method=auto
+<% else %>
+method=manual
+dns=<%= @connection[:dns_servers].join(" ") %>
+<% @connection[:addresses].each_with_index do |address,index| %>
+addresses<%= index+1 %>=<%= address[:ip_addr] %>;<%= address[:netmask] %>;<%= @connection[:gateway] %>;
+<% end %>
+<% end %>

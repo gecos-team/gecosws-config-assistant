@@ -11,17 +11,22 @@
 
 action :setup do
   begin
-    groups_list = new_resource.groups_list
+    os = `lsb_release -d`.split(":")[1].chomp().lstrip()
+    if new_resource.support_os.include?(os)
+      groups_list = new_resource.groups_list
 
-  	groups_list.each do |item|
-  		gid = item.group
-  		uids = item.users
+    	groups_list.each do |item|
+    		gid = item.group
+    		uids = item.users
 
-  		group "#{gid}" do
-  		  members uids
-  		  append true
-  		  action :nothing
-      end.run_action(:modify)
+    		group "#{gid}" do
+    		  members uids
+    		  append true
+    		  action :nothing
+        end.run_action(:modify)
+      end
+    else
+      Chef::Log.info("This resource are not support into your OS")
     end
 
     # save current job ids (new_resource.job_ids) as "ok"
@@ -40,9 +45,9 @@ action :setup do
       node.set['job_status'][jid]['message'] = e.message
     end
   ensure
-    gecos_ws_mgmt_jobids "misc_mgmt" do
+    gecos_ws_mgmt_jobids "local_groups_res" do
       provider "gecos_ws_mgmt_jobids"
-      resource "local_groups_res"
+      recipe "misc_mgmt"
     end.run_action(:reset)
   end
 end

@@ -11,56 +11,61 @@
 
 action :setup do
   begin
+    os = `lsb_release -d`.split(":")[1].chomp().lstrip()
+    if new_resource.support_os.include?(os)
   #  users = node[:gecos_ws_mgmt][:users_mgmt][:screensaver_res][:users] #if new_resource.users.nil?
-    users = new_resource.users
-    users.each_key do |user_key|
-      username = user_key 
-      user = users[user_key]
+      users = new_resource.users
+      users.each_key do |user_key|
+        username = user_key 
+        user = users[user_key]
 
-      idle_enabled = user.idle_enabled
-      idle_delay = user.idle_delay
-      lock_enabled = user.lock_enabled
-      lock_delay = user.lock_delay
-### TO-DO:
-## Sacar el tipo de sesion con el plugin de ohai x-session-manager.rb (amunoz)
-## Distinguir entre sesion Cinnamon y LXDE
+        idle_enabled = user.idle_enabled
+        idle_delay = user.idle_delay
+        lock_enabled = user.lock_enabled
+        lock_delay = user.lock_delay
+  ### TO-DO:
+  ## Sacar el tipo de sesion con el plugin de ohai x-session-manager.rb (amunoz)
+  ## Distinguir entre sesion Cinnamon y LXDE
 
-#     session = node["desktop_session"] 
-      gecos_ws_mgmt_desktop_setting "idle-activation-enabled" do
-        type "string"
-        value idle_enabled.to_s
-        schema "org.cinnamon.desktop.screensaver"
-        username username
-        provider "gecos_ws_mgmt_gsettings"
-        action :nothing
-      end.run_action(:set)
-  
-      gecos_ws_mgmt_desktop_setting "lock-enabled" do
-        type "string"
-        value lock_enabled.to_s
-        schema "org.cinnamon.desktop.screensaver"
-        username username
-        provider "gecos_ws_mgmt_gsettings"
-        action :nothing
-      end.run_action(:set)
-  
-      gecos_ws_mgmt_desktop_setting "idle-delay" do
-        type "string"
-        value idle_delay
-        schema "org.cinnamon.desktop.session"
-        username username
-        provider "gecos_ws_mgmt_gsettings"
-        action :nothing
-      end.run_action(:set)
-  
-      gecos_ws_mgmt_desktop_setting "lock-delay" do
-        type "string"
-        value lock_delay
-        schema "org.cinnamon.desktop.screensaver"
-        username username
-        provider "gecos_ws_mgmt_gsettings"
-        action :nothing
-      end.run_action(:set)
+  #     session = node["desktop_session"] 
+        gecos_ws_mgmt_desktop_setting "idle-activation-enabled" do
+          type "string"
+          value idle_enabled.to_s
+          schema "org.cinnamon.desktop.screensaver"
+          username username
+          provider "gecos_ws_mgmt_gsettings"
+          action :nothing
+        end.run_action(:set)
+    
+        gecos_ws_mgmt_desktop_setting "lock-enabled" do
+          type "string"
+          value lock_enabled.to_s
+          schema "org.cinnamon.desktop.screensaver"
+          username username
+          provider "gecos_ws_mgmt_gsettings"
+          action :nothing
+        end.run_action(:set)
+    
+        gecos_ws_mgmt_desktop_setting "idle-delay" do
+          type "string"
+          value idle_delay
+          schema "org.cinnamon.desktop.session"
+          username username
+          provider "gecos_ws_mgmt_gsettings"
+          action :nothing
+        end.run_action(:set)
+    
+        gecos_ws_mgmt_desktop_setting "lock-delay" do
+          type "string"
+          value lock_delay
+          schema "org.cinnamon.desktop.screensaver"
+          username username
+          provider "gecos_ws_mgmt_gsettings"
+          action :nothing
+        end.run_action(:set)
+      end
+    else
+      Chef::Log.info("This resource are not support into your OS")
     end
 
     # save current job ids (new_resource.job_ids) as "ok"
@@ -79,9 +84,9 @@ action :setup do
       node.set['job_status'][jid]['message'] = e.message
     end
   ensure
-    gecos_ws_mgmt_jobids "users_mgmt" do
+    gecos_ws_mgmt_jobids "screensaver_res" do
       provider "gecos_ws_mgmt_jobids"
-      resource "screensaver_res"
+      recipe "users_mgmt"
     end.run_action(:reset)
   end
 end

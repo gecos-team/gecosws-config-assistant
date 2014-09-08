@@ -11,27 +11,32 @@
 
 action :setup do
   begin
-    users = new_resource.users 
-    desktop_path = "/usr/share/applications/"
+    os = `lsb_release -d`.split(":")[1].chomp().lstrip()
+    if new_resource.support_os.include?(os)
+      users = new_resource.users 
+      desktop_path = "/usr/share/applications/"
 
-    users.each_key do |user_key|
-      username = user_key
-      user = users[user_key]
+      users.each_key do |user_key|
+        username = user_key
+        user = users[user_key]
 
-      homedir = `eval echo ~#{username}`.gsub("\n","")
-      autostart_path = "#{homedir}/.config/autostart/"
-      unless Kernel::test('d', autostart_path)
-        FileUtils.mkdir_p(autostart_path)
-        gid = Etc.getpwnam(username).gid
-        FileUtils.chown_R(username, gid, homedir+"/.config")
-      end
-    
-      user.desktops.each do |desktopfile|
-        if FileTest.exist? desktop_path + desktopfile and not desktopfile.empty? 
-          FileUtils.cp "#{desktop_path}#{desktopfile}",  autostart_path
+        homedir = `eval echo ~#{username}`.gsub("\n","")
+        autostart_path = "#{homedir}/.config/autostart/"
+        unless Kernel::test('d', autostart_path)
+          FileUtils.mkdir_p(autostart_path)
+          gid = Etc.getpwnam(username).gid
+          FileUtils.chown_R(username, gid, homedir+"/.config")
         end
-      end
+      
+        user.desktops.each do |desktopfile|
+          if FileTest.exist? desktop_path + desktopfile and not desktopfile.empty? 
+            FileUtils.cp "#{desktop_path}#{desktopfile}",  autostart_path
+          end
+        end
 
+      end
+    else
+      Chef::Log.info("This resource are not support into your OS")
     end
     
     # save current job ids (new_resource.job_ids) as "ok"
@@ -50,9 +55,9 @@ action :setup do
       node.set['job_status'][jid]['message'] = e.message
     end
   ensure
-    gecos_ws_mgmt_jobids "users_mgmt" do
+    gecos_ws_mgmt_jobids "user_apps_autostart_res" do
       provider "gecos_ws_mgmt_jobids"
-      resource "user_apps_autostart_res"
+      recipe "users_mgmt"
     end.run_action(:reset)
   end
 end

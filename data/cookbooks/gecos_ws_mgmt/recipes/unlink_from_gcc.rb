@@ -15,6 +15,7 @@ gecos_ws_mgmt_gcc "unlink" do
   gcc_pwd_user node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:gcc_pwd_user]
   gcc_username node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:gcc_username]
   gcc_selected_ou node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:gcc_selected_ou]
+  support_os node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:support_os]
   run_attr true
   job_ids []
   action  :setup
