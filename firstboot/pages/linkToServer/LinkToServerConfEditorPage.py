@@ -50,9 +50,9 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
 
     def load_page(self, params=None):
         self.server_conf = serverconf.get_server_conf(None)
-        self.ui.lblVersionValue.set_label(self.server_conf.get_version())
-        self.ui.lblOrganizationValue.set_label(self.server_conf.get_organization())
-#           self.ui.lblNotesValue.set_label(self.server_conf.get_notes())
+#         self.ui.lblVersionValue.set_label(self.server_conf.get_version())
+#         self.ui.lblOrganizationValue.set_label(self.server_conf.get_organization())
+# #           self.ui.lblNotesValue.set_label(self.server_conf.get_notes())
         self.method = params['auth_method']
         if self.method == 'ldap':
             self.ui.checkSpecific.hide()
@@ -101,9 +101,9 @@ class LinkToServerConfEditorPage(PageWindow.PageWindow):
 
         self.ui.lblDescription.set_text(desc)
 
-        self.ui.lblVersion.set_label(_('Version'))
-        self.ui.lblOrganization.set_label(_('Organization'))
-        self.ui.lblNotes.set_label(_('Notes'))
+        # self.ui.lblVersion.set_label(_('Version'))
+        # self.ui.lblOrganization.set_label(_('Organization'))
+        # self.ui.lblNotes.set_label(_('Notes'))
         self.ui.lblUrlLDAP.set_label('URL')
         self.ui.lblBaseDN.set_label(_('Base DN for users'))
         self.ui.lblBaseDNGroup.set_label(_('Base DN for groups'))

@@ -27,7 +27,7 @@ import subprocess
 from gi.repository import Gtk
 from firstboot_lib import PageWindow
 from firstboot import serverconf
-
+import AutoConfigResult
 import gettext
 from gettext import gettext as _
 gettext.textdomain('gecosws-config-assistant')
@@ -119,5 +119,4 @@ class AutoConfigPage(PageWindow.PageWindow):
                except Exception as e:
                     self.set_status(1, str(e))
                     return
-        
-        load_page_callback(firstboot.pages.dateSync)
+        load_page_callback(AutoConfigResult)
