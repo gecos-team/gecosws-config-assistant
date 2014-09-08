@@ -43,7 +43,7 @@ action :setup do
         ::File.delete("/etc/apt/sources.list.d/#{value}")
       end 
     else
-      Chef::Log.info("This resource are not support into your OS")
+      Chef::Log.info("This resource is not support into your OS")
     end
 
     # save current job ids (new_resource.job_ids) as "ok"

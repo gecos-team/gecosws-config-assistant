@@ -36,7 +36,7 @@ action :setup do
       if new_resource.run_attr
         if new_resource.gcc_link
           if not new_resource.uri_gcc.nil? and not new_resource.gcc_nodename.nil? and not new_resource.gcc_username.nil? and not new_resource.gcc_pwd_user.nil? and not new_resource.gcc_selected_ou.nil?
-            Chef::Log.info("GCC: Configurndo GECOS Control Center")
+            Chef::Log.info("GCC: Configuring GECOS Control Center")
             begin
               resource = RestClient::Resource.new(new_resource.uri_gcc + '/register/computer/', :user => new_resource.gcc_username, :password => new_resource.gcc_pwd_user)
               response = resource.post :node_id => new_resource.gcc_nodename,:ou_id=>new_resource.gcc_selected_ou, :content_type => :json, :accept => :json
@@ -102,7 +102,7 @@ action :setup do
         Chef::Log.info('Not running')
       end
     else
-      Chef::Log.info("This resource are not support into your OS")
+      Chef::Log.info("This resource is not support into your OS")
     end
 
     # save current job ids (new_resource.job_ids) as "ok"

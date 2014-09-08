@@ -52,7 +52,7 @@ action :setup do
         node.set['job_status'][jid]['status'] = 0
       end
     else
-      Chef::Log.info("This resource are not support into your OS")
+      Chef::Log.info("This resource is not support into your OS")
     end
 
   rescue Exception => e

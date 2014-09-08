@@ -3,7 +3,7 @@ maintainer        "Roberto C. Morano"
 maintainer_email  "rcmorano@emergya.com"
 license           "Apache 2.0"
 description       "Cookbook for GECOS workstations administration"
-version           "0.2.8"
+version           "0.2.9"
 
 depends "apt"
 depends "chef-client"
@@ -23,6 +23,17 @@ updated_js = {
     computer: {type:"string"},
     ou: {title: "Ous", type: "array", items: {type:"string"}}
   }
+}
+
+support_os_js = {
+  title: "Support OS",
+  type: "array",
+  minItems: 0,
+  uniqueItems: true,
+  items: {
+    type: "string"
+  }
+
 }
     
 
@@ -88,6 +99,7 @@ sssd_js = {
         type: "string"
       }
     }, 
+    support_os: support_os_js,
     updated_by: updated_js
   }
 }
@@ -110,6 +122,7 @@ user_mount_js = {
         }
       }
     },
+    support_os: support_os_js,
     job_ids: {
       type: "array",
       minItems: 0,
@@ -139,7 +152,8 @@ screensaver_js = {
             },
             idle_delay: {
               type: "string",
-              title: "Idle Delay (sec)"
+              title: "Idle Delay",
+              description: "Seconds"
             },
             lock_enabled: {
               type: "boolean",
@@ -147,13 +161,15 @@ screensaver_js = {
             },
             lock_delay: {
               type: "string",
-              title: "Lock Delay (sec)"
+              title: "Lock Delay",
+              description: "Seconds"
             }, 
             updated_by: updated_js
           }
         }
       }
     },
+    support_os: support_os_js,
     job_ids: {
       type: "array",
       minItems: 0,
@@ -183,6 +199,7 @@ folder_sharing_js = {
         }
       }
     },
+    support_os: support_os_js,
     job_ids: {
         type: "array",
         minItems: 0,
@@ -220,6 +237,7 @@ desktop_control_js = {
         }
       }
     },
+    support_os: support_os_js,
     job_ids: {
         type: "array",
         minItems: 0,
@@ -267,6 +285,7 @@ desktop_menu_js = {
         }
       }
     },
+    support_os: support_os_js,
     job_ids: {
         type: "array",
         minItems: 0,
@@ -304,6 +323,7 @@ user_launchers_js = {
         }
       }
     },
+    support_os: support_os_js,
     job_ids: {
         type: "array",
         minItems: 0,
@@ -350,6 +370,7 @@ desktop_background_js = {
         }
       }
     },
+    support_os: support_os_js,
     job_ids: {
         type: "array",
         minItems: 0,
@@ -384,6 +405,7 @@ file_browser_js = {
         }
       }
     },
+    support_os: support_os_js,
     job_ids: {
         type: "array",
         minItems: 0,
@@ -450,8 +472,11 @@ web_browser_js = {
                 required: ["key", "value"],
                 properties: {
                   key: {type: "string", title: "Key"},
-                  #Changed to three types of config
-                  value: {type: ["string","boolean","number"], title: "Value"}
+                  value_str: {type: "string", title: "Value", description: "Only if Value Type is string"},
+                  value_num: {type: "number", title: "Value", description: "Only if Value Type is number"},
+                  value_bool: {type: "boolean", title: "Value", description: "Only if Value Type is boolean"},
+                  value_type: {title: "Value type", type: "string", enum: ["string", "number", "boolean"]}
+
                 }
               }
             },
@@ -474,6 +499,7 @@ web_browser_js = {
         }
       }
     },
+    support_os: support_os_js,
     job_ids: {
         type: "array",
         minItems: 0,
@@ -516,6 +542,7 @@ user_shared_folders_js = {
         }
       }
     },
+    support_os: support_os_js,
     job_ids: {
         type: "array",
         minItems: 0,
@@ -544,6 +571,7 @@ app_config_js = {
           type: "string"
         }
     }, 
+    support_os: support_os_js,
     updated_by: updated_js
   }
 }
@@ -600,6 +628,7 @@ auto_updates_js = {
         }
       }
     },
+    support_os: support_os_js,
     job_ids: {
         type: "array",
         minItems: 0,
@@ -637,6 +666,7 @@ user_apps_autostart_js = {
         }
       }
     },
+    support_os: support_os_js,
     job_ids: {
         type: "array",
         minItems: 0,
@@ -657,6 +687,7 @@ tz_date_js = {
       type: "string",
       title: "Server"
     },
+    support_os: support_os_js,
     job_ids: {
         type: "array",
         minItems: 0,
@@ -693,6 +724,7 @@ scripts_launch_js = {
         type: "string",
         }
     },
+    support_os: support_os_js,
     job_ids: {
       type: "array",
       minItems: 0,
@@ -706,56 +738,86 @@ scripts_launch_js = {
 }
 
 network_resource_js = {
-  title: "Network Manager",
   type: "object",
-  required: ["network_type", "dns_servers_array"],
+  title: "Network Manager",
+  required: ["connections"],
   properties:
   {
-    gateway: { type: "string",title: "Gateway" },
-    ip_address: { type:"string", title: "Ip Address" },
-    netmask: { type: "string", title: "Netmask" },
-    network_type: { enum: ["wired","wireless"],type: "string", title: "Network Type" },
-    use_dhcp: { type: "boolean" , title: "Use DHCP?"},
-    dns_servers_array: {
+    connections: {
       type: "array",
-      title: "DNS Servers",
       minItems: 0,
       uniqueItems: true,
       items: {
-        type: "string"
+        type: "object",
+        required: ["name", "mac_address", "use_dhcp", "net_type"],
+        properties: {
+          name: {type: "string", title: "Name"},
+          mac_address: {pattern: "^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$", type: "string", title: "MAC address"},
+          use_dhcp: {type: "boolean", enum: [true,false], default:true, title: "DHCP"},
+          addresses: {
+            type: "array",
+            uniqueItems: true,
+            minItems: 0,
+            description: "With DHCP disable",
+            title: "IP addresses",
+            items: {
+              type: "object",
+              #required: [ "ip_addr","netmask"],
+              properties:{
+                ip_addr: {
+                  type: "string",
+                  title: "IP address",
+                  description: "ipv4 format",
+                  format: "ipv4"
+                },
+                netmask: {
+                  type: "string",
+                  title: "Netmask",
+                  description: "ipv4 format",
+                  format: "ipv4"
+                }
+              }
+            }
+          },
+          gateway: {
+            type: "string",
+            title: "Gateway",
+            description: "ipv4 format",
+            format: "ipv4"
+          },
+          dns_servers: {
+            type: "array",
+            title: "DNS Servers",
+            description: "With DHCP disable",
+            minItems: 0,
+            uniqueItems: true,
+            items: {
+              type: "string",
+              title: "DNS",
+              description: "ipv4 format",
+              format: "ipv4"
+            }
+          },
+          net_type:{
+            enum: ["wired", "wireless"], title: "Connection type", type: "string"
+          },
+          essid: { type: "string", title: "ESSID" },
+          security: { 
+            type: "object", 
+            required: ["sec_type"],
+            properties:{
+              sec_type: { enum: [ "none", "WEP", "Leap", "WPA_PSK"], default:"none", title: "Security type", type:"string"},
+              enc_pass: { type: "string", title: "Password", description: "WEP, WPA_PSK security", },
+              auth_type: { enum: ["OpenSystem", "SharedKey"], title: "Authentication type", description: "WEP security", type: "string", default: "OpenSystem"},
+              auth_user: { type: "string", title: "Username", description: "Leap security" },
+              auth_password: { type: "string", title: "Password", description: "Leap security" }
+
+            }
+          }
+
+        }
       }
     },
-#    users: {
-#      type: "object",
-#      title: "Users",
-#      patternProperties: {
-#        ".*" => { type: "object", title: "Username",
-#          required: ["network_type"],
-#          properties: {
-#            username: { type: "string", title: "Username" },
-#            gateway: { type: "string",title: "Gateway" },
-#            ip_address: { type:"string", title: "Ip Address" },
-#            netmask: { type: "string", title: "Netmask" },
-#            network_type: { enum: ["wired","wireless","vpn","proxy"], type: "string", title: "Network Type" },
-#            use_dhcp: { type: "boolean", title: "Use DHCP?" },
-#            certs: {
-#              type: "array",
-#              title: "Certificates",
-#              minItems: 0,
-#              uniqueItems: true,
-#              items: {
-#                type: "object",
-#                required: ["name","uri"],
-#                properties: {
-#                  name: {type: "string", title: "Name"},
-#                  uri: {type: "string", title: "Url"}
-#                }
-#              }
-#            }
-#          }
-#        }
-#      }
-#    },
     job_ids: {
       type: "array",
       minItems: 0,
@@ -764,6 +826,7 @@ network_resource_js = {
         type: "string"
       }
     }, 
+    support_os: support_os_js,
     updated_by: updated_js
   }
 }
@@ -797,6 +860,7 @@ software_sources_js = {
         type: "string"
       }
     }, 
+    support_os: support_os_js,
     updated_by: updated_js
    }
 }
@@ -829,6 +893,7 @@ package_js = {
         type: "string"
       }
     },
+    support_os: support_os_js,
     updated_by: updated_js
   }
 }
@@ -844,13 +909,14 @@ printers_js = {
       title: "Printer list to enable",
       items: {
         type:"object",
-        required: [ "name", "manufacturer", "model", "ppd_uri" ],
+        required: [ "name", "manufacturer", "model", "uri"],
         properties:{
           name: { type: "string", title: "Name" },
           manufacturer: { type: "string", title: "Manufacturer" },
           model: { type: "string" , title: "Model"},
           uri: { type: "string", title: "Uri" },
-          ppd_uri: { type: "string", title: "Uri PPD", default: ""},
+          ppd_uri: { type: "string", title: "Uri PPD", default: "", pattern: "(\b?(https?|ftp|file)://)[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]"},
+          ppd: { type: "string", title: "PPD Name"}
         }
       }
     },
@@ -862,6 +928,7 @@ printers_js = {
         type: "string"
       }
     }, 
+    support_os: support_os_js,
     updated_by: updated_js
   }
 }
@@ -894,6 +961,7 @@ local_users_js = {
       type: "string"
     }
   }, 
+  support_os: support_os_js,
   updated_by: updated_js
  }
 }
@@ -923,6 +991,7 @@ local_groups_js = {
       type: "string"
     }
   }, 
+  support_os: support_os_js,
   updated_by: updated_js
  }
 }
@@ -968,6 +1037,7 @@ local_file_js = {
       type: "string"
     }
   }, 
+  support_os: support_os_js,
   updated_by: updated_js
  }
 }
@@ -990,6 +1060,7 @@ local_admin_users_js = {
       type: "string"
     }
   }, 
+  support_os: support_os_js,
   updated_by: updated_js
  }
 }
@@ -1019,6 +1090,7 @@ folder_sync_js = {
       }
     }
   },
+  support_os: support_os_js,
   job_ids: {
     type: "array",
     minItems: 0,
@@ -1051,16 +1123,19 @@ power_conf_js = {
        properties: {
          hour: {
            title: "Hour",
+           description:"Time to shutdown",
            type: "integer",
            maximum: 23
            },
          minute: {
-           title: "Minute",                                                                                                                                                                                     
+           title: "Minute",
+           description:"Time to shutdown",                                                                                                                                                                                     
            type: "integer",
            maximum: 59
          }
        }  
   },
+  support_os: support_os_js,
   job_ids: {
     type: "array",
     minItems: 0,
@@ -1096,6 +1171,7 @@ shutdown_options_js = {
         }
       }
     },
+    support_os: support_os_js,
     job_ids: {
       type: "array",
       minItems: 0,
@@ -1161,7 +1237,7 @@ complete_js = {
           required: ["user_apps_autostart_res", "user_shared_folders_res", "web_browser_res", "file_browser_res", "user_launchers_res", "desktop_menu_res", "desktop_control_res", "folder_sharing_res", "screensaver_res","folder_sync_res", "user_mount_res","shutdown_options_res","desktop_background_res"],
           properties: {
             user_shared_folders_res: user_shared_folders_js,
-            #web_browser_res: web_browser_js,
+            web_browser_res: web_browser_js,
             file_browser_res: file_browser_js,
             user_launchers_res: user_launchers_js,
             desktop_background_res: desktop_background_js,

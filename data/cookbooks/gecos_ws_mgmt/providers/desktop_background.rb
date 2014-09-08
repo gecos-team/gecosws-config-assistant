@@ -24,7 +24,7 @@ action :setup do
         users.each_key do |user_key|
           username = user_key 
           user = users[user_key]
-          Chef::Log.info("Estableciendo fondo de escritorio #{user.desktop_file}")
+          Chef::Log.info("Setting wallpaper #{user.desktop_file}")
           desktop_file = user.desktop_file
           gecos_ws_mgmt_desktop_setting "picture-uri" do
             type "string"
@@ -116,7 +116,7 @@ action :setup do
   #       end.run_action(:run)
       end
     else
-      Chef::Log.info("This resource are not support into your OS")
+      Chef::Log.info("This resource is not support into your OS")
     end
     # save current job ids (new_resource.job_ids) as "ok"
     job_ids = new_resource.job_ids

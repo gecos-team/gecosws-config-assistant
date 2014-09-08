@@ -14,7 +14,7 @@ action :setup do
     os = `lsb_release -d`.split(":")[1].chomp().lstrip()
     if new_resource.support_os.include?(os)
       if new_resource.package_list.any? 
-        Chef::Log.info("Instalando lista de paquetes")
+        Chef::Log.info("Installing package list")
         new_resource.package_list.each do |pkg|
           package pkg do
             action :nothing
@@ -23,7 +23,7 @@ action :setup do
       end
 
       if new_resource.pkgs_to_remove.any?
-        Chef::Log.info("Desinstalando paquetes no asignados al nodo")
+        Chef::Log.info("Uninstalling packages not assigned to node")
         new_resource.pkgs_to_remove.each do |pkg|
           package pkg do
             action :nothing
@@ -31,7 +31,7 @@ action :setup do
         end
       end
     else
-      Chef::Log.info("This resource are not support into your OS")
+      Chef::Log.info("This resource is not support into your OS")
     end
 
     # save current job ids (new_resource.job_ids) as "ok"

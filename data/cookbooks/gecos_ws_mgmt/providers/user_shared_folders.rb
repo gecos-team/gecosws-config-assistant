@@ -39,7 +39,7 @@ action :setup do
             if bookmark.uri.match(pattern)
               line_to_add = "#{bookmark.uri} #{bookmark.uri}"
               
-              Chef::Log.info("Agregando accesos directos a carpetas compartidas")
+              Chef::Log.info("Adding shortcuts to shared folders")
               ::File.open(gtkbook, 'a') do |file|
                 file.puts line_to_add
               end
@@ -49,7 +49,7 @@ action :setup do
         end
      end
     else
-      Chef::Log.info("This resource are not support into your OS")
+      Chef::Log.info("This resource is not support into your OS")
     end
 
     # save current job ids (new_resource.job_ids) as "ok"

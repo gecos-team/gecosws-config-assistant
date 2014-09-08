@@ -27,7 +27,7 @@ action :setup do
       
  
       printers_list.each do |printer|
-        Chef::Log.info("Instalando impresora #{printer.name}")
+        Chef::Log.info("Installing printer #{printer.name}")
   
         name = printer.name
         make = printer.manufacturer

@@ -20,4 +20,6 @@ attribute :gcc_username, :kind_of => String
 attribute :gcc_pwd_user, :kind_of => String
 attribute :gcc_selected_ou, :kind_of => String
 attribute :job_ids, :kind_of => Array
+attribute :support_os, :kind_of => Array
+
 

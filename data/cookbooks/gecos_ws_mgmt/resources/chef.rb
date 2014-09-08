@@ -19,4 +19,6 @@ attribute :chef_node_name, :kind_of => String
 attribute :chef_admin_name, :kind_of => String
 attribute :chef_validation_pem, :kind_of => String
 attribute :job_ids, :kind_of => Array
+attribute :support_os, :kind_of => Array
+
 

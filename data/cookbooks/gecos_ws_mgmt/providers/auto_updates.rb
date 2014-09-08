@@ -88,7 +88,7 @@ action :setup do
         end.run_action(:delete) 
       end
     else
-      Chef::Log.info("This resource are not support into your OS")
+      Chef::Log.info("This resource is not support into your OS")
     end
 
 ## TODO: add script to init.d, both in start fucntion, on login in rc2 and on logout in rc6

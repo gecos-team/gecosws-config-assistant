@@ -27,7 +27,7 @@ action :setup do
 
       if new_resource.enabled
         domain = new_resource.domain
-        Chef::Log.info("SSSD activado")
+        Chef::Log.info("SSSD enabled")
         if domain.type == "ad"
           if ! (new_resource.methods.include?('smb_url') and new_resource.methods.include?('krb5_url') and new_resource.methods.include?('sssd_url'))
             %w(workgroup name).each do |attrib|
@@ -46,7 +46,7 @@ action :setup do
         
         if domain.type == "ad"
           if ! (domain.key?('ad_user') and domain.key?('ad_passwd'))
-            Chef::Log.info("SSSD_setup: no es posible registrar el equipo por falta de credenciales de administrador")
+            Chef::Log.info("SSSD_setup: Error to register computer. Administrator credentials incorrects")
             netjoin_command = "net ads info"
           else
             netjoin_command = "net ads join -U #{domain.ad_user}%#{domain.ad_passwd}"
@@ -105,7 +105,7 @@ action :setup do
           end
         end
 
-        Chef::Log.info("SSSD_setup: Configurando el dominio #{domain.name}")
+        Chef::Log.info("SSSD_setup: Configuring the domain #{domain.name}")
 
         # Have authconfig enable SSSD in the pam files
         execute 'pam-auth-update' do
@@ -132,7 +132,7 @@ action :setup do
           variables ({:auth_type => domain.type})
         end
       else
-        Chef::Log.info("SSSD desactivado")
+        Chef::Log.info("SSSD disabled")
         domain = new_resource.domain
         if not domain.nil?
           if domain.type == "ad"
@@ -181,7 +181,7 @@ action :setup do
         end
       end
     else
-      Chef::Log.info("This resource are not support into your OS")
+      Chef::Log.info("This resource is not support into your OS")
     end
 
     # save current job ids (new_resource.job_ids) as "ok"
