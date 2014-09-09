@@ -1,3 +1,10 @@
+gecosws-config-assistant (0.6.9-0gecos1) trusty; urgency=low
+
+  * Added gem repo
+  * Case insensitive in searchs
+
+ -- David Amian <damian@emergya.es>  Tue, 09 Sep 2014 14:29:09 +0200
+
 gecosws-config-assistant (0.6.8-0gecos1) trusty; urgency=low
 
   * Updated cookbooks
