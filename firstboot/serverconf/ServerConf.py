@@ -76,6 +76,7 @@ class ServerConf():
     def __init__(self):
         self._data = {}
         self.VERSION = '0.2.0'
+        self._data['gem_repo'] = 'http://rubygems.org'
         self._data['version'] = self.VERSION
         self._data['organization'] = ''
         self._chef_conf = ChefConf()
@@ -96,6 +97,12 @@ class ServerConf():
             self.set_organization(conf['organization'])
         except KeyError as e:
             print msg % ('organization',)
+
+        try:
+            self.set_gem_repo(conf['gem_repo'])
+        except KeyError as e:
+            print msg % ('gem_repo',)
+
         try:
             self._chef_conf.load_data(conf['chef'])
         except KeyError as e:
@@ -120,6 +127,14 @@ class ServerConf():
             and self._ntp_conf.validate() \
             and self._gcc_conf.validate()
         return valid
+
+
+    def set_gem_repo(self, repo):
+        self._data['gem_repo'] = repo
+        return self
+
+    def get_gem_repo(self):
+        return self._data['gem_repo'].encode('utf-8')
 
     def get_version(self):
         return self._data['version'].encode('utf-8')

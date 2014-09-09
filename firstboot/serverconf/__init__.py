@@ -506,7 +506,7 @@ def unlink_from_gcc(password):
     if fp:
         fp.write(json.dumps(json_solo,indent=2))
         fp.close()
-    run_chef_solo(filepath, _("Restoring GCC configuration"), True)
+    run_chef_solo(filepath, _("Unlink from GCC"), True)
     return []
 
 def unlink_from_chef():
@@ -531,7 +531,7 @@ def unlink_from_chef():
     if fp:
         fp.write(json.dumps(json_solo,indent=2))
         fp.close()
-    run_chef_solo(filepath, _("Restoring Server configuration"), True)
+    run_chef_solo(filepath, _("Unlink from Server"), True)
     return []
 #    try:
 #
@@ -768,7 +768,7 @@ def search_ws(widget, combo, hostnames):
     if len(text) >= 3:
         hostnames_search = []
         for base_ws  in hostnames:
-            if text in base_ws['name']:
+            if text.lower() in base_ws['name'].lower():
                 hostnames_search.append(base_ws)
 
     ws_store = Gtk.ListStore(str, str)
@@ -785,7 +785,7 @@ def search_ou(widget, combo, ous):
     if len(text) >= 3:
         ous_search = []
         for base_ou  in ous:
-            if text in base_ou[1]:
+            if text.lower() in base_ou[1].lower():
                 ous_search.append(base_ou)
 
     ou_store = Gtk.ListStore(str, str)

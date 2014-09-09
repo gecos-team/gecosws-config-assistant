@@ -29,6 +29,7 @@ from gi.repository import Gtk
 from firstboot_lib import firstbootconfig
 from gi.repository import Gtk
 import gettext
+from firstboot import serverconf
 from firstboot_lib.firstbootconfig import get_prefix
 from gettext import gettext as _
 gettext.textdomain('gecosws-config-assistant')
@@ -43,13 +44,25 @@ class ChefSolo(threading.Thread):
 		return self.exit_code
 
     def run(self):
+        server_conf = serverconf.get_server_conf(None)
+        gem_repo = server_conf.get_gem_repo()
         envs = os.environ
         envs['LANG'] = 'es_ES.UTF-8'
+        log_chef_solo = open('/tmp/chef-solo', "w", 1)
+        log_chef_solo_err = open('/tmp/chef-solo-err', "w", 1)
+
+        cmd = '"/opt/chef/embedded/bin/gem" "source" "-c"'
+        cmd_split = shlex.split(cmd)
+        process = subprocess.Popen(cmd_split, stdout=log_chef_solo, stderr=log_chef_solo_err, env=envs)
+
+        cmd = '"/opt/chef/embedded/bin/gem" "source" "-a" "%s"' % (gem_repo)
+        cmd_split = shlex.split(cmd)
+        process = subprocess.Popen(cmd_split, stdout=log_chef_solo, stderr=log_chef_solo_err, env=envs)
+        
+
         solo_rb = get_prefix() + '/share/gecosws-config-assistant/solo.rb'
         cmd = '"chef-solo" "-c" "%s" "-j" "%s"' % (solo_rb, self.filepath)
         cmd_split = shlex.split(cmd)
-        log_chef_solo = open('/tmp/chef-solo', "w", 1)
-        log_chef_solo_err = open('/tmp/chef-solo-err', "w", 1)
         process = subprocess.Popen(cmd_split, stdout=log_chef_solo, stderr=log_chef_solo_err, env=envs)
         self.exit_code = os.waitpid(process.pid, 0)
         output = process.communicate()[0]
