@@ -29,7 +29,7 @@ from gi.repository import Gtk
 from firstboot_lib import firstbootconfig
 from gi.repository import Gtk
 import gettext
-from firstboot import serverconf
+import firstboot.serverconf as serverconf
 from firstboot_lib.firstbootconfig import get_prefix
 from gettext import gettext as _
 gettext.textdomain('gecosws-config-assistant')

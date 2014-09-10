@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.6.9-1gecos1) trusty; urgency=low
+
+  * Fix imports
+
+ -- David Amian <damian@emergya.es>  Wed, 10 Sep 2014 16:14:25 +0200
+
 gecosws-config-assistant (0.6.9-0gecos1) trusty; urgency=low
 
   * Added gem repo
