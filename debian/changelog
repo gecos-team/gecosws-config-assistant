@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.7.3-0gecos1) trusty; urgency=low
+
+  * Modify the check of chef and gcc into local recipe 
+
+ -- David Amian <damian@emergya.es>  Fri, 12 Sep 2014 13:46:48 +0200
+
 gecosws-config-assistant (0.7.2-0gecos1) trusty; urgency=low
 
   * Removed old soruces from gem 

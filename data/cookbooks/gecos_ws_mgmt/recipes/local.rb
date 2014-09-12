@@ -21,7 +21,7 @@ if not node[:gecos_ws_mgmt][:misc_mgmt][:tz_date_res].nil?
   end
 end
 
-if not node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res].nil?
+if not node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_server_url].nil?
   gecos_ws_mgmt_chef node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_server_url] do
     chef_link node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_link]
     chef_validation_pem node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_validation_pem]
@@ -34,7 +34,7 @@ if not node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res].nil?
   end
 end
 
-if not node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res].nil?
+if not node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:uri_gcc].nil?
   gecos_ws_mgmt_gcc node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:uri_gcc] do
     gcc_link node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:gcc_link]
     gcc_nodename node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:gcc_nodename]
