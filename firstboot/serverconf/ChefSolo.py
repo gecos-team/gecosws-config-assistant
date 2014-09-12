@@ -51,14 +51,27 @@ class ChefSolo(threading.Thread):
         log_chef_solo = open('/tmp/chef-solo', "w", 1)
         log_chef_solo_err = open('/tmp/chef-solo-err', "w", 1)
 
-        cmd = '"/opt/chef/embedded/bin/gem" "source" "-c"'
+        cmd = '"/opt/chef/embedded/bin/gem" "source" "--list"'
         cmd_split = shlex.split(cmd)
-        process = subprocess.Popen(cmd_split, stdout=log_chef_solo, stderr=log_chef_solo_err, env=envs)
+        process = subprocess.Popen(cmd_split, stdout=subprocess.PIPE, env=envs)
+        os.waitpid(process.pid, 0)
+        output = process.communicate()[0]
+
+        sources = output.split('\n')
+        sources.pop(0)
+        sources.pop(0)
+        sources.pop(len(sources)-1)
+
+        for source in sources:
+            cmd = '"/opt/chef/embedded/bin/gem" "source" "-r" "%s"' % (source)
+            cmd_split = shlex.split(cmd)
+            process = subprocess.Popen(cmd_split, stdout=log_chef_solo, stderr=log_chef_solo_err, env=envs)
+            os.waitpid(process.pid, 0)
 
         cmd = '"/opt/chef/embedded/bin/gem" "source" "-a" "%s"' % (gem_repo)
         cmd_split = shlex.split(cmd)
         process = subprocess.Popen(cmd_split, stdout=log_chef_solo, stderr=log_chef_solo_err, env=envs)
-        
+        os.waitpid(process.pid, 0)        
 
         solo_rb = get_prefix() + '/share/gecosws-config-assistant/solo.rb'
         cmd = '"chef-solo" "-c" "%s" "-j" "%s"' % (solo_rb, self.filepath)

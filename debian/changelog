@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.7.2-0gecos1) trusty; urgency=low
+
+  * Removed old soruces from gem 
+
+ -- David Amian <damian@emergya.es>  Fri, 12 Sep 2014 13:31:05 +0200
+
 gecosws-config-assistant (0.7.1-0gecos1) trusty; urgency=low
 
   * Added default attr support os for gcc and chef provider 
