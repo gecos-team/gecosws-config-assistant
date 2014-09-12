@@ -23,20 +23,20 @@ __license__ = "GPL-2"
 import os
 import subprocess
 import shlex
+import sys
 import threading
-
 from gi.repository import Gtk
 from firstboot_lib import firstbootconfig
 from gi.repository import Gtk
 import gettext
-import firstboot.serverconf as serverconf
 from firstboot_lib.firstbootconfig import get_prefix
 from gettext import gettext as _
 gettext.textdomain('gecosws-config-assistant')
 
 class ChefSolo(threading.Thread):
-    def __init__(self, filepath):
+    def __init__(self, filepath, server_conf):
         self.filepath = filepath
+        self.server_conf = server_conf
         self.exit_code = 0
         threading.Thread.__init__(self)
 
@@ -44,8 +44,8 @@ class ChefSolo(threading.Thread):
 		return self.exit_code
 
     def run(self):
-        server_conf = serverconf.get_server_conf(None)
-        gem_repo = server_conf.get_gem_repo()
+        
+        gem_repo = self.server_conf.get_gem_repo()
         envs = os.environ
         envs['LANG'] = 'es_ES.UTF-8'
         log_chef_solo = open('/tmp/chef-solo', "w", 1)
