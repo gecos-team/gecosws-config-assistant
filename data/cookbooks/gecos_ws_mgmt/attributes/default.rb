@@ -1,4 +1,7 @@
 
+default[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:support_os] = ["GECOS V2"]
+default[:gecos_ws_mgmt][:misc_mgmt][:gcc_conf_res][:support_os] = ["GECOS V2"]
+
 default[:gecos_ws_mgmt][:network_mgmt][:network_res][:job_ids] = []
 default[:gecos_ws_mgmt][:network_mgmt][:network_res][:connections] = []
 default[:gecos_ws_mgmt][:network_mgmt][:network_res][:support_os] = ["GECOS V2"]
