@@ -42,10 +42,12 @@ action :setup do
               response = resource.post :node_id => new_resource.gcc_nodename,:ou_id=>new_resource.gcc_selected_ou, :content_type => :json, :accept => :json
               if not response.code.between?(200,299)
                 Chef::Log.error('The GCC URI not response')  
+                raise Exception, "The GCC URI not response"
               else
                 response_json = JSON.load(response.to_str)
-                if not response_json['ok']
+                if not response_json["ok"]
                   Chef::Log.error(response_json['message'])
+                  raise Exception, response_json['message']
                 end
               end
             rescue Exception => e

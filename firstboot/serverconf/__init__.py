@@ -611,6 +611,46 @@ def entry_ou(title, text):
     dialog.destroy()
     return retval
 
+
+def search_ou_by_text(uri_gcc, username_gcc, password_gcc, text):
+    #Implements code to call API rest to get node list
+    global CREDENTIAL_CACHED
+    global ACTUAL_USER
+    uri_gcc = uri_gcc + '/ou/gca/?q=' + text
+    url_parsed = urlparse.urlparse(uri_gcc)
+    user = username_gcc
+    password = password_gcc
+    hostname = url_parsed.hostname
+    headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+    content = '' 
+    validate = False
+    if hostname in CREDENTIAL_CACHED:
+        credentials = CREDENTIAL_CACHED[hostname]
+        for cred in credentials:
+            user, password = cred[0], cred[1]
+            r = requests.get(uri_gcc, auth=(user,password), headers=headers)
+            if r.ok:
+                validate = True
+
+    if not validate:
+
+        r = requests.get(uri_gcc, auth=(user,password), headers=headers)
+        if r.ok:
+            if not CREDENTIAL_CACHED.has_key(hostname):
+                CREDENTIAL_CACHED[hostname] = []
+            credentials = CREDENTIAL_CACHED[hostname]
+            credentials.append([user, password])
+            ACTUAL_USER = (user, password)
+        else:
+            raise ServerConfException(_('Authentication is failed.'))
+    if hasattr(r,'text'):
+        content = r.text
+    else:  
+        content = r.content
+
+    arr_ou = json.loads(content)['ous']
+    return arr_ou
+
 def get_hostnames(uri_gcc, username_gcc, password_gcc):
     #Implements code to call API rest to get node list
     global CREDENTIAL_CACHED
@@ -647,7 +687,7 @@ def get_hostnames(uri_gcc, username_gcc, password_gcc):
     else:  
         content = r.content
 
-    arr_hostname = json.loads(content)
+    arr_hostname = json.loads(content)['computers']
 
     #Testing lines
     # arr_hostname = []
@@ -708,7 +748,7 @@ def select_node(title, text, hostnames):
     dialog.destroy()
     return retval
 
-def select_ou(title, text, ous):
+def select_ou(title, text, uri_gcc, gcc_username, gcc_pwd_user):#, ous):
     dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,
                                    Gtk.ButtonsType.OK_CANCEL)
     dialog.set_title(title)
@@ -727,9 +767,7 @@ def select_ou(title, text, ous):
     lblou.set_visible(True)
     hboxou.pack_start(lblou, False, False, 10)
     ou_store = Gtk.ListStore(str, str)
-    for ou in ous:
-        ou_store.append([ou[1], ou[0]])
-
+    
 
     ou_combo = Gtk.ComboBox.new_with_model(ou_store)
     renderer_text = Gtk.CellRendererText()
@@ -743,7 +781,7 @@ def select_ou(title, text, ous):
     hbosearch.show()
     dialog.get_message_area().pack_start(hbosearch, False, False, False)
     
-    search.connect('changed', search_ou, ou_combo, ous)
+    search.connect('changed', search_ou, ou_combo, uri_gcc, gcc_username, gcc_pwd_user)#, ous)
 
 
     ou_combo.show()
@@ -752,14 +790,14 @@ def select_ou(title, text, ous):
 
     dialog.get_message_area().pack_start(hboxou, False, False, False)
     result = dialog.run()
-    retval = None
+    retval = ''
     if result == Gtk.ResponseType.OK:
         model = ou_combo.get_model()
-        retval = ous[0][0]
+        #retval = ous[0][0]
         if not ou_combo.get_active() == -1:
             retval = model[ou_combo.get_active()][1]
-    else:
-        retval = ous[0][0]
+    #else:
+    #    retval = ous[0][0]
     dialog.destroy()
     return retval
 
@@ -780,14 +818,14 @@ def search_ws(widget, combo, hostnames):
     combo.show_all()
 
 
-def search_ou(widget, combo, ous):
-    ous_search = ous
+def search_ou(widget, combo, uri_gcc, gcc_username, gcc_pwd_user):#, ous):
+    ous_search = []
     text = widget.get_text()
     if len(text) >= 3:
-        ous_search = []
-        for base_ou  in ous:
-            if text.lower() in base_ou[1].lower():
-                ous_search.append(base_ou)
+        ous_search = search_ou_by_text(uri_gcc, gcc_username, gcc_pwd_user, text)
+        #for base_ou  in ous:
+        #    if text.lower() in base_ou[1].lower():
+        #        ous_search.append(base_ou)
 
     ou_store = Gtk.ListStore(str, str)
     for ou in ous_search:
