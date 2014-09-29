@@ -778,11 +778,17 @@ def select_ou(title, text, uri_gcc, gcc_username, gcc_pwd_user):#, ous):
     search.set_activates_default(True)
     search.show()
     hbosearch.pack_start(search, False, False, False)
+    #hbosearch.show()
+    
+
+    search_btn = Gtk.Button()
+    search_btn.set_label(_('Search'))
+    search_btn.show()
+    hbosearch.pack_start(search_btn, False, False, False)
     hbosearch.show()
     dialog.get_message_area().pack_start(hbosearch, False, False, False)
-    
-    search.connect('changed', search_ou, ou_combo, uri_gcc, gcc_username, gcc_pwd_user)#, ous)
-
+   
+    search_btn.connect('clicked', search_ou, search, ou_combo, uri_gcc, gcc_username, gcc_pwd_user)#, ous)
 
     ou_combo.show()
     hboxou.pack_end(ou_combo, False, False, False)
@@ -818,11 +824,11 @@ def search_ws(widget, combo, hostnames):
     combo.show_all()
 
 
-def search_ou(widget, combo, uri_gcc, gcc_username, gcc_pwd_user):#, ous):
+def search_ou(widget,search, combo, uri_gcc, gcc_username, gcc_pwd_user):#, ous):
     ous_search = []
-    text = widget.get_text()
-    if len(text) >= 3:
-        ous_search = search_ou_by_text(uri_gcc, gcc_username, gcc_pwd_user, text)
+    text = search.get_text()
+    #if len(text) >= 3:
+    ous_search = search_ou_by_text(uri_gcc, gcc_username, gcc_pwd_user, text)
         #for base_ou  in ous:
         #    if text.lower() in base_ou[1].lower():
         #        ous_search.append(base_ou)
