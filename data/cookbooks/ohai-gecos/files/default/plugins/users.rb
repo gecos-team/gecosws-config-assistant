@@ -28,32 +28,5 @@ homedirs.each do |homedir|
   end
 end
 
-if not users == ohai_gecos['users']
-  users_report = users_send.join(',')
-  gcc_control = {}
-  File.open('/etc/gcc.control', "r") do |f|
-    gcc_control = JSON.load(f)
-  end
-  begin
-    resource = RestClient::Resource.new(gcc_control['uri_gcc'] + '/check/user/')
-    response = resource.put :node_id => gcc_control['gcc_nodename'], :gcc_username => gcc_control['gcc_username']
-    if not response.code.between?(200,299)
-      Ohai::Log.error('The GCC URI not response')
-    else
-      response_json = JSON.load(response.to_str)
-      if not response_json['ok']
-        if response_json.has_key?("message")
-          Ohai::Log.error(response_json['message'])
-        end
-        if response_json.has_key?("error")
-          Ohai::Log.error(response_json['error'])
-        end
-      end
-    end
-  rescue Exception => e
-    Ohai::Log.error(e.message)
-  end
-end
-
 ohai_gecos['users'] = users
 
