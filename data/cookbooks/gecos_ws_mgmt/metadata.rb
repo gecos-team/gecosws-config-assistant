@@ -3,7 +3,7 @@ maintainer        "Roberto C. Morano"
 maintainer_email  "rcmorano@emergya.com"
 license           "Apache 2.0"
 description       "Cookbook for GECOS workstations administration"
-version           "0.2.9"
+version           "0.3.2"
 
 depends "apt"
 depends "chef-client"
@@ -99,13 +99,13 @@ sssd_js = {
         type: "string"
       }
     }, 
-    support_os: support_os_js,
+    support_os: support_os_js.clone,
     updated_by: updated_js
   }
 }
 
 user_mount_js = {
-  title: "User mount extern units",
+  title: "User mount external units",
   type: "object",
   required: ["users"],
   properties: {
@@ -122,7 +122,7 @@ user_mount_js = {
         }
       }
     },
-    support_os: support_os_js,
+    support_os: support_os_js.clone,
     job_ids: {
       type: "array",
       minItems: 0,
@@ -152,8 +152,8 @@ screensaver_js = {
             },
             idle_delay: {
               type: "string",
-              title: "Idle Delay",
-              description: "Seconds"
+              #description: "Seconds",
+              title: "Idle Delay"              
             },
             lock_enabled: {
               type: "boolean",
@@ -161,15 +161,15 @@ screensaver_js = {
             },
             lock_delay: {
               type: "string",
-              title: "Lock Delay",
-              description: "Seconds"
+              #description: "Seconds",
+              title: "Lock Delay"              
             }, 
             updated_by: updated_js
           }
         }
       }
     },
-    support_os: support_os_js,
+    support_os: support_os_js.clone,
     job_ids: {
       type: "array",
       minItems: 0,
@@ -199,7 +199,7 @@ folder_sharing_js = {
         }
       }
     },
-    support_os: support_os_js,
+    support_os: support_os_js.clone,
     job_ids: {
         type: "array",
         minItems: 0,
@@ -237,7 +237,7 @@ desktop_control_js = {
         }
       }
     },
-    support_os: support_os_js,
+    support_os: support_os_js.clone,
     job_ids: {
         type: "array",
         minItems: 0,
@@ -285,7 +285,7 @@ desktop_menu_js = {
         }
       }
     },
-    support_os: support_os_js,
+    support_os: support_os_js.clone,
     job_ids: {
         type: "array",
         minItems: 0,
@@ -323,7 +323,7 @@ user_launchers_js = {
         }
       }
     },
-    support_os: support_os_js,
+    support_os: support_os_js.clone,
     job_ids: {
         type: "array",
         minItems: 0,
@@ -370,7 +370,7 @@ desktop_background_js = {
         }
       }
     },
-    support_os: support_os_js,
+    support_os: support_os_js.clone,
     job_ids: {
         type: "array",
         minItems: 0,
@@ -405,7 +405,7 @@ file_browser_js = {
         }
       }
     },
-    support_os: support_os_js,
+    support_os: support_os_js.clone,
     job_ids: {
         type: "array",
         minItems: 0,
@@ -469,12 +469,21 @@ web_browser_js = {
               uniqueItems: true,
               items: {
                 type: "object",
-                required: ["key", "value"],
+                required: ["key"],
                 properties: {
                   key: {type: "string", title: "Key"},
-                  value_str: {type: "string", title: "Value", description: "Only if Value Type is string"},
-                  value_num: {type: "number", title: "Value", description: "Only if Value Type is number"},
-                  value_bool: {type: "boolean", title: "Value", description: "Only if Value Type is boolean"},
+                  value_str: {type: "string",
+                              #description: "Only if Value Type is string",
+                              title: "Value"                              
+                              },
+                  value_num: {type: "number", 
+                              #description: "Only if Value Type is number",
+                              title: "Value"                              
+                              },
+                  value_bool: {type: "boolean", 
+                               #description: "Only if Value Type is boolean",
+                               title: "Value"                               
+                               },
                   value_type: {title: "Value type", type: "string", enum: ["string", "number", "boolean"]}
 
                 }
@@ -499,7 +508,7 @@ web_browser_js = {
         }
       }
     },
-    support_os: support_os_js,
+    support_os: support_os_js.clone,
     job_ids: {
         type: "array",
         minItems: 0,
@@ -542,7 +551,7 @@ user_shared_folders_js = {
         }
       }
     },
-    support_os: support_os_js,
+    support_os: support_os_js.clone,
     job_ids: {
         type: "array",
         minItems: 0,
@@ -557,12 +566,83 @@ user_shared_folders_js = {
 app_config_js = {
   title: "Applications Config",
   type: "object",
-  required: ["adobe_config", "java_config", "firefox_config", "thunderbird_config"],
+ # required: ["citrix_config", "java_config", "firefox_config", "thunderbird_config", "loffice_config"],
+  required: ["java_config"],
   properties: {
-    adobe_config: {title: "Adobe Configuration", type: "object"},
-    java_config: {title: "Java Configuration", type: "object"},
-    firefox_config: {title: "Firefox Configuration", type: "object"},
+    citrix_config: {title: "Citrix Configuration", type: "object"},
+    java_config: {
+      title: "Java Configuration",
+      type: "object",
+      properties: {
+        version: {
+          title: "Java Version",
+          type: "string"
+        },
+        plug_version: {
+          title: "Plugins Java version",
+          type: "string"
+        },
+        sec: {
+          title: "Security Level",
+          type: "string",
+          enum: ["MEDIUM", "HIGH", "VERY_HIGH"],
+          default: "MEDIUM"
+        },
+        crl: {
+          title: "Use Certificate Revocation List",
+          type: "boolean",
+          enum: [true,false],
+          default: false
+        },
+        ocsp: {
+          title: "Enable or disable Online Certificate Status Protocol",
+          type: "boolean",
+          enum: [true,false],
+          default: false
+        },
+        warn_cert: {
+          title: "Show host-mismatch warning for certificate?",
+          type: "boolean",
+          enum: [true,false],
+          default: false
+        },
+        mix_code: {
+          title: "Security verification of mix code",
+          type: "string",
+          enum: ["ENABLE", "HIDE_RUN", "HIDE_CANCEL", "DISABLED"],
+          default: "ENABLE"
+        },
+        array_attrs: {
+          type: "array",
+          minItems: 0,
+          title: "Another configuration properties",
+          uniqueItems: true,
+          items:{
+            type: "object",
+            required: ["key", "value"],
+            properties: {
+              key: {type: "string", title: "Key"},
+              value: {type: "string", title: "Value"}
+            }
+          }
+        }
+
+      }
+    },
+    firefox_config: {
+      title: "Firefox Configuration",
+      type: "object",
+      properties: {
+        app_update:{
+          title: "Enable/Disable auto update",
+          type: "boolean",
+          enum: [true,false],
+          default: false
+        }
+      }
+    },
     thunderbird_config: {title: "Thuderbird Configuration", type: "object"},
+    loffice_config: {title: "Libre Office Configuration", type: "object"},
     job_ids: {
         type: "array",
         minItems: 0,
@@ -571,7 +651,7 @@ app_config_js = {
           type: "string"
         }
     }, 
-    support_os: support_os_js,
+    support_os: support_os_js.clone,
     updated_by: updated_js
   }
 }
@@ -628,7 +708,7 @@ auto_updates_js = {
         }
       }
     },
-    support_os: support_os_js,
+    support_os: support_os_js.clone,
     job_ids: {
         type: "array",
         minItems: 0,
@@ -666,7 +746,7 @@ user_apps_autostart_js = {
         }
       }
     },
-    support_os: support_os_js,
+    support_os: support_os_js.clone,
     job_ids: {
         type: "array",
         minItems: 0,
@@ -687,7 +767,7 @@ tz_date_js = {
       type: "string",
       title: "Server"
     },
-    support_os: support_os_js,
+    support_os: support_os_js.clone,
     job_ids: {
         type: "array",
         minItems: 0,
@@ -724,7 +804,7 @@ scripts_launch_js = {
         type: "string",
         }
     },
-    support_os: support_os_js,
+    support_os: support_os_js.clone,
     job_ids: {
       type: "array",
       minItems: 0,
@@ -751,69 +831,98 @@ network_resource_js = {
         type: "object",
         required: ["name", "mac_address", "use_dhcp", "net_type"],
         properties: {
-          name: {type: "string", title: "Name"},
-          mac_address: {pattern: "^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$", type: "string", title: "MAC address"},
-          use_dhcp: {type: "boolean", enum: [true,false], default:true, title: "DHCP"},
-          addresses: {
-            type: "array",
-            uniqueItems: true,
-            minItems: 0,
-            description: "With DHCP disable",
-            title: "IP addresses",
-            items: {
-              type: "object",
-              #required: [ "ip_addr","netmask"],
-              properties:{
-                ip_addr: {
+          fixed_con: {
+           # title: "DHCP Disabled properties",
+           # description: "Only if DHCP is disabled",
+            type: "object",
+            properties:{
+              addresses: {
+                type: "array",
+                uniqueItems: true,
+                minItems: 0,
+            #    description: "With DHCP disable",
+                title: "IP addresses",
+                items: {
+                  type: "object",
+                  #required: [ "ip_addr","netmask"],
+                  properties:{
+                    ip_addr: {
+                      type: "string",
+                      title: "IP address",
+                      #description: "ipv4 format",
+                      format: "ipv4"
+                    },
+                    netmask: {
+                      type: "string",
+                      title: "Netmask",
+                      #description: "ipv4 format",
+                      format: "ipv4"
+                    }
+                  }
+                } 
+              },
+              gateway: {
+                type: "string",
+                title: "Gateway",
+                #description: "ipv4 format",
+                format: "ipv4"
+              },
+              dns_servers: {
+                type: "array",
+                title: "DNS Servers",
+                #description: "With DHCP disable",
+                minItems: 0,
+                uniqueItems: true,
+                items: {
                   type: "string",
-                  title: "IP address",
-                  description: "ipv4 format",
-                  format: "ipv4"
-                },
-                netmask: {
-                  type: "string",
-                  title: "Netmask",
-                  description: "ipv4 format",
+                  title: "DNS",
+                  #description: "ipv4 format",
                   format: "ipv4"
                 }
               }
             }
           },
-          gateway: {
-            type: "string",
-            title: "Gateway",
-            description: "ipv4 format",
-            format: "ipv4"
-          },
-          dns_servers: {
-            type: "array",
-            title: "DNS Servers",
-            description: "With DHCP disable",
-            minItems: 0,
-            uniqueItems: true,
-            items: {
-              type: "string",
-              title: "DNS",
-              description: "ipv4 format",
-              format: "ipv4"
-            }
-          },
+          name: {type: "string", title: "Name"},
+          mac_address: {pattern: "^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$", type: "string", title: "MAC address"},
+          use_dhcp: {type: "boolean", enum: [true,false], default:true, title: "DHCP"},
           net_type:{
             enum: ["wired", "wireless"], title: "Connection type", type: "string"
           },
-          essid: { type: "string", title: "ESSID" },
-          security: { 
-            type: "object", 
-            required: ["sec_type"],
+          wireless_conn:{
+            type:"object",
+            #title: "Wireless Configuration",
             properties:{
-              sec_type: { enum: [ "none", "WEP", "Leap", "WPA_PSK"], default:"none", title: "Security type", type:"string"},
-              enc_pass: { type: "string", title: "Password", description: "WEP, WPA_PSK security", },
-              auth_type: { enum: ["OpenSystem", "SharedKey"], title: "Authentication type", description: "WEP security", type: "string", default: "OpenSystem"},
-              auth_user: { type: "string", title: "Username", description: "Leap security" },
-              auth_password: { type: "string", title: "Password", description: "Leap security" }
+              essid: { type: "string", title: "ESSID" },
+              security: { 
+                type: "object", 
+                title: "Security Configuration",
+                required: ["sec_type"],
+                properties:{
+                  sec_type: { enum: [ "none", "WEP", "Leap", "WPA_PSK"], default:"none", title: "Security type", type:"string"},
+                  enc_pass: { type: "string", 
+                              #description: "WEP, WPA_PSK security",
+                              title: "Password"                   
+                            },
+                  auth_type: { enum: ["OpenSystem", "SharedKey"], 
+                               title: "Authentication type",
+                               #description: "WEP security",
+                               type: "string", 
+                               default: "OpenSystem"},
+                  auth_user: { type: "string",
+                               #description: "Leap security",
+                               title: "Username"                                
+                               },
+                  auth_password: { type: "string",
+                                   #description: "Leap security",
+                                   title: "Password"
+                                 }
 
+                }
+              }
             }
+
           }
+          
 
         }
       }
@@ -826,7 +935,7 @@ network_resource_js = {
         type: "string"
       }
     }, 
-    support_os: support_os_js,
+    support_os: support_os_js.clone,
     updated_by: updated_js
   }
 }
@@ -860,7 +969,7 @@ software_sources_js = {
         type: "string"
       }
     }, 
-    support_os: support_os_js,
+    support_os: support_os_js.clone,
     updated_by: updated_js
    }
 }
@@ -893,7 +1002,7 @@ package_js = {
         type: "string"
       }
     },
-    support_os: support_os_js,
+    support_os: support_os_js.clone,
     updated_by: updated_js
   }
 }
@@ -915,7 +1024,7 @@ printers_js = {
           manufacturer: { type: "string", title: "Manufacturer" },
           model: { type: "string" , title: "Model"},
           uri: { type: "string", title: "Uri" },
-          ppd_uri: { type: "string", title: "Uri PPD", default: "", pattern: "(\b?(https?|ftp|file)://)[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]"},
+          ppd_uri: { type: "string", title: "Uri PPD", default: "", pattern: "(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]"},
           ppd: { type: "string", title: "PPD Name"}
         }
       }
@@ -928,7 +1037,7 @@ printers_js = {
         type: "string"
       }
     }, 
-    support_os: support_os_js,
+    support_os: support_os_js.clone,
     updated_by: updated_js
   }
 }
@@ -961,7 +1070,7 @@ local_users_js = {
       type: "string"
     }
   }, 
-  support_os: support_os_js,
+  support_os: support_os_js.clone,
   updated_by: updated_js
  }
 }
@@ -991,7 +1100,7 @@ local_groups_js = {
       type: "string"
     }
   }, 
-  support_os: support_os_js,
+  support_os: support_os_js.clone,
   updated_by: updated_js
  }
 }
@@ -1037,7 +1146,7 @@ local_file_js = {
       type: "string"
     }
   }, 
-  support_os: support_os_js,
+  support_os: support_os_js.clone,
   updated_by: updated_js
  }
 }
@@ -1060,7 +1169,7 @@ local_admin_users_js = {
       type: "string"
     }
   }, 
-  support_os: support_os_js,
+  support_os: support_os_js.clone,
   updated_by: updated_js
  }
 }
@@ -1090,7 +1199,7 @@ folder_sync_js = {
       }
     }
   },
-  support_os: support_os_js,
+  support_os: support_os_js.clone,
   job_ids: {
     type: "array",
     minItems: 0,
@@ -1123,19 +1232,19 @@ power_conf_js = {
        properties: {
          hour: {
            title: "Hour",
-           description:"Time to shutdown",
+           #description:"Time to shutdown",
            type: "integer",
            maximum: 23
            },
          minute: {
            title: "Minute",
-           description:"Time to shutdown",                                                                                                                                                                                     
+           #description:"Time to shutdown",                                                                                                                                                                                     
            type: "integer",
            maximum: 59
          }
        }  
   },
-  support_os: support_os_js,
+  support_os: support_os_js.clone,
   job_ids: {
     type: "array",
     minItems: 0,
@@ -1171,7 +1280,7 @@ shutdown_options_js = {
         }
       }
     },
-    support_os: support_os_js,
+    support_os: support_os_js.clone,
     job_ids: {
       type: "array",
       minItems: 0,
@@ -1182,6 +1291,34 @@ shutdown_options_js = {
     }
  }
 }
+
+network_resource_js[:properties][:support_os][:default]=["GECOS V2"]
+tz_date_js[:properties][:support_os][:default]=["GECOS V2"]
+scripts_launch_js[:properties][:support_os][:default]=["GECOS V2"]
+local_users_js[:properties][:support_os][:default]=["GECOS V2"]
+local_file_js[:properties][:support_os][:default]=["GECOS V2"]
+auto_updates_js[:properties][:support_os][:default]=["GECOS V2"]
+local_groups_js[:properties][:support_os][:default]=["GECOS V2"]
+power_conf_js[:properties][:support_os][:default]=["GECOS V2"]
+local_admin_users_js[:properties][:support_os][:default]=["GECOS V2"]
+software_sources_js[:properties][:support_os][:default]=["GECOS V2"]
+package_js[:properties][:support_os][:default]=["GECOS V2","Ubuntu 14.04.1 LTS"]
+app_config_js[:properties][:support_os][:default]=["GECOS V2"]
+printers_js[:properties][:support_os][:default]=["GECOS V2"]
+user_shared_folders_js[:properties][:support_os][:default]=["GECOS V2"]
+web_browser_js[:properties][:support_os][:default]=["GECOS V2"]
+file_browser_js[:properties][:support_os][:default]=["GECOS V2"]
+user_launchers_js[:properties][:support_os][:default]=["GECOS V2"]
+desktop_background_js[:properties][:support_os][:default]=["GECOS V2"]
+desktop_menu_js[:properties][:support_os][:default]=[]
+desktop_control_js[:properties][:support_os][:default]=[]
+user_apps_autostart_js[:properties][:support_os][:default]=["GECOS V2"]
+folder_sharing_js[:properties][:support_os][:default]=["GECOS V2"]
+screensaver_js[:properties][:support_os][:default]=["GECOS V2"]
+folder_sync_js[:properties][:support_os][:default]=[]
+user_mount_js[:properties][:support_os][:default]=["GECOS V2"]
+shutdown_options_js[:properties][:support_os][:default]=["GECOS V2"]
+
 
 complete_js = {
   description: "GECOS workstation management LWRPs json-schema",

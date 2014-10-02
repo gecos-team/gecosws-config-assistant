@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.7.3-0gecos4) trusty; urgency=medium
+
+  * update cookbooks
+
+ -- David Amian <damian@emergya.es>  Thu, 02 Oct 2014 12:34:28 +0200
+
 gecosws-config-assistant (0.7.3-0gecos3) trusty; urgency=medium
 
   * Update cookbooks 

@@ -60,17 +60,17 @@ action :setup do
           Chef::Log.info("Setting alternative for java with value #{version}/jre/bin/java")
           set_cmd = shell_out("#{alternatives_cmd} --set java #{version}/jre/bin/java")
           unless set_cmd.exitstatus == 0
-            Chef::Application.fatal!(%Q[ set alternative failed ])
+            Chef::Log.error(%Q[ set alternative failed ])
           end
         end
 
         #Setting java plugin version
-        alternative_exists = shell_out("#{alternatives_cmd} --display mozilla-javaplugin.so| grep #{version}").exitstatus == 0
+        alternative_exists = shell_out("#{alternatives_cmd} --display mozilla-javaplugin.so| grep #{plug_version}").exitstatus == 0
         if alternative_exists
-          Chef::Log.info("Setting alternative for mozilla-javaplugin.so with value #{version}/jre/lib/i386/libnpjp2.so")
-          set_cmd = shell_out("#{alternatives_cmd} --set java #{version}/jre/lib/i386/libnpjp2.so")
+          Chef::Log.info("Setting alternative for mozilla-javaplugin.so with value #{plug_version}/jre/lib/i386/libnpjp2.so")
+          set_cmd = shell_out("#{alternatives_cmd} --set mozilla-javaplugin.so #{plug_version}/jre/lib/i386/libnpjp2.so")
           unless set_cmd.exitstatus == 0
-            Chef::Application.fatal!(%Q[ set alternative failed ])
+            Chef::Log.error(%Q[ set alternative failed ])
           end
         end
 
