@@ -3,7 +3,7 @@ maintainer        "Roberto C. Morano"
 maintainer_email  "rcmorano@emergya.com"
 license           "Apache 2.0"
 description       "Cookbook for GECOS workstations administration"
-version           "0.3.2"
+version           "0.3.3"
 
 depends "apt"
 depends "chef-client"
