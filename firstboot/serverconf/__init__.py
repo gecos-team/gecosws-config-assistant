@@ -75,7 +75,7 @@ def validate_credentials(url, err_chef_solo=False):
         credentials = CREDENTIAL_CACHED[hostname]
         for cred in credentials:
             user, password = cred[0], cred[1]
-            r = requests.get(url, auth=(user,password), headers=headers)
+            r = requests.get(url, auth=(user,password), headers=headers, verify=False)
             if r.ok:
                 validate = True
 
@@ -86,7 +86,7 @@ def validate_credentials(url, err_chef_solo=False):
         else:
             user, password = auth_dialog(_('Authentication Required'),
             _('You need to enter your credentials to access the requested resource.'))
-        r = requests.get(url, auth=(user,password), headers=headers)
+        r = requests.get(url, auth=(user,password), headers=headers, verify=False)
         if r.ok:
             if not CREDENTIAL_CACHED.has_key(hostname):
                 CREDENTIAL_CACHED[hostname] = []
@@ -628,13 +628,13 @@ def search_ou_by_text(uri_gcc, username_gcc, password_gcc, text):
         credentials = CREDENTIAL_CACHED[hostname]
         for cred in credentials:
             user, password = cred[0], cred[1]
-            r = requests.get(uri_gcc, auth=(user,password), headers=headers)
+            r = requests.get(uri_gcc, auth=(user,password), headers=headers, verify=False)
             if r.ok:
                 validate = True
 
     if not validate:
 
-        r = requests.get(uri_gcc, auth=(user,password), headers=headers)
+        r = requests.get(uri_gcc, auth=(user,password), headers=headers, verify=False)
         if r.ok:
             if not CREDENTIAL_CACHED.has_key(hostname):
                 CREDENTIAL_CACHED[hostname] = []
@@ -667,13 +667,13 @@ def get_hostnames(uri_gcc, username_gcc, password_gcc):
         credentials = CREDENTIAL_CACHED[hostname]
         for cred in credentials:
             user, password = cred[0], cred[1]
-            r = requests.get(uri_gcc, auth=(user,password), headers=headers)
+            r = requests.get(uri_gcc, auth=(user,password), headers=headers, verify=False)
             if r.ok:
                 validate = True
 
     if not validate:
 
-        r = requests.get(uri_gcc, auth=(user,password), headers=headers)
+        r = requests.get(uri_gcc, auth=(user,password), headers=headers, verify=False)
         if r.ok:
             if not CREDENTIAL_CACHED.has_key(hostname):
                 CREDENTIAL_CACHED[hostname] = []
