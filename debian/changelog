@@ -1,3 +1,17 @@
+gecosws-config-assistant (0.7.3-0gecos7) trusty; urgency=medium
+
+  * update cookbooks
+
+ -- Enrique Jimenez <ejimenez@emergya.es>  Thu, 22 Oct 2014 18:00:28 +0200
+
+
+gecosws-config-assistant (0.7.3-0gecos5) trusty; urgency=medium
+
+  * update cookbooks
+
+ -- Enrique Jimenez <ejimenez@emergya.es>  Thu, 22 Oct 2014 18:00:28 +0200
+
+
 gecosws-config-assistant (0.7.3-0gecos4) trusty; urgency=medium
 
   * update cookbooks
