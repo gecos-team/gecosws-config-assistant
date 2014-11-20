@@ -34,8 +34,9 @@ from gettext import gettext as _
 gettext.textdomain('gecosws-config-assistant')
 
 class ChefSolo(threading.Thread):
-    def __init__(self, filepath, server_conf):
+    def __init__(self, filepath, server_conf, unlink):
         self.filepath = filepath
+        self.unlink = unlink
         self.server_conf = server_conf
         self.exit_code = 0
         threading.Thread.__init__(self)
@@ -79,12 +80,12 @@ class ChefSolo(threading.Thread):
         process = subprocess.Popen(cmd_split, stdout=log_chef_solo, stderr=log_chef_solo_err, env=envs)
         self.exit_code = os.waitpid(process.pid, 0)
         output = process.communicate()[0]
-
-        cmd = '"chef-client-wrapper"'
-        cmd_split = shlex.split(cmd)
-        process = subprocess.Popen(cmd_split, env=envs)
-        self.exit_code = os.waitpid(process.pid, 0)
-        output = process.communicate()[0]
+        if not unlink:
+            cmd = '"chef-client-wrapper"'
+            cmd_split = shlex.split(cmd)
+            process = subprocess.Popen(cmd_split, env=envs)
+            self.exit_code = os.waitpid(process.pid, 0)
+            output = process.communicate()[0]
 	
 	
 	        

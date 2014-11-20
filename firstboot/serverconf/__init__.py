@@ -54,6 +54,7 @@ __GCC_FLAG__ = '/etc/gcc.control'
 __CHEF_FLAG__ = '/etc/chef.control'
 __LDAP_FLAG__ = '/etc/gca-sssd.control'
 __AD_FLAG__ = __LDAP_FLAG__
+__CHEF_CLIENT_PEM__ = '/etc/chef/client.pem'
 __CHEF_PEM__ = '/etc/chef/validation.pem'
 __AD_CONF_SCRIPT__ = 'firstboot-adconf.sh'
 
@@ -364,7 +365,7 @@ def destroy_pgbar(widget, response, dialog, thread):
 def run_chef_solo(fp, message, unlink=False, jsssd=False):
     try:
         server_conf = get_server_conf(None)
-        thread = ChefSolo(fp, server_conf)
+        thread = ChefSolo(fp, server_conf, unlink)
         dialog = Gtk.Dialog(_('Configuring the client'), None,
                 Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, (Gtk.STOCK_OK, Gtk.ResponseType.OK))
         description = Gtk.Label();
@@ -446,12 +447,35 @@ def run_chef_solo(fp, message, unlink=False, jsssd=False):
 
                 
         if exit_code[1] != 0 and unlink:
-            messages = [(_('An error has ocurred while unlink running'))]
+            if chef_is_configured():
+                clean_conf_chef()
+            if gcc_is_configured():
+                clean_conf_gcc()
+            messages = [(_('No connection to the server. It will unlink locally'))]
             display_errors(_("Configuration Error"), messages)  
 
     except Exception as e:
         display_errors(_("Configuration Error"), [e.message])
-         
+
+
+def clean_conf_gcc():
+    try:
+        if os.path.exists(__GCC_FLAG__):
+            os.remove(__GCC_FLAG__)
+    except Exception as e:
+        raise e
+
+
+def clean_conf_chef():
+    try:
+        if os.path.exists(__CHEF_FLAG__):
+            os.remove(__CHEF_FLAG__)
+        if os.path.exists(__CHEF_PEM__):
+            os.remove(__CHEF_PEM__)
+        if os.path.exists(__CHEF_CLIENT_PEM__):
+            os.remove(__CHEF_CLIENT_PEM__)
+    except Exception as e:
+        raise e
 
 def unlink_from_sssd(leave=True):
 #TODO implement unlink from ldap calling chef-solo
