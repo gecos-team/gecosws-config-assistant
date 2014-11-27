@@ -8,7 +8,8 @@
 # All rights reserved - EUPL License V 1.1
 # http://www.osor.eu/eupl
 #
-
+require 'chef/mixin/shell_out'
+include Chef::Mixin::ShellOut
 
 action :setup do
 
@@ -16,17 +17,26 @@ action :setup do
     os = `lsb_release -d`.split(":")[1].chomp().lstrip()
     if new_resource.support_os.include?(os)
 
-      begin
+      trusty = false
+      pkg = shell_out("apt-cache policy libsqlite3-ruby").exitstatus
+      if pkg
+        trusty = true
+      end
+      if not trusty
         package 'libsqlite3-ruby' do
           action :nothing
         end.run_action(:install)
-      rescue Chef::Exceptions::Package
+      else
         package 'ruby-sqlite3' do
           action :nothing
         end.run_action(:install)
       end
 
       package 'libsqlite3-dev' do
+        action :nothing
+      end.run_action(:install)
+
+      package 'libnss3-tools' do
         action :nothing
       end.run_action(:install)
 
@@ -196,23 +206,27 @@ action :setup do
           ## CONFIGS STUFF   
           if !user.config.empty?
             Chef::Log.info("Setting user #{username} web configs")
-            value = nil
-            if user.config[:value_type] == "string"
-              value = user.config[:value_str]
-            elsif user.config[:value_type] == "boolean"
-              value = user.config[:value_bool]
-            elsif user.config[:value_type] == "number"
-              value = user.config[:value_num]
+            arr_conf = []
+            user.config.each do |conf|
+              value = nil
+              if conf[:value_type] == "string"
+                value = conf[:value_str]
+              elsif conf[:value_type] == "boolean"
+                value = conf[:value_bool]
+              elsif conf[:value_type] == "number"
+                value = conf[:value_num]
+              end
+              config = {}
+              config['key'] = conf[:key]
+              config['value'] = value
+              arr_conf << config
             end
-            config = {}
-            config['key'] = user.config[:key]
-            config['value'] = value
      
             profile_dirs.each do |prof|
               template "#{prof}/user.js" do
                 owner username
                 source "web_browser_user.js.erb"
-                variables ({:config => config})
+                variables ({:config => arr_conf})
                 action :nothing
               end.run_action(:create)
             end
@@ -257,7 +271,7 @@ action :setup do
     job_ids = new_resource.job_ids
     job_ids.each do |jid|
       node.set['job_status'][jid]['status'] = 1
-      node.set['job_status'][jid]['message'] = e.message
+      node.set['job_status'][jid]['message'] = e.message.force_encoding("utf-8")
     end
   ensure
     gecos_ws_mgmt_jobids "web_browser_res" do

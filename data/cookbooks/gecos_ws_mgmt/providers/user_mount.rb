@@ -66,7 +66,7 @@ action :setup do
     job_ids = new_resource.job_ids
     job_ids.each do |jid|
       node.set['job_status'][jid]['status'] = 1
-      node.set['job_status'][jid]['message'] = e.message
+      node.set['job_status'][jid]['message'] = e.message.force_encoding("utf-8")
     end
   ensure
     gecos_ws_mgmt_jobids "user_mount_res" do

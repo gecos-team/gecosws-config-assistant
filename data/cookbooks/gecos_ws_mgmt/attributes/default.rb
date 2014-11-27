@@ -129,9 +129,13 @@ default[:gecos_ws_mgmt][:users_mgmt][:user_mount_res][:users] = {}
 default[:gecos_ws_mgmt][:users_mgmt][:user_mount_res][:job_ids] = []
 default[:gecos_ws_mgmt][:users_mgmt][:user_mount_res][:support_os] = ["GECOS V2","Gecos V2 Lite"]
 
+default[:gecos_ws_mgmt][:users_mgmt][:user_modify_nm_res][:users] = {}
+default[:gecos_ws_mgmt][:users_mgmt][:user_modify_nm_res][:job_ids] = []
+default[:gecos_ws_mgmt][:users_mgmt][:user_modify_nm_res][:support_os] = ["GECOS V2","Gecos V2 Lite"]
+
 default[:gecos_ws_mgmt][:users_mgmt][:folder_sync_res][:users] = {}
 default[:gecos_ws_mgmt][:users_mgmt][:folder_sync_res][:job_ids] = []
-default[:gecos_ws_mgmt][:users_mgmt][:folder_sync_res][:support_os] = []
+default[:gecos_ws_mgmt][:users_mgmt][:folder_sync_res][:support_os] = ["GECOS V2","Gecos V2 Lite"]
 
 default[:gecos_ws_mgmt][:users_mgmt][:shutdown_options_res][:users] = {}
 default[:gecos_ws_mgmt][:users_mgmt][:shutdown_options_res][:systemset] = false

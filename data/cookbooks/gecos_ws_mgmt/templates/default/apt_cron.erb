@@ -1,7 +1,34 @@
 #cron file to manage system upgrades
 
-<% unless @date_cron.empty?    %>  
-<%= @date_cron.minute %> <%= @date_cron.hour %> <%= @date_cron.day %> <%= @date_cron.month %> * root /etc/init.d/auto_updates start
+<%
+  unless @date_cron.empty?
+  minute = nil
+  hour = nil
+  day = nil
+  month = nil
+  if @date_cron.minute == "*"
+    minute = "*"
+  else
+    minute = @date_cron.minute.to_i
+  end
+  if @date_cron.hour == "*"
+    hour = "*"
+  else
+    hour = @date_cron.hour.to_i
+  end
+  if @date_cron.day == "*"
+    day = "*"
+  else
+    day = @date_cron.day.to_i
+  end
+  if @date_cron.month == "*"
+    month = "*"
+  else
+    month = @date_cron.month.to_i
+  end
+%>
+
+<%= minute %> <%= hour %> <%= day %> <%= month %> * root /etc/init.d/auto_updates start
 <% end %>
 <% unless @days_cron.empty? %>
   <% @days_cron.each do |dc| %>

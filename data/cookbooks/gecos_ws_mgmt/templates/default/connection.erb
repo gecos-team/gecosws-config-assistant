@@ -1,4 +1,5 @@
-<%# Physical setup %>
+<% require 'ipaddr'
+# Physical setup %>
 [connection]
 id=<%= @connection[:name] %>
 uuid=<%= @uuid %>
@@ -47,6 +48,6 @@ method=auto
 method=manual
 dns=<%= @connection[:dns_servers].join(" ") %>
 <% @connection[:addresses].each_with_index do |address,index| %>
-addresses<%= index+1 %>=<%= address[:ip_addr] %>;<%= address[:netmask] %>;<%= @connection[:gateway] %>;
+addresses<%= index+1 %>=<%= address[:ip_addr] %>;<%= IPAddr.new(address[:netmask]).to_i.to_s(2).count("1") %>;<%= @connection[:gateway] %>;
 <% end %>
 <% end %>
