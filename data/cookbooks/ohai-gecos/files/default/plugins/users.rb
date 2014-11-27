@@ -11,6 +11,7 @@ users = []
 users_send = []
 # LikeWise create the user homes at /home/local/DOMAIN/
 homedirs = Dir["/home/*"] + Dir["/home/local/*/*"]
+grp_sudo = Etc.getgrnam('sudo')
 homedirs.each do |homedir|
   temp=homedir.split('/')
   user=temp[temp.size()-1]
@@ -20,7 +21,8 @@ homedirs.each do |homedir|
       :username => entry.name,
       :home     => entry.dir,
       :gid      => entry.gid,
-      :uid      => entry.uid
+      :uid      => entry.uid,
+      :sudo     => grp_sudo.mem.include?(entry.name)
     )
     users_send << entry.name
   rescue Exception => e
