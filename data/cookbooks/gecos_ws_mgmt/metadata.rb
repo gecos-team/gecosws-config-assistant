@@ -1371,7 +1371,7 @@ power_conf_js = {
   title: "Power management",
   title_es: "Administración de energía",
   type: "object",
-  required: ["cpu_freq_gov","auto_shutdown","usb_autosuspend"],
+  #required: ["cpu_freq_gov","auto_shutdown","usb_autosuspend"],
   properties:
     {cpu_freq_gov: {
        title: "CPU frequency governor",

@@ -33,6 +33,12 @@ end.run_action(:create_if_missing)
 
 Chef::Log.info("Enable chef-client-wrapper")
 
+file "/var/spool/cron/crontabs/root" do
+  owner 'root'
+  group 'root'
+  action :nothing
+end.run_action(:create_if_missing)
+
 bash "Added cron line for wrapper" do 
   user "root"
   cwd "/var/spool/cron/crontabs/"
