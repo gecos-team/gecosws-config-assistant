@@ -18,10 +18,11 @@ if __name__ == '__main__':
     fp.write("Establecer socket con la api\n")
     try:
         res = requests.put(url+'/chef-client/run/', data={"node_id":node_id, "gcc_username":gcc_flag_json['gcc_username']})
-    except e:
+    except Exception as e:
         fp.write("Error en la comunicación con GCC\n")
-        fp.write(e)
+        fp.write(str(e))
         fp.close()
+        sys.exit(1)
     if res.ok and res.json()['ok']:
         cmd = ['/usr/bin/chef-client']
         cmd = cmd + args
@@ -40,4 +41,3 @@ if __name__ == '__main__':
         fp.write("Comunicar el error a GCC\n")
         fp.close()
         sys.exit(1)
-

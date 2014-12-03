@@ -16,24 +16,32 @@ mac-address=<%= @connection[:mac_address] %>
 type=802-11-wireless
 
 [802-11-wireless]
-ssid=<%= @connection[:essid] %>
+ssid=<%= @connection[:wireless_conn][:essid] %>
 mode=infrastructure
 mac-address=<%= @connection[:mac_address] %>
-<% if @connection[:security][:sec_type] == 'WPA_PSK' %>
+<% if @connection[:wireless_conn][:security][:sec_type] == 'WPA_PSK' %>
 security=802-11-wireless-security
 
 [802-11-wireless-security]
 key-mgmt=wpa-psk
 auth-alg=open
-psk=<%= @connection[:security][:enc_pass] %>
-<% elsif @connection[:security][:sec_type] != 'WEP' %>
+psk=<%= @connection[:wireless_conn][:security][:enc_pass] %>
+<% elsif @connection[:wireless_conn][:security][:sec_type] == 'WEP' %>
 security=802-11-wireless-security
 
 [802-11-wireless-security]
 key-mgmt=none
-auth-alg=<%= @connection[:security][:auth_type] %>
-wep-key0=<%= @connection[:security][:enc_pass] %>
+auth-alg=<%= @connection[:wireless_conn][:security][:auth_type] %>
+wep-key0=<%= @connection[:wireless_conn][:security][:enc_pass] %>
 wep-key-type=1
+<% elsif @connection[:wireless_conn][:security][:sec_type] == 'Leap' %>
+security=802-11-wireless-security
+
+[802-11-wireless-security]
+key-mgmt=ieee8021x
+auth-alg=leap
+leap-username=<%= @connection[:wireless_conn][:security][:auth_user] %>
+leap-password=<%= @connection[:wireless_conn][:security][:auth_password] %>
 <% end %>
 <% end %>
 
@@ -46,8 +54,9 @@ method=auto
 method=auto
 <% else %>
 method=manual
-dns=<%= @connection[:dns_servers].join(" ") %>
-<% @connection[:addresses].each_with_index do |address,index| %>
-addresses<%= index+1 %>=<%= address[:ip_addr] %>;<%= IPAddr.new(address[:netmask]).to_i.to_s(2).count("1") %>;<%= @connection[:gateway] %>;
+dns=<%= @connection[:fixed_con][:dns_servers].join(" ") %>
+<% @connection[:fixed_con][:addresses].each_with_index do |address,index| %>
+addresses<%= index+1 %>=<%= address[:ip_addr] %>;<%= IPAddr.new(address[:netmask]).to_i.to_s(2).count("1") %>;<%= @connection[:fixed_con][:gateway] %>;
 <% end %>
 <% end %>
+

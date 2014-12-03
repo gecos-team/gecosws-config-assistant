@@ -54,6 +54,29 @@ action :setup do
         
         properties[:addresses].select { |mac_addr, addr_data| addr_data[:family]=='lladdr' }.each do |mac_addr, addr_data|
           connections.select { |connection| connection[:mac_address].upcase == mac_addr.upcase}.each do |connection|
+
+            #Check require attributes
+            if not connection[:use_dhcp]
+              if not connection[:fixed_con][:dns_servers].empty? or not connection[:fixed_con][:addresses].empty? or not connection[:fixed_con].key?(:gateway)
+                raise "There are attributes for the dhcp that are empty"
+              end
+            end
+      
+            if connection[:net_type] == 'wireless'
+              if not connection[:wireless_conn].key?(:essid)
+                raise "Wirless type selected without a ESSID"
+              end
+              if connection[:wireless_conn][:security][:sec_type] == 'WPA_PSK' or connection[:wireless_conn][:security][:sec_type] == 'WEP'
+                if not connection[:wireless_conn][:security].key?(:enc_pass)
+                  raise "Wireless with password empty"
+                end
+              elsif connection[:wireless_conn][:security][:sec_type] == 'Leap'
+                if not connection[:wireless_conn][:security].key?(:auth_user) or not connection[:wireless_conn][:security].key?(:auth_password)
+                  raise "Leap configuration without user and password"
+                end
+              end
+            end
+
             conn_file = nm_conn_production_dir.to_s + '/' + connection[:name].to_s
             if Kernel::test('f',conn_file)
               #extraer el uuid

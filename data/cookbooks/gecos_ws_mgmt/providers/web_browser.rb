@@ -129,7 +129,7 @@ action :setup do
           ## Plugins STUFF
           unless plugins.empty?
             Chef::Log.info("Setting user #{username} web plugins")  
-            template node[:gecos_ws_mgmt][:users_mgmt][:web_browser_res][:firefox_scope_js] do
+            template "/etc/firefox/pref/web_browser_res.js" do
               source "web_browser_scope.js.erb"
               action :nothing
             end.run_action(:create)

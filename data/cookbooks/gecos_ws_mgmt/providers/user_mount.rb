@@ -25,6 +25,15 @@ action :setup do
         action :nothing
       end.run_action(:create)
 
+      udisk_policy = "/usr/share/polkit-1/actions/org.freedesktop.udisks2.policy"
+      cookbook_file udisk_policy do
+        source "udisks2.policy"
+        owner "root"
+        group "root"
+        mode "0644"
+        action :nothing
+      end.run_action(:create)
+
       granted_users = Array.new
 
       userslist.each_key do |user_key|
