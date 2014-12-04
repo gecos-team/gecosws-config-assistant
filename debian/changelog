@@ -1,3 +1,11 @@
+gecosws-config-assistant (0.7.6-0gecos1) trusty; urgency=medium
+
+  * Fix run resources in chef resource
+  * Change buttons positions 
+  * Check if wrapper exists
+
+ -- David Amian <damian@emergya.es>  Thu, 04 Dec 2014 15:11:37 +0100
+
 gecosws-config-assistant (0.7.5-0gecos3) trusty; urgency=medium
 
   * Update cookbooks 
