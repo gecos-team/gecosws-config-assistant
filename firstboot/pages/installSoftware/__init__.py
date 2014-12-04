@@ -46,6 +46,8 @@ class InstallSoftwarePage(PageWindow.PageWindow):
 
     def load_page(self, params=None):
         self.emit('status-changed', 'localUsers', not __REQUIRED__)
+        self.main_window.ui.buttonbox1.reorder_child(self.main_window.btnApply, 2)
+        self.main_window.ui.buttonbox1.reorder_child(self.main_window.btnNext, 0)
         self.main_window.btnNext.set_label(_('Close'))
         self.main_window.btnApply.set_sensitive(True)
 
