@@ -38,21 +38,22 @@ action :setup do
                 :chef_admin_name => new_resource.chef_admin_name,
                 :chef_node_name => new_resource.chef_node_name
               })
-            end
+              action :nothing
+            end.run_action(:create)
             remote_file "Copy validation.pem" do
               path "/etc/chef/validation.pem"
               source "file://" + new_resource.chef_validation_pem
               owner 'root'
               group 'root'
               mode 00644
-            end      
+              action :nothing
+            end.run_action(:create)
             Chef::Log.info("Chef: Linking the chef server")
             execute 'chef-client' do
               environment 'LANG' => 'es_ES.UTF-8', 'LC_ALL' => 'es_ES.UTF-8', 'HOME' => ENV['HOME']
               command 'chef-client -j /usr/share/gecosws-config-assistant/base.json'
-              action :run
-            end
-         
+              action :nothing
+            end.run_action(:run)
             Chef::Log.info("Activating service chef-client")
             service 'chef-client' do
               provider Chef::Provider::Service::Upstart
@@ -70,11 +71,12 @@ action :setup do
                 :chef_admin_name => new_resource.chef_admin_name,
                 :chef_node_name => new_resource.chef_node_name
               })
-            end 
+              action :nothing
+            end.run_action(:create)
             Chef::Log.info("Chef: Removing validation.pem")
             file "/etc/chef/validation.pem" do
-              action :delete
-            end
+              action :nothing
+            end.run_action(:delete)
           end 
         else
           Chef::Log.info("Chef: Configuring Chef")
@@ -99,41 +101,41 @@ action :setup do
               :chef_url => new_resource.chef_server_url,
               :chef_admin_name => new_resource.chef_admin_name
             })
-          end
+            action :nothing
+          end.run_action(:create)
+
+          Chef::Log.info("Chef: Removing control file")
+          file "/etc/chef.control" do
+            action :nothing
+          end.run_action(:delete)
+          Chef::Log.info("Chef: Removing client.pem")
+          file "/etc/chef/client.pem" do
+            action :nothing
+          end.run_action(:delete)
           Chef::Log.info("Deleting node " + new_resource.chef_node_name)
           execute 'Knife Delete' do
             command 'knife node delete \'' + new_resource.chef_node_name + '\' -c /etc/chef/knife.rb -y'
-            action :run
-          end
+            action :nothing
+          end.run_action(:run)
           Chef::Log.info("Deleting client " + new_resource.chef_node_name)
           execute 'Knife Delete' do
             command 'knife client delete \'' + new_resource.chef_node_name + '\' -c /etc/chef/knife.rb -y'
-            action :run
-          end
-
+            action :nothing
+          end.run_action(:run)
           Chef::Log.info("Disabling service chef-client")
           service 'chef-client' do
             provider Chef::Provider::Service::Upstart
             supports :status => true, :restart => true, :reload => true
             action [:disable, :stop]
           end
-          
-          Chef::Log.info("Chef: Removing control file")
-          file "/etc/chef.control" do
-            action :delete
-          end
-          Chef::Log.info("Chef: Removing client.pem")
-          file "/etc/chef/client.pem" do
-            action :delete
-          end
           Chef::Log.info("Chef: Removing validation.pem")
           file "/etc/chef/validation.pem" do
-            action :delete
-          end
+            action :nothing
+          end.run_action(:delete)
           Chef::Log.info("Chef: Removing knife.rb")
           file "/etc/chef/knife.rb" do
-            action :delete
-          end
+            action :nothing
+          end.run_action(:delete)
         end
       else
         Chef::Log.info("Chef: Configurndo Knife")
@@ -146,7 +148,8 @@ action :setup do
             :chef_url => new_resource.chef_server_url,
             :chef_admin_name => new_resource.chef_admin_name
           })
-        end
+          action :nothing
+        end.run_action(:create)
         Chef::Log.info("Chef: Configuring Chef")
         template '/etc/chef/client.rb' do
           source 'client.rb.erb'
@@ -158,7 +161,9 @@ action :setup do
             :chef_admin_name => new_resource.chef_admin_name,
             :chef_node_name => new_resource.chef_node_name
           })
-        end
+          action :nothing
+        end.run_action(:create)
+
         Chef::Log.info("Chef: Creating control file")
         template "/etc/chef.control" do
           source 'chef.control.erb'
@@ -170,18 +175,21 @@ action :setup do
             :chef_admin_name => new_resource.chef_admin_name,
             :chef_node_name => new_resource.chef_node_name
           })
-        end
+          action :nothing
+        end.run_action(:create)
+
         Chef::Log.info("Reregistering the client" + new_resource.chef_node_name)
         execute 'Knife Reregrister' do
           command 'knife client reregister \'' + new_resource.chef_node_name + '\' -c /etc/chef/knife.rb > /etc/chef/client.pem'
-          action :run
-        end
+          action :nothing
+        end.run_action(:run)
+
         Chef::Log.info("Chef: Linking the chef server")
         execute 'chef-client' do
           environment 'LANG' => 'es_ES.UTF-8', 'LC_ALL' => 'es_ES.UTF-8', 'HOME' => ENV['HOME']
           command 'chef-client -j /usr/share/gecosws-config-assistant/base.json'
-          action :run
-        end
+          action :nothing
+        end.run_action(:run)
       end
     else
       Chef::Log.info("This resource is not support into your OS")
