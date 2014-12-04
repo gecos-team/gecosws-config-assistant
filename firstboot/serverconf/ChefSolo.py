@@ -80,7 +80,7 @@ class ChefSolo(threading.Thread):
         process = subprocess.Popen(cmd_split, stdout=log_chef_solo, stderr=log_chef_solo_err, env=envs)
         self.exit_code = os.waitpid(process.pid, 0)
         output = process.communicate()[0]
-        if not self.unlink:
+        if not self.unlink and os.path.exists("/usr/bin/chef-client-wrapper"):
             cmd = '"chef-client-wrapper"'
             cmd_split = shlex.split(cmd)
             process = subprocess.Popen(cmd_split, env=envs)
