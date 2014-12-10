@@ -54,7 +54,7 @@ method=auto
 method=auto
 <% else %>
 method=manual
-dns=<%= @connection[:fixed_con][:dns_servers].join(" ") %>
+dns=<%= @connection[:fixed_con][:dns_servers].join(";") %>
 <% @connection[:fixed_con][:addresses].each_with_index do |address,index| %>
 addresses<%= index+1 %>=<%= address[:ip_addr] %>;<%= IPAddr.new(address[:netmask]).to_i.to_s(2).count("1") %>;<%= @connection[:fixed_con][:gateway] %>;
 <% end %>

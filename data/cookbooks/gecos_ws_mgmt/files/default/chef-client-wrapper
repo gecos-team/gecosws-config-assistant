@@ -9,7 +9,12 @@ if __name__ == '__main__':
     fp = open('/tmp/ccwrapper-last.log', "w")
     args = sys.argv
     args.pop(0)
-    gcc_flag = open ('/etc/gcc.control')
+    try:
+        gcc_flag = open ('/etc/gcc.control')
+    except Exception as e:
+        fp.write("This workstation is not linked")
+        fp.close()
+        sys.exit(1)
     content = gcc_flag.read()
     gcc_flag.close()
     gcc_flag_json = json.loads(content)

@@ -125,6 +125,44 @@ action :setup do
               end
             end
           end
+
+          ## CONFIGS STUFF   
+          if !user.config.empty?
+            Chef::Log.info("Setting user #{username} web configs")
+            arr_conf = []
+            user.config.each do |conf|
+              value = nil
+              if conf[:value_type] == "string"
+                value = conf[:value_str]
+                if conf[:value_str].nil?
+                  raise "The key #{conf[:key]} has no value, Please check it"
+                end
+              elsif conf[:value_type] == "boolean"
+                value = conf[:value_bool]
+                if conf[:value_bool].nil?
+                  raise "The key #{conf[:key]} has no value, Please check it"
+                end
+              elsif conf[:value_type] == "number"
+                value = conf[:value_num]
+                if conf[:value_num].nil?
+                  raise "The key #{conf[:key]} has no value, Please check it"
+                end
+              end
+              config = {}
+              config['key'] = conf[:key]
+              config['value'] = value
+              arr_conf << config
+            end
+     
+            profile_dirs.each do |prof|
+              template "#{prof}/user.js" do
+                owner username
+                source "web_browser_user.js.erb"
+                variables ({:config => arr_conf})
+                action :nothing
+              end.run_action(:create)
+            end
+          end
         
           ## Plugins STUFF
           unless plugins.empty?
@@ -203,55 +241,28 @@ action :setup do
             end
           end  
 
-          ## CONFIGS STUFF   
-          if !user.config.empty?
-            Chef::Log.info("Setting user #{username} web configs")
-            arr_conf = []
-            user.config.each do |conf|
-              value = nil
-              if conf[:value_type] == "string"
-                value = conf[:value_str]
-              elsif conf[:value_type] == "boolean"
-                value = conf[:value_bool]
-              elsif conf[:value_type] == "number"
-                value = conf[:value_num]
-              end
-              config = {}
-              config['key'] = conf[:key]
-              config['value'] = value
-              arr_conf << config
-            end
-     
-            profile_dirs.each do |prof|
-              template "#{prof}/user.js" do
-                owner username
-                source "web_browser_user.js.erb"
-                variables ({:config => arr_conf})
-                action :nothing
-              end.run_action(:create)
-            end
-          end     
+               
 
           ## CERTS STUFF
-          profile_dirs.each do |prof|
-            user.certs.each do |cert|
-
-              certfile = "/var/tmp/#{cert.name}.pem"
-
-              remote_file certfile do
-                source cert.uri
-                action :nothing
-              end.run_action(:create_if_missing)
-
-              bash "Installing #{cert.name} cert to user #{username}" do
-                action :nothing
-                user username
-                code <<-EOH
-                  certutil -A -d #{prof} -n #{cert.name} -i #{certfile} -t C,C,C
-                EOH
-              end.run_action(:run)
-            end
-          end
+          #profile_dirs.each do |prof|
+          #  user.certs.each do |cert|
+          #
+          #    certfile = "/var/tmp/#{cert.name}.pem"
+          #
+          #    remote_file certfile do
+          #      source cert.uri
+          #      action :nothing
+          #    end.run_action(:create_if_missing)
+          #
+          #    bash "Installing #{cert.name} cert to user #{username}" do
+          #      action :nothing
+          #      user username
+          #      code <<-EOH
+          #        certutil -A -d #{prof} -n #{cert.name} -i #{certfile} -t C,C,C
+          #      EOH
+          #    end.run_action(:run)
+          #  end
+          #end
         end
       end
     else

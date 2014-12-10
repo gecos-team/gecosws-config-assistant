@@ -57,7 +57,7 @@ action :setup do
 
             #Check require attributes
             if not connection[:use_dhcp]
-              if not connection[:fixed_con][:dns_servers].empty? or not connection[:fixed_con][:addresses].empty? or not connection[:fixed_con].key?(:gateway)
+              if connection[:fixed_con][:dns_servers].empty? or  connection[:fixed_con][:addresses].empty? or not connection[:fixed_con].key?(:gateway)
                 raise "There are attributes for the dhcp that are empty"
               end
             end

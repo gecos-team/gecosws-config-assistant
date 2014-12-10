@@ -1,11 +1,11 @@
 # user preferences (managed by chef)
 
 <% @config.each do |cfg| %>
-<% if cfg.value.kind_of?(String)  %>
-<% valuemod = "'#{cfg[:value]}'" %>
+<% if cfg["value"].kind_of?(String)  %>
+<% valuemod = "'#{cfg["value"]}'" %>
 <% else %>
-<% valuemod = cfg[:value] %>
+<% valuemod = cfg["value"] %>
 <% end %>
-user_pref("<%= cfg[:key] %>", <%= valuemod %>);
+user_pref("<%= cfg['key'] %>", <%= valuemod %>);
 <% end %>
 

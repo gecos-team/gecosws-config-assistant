@@ -544,25 +544,25 @@ web_browser_js = {
 
                 }
               }
-            },
-            certs: {
-             type: "array",
-             title: "Certificates",
-             title_es: "Certificados",
-             minItems: 0,
-             uniqueItems: true,
-             items: {
-               type: "object",
-               required: [ "name", "uri"],
-               properties: {
-                 name: {title: "Name", title_es: "Nombre", type: "string"},
-                 uri: {title: "Uri", 
-                       title_es: "Uri", 
-                       type: "string", 
-                       description: "Only accept CRT and PEM certificate", 
-                       description_es: "Solo acepta certificados CRT y PEM"}
-               }
-             }
+            #},
+            #certs: {
+            # type: "array",
+            # title: "Certificates",
+            # title_es: "Certificados",
+            # minItems: 0,
+            # uniqueItems: true,
+            # items: {
+            #   type: "object",
+            #   required: [ "name", "uri"],
+            #   properties: {
+            #     name: {title: "Name", title_es: "Nombre", type: "string"},
+            #     uri: {title: "Uri", 
+            #           title_es: "Uri", 
+            #           type: "string", 
+            #           description: "Only accept CRT and PEM certificate", 
+            #           description_es: "Solo acepta certificados CRT y PEM"}
+            #   }
+            # }
             }, 
             updated_by: updated_js
           }
