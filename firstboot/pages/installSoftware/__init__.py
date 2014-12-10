@@ -63,4 +63,6 @@ class InstallSoftwarePage(PageWindow.PageWindow):
         os.spawnlp(os.P_NOWAIT, cmd, cmd)
 
     def previous_page(self, load_page_callback):
+        self.main_window.ui.buttonbox1.reorder_child(self.main_window.btnApply, 0)
+        self.main_window.ui.buttonbox1.reorder_child(self.main_window.btnNext, 2)
         load_page_callback(firstboot.pages.localUsers)
