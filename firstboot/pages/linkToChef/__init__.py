@@ -68,6 +68,7 @@ class LinkToChefPage(PageWindow.PageWindow):
         self.gcc_is_configured = serverconf.gcc_is_configured()
         server_conf = serverconf.get_server_conf(None)
         self.show_status()
+        self.ui.btnUnlinkLocally.set_visible(self.gcc_is_configured or serverconf.chef_is_configured())
         self.ui.chkUnlinkChef.set_visible(self.gcc_is_configured)
         self.ui.chkLinkChef.set_visible(not self.gcc_is_configured)
         if server_conf.get_gcc_conf().get_gcc_link() and not self.gcc_is_configured:
@@ -82,10 +83,24 @@ easily managed remotely.\n\n')
         self.ui.lblDescription.set_text(desc)
         self.ui.chkUnlinkChef.set_label(_('Unlink from Control Center'))
         self.ui.chkLinkChef.set_label(_('Link to Control Center server?'))
+        self.ui.btnUnlinkLocally.set_label(_('Unlink Locally'))
+
 
     def on_chkUnlinkChef_toggle(self, button):
         #self.main_window.btnNext.set_sensitive(button.get_active())
         pass
+
+    def on_btnUnlinkLocally_clicked(self, button):
+        result = serverconf.message_box(_("Unlink Locally"), _("Are you sure to unlink locally this workstation?"))
+        if result == 1:
+            try:
+                if serverconf.chef_is_configured():
+                    serverconf.clean_conf_chef()
+                if serverconf.gcc_is_configured():
+                    serverconf.clean_conf_gcc()
+                self.finish_initializing()
+            except Exception as e:
+                serverconf.display_errors(_("Unlink Error"),[_("An error occurred during the locally unlink")])
 
 
     def show_status(self, status=None, exception=None):
