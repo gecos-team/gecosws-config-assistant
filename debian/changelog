@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.7.7-0gecos1) trusty; urgency=medium
+
+  * Added unlink locally 
+
+ -- David Amian <damian@emergya.es>  Wed, 10 Dec 2014 18:21:11 +0100
+
 gecosws-config-assistant (0.7.6-0gecos1) trusty; urgency=medium
 
   * Fix run resources in chef resource
