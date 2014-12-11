@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.7.7-0gecos2) trusty; urgency=medium
+
+  * i18n
+
+ -- David Amian <damian@emergya.es>  Thu, 11 Dec 2014 10:58:58 +0100
+
 gecosws-config-assistant (0.7.7-0gecos1) trusty; urgency=medium
 
   * Added unlink locally 
