@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gecosws-config-assistant 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-08 11:45+0200\n"
+"POT-Creation-Date: 2014-12-11 10:44+0100\n"
 "PO-Revision-Date: 2014-04-28 17:12+0200\n"
 "Last-Translator: David Amian Valle <damian@emergya.com>\n"
 "Language-Team: Spanish\n"
@@ -42,36 +42,40 @@ msgstr "Actualizar este asistente"
 msgid "Version: "
 msgstr "Versión"
 
-#: ../firstboot/FirstbootWindow.py:171 ../firstboot/FirstbootWindow.py:177
+#: ../firstboot/FirstbootWindow.py:152
+msgid "Are you sure you close Gecos Config Assistant?"
+msgstr "¿Está seguro que desea cerrar GECOS Config Assistant?"
+
+#: ../firstboot/FirstbootWindow.py:169 ../firstboot/FirstbootWindow.py:175
 msgid "Update GECOS Config Assistant"
 msgstr "Actualizar GECOS Config Assistant"
 
-#: ../firstboot/FirstbootWindow.py:171
+#: ../firstboot/FirstbootWindow.py:169
 msgid "Are you sure you want to update the GECOS Config Assistant?"
 msgstr "¿Está seguro que desea actualizar GECOS Config Assistant?"
 
-#: ../firstboot/FirstbootWindow.py:175
+#: ../firstboot/FirstbootWindow.py:173
 msgid "Update Error"
 msgstr "Error de actualización"
 
-#: ../firstboot/FirstbootWindow.py:175
+#: ../firstboot/FirstbootWindow.py:173
 msgid "An error occurred during the upgrade"
 msgstr "Se ha producido un error durante la actualización"
 
-#: ../firstboot/FirstbootWindow.py:177
+#: ../firstboot/FirstbootWindow.py:175
 msgid "GECOS Config Assistant has been udpated. Please restart GCA"
 msgstr "GECOS Config Assistant ha sido actualizado. Porfavor reinicie GCA"
 
 #: ../firstboot/pages/installSoftware/__init__.py:35
-#: ../firstboot/pages/installSoftware/__init__.py:54
+#: ../firstboot/pages/installSoftware/__init__.py:56
 msgid "Install software"
 msgstr "Instalar software"
 
-#: ../firstboot/pages/installSoftware/__init__.py:49
+#: ../firstboot/pages/installSoftware/__init__.py:51
 msgid "Close"
 msgstr "Cerrar"
 
-#: ../firstboot/pages/installSoftware/__init__.py:55
+#: ../firstboot/pages/installSoftware/__init__.py:57
 msgid ""
 "Install software packages from a safe repository.\n"
 "\n"
@@ -111,6 +115,22 @@ msgstr "Interfaz"
 msgid "IP"
 msgstr "IP"
 
+#: ../firstboot/pages/autoConfig/AutoConfigResult.py:63
+msgid "This is the information about autoconfig file"
+msgstr "Esta es la información del fichero de autoconfiguración"
+
+#: ../firstboot/pages/autoConfig/AutoConfigResult.py:67
+msgid "Version"
+msgstr "Versión"
+
+#: ../firstboot/pages/autoConfig/AutoConfigResult.py:68
+msgid "Organization"
+msgstr "Organización"
+
+#: ../firstboot/pages/autoConfig/AutoConfigResult.py:69
+msgid "Notes"
+msgstr "Notas"
+
 #: ../firstboot/pages/autoConfig/__init__.py:40
 msgid "Auto Configuration"
 msgstr "Auto Configuración"
@@ -129,18 +149,17 @@ msgstr "Parámetros por defecto cacheados, ¿descargar de nuevo?"
 
 #: ../firstboot/pages/autoConfig/__init__.py:81
 msgid "Download a file with default configuration parameters."
-msgstr ""
-"Descargar un archivo con los parámetros de configuración por defecto."
+msgstr "Descargar un archivo con los parámetros de configuración por defecto."
 
 #: ../firstboot/pages/autoConfig/__init__.py:84
 msgid "Control Center URL"
 msgstr "URL del Centro de Control"
 
 #: ../firstboot/pages/linkToServer/LinkToServerResultsPage.py:67
-#: ../firstboot/pages/linkToServer/__init__.py:155
+#: ../firstboot/pages/linkToServer/__init__.py:157
 #: ../firstboot/pages/linkToChef/LinkToChefResultsPage.py:69
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:211
-#: ../firstboot/pages/linkToChef/__init__.py:108
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:212
+#: ../firstboot/pages/linkToChef/__init__.py:123
 msgid "The configuration was updated successfully."
 msgstr "La configuración fue actualizada satisfactoriamente."
 
@@ -155,18 +174,6 @@ msgid ""
 msgstr ""
 "Estos parámetros son necesarios para vincularse a un servidor de "
 "autenticación:"
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:104
-msgid "Version"
-msgstr "Versión"
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:105
-msgid "Organization"
-msgstr "Organización"
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:106
-msgid "Notes"
-msgstr "Notas"
 
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:108
 msgid "Base DN for users"
@@ -191,21 +198,23 @@ msgid "Change specific configuration from server?"
 msgstr "¿Cambiar configuración específica desde el servidor?"
 
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:135
-#: ../firstboot/serverconf/__init__.py:84
-#: ../firstboot/serverconf/__init__.py:87
+#: ../firstboot/pages/linkToServer/__init__.py:187
+#: ../firstboot/serverconf/__init__.py:85
+#: ../firstboot/serverconf/__init__.py:88
 msgid "Authentication Required"
 msgstr "Autenticación requerida"
 
 #: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:136
+#: ../firstboot/pages/linkToServer/__init__.py:188
 msgid "Please, provide administration credentials for the Active Directory."
 msgstr ""
 "Por favor, indique credenciales de administración para el Active Directory."
 
-#: ../firstboot/pages/linkToServer/__init__.py:43
+#: ../firstboot/pages/linkToServer/__init__.py:44
 msgid "Select authentication method"
 msgstr "Seleccionar método de autenticación"
 
-#: ../firstboot/pages/linkToServer/__init__.py:101
+#: ../firstboot/pages/linkToServer/__init__.py:103
 msgid ""
 "Users in this workstation can be authenticated against a external system.\n"
 "\n"
@@ -214,51 +223,51 @@ msgstr ""
 "sistema externo.\n"
 "\n"
 
-#: ../firstboot/pages/linkToServer/__init__.py:104
 #: ../firstboot/pages/linkToServer/__init__.py:106
+#: ../firstboot/pages/linkToServer/__init__.py:108
 msgid "This workstation currently uses an authentication user method."
 msgstr ""
-"Esta estación de trabajo utiliza actualmente un método de autenticación "
-"de usuarios."
+"Esta estación de trabajo utiliza actualmente un método de autenticación de "
+"usuarios."
 
-#: ../firstboot/pages/linkToServer/__init__.py:108
+#: ../firstboot/pages/linkToServer/__init__.py:110
 msgid "No authentication system is currently configured."
 msgstr "Ningún sistema de autenticación está configurado actualmente."
 
-#: ../firstboot/pages/linkToServer/__init__.py:110
+#: ../firstboot/pages/linkToServer/__init__.py:112
 msgid "Select the authentication method you would like to use:"
 msgstr "Seleccione el método de autenticación que desee usar:"
 
-#: ../firstboot/pages/linkToServer/__init__.py:115
-#: ../firstboot/pages/linkToServer/__init__.py:116
+#: ../firstboot/pages/linkToServer/__init__.py:117
+#: ../firstboot/pages/linkToServer/__init__.py:118
 msgid "Unlink from authentication method"
 msgstr "Desvincular del método de autenticación"
 
-#: ../firstboot/pages/linkToServer/__init__.py:117
+#: ../firstboot/pages/linkToServer/__init__.py:119
 msgid "LDAP"
 msgstr "LDAP"
 
-#: ../firstboot/pages/linkToServer/__init__.py:118
+#: ../firstboot/pages/linkToServer/__init__.py:120
 msgid "Active Directory"
 msgstr "Active Directory"
 
-#: ../firstboot/pages/linkToServer/__init__.py:119
+#: ../firstboot/pages/linkToServer/__init__.py:121
 msgid "None"
 msgstr "Ninguno"
 
-#: ../firstboot/pages/linkToServer/__init__.py:149
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:205
-#: ../firstboot/pages/linkToChef/__init__.py:102
+#: ../firstboot/pages/linkToServer/__init__.py:151
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:206
+#: ../firstboot/pages/linkToChef/__init__.py:117
 msgid "The configuration file is valid."
 msgstr "El fichero de configuración es válido."
 
-#: ../firstboot/pages/linkToServer/__init__.py:167
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:223
-#: ../firstboot/pages/linkToChef/__init__.py:120
+#: ../firstboot/pages/linkToServer/__init__.py:169
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:224
+#: ../firstboot/pages/linkToChef/__init__.py:135
 msgid "Trying to connect..."
 msgstr "Intentando conectar..."
 
-#: ../firstboot/pages/linkToServer/__init__.py:219
+#: ../firstboot/pages/linkToServer/__init__.py:232
 msgid "The hostname can't not be longer than 15 characters"
 msgstr "El hostname no puede tener más de 15 caracteres"
 
@@ -279,8 +288,8 @@ msgid "login"
 msgstr "login"
 
 #: ../firstboot/pages/localUsers/Dialogs.py:61
-#: ../firstboot/serverconf/__init__.py:684
-#: ../firstboot/serverconf/__init__.py:740
+#: ../firstboot/serverconf/__init__.py:887
+#: ../firstboot/serverconf/__init__.py:943
 msgid "password"
 msgstr "contraseña"
 
@@ -440,7 +449,7 @@ msgid "Link to an existing workstation?"
 msgstr "¿Vincular a un estación de trabajo existente?"
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:93
-#: ../firstboot/serverconf/__init__.py:639
+#: ../firstboot/serverconf/__init__.py:791
 msgid "Select OU"
 msgstr "Seleccionar OU"
 
@@ -449,12 +458,12 @@ msgid "Select the OU to link into GCC Ui"
 msgstr "Seleccionar OU para vincular a la GCC Ui"
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:101
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:150
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:148
 msgid "Url Chef Certificate Required"
 msgstr "URL del certificado de Chef requerida"
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:101
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:150
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:148
 msgid ""
 "You need to enter url with certificate file\n"
 " in protocol://domain/resource format"
@@ -463,12 +472,12 @@ msgstr ""
 " con el formato protocolo://dominio/recurso"
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:105
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:154
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:152
 msgid "Can not download pem file"
 msgstr "No se puede descargar el fichero pem"
 
 #: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:138
-#: ../firstboot/serverconf/__init__.py:604
+#: ../firstboot/serverconf/__init__.py:740
 msgid "Select Workstation"
 msgstr "Seleccione la estación de trabajo"
 
@@ -480,11 +489,11 @@ msgstr "Seleccione una estación de trabajo para vincular"
 msgid "You need selected a workstation"
 msgstr "Necesita seleccionar una estación de trabajo"
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:185
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:186
 msgid "Chef URL must be valid URL and need certificate"
 msgstr "La URL de Chef debe ser una URL válida y necesita certificado"
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:189
+#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:190
 msgid "Some GCC attributes are incorrect or blank"
 msgstr "Algunos atributos de GCC son incorrectos o están vacíos"
 
@@ -492,7 +501,7 @@ msgstr "Algunos atributos de GCC son incorrectos o están vacíos"
 msgid "Link workstation to GECOS Control Center"
 msgstr "Vincular la estación de trabajo al Centro de Control GECOS"
 
-#: ../firstboot/pages/linkToChef/__init__.py:79
+#: ../firstboot/pages/linkToChef/__init__.py:80
 msgid ""
 "When a workstation is linked to a Control Center can be easily managed "
 "remotely.\n"
@@ -502,15 +511,32 @@ msgstr ""
 "ser controlada fácilmente de manera remota.\n"
 "\n"
 
-#: ../firstboot/pages/linkToChef/__init__.py:83
+#: ../firstboot/pages/linkToChef/__init__.py:84
 msgid "Unlink from Control Center"
 msgstr "Desvincular del Centro de Control"
 
-#: ../firstboot/pages/linkToChef/__init__.py:84
+#: ../firstboot/pages/linkToChef/__init__.py:85
 msgid "Link to Control Center server?"
 msgstr "¿Vincular con el servidor del Centro de Control?"
 
-#: ../firstboot/pages/linkToChef/__init__.py:170
+#: ../firstboot/pages/linkToChef/__init__.py:86
+#: ../firstboot/pages/linkToChef/__init__.py:94
+msgid "Unlink Locally"
+msgstr "Desvincular localmente"
+
+#: ../firstboot/pages/linkToChef/__init__.py:94
+msgid "Are you sure to unlink locally this workstation?"
+msgstr "¿Esta seguro de desvincularlo localmente?"
+
+#: ../firstboot/pages/linkToChef/__init__.py:103
+msgid "Unlink Error"
+msgstr "Error al desvincular"
+
+#: ../firstboot/pages/linkToChef/__init__.py:103
+msgid "An error occurred during the locally unlink"
+msgstr "Se ha producido un error durante la desvinculación local"
+
+#: ../firstboot/pages/linkToChef/__init__.py:185
 msgid "Error in user and password"
 msgstr "Error en el usuario y la contraseña"
 
@@ -550,22 +576,24 @@ msgstr "Modo depuración. Forzar a ejecutar la aplicación tras el primer inicio
 msgid "Use this URL by default in the \"Link to Server\" page."
 msgstr "Usar esta URL por defecto en la página \"Vincular con el servidor\"."
 
-#: ../firstboot/serverconf/__init__.py:85
+#: ../firstboot/serverconf/__init__.py:86
 msgid "You need to enter your GCC credentials to restoring the Workstation."
 msgstr ""
-"Es necesario introducir las credenciales del GCC para restaurar la estación de trabajo."
+"Es necesario introducir las credenciales del GCC para restaurar la estación "
+"de trabajo."
 
-#: ../firstboot/serverconf/__init__.py:88
+#: ../firstboot/serverconf/__init__.py:89
 msgid "You need to enter your credentials to access the requested resource."
 msgstr ""
 "Necesita introducir sus credenciales para acceder al recurso solicitado."
 
-#: ../firstboot/serverconf/__init__.py:97
-#: ../firstboot/serverconf/__init__.py:578
+#: ../firstboot/serverconf/__init__.py:98
+#: ../firstboot/serverconf/__init__.py:670
+#: ../firstboot/serverconf/__init__.py:709
 msgid "Authentication is failed."
 msgstr "La autenticación falló."
 
-#: ../firstboot/serverconf/__init__.py:311
+#: ../firstboot/serverconf/__init__.py:320
 msgid ""
 "The Date/Time Syncronization parameters are incorrect, please got to Date/"
 "Time section or review your autconf file"
@@ -573,7 +601,7 @@ msgstr ""
 "Los parámetros de sincronización de Fecha/Hora son incorrectos, por favor "
 "vaya a la sección Fecha/Hora o revise su fichero de autoconfiguración"
 
-#: ../firstboot/serverconf/__init__.py:314
+#: ../firstboot/serverconf/__init__.py:323
 msgid ""
 "The GCC parameters are incorrect, please got to GCC section or review your "
 "autconf file"
@@ -581,7 +609,7 @@ msgstr ""
 "Los parámetros de GCC son incorrectos, por favor vaya a la sección GCC o "
 "revise su fichero de autoconfiguración"
 
-#: ../firstboot/serverconf/__init__.py:317
+#: ../firstboot/serverconf/__init__.py:326
 msgid ""
 "The Chef parameters are incorrect, please got to GCC section or review your "
 "autconf file"
@@ -589,13 +617,13 @@ msgstr ""
 "Los parámetros de Chef son incorrectos, por favor vaya a la sección GCC o "
 "revise su fichero de autoconfiguración"
 
-#: ../firstboot/serverconf/__init__.py:320
+#: ../firstboot/serverconf/__init__.py:329
 msgid "The Local Users parameters are incorrect, please go to Users section"
 msgstr ""
 "Los parámetros de Usuarios Locales son incorrectos, por favor vaya a la "
 "sección Usuarios"
 
-#: ../firstboot/serverconf/__init__.py:326
+#: ../firstboot/serverconf/__init__.py:335
 msgid ""
 "The authentication parameters are incorrect, please go to Authentication "
 "section or review your autconf file"
@@ -603,63 +631,93 @@ msgstr ""
 "Los parámetros de autenticación son incorrectos, por favor vaya a la sección "
 "Autenticación o revise su fichero de autoconfiguración"
 
-#: ../firstboot/serverconf/__init__.py:329
-#: ../firstboot/serverconf/__init__.py:394
-#: ../firstboot/serverconf/__init__.py:405
+#: ../firstboot/serverconf/__init__.py:338
+#: ../firstboot/serverconf/__init__.py:407
+#: ../firstboot/serverconf/__init__.py:455
+#: ../firstboot/serverconf/__init__.py:458
 msgid "Configuration Error"
 msgstr "Error de configuración"
 
-#: ../firstboot/serverconf/__init__.py:337
+#: ../firstboot/serverconf/__init__.py:346
 msgid ""
-"Configuring the client, this may take several minutes.\n"
+"Configuring the client to link with Gecos Control Center, this may take "
+"several minutes.\n"
 "Please wait a moment"
 msgstr ""
-"Configurando el cliente, esto puede tardar varios minutos.\n"
+"Configurando el cliente para vincular con el Centro de Control, esto puede tardar varios minutos.\n"
 "Por favor, espere un momento"
 
-#: ../firstboot/serverconf/__init__.py:351
+#: ../firstboot/serverconf/__init__.py:354
+msgid ""
+"Configuring the client to link authentication method, this may take several "
+"minutes.\n"
+"Please wait a moment"
+msgstr ""
+"Configurando el metodo de autenticación del cliente, esto puede tardar varios minutos.\n"
+"Por favor, espere un momento"
+
+#: ../firstboot/serverconf/__init__.py:369
 msgid "Configuring the client"
 msgstr "Configuración del cliente"
 
-#: ../firstboot/serverconf/__init__.py:386
+#: ../firstboot/serverconf/__init__.py:403
 msgid "The client has been configured"
 msgstr "El cliente se ha configurado"
 
-#: ../firstboot/serverconf/__init__.py:393
+#: ../firstboot/serverconf/__init__.py:406
 msgid "An error has ocurred running chef-solo"
 msgstr "Ha ocurrido un error al ejecutar chef-solo"
 
-#: ../firstboot/serverconf/__init__.py:424
+#: ../firstboot/serverconf/__init__.py:454
+msgid "No connection to the server. It will unlink locally"
+msgstr ""
+
+#: ../firstboot/serverconf/__init__.py:515
 msgid "Restoring authentication configuration"
 msgstr "Seleccionar método de autenticación"
 
-#: ../firstboot/serverconf/__init__.py:444
-msgid "Restoring GCC configuration"
-msgstr "Restaurara configuración de GCC"
+#: ../firstboot/serverconf/__init__.py:535
+msgid "Unlink from GCC"
+msgstr "Desvincular del Centro de Control"
 
-#: ../firstboot/serverconf/__init__.py:469
-msgid "Restoring Server configuration"
-msgstr "Restaurar la configuración del servidor"
+#: ../firstboot/serverconf/__init__.py:560
+msgid "Unlink from Server"
+msgstr "Desvincular del servidor"
 
-#: ../firstboot/serverconf/__init__.py:502
+#: ../firstboot/serverconf/__init__.py:593
 msgid "Url Certificate"
 msgstr "URL del certificado"
 
-#: ../firstboot/serverconf/__init__.py:531
+#: ../firstboot/serverconf/__init__.py:622
 msgid "OU Name"
 msgstr "Nombre OU"
 
-#: ../firstboot/serverconf/__init__.py:678
+#: ../firstboot/serverconf/__init__.py:735
+#: ../firstboot/serverconf/__init__.py:786
+msgid "Pattern search"
+msgstr "Patron de búsqueda"
+
+#: ../firstboot/serverconf/__init__.py:810
+msgid "Search"
+msgstr "Búsqueda"
+
+#: ../firstboot/serverconf/__init__.py:881
 msgid "GCC Password"
 msgstr "Contraseña de GCC"
 
-#: ../firstboot/serverconf/__init__.py:682
+#: ../firstboot/serverconf/__init__.py:885
 msgid "Please insert GCC password for user "
 msgstr "Por favor introduzca la contraseña para el usuario de GCC "
 
-#: ../firstboot/serverconf/__init__.py:730
+#: ../firstboot/serverconf/__init__.py:933
 msgid "user"
 msgstr "usuario"
+
+#~ msgid "Restoring GCC configuration"
+#~ msgstr "Restaurara configuración de GCC"
+
+#~ msgid "Restoring Server configuration"
+#~ msgstr "Restaurar la configuración del servidor"
 
 #~ msgid ""
 #~ "This workstation currently uses an Active Directory server for user "
@@ -667,9 +725,6 @@ msgstr "usuario"
 #~ msgstr ""
 #~ "Esta estación de trabajo usa actualmente un servidor Active Directory "
 #~ "para autenticación de usuarios."
-
-#~ msgid "Unlink from LDAP"
-#~ msgstr "Desvincular de LDAP"
 
 #~ msgid "Unlink from Active Directory"
 #~ msgstr "Desvincular de Active Directory"

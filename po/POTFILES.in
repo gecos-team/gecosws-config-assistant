@@ -7,6 +7,7 @@ firstboot/FirstbootWindow.py
 firstboot/pages/installSoftware/__init__.py
 firstboot/pages/network/interface.py
 firstboot/pages/network/__init__.py
+firstboot/pages/autoConfig/AutoConfigResult.py
 firstboot/pages/autoConfig/__init__.py
 firstboot/pages/linkToServer/LinkToServerResultsPage.py
 firstboot/pages/linkToServer/LinkToServerConfEditorPage.py
