@@ -23,29 +23,24 @@ __license__ = "GPL-2"
 import os
 import subprocess
 import shlex
-import sys
 import threading
-from gi.repository import Gtk
-from firstboot_lib import firstbootconfig
-from gi.repository import Gtk
-import gettext
 from firstboot_lib.firstbootconfig import get_prefix
-from gettext import gettext as _
-gettext.textdomain('gecosws-config-assistant')
+
 
 class ChefSolo(threading.Thread):
-    def __init__(self, filepath, server_conf, unlink):
+    def __init__(self, filepath, server_conf, unlink, gcc_conf, chef_conf):
         self.filepath = filepath
         self.unlink = unlink
+        self.gcc_conf = gcc_conf
+        self.chef_conf = chef_conf
         self.server_conf = server_conf
         self.exit_code = 0
         threading.Thread.__init__(self)
 
     def get_exit_code(self):
-		return self.exit_code
+        return self.exit_code
 
     def run(self):
-        
         gem_repo = self.server_conf.get_gem_repo()
         envs = os.environ
         envs['LANG'] = 'es_ES.UTF-8'
@@ -61,7 +56,7 @@ class ChefSolo(threading.Thread):
         sources = output.split('\n')
         sources.pop(0)
         sources.pop(0)
-        sources.pop(len(sources)-1)
+        sources.pop(len(sources) - 1)
 
         for source in sources:
             cmd = '"/opt/chef/embedded/bin/gem" "source" "-r" "%s"' % (source)
@@ -72,7 +67,7 @@ class ChefSolo(threading.Thread):
         cmd = '"/opt/chef/embedded/bin/gem" "source" "-a" "%s"' % (gem_repo)
         cmd_split = shlex.split(cmd)
         process = subprocess.Popen(cmd_split, stdout=log_chef_solo, stderr=log_chef_solo_err, env=envs)
-        os.waitpid(process.pid, 0)        
+        os.waitpid(process.pid, 0)
 
         solo_rb = get_prefix() + '/share/gecosws-config-assistant/solo.rb'
         cmd = '"chef-solo" "-c" "%s" "-j" "%s"' % (solo_rb, self.filepath)
@@ -80,12 +75,9 @@ class ChefSolo(threading.Thread):
         process = subprocess.Popen(cmd_split, stdout=log_chef_solo, stderr=log_chef_solo_err, env=envs)
         self.exit_code = os.waitpid(process.pid, 0)
         output = process.communicate()[0]
-        if not self.unlink and os.path.exists("/usr/bin/chef-client-wrapper"):
+        if not self.unlink and self.gcc_conf and self.chef_conf and os.path.exists("/usr/bin/chef-client-wrapper"):
             cmd = '"chef-client-wrapper"'
             cmd_split = shlex.split(cmd)
             process = subprocess.Popen(cmd_split, env=envs)
             self.exit_code = os.waitpid(process.pid, 0)
             output = process.communicate()[0]
-	
-	
-	        

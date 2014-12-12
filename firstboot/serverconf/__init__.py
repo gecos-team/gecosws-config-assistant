@@ -365,7 +365,7 @@ def destroy_pgbar(widget, response, dialog, thread):
 def run_chef_solo(fp, message, unlink=False, jsssd=False):
     try:
         server_conf = get_server_conf(None)
-        thread = ChefSolo(fp, server_conf, unlink)
+        thread = ChefSolo(fp, server_conf, unlink, gcc_is_configured(), chef_is_configured())
         dialog = Gtk.Dialog(_('Configuring the client'), None,
                 Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, (Gtk.STOCK_OK, Gtk.ResponseType.OK))
         description = Gtk.Label();
