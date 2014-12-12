@@ -108,15 +108,23 @@ action :setup do
           file "/etc/chef.control" do
             action :nothing
           end.run_action(:delete)
+
           Chef::Log.info("Chef: Removing client.pem")
           file "/etc/chef/client.pem" do
             action :nothing
           end.run_action(:delete)
+
           Chef::Log.info("Deleting node " + new_resource.chef_node_name)
           execute 'Knife Delete' do
             command 'knife node delete \'' + new_resource.chef_node_name + '\' -c /etc/chef/knife.rb -y'
             action :nothing
           end.run_action(:run)
+
+          Chef::Log.info("Chef: Removing wrapper")
+          file "/usr/bin/chef-client-wrapper" do
+            action :nothing
+          end.run_action(:delete)
+
           Chef::Log.info("Deleting client " + new_resource.chef_node_name)
           execute 'Knife Delete' do
             command 'knife client delete \'' + new_resource.chef_node_name + '\' -c /etc/chef/knife.rb -y'

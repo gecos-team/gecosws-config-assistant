@@ -89,7 +89,8 @@ action :setup do
             Dir.chdir(nm_conn_path) do
               Dir.glob('*').each do |file|
                 if ::File.file?(file)
-                  FileUtils.mv file, nm_conn_backup_dir
+                  Chef::Log.info("Copying files: #{nm_conn_path}/#{file} to #{nm_conn_backup_dir}")
+                  FileUtils.cp_r file, nm_conn_backup_dir
                 end
               end
             end
@@ -104,12 +105,14 @@ action :setup do
                 :connection => connection
                 })
               source 'connection.erb'
-            end
+              action :nothing
+            end.run_action(:create)
           end
         end
         Dir.chdir(nm_conn_production_dir) do
           Dir.glob('*').each do |file|
             if ::File.file?(file)
+              Chef::Log.info("Moving files: #{nm_conn_production_dir}/#{file} to #{nm_conn_path}")
               FileUtils.mv file, nm_conn_path
             end
           end
@@ -239,5 +242,10 @@ action :setup do
       node.set['job_status'][jid]['status'] = 1
       node.set['job_status'][jid]['message'] = e.message.force_encoding("utf-8")
     end
+  ensure
+    gecos_ws_mgmt_jobids "network_res" do
+      provider "gecos_ws_mgmt_jobids"
+      recipe "network_mgmt"
+    end.run_action(:reset)
   end
 end

@@ -3,7 +3,7 @@ maintainer        "Roberto C. Morano"
 maintainer_email  "rcmorano@emergya.com"
 license           "Apache 2.0"
 description       "Cookbook for GECOS workstations administration"
-version           "0.3.6"
+version           "0.3.7"
 
 depends "apt"
 depends "chef-client"
@@ -1215,8 +1215,8 @@ printers_js = {
 }
 
 local_users_js = {
-  title: "Local users",
-  title_es: "Usuarios locales",
+  title: "Users",
+  title_es: "Usuarios",
   type: "object",
   required: ["users_list"],
   properties:
@@ -1311,11 +1311,11 @@ local_file_js = {
       required: ["file_orig","file_dest"],
       order:["user", "group", "file_orig", "file_dest", "mode", "overwrite"],
       properties:{
-        file_orig: {type: "string", title: "Url File", title_es: "Archivo de Url"},
-        file_dest: {type: "string", title: "File URL", title_es: "URL del archivo", description: "Enter the absolute path where the file is saved", description_es: "Introduzca la ruta absoluta donde se guardará el archivo"},
+        file_orig: {type: "string", title: "File URL", title_es: "URL del archivo", description: "Enter the URL where the file was downloaded", description_es: "Introduzca la URL donde se descargará el archivo"},
+        file_dest: {type: "string", title: "File Path", title_es: "Ruta del archivo", description: "Enter the absolute path where the file is saved", description_es: "Introduzca la ruta absoluta donde se guardará el archivo"},
         user: {type: "string", title:"User", title_es: "Usuario"},
         group: {type: "string", title: "Group", title_es: "Grupo"},
-        mode: {type: "string", title: "Mode", title_es: "Modo"},
+        mode: {type: "string", title: "Mode", title_es: "Permisos"},
         overwrite: {type: "boolean", title: "Overwrite?", title_es: "Sobrescribir"}
       }
     }

@@ -12,6 +12,7 @@
 #include_recipe "gecos_ws_mgmt::sssd_mgmt"
 
 
+
 if not node[:gecos_ws_mgmt][:misc_mgmt][:tz_date_res].nil?
   gecos_ws_mgmt_tz_date 'localtime' do
     server node[:gecos_ws_mgmt][:misc_mgmt][:tz_date_res][:server]
@@ -22,6 +23,36 @@ if not node[:gecos_ws_mgmt][:misc_mgmt][:tz_date_res].nil?
 end
 
 if not node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_server_url].nil?
+    
+  Chef::Log.info("Installing wrapper")
+  cookbook_file "chef-client-wrapper" do
+    path "/usr/bin/chef-client-wrapper"
+    owner 'root'
+    mode '0755'
+    group 'root'
+    action :nothing
+  end.run_action(:create_if_missing)
+  
+  Chef::Log.info("Enable chef-client-wrapper")
+  
+  file "/var/spool/cron/crontabs/root" do
+    owner 'root'
+    group 'root'
+    action :nothing
+  end.run_action(:create_if_missing)
+  
+  bash "Added cron line for wrapper" do 
+    user "root"
+    cwd "/var/spool/cron/crontabs/"
+    code <<-EOF
+      grep chef-client-wrapper root
+      if [[ $? -eq 1 ]]; then
+         echo "*/30 * * * * chef-client-wrapper" >> root
+      fi
+    EOF
+    not_if "grep chef-client-wrapper root"
+  end.run_action(:run)
+
   gecos_ws_mgmt_chef node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_server_url] do
     chef_link node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_link]
     chef_validation_pem node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_validation_pem]
@@ -32,6 +63,13 @@ if not node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_server_url].nil?
     support_os node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:support_os]
     action  :setup
   end
+
+  service 'chef-client' do
+    provider Chef::Provider::Service::Upstart
+    supports :status => true, :restart => true, :reload => true
+    action [:disable, :stop]
+  end
+
 end
 
 if not node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:uri_gcc].nil?
@@ -86,3 +124,5 @@ if not node[:gecos_ws_mgmt][:misc_mgmt][:local_users_res].nil?
     action :setup
   end
 end  
+
+node.set['use_node']= {}

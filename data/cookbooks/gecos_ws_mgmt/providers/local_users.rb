@@ -52,7 +52,7 @@ action :setup do
             end.run_action(:create)
             bash "copy skel to #{username}" do
               code <<-EOH 
-                cp /etc/skel/.* #{user_home}
+                cp -r /etc/skel/.* #{user_home}
                 chown -R #{username}: #{user_home}
                 EOH
               action :nothing
