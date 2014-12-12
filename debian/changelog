@@ -1,3 +1,10 @@
+gecosws-config-assistant (0.7.8-0gecos1) trusty; urgency=medium
+
+  * Added more check to run chef-client-wrapper after link ws 
+  * Create chef-client-wrapper into local recipe and fix copy home directory correctly
+
+ -- David Amian <damian@emergya.es>  Fri, 12 Dec 2014 12:28:16 +0100
+
 gecosws-config-assistant (0.7.7-0gecos2) trusty; urgency=medium
 
   * i18n
