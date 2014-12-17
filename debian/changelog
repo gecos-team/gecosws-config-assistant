@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.7.9-0gecos1) trusty; urgency=medium
+
+  *  Update cookbooks 
+
+ -- David Amian <damian@emergya.es>  Wed, 17 Dec 2014 18:40:26 +0100
+
 gecosws-config-assistant (0.7.8-0gecos1) trusty; urgency=medium
 
   * Added more check to run chef-client-wrapper after link ws 
