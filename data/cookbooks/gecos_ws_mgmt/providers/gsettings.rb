@@ -14,7 +14,9 @@ require 'etc'
 def initialize(*args)
   super
   @action = :set
-  package 'xvfb' 
+  package 'xvfb' do
+    action :nothing
+  end.run_action(:install)
 
   dconf_cache_dir = "/home/#{new_resource.username}/.cache/dconf"
   unless Kernel::test('d', dconf_cache_dir)

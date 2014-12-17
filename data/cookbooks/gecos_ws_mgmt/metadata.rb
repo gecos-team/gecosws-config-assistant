@@ -3,7 +3,7 @@ maintainer        "Roberto C. Morano"
 maintainer_email  "rcmorano@emergya.com"
 license           "Apache 2.0"
 description       "Cookbook for GECOS workstations administration"
-version           "0.3.7"
+version           "0.3.8"
 
 depends "apt"
 depends "chef-client"
@@ -37,7 +37,130 @@ support_os_js = {
   }
 
 }
+
+mobile_broadband_js = {
+  title: "Mobile broadband connections",
+  title_es: "Conexiones de banda ancha móvil",
+  type: "object",
+  required: ["connections"],
+  properties: {
+    connections: {
+      title: "Connections",
+      title_es: "Conexiones",
+      type: "array",
+      minItems: 0,
+      uniqueItems: true,
+      items: {
+        type: "object",
+        title: "Provider",
+        title_es: "Proveedor",
+        required: ["provider", "country"],
+        order: ["provider","country"],
+        properties: { 
+          provider: {
+            type: "string",
+            title: "Provider",
+            title_es: "Proveedor",
+            enum: ['Euskaltel','Másmovil','móbil R (Mundo-R)','moviData','ONO','Pepephone','Orange','Simyo/Blau','Telecable','Movistar (Telefónica)','Vodafone (Airtel)','Yoigo','Jazztel','Carrefour Móvil','Eroski Móvil'], 
+          },
+          country: {
+            type: "string",
+            title: "Country code",
+            title_es: "Código de país",
+            enum: ["es"]
+          }
+            
+        }
+      }
+    },
+    updated_by: updated_js,
+    support_os: support_os_js.clone,
+    job_ids: {
+        type: "array",
+        minItems: 0,
+        uniqueItems: true,
+        items: {
+          type: "string"
+        }
+    }
+  }
+}
     
+forticlientvpn_js = {
+  title: "FortiClient VPN connections",
+  title_es: "Conexiones VPN de FortiClient",
+  type: "object",
+  required: ["connections"],
+  order: ["connections", "proxyserver", "proxyport", "proxyuser", "autostart", "keepalive"],
+  properties: {
+    connections: {
+      title: "Connections",
+      title_es: "Conexiones",
+      type: "array",
+      minItems: 0,
+      uniqueItems: true,
+      items: {
+        type: "object",
+        required: ["name", "server", "port"],
+        order: ["name", "server", "port"],
+        properties: {
+          server: {
+            type: "string",
+            title: "Server",
+            title_es: "Servidor"
+          },
+          port: {
+            type: "string",
+            title: "Port",
+            title_es: "Puerto"
+          },
+          name: {
+            type: "string",
+            title: "Name",
+            title_es: "Nombre"
+          }
+        }
+      }
+    },
+    proxyserver:{ 
+      type: "string",
+      title: "Proxy Server",
+      title_es: "Servidor Proxy"
+    },
+    proxyport: {
+      type: "string",
+      title: "Proxy Port",
+      title_es: "Puerto del Proxy"
+    },
+    proxyuser: {
+      type: "string",
+      title: "Proxy user",
+      title_es: "Usuario del Proxy"
+    },
+    autostart: {
+      type: "boolean",
+      title: "Proxy user",
+      default: false,
+      title_es: "Arranque automatico"
+    },
+    keepalive:{ 
+      title: "Keepalive frequency",
+      title_es: "Frecuencia del keepalive",
+      type: "integer"
+    },
+    updated_by: updated_js,
+    support_os: support_os_js.clone,
+    job_ids: {
+        type: "array",
+        minItems: 0,
+        uniqueItems: true,
+        items: {
+          type: "string"
+        }
+    }
+  }
+}
+
 
 sssd_js = {
   title: "Authenticate System",
@@ -333,7 +456,7 @@ desktop_menu_js = {
 
 user_launchers_js = {
   title: "User Launchers",
-  title_es: "Acceso directo al escritorio",
+  title_es: "Acceso directo en el escritorio",
   type: "object",
   required: ["users"],
   properties: {
@@ -438,6 +561,7 @@ file_browser_js = {
       patternProperties: {
         ".*" => { type: "object", title: "Username", title_es: "Nombre de usuario",
           required: ["default_folder_viewer", "show_hidden_files", "show_search_icon_toolbar", "click_policy", "confirm_trash"],
+          order: ["click_policy", "show_hidden_files", "default_folder_viewer", "show_search_icon_toolbar", "confirm_trash"],
           properties: {
             default_folder_viewer: {type: "string", title: "files viewer", title_es: "Visualización de archivos", enum: ["icon-view", "compact-view", "list-view"], default: "icon-view"},
             show_hidden_files: {type: "string", title: "Show hidden files?", title_es: "Mostrar archivos ocultos", enum: ["true","false"], default: "false"},
@@ -462,6 +586,55 @@ file_browser_js = {
 }
 
 
+cert_js = {
+  title: "Certificate Management",
+  title_es: "Gestion de Certificados",
+  type: "object",
+  properties:{
+    java_keystores: {
+      title: "Java Keystores",
+      title_es: "Almacenes de claves de Java",
+      description: "Path of java keystore: e.g. /etc/java/cacerts-gcj",
+      description_es: "Ruta del almacen de claves: p.ej. /etc/java/cacerts-gcj",
+      type: "array",
+      minItems: 0,
+      uniqueItems: true,
+      items: {
+        type: "string"
+      }
+    },
+    ca_root_certs:{
+      title: "CA root certificates",
+      title_es: "Certificados raices de Autoridades de Certificación (CA)",
+      type:"array",
+      minItems: 0,
+      uniqueItems: true,
+      items: {
+        type: "object",
+        properties:{
+          name: {
+            title: "Name",
+            title_es: "Nombre",
+            type: "string"
+          },
+          uri: {
+            title: "Uri certificate",
+            title_es: "Uri del certificado",
+            type: "string"
+          }
+        }
+      }
+    },
+    support_os: support_os_js.clone,
+    job_ids: {
+        type: "array",
+        minItems: 0,
+        uniqueItems: true,
+        items: {
+          type: "string"
+        }
+    }
+  }
 
 
 
@@ -488,6 +661,7 @@ web_browser_js = {
               items: {
                 type: "object",
                 required: ["name", "uri", "action"],
+                order: ["name", "uri", "action"],
                 properties: {
                   name: {title: "Name", title_es: "Nombre", type: "string"},
                   uri: {title: "Uri", title_es: "Uri", type: "string"},
@@ -504,6 +678,7 @@ web_browser_js = {
               items: {
                 type: "object",
                 required: ["name", "uri"],
+                order: ["name", "uri"],
                 properties: {
                   name: {title: "Name", title_es: "Nombre", type: "string"},
                   uri: {title: "Uri", title_es: "Uri", type: "string"}
@@ -580,6 +755,190 @@ web_browser_js = {
     }
   }
 }
+email_client_js = {
+  title: "Email Configuration",
+  title_es: "Configuración de email",
+  type: "object",
+  properties: {
+    users: {
+      type: "object",
+      title: "Users",
+      title_es: "Usuarios",
+      patternProperties: {
+        ".*" => { type: "object", title: "Username", title_es: "Nombre de usuario",
+          required: ["identity", "imap", "smtp"],
+          order: ["identity", "imap", "smtp"],
+          properties: {  
+            identity: {
+              title: "Identity of the user",
+              title_es: "Identidad del usuario",
+              type: "object",
+              order: ["name", "email"],
+              properties: {
+                name: {
+                  title: "Name",
+                  title_es: "Nombre",
+                  type: "string"
+                },
+                email: {
+                  title: "Email address",
+                  title_es: "Dirección de correo electrónico",
+                  # pattern: TODO !!!!
+                  type: "string"
+                }
+              }
+            },
+            imap: {
+              title: "IMAP server",
+              title_es: "Servidor IMAP",
+              type: "object",
+              order: ["username", "hostname", "port"],
+              properties: {
+                hostname: {
+                  title: "Hostname",
+                  title_es: "Hostname",
+                  # pattern: TODO !!!!
+                  type: "string"
+                },
+                port: {
+                  title: "Port",
+                  title_es: "Puerto",
+                  default: 143,
+                  # selector: 143 / Libre TODO !!!!
+                  type: "number"
+                },
+                username: {
+                  title: "Username",
+                  title_es: "Nombre de usuario",
+                  type: "string"
+                }
+              }
+            },
+            smtp: {
+              title: "SMTP server",
+              title_es: "Servidor SMTP",
+              type: "object",
+              order: ["username", "hostname", "port"],
+              properties: {
+                hostname: {
+                  title: "Hostname",
+                  title_es: "Hostname",
+                  # pattern: TODO !!!!
+                  type: "string"
+                },
+                port: {
+                  title: "Port",
+                  title_es: "Puerto",
+                  default: 25,
+                  # selector: 25 / 110 / Libre TODO !!!!
+                  type: "number"
+                },
+                username: {
+                  title: "Username",
+                  title_es: "Nombre de usuario",
+                  type: "string"
+                }
+              }
+            },
+            updated_by: updated_js
+          }
+        }
+      }
+    },
+    support_os: support_os_js.clone,
+    job_ids: {
+      type: "array",
+      minItems: 0,
+      uniqueItems: true,
+      items: {
+        type: "string"
+      }
+    }
+  }
+}
+
+user_alerts_js = {
+  title: "User alert",
+  title_es: "Alertas de usuario",
+  type: "object",
+  properties: {
+    users: {
+      type: "object",
+      title: "Users",
+      title_es: "Usuarios",
+      patternProperties: {
+        ".*" => { type: "object", title: "Username", title_es: "Nombre de usuario",
+          required: ["summary", "body"],
+          order: ["summary", "body", "urgency", "icon"],
+          properties: {  
+            summary: {
+              title: "Summary for the alert message",
+              title_es: "Titulo para el mensaje de alerta",
+              type: "string"
+            }, 
+            body: {
+              title: "Body of the alert message",
+              title_es: "Cuerpo del mensaje de alerta",
+              type: "string"
+            }, 
+            urgency: {
+              title: "Urgency level for the alert",
+              title_es: "Nivel de urgencia de la alerta",
+              type: "string",
+              enum: ["low", "normal", "critical"],
+              default: "normal"
+            },
+            icon: {
+              title: "Icon filename or stock icon to display",
+              title_es: "Fichero de icono o icono del stock a mostrar",
+              description: "This policy will apply 5 minutes after synchronization",
+              description_es: "Esta politica se aplicará 5 minutos después de la sincronización",
+              type: "string",
+              default: "info"
+            },
+            updated_by: updated_js
+          }
+        }
+      }
+    },
+    support_os: support_os_js.clone,
+    job_ids: {
+      type: "array",
+      minItems: 0,
+      uniqueItems: true,
+      items: {
+        type: "string"
+      }
+    }
+  }
+}
+
+remote_shutdown_js = {
+  title: "Remote shutdown",
+  title_es: "Apagado remoto",
+  type: "object",
+  required: ["shutdown_mode"],
+  properties: {
+    shutdown_mode: {
+      title: "Shutdown mode",
+      title_es: "Tipo de apagado",
+      description: "This policy will apply 5 minutes after synchronization",
+      description_es: "Esta politica se aplicará 5 minutos después de la sincronización",
+      type: "string",
+      enum: ["halt", "reboot",""],
+      default: "halt"
+    }, 
+    support_os: support_os_js.clone,
+    job_ids: {
+      type: "array",
+      minItems: 0,
+      uniqueItems: true,
+      items: {
+        type: "string"
+      }
+    }
+  }
+}
 
 user_shared_folders_js = {
   title: "Shared Folders",
@@ -632,7 +991,7 @@ app_config_js = {
   title_es: "Configuración de aplicaciones",
   type: "object",
  # required: ["citrix_config", "java_config", "firefox_config", "thunderbird_config", "loffice_config"],
-  required: ["java_config"],
+  required: ["java_config", "loffice_config"],
   properties: {
     #citrix_config: {title: "Citrix Configuration", title_es: "Configuración de Citrix", type: "object"},
     java_config: {
@@ -718,8 +1077,34 @@ app_config_js = {
         }
       }
     },
-    #thunderbird_config: {title: "Thuderbird Configuration", title_es: "Configuración de Thunderbird", type: "object"},
-    #loffice_config: {title: "Libre Office Configuration", title_es: "Configuración de Libre Office", type: "object"},
+    thunderbird_config: {
+      title: "Thunderbird Configuration",
+      title_es: "Configuración de Thunderbird",
+      type: "object",
+      properties: {
+        app_update: {
+          title: "Enable/Disable auto update",
+          title_es: "Activar/Desactivar actualizaciones automáticas",
+          type: "boolean",
+          enum: [true,false],
+          default: false
+        }
+      }
+    },
+    loffice_config: {
+      title: "Libre Office Configuration",
+      title_es: "Configuración de Libre Office",
+      type: "object",
+      properties: {
+        app_update: {
+          title: "Enable/Disable auto update",
+          title_es: "Activar/Desactivar actualizaciones automáticas",
+          type: "boolean",
+          enum: [true,false],
+          default: false
+        }
+      }
+    },
     job_ids: {
         type: "array",
         minItems: 0,
@@ -742,8 +1127,9 @@ auto_updates_js = {
     auto_updates_rules: {
       type: "object",
       title: "Auto Updates Rules",
-      title_es: "Reglas de actualizaciones automaticas",
+      title_es: "Reglas de actualizaciones automáticas",
       required: ["onstop_update", "onstart_update", "days"],
+      order: ["onstart_update", "onstop_update", "days"],
       properties: {
         onstop_update: {title: "Update on shutdown?", title_es: "Actualizar al apagado",  type: "boolean"},
         onstart_update: {title: "Update on start", title_es: "Actualizar al inicio", type: "boolean"},
@@ -917,6 +1303,7 @@ scripts_launch_js = {
   title_es: "Lanzador de scripts",
   type: "object",
   required: ["on_startup","on_shutdown"],
+  order: ["on_startup", "on_shutdown"],
   properties:
   {
     on_startup: {
@@ -1140,6 +1527,33 @@ software_sources_js = {
    }
 }
 
+package_profile_js = {
+  title: "Packages Profile management",
+  title_es: "Administración de perfiles de software",
+  type: "object",
+  order:["package_list"],
+  properties:
+  {
+    package_list: {
+      type:"array",
+      title: "Package list to install",
+      title_es: "Lista de paquetes para instalar",
+      minItems: 0,
+      uniqueItems: true,
+      items: {type: "string"}
+    },
+    job_ids: {
+      type: "array",
+      minItems: 0,
+      uniqueItems: true,
+      items: {
+        type: "string"
+      }
+    },
+    support_os: support_os_js.clone,
+    updated_by: updated_js
+  }
+}
 
 package_js = {
   title: "Packages management",
@@ -1197,7 +1611,8 @@ printers_js = {
           model: { type: "string" , title: "Model", title_es: "Modelo"},
           uri: { type: "string", title: "Uri", title_es: "Uri"},
           ppd_uri: { type: "string", title: "Uri PPD", title_es: "Uri PPD", default: "", pattern: "(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]"},
-          ppd: { type: "string", title: "PPD Name", title_es: "Nombre PPD"}
+          ppd: { type: "string", title: "PPD Name", title_es: "Nombre PPD"},
+          oppolicy: {enum: ["default","authenticated"], default:"default", type: "string", title: "Operation Policy", title_es: "Politica de Autenticación"}
         }
       }
     },
@@ -1288,6 +1703,7 @@ local_file_js = {
   title_es: "Archivos locales",
   type: "object",
   required: ["delete_files", "copy_files"],
+  order: ["copy_files", "delete_files"],
   properties:
   {delete_files: {
       type:"array",
@@ -1296,6 +1712,7 @@ local_file_js = {
       items: {
         type:"object",
         required: ["file"],
+        order:["file", "backup"],
         properties:{
           file: {type: "string", title:"File", title_es: "Archivo", description: "Enter the absolute path of the file to delete", description_es: "Introduzca la ruta absoluta del archivo a borrar"},
           backup: { type: "boolean", title: "Create backup?", title_es: "¿Crear copia de seguridad?" }
@@ -1396,6 +1813,7 @@ power_conf_js = {
   title_es: "Administración de energía",
   type: "object",
   required: ["cpu_freq_gov","auto_shutdown","usb_autosuspend"],
+  order: ["cpu_freq_gov", "usb_autosuspend", "auto_shutdown"],
   properties:
     {cpu_freq_gov: {
        title: "CPU frequency governor",
@@ -1412,6 +1830,7 @@ power_conf_js = {
        },
      auto_shutdown: {
        type: "object",
+       order: ["hour", "minute"],
        properties: {
          hour: {
            title: "Hour",
@@ -1495,23 +1914,29 @@ power_conf_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
 local_admin_users_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
 software_sources_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
 package_js[:properties][:support_os][:default]=["GECOS V2","Ubuntu 14.04.1 LTS","Gecos V2 Lite"]
+package_profile_js[:properties][:support_os][:default]=["GECOS V2","Ubuntu 14.04.1 LTS","Gecos V2 Lite"]
 app_config_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
 printers_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
-user_shared_folders_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
+user_shared_folders_js[:properties][:support_os][:default]=["GECOS V2"]
 web_browser_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
-file_browser_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
+email_client_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
+file_browser_js[:properties][:support_os][:default]=["GECOS V2"]
 user_launchers_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
-desktop_background_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
+desktop_background_js[:properties][:support_os][:default]=["GECOS V2"]
 desktop_menu_js[:properties][:support_os][:default]=[]
 desktop_control_js[:properties][:support_os][:default]=[]
 user_apps_autostart_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
 folder_sharing_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
-screensaver_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
-folder_sync_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
+screensaver_js[:properties][:support_os][:default]=["GECOS V2"]
+folder_sync_js[:properties][:support_os][:default]=["GECOS V2"]
 user_mount_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
+user_alerts_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
+remote_shutdown_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
+forticlientvpn_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
 user_modify_nm_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
 shutdown_options_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
-
+cert_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
+mobile_broadband_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
 
 complete_js = {
   description: "GECOS workstation management LWRPs json-schema",
@@ -1526,15 +1951,17 @@ complete_js = {
       properties: {
         network_mgmt: {
           type: "object",
-          required: ["network_res"],
+          required: ["network_res","forticlientvpn_res","mobile_broadband_res"],
           properties: {
-            network_res: network_resource_js
+            network_res: network_resource_js,
+            forticlientvpn_res: forticlientvpn_js,
+            mobile_broadband_res: mobile_broadband_js
             #sssd_res: sssd_js
           }
         },
         misc_mgmt: {
           type: "object",
-          required: ["tz_date_res", "scripts_launch_res", "local_users_res", "local_groups_res", "local_file_res", "local_admin_users_res", "auto_updates_res","power_conf_res"],
+          required: ["tz_date_res", "scripts_launch_res", "local_users_res", "local_groups_res", "local_file_res", "local_admin_users_res", "auto_updates_res","power_conf_res","remote_shutdown_res","cert_res"],
           properties: {
             tz_date_res: tz_date_js,
             scripts_launch_res: scripts_launch_js,
@@ -1544,15 +1971,18 @@ complete_js = {
             auto_updates_res: auto_updates_js,
             local_groups_res: local_groups_js,
             power_conf_res: power_conf_js,
-            local_admin_users_res: local_admin_users_js
+            local_admin_users_res: local_admin_users_js,
+            remote_shutdown_res: remote_shutdown_js,
+            cert_res: cert_js
           }
         },
         software_mgmt: {
           type: "object",
-          required: ["software_sources_res","package_res", "app_config_res"],
+          required: ["software_sources_res","package_res", "app_config_res","package_profile_res"],
           properties: {
             software_sources_res: software_sources_js,
             package_res: package_js,
+            package_profile_res: package_profile_js,
             app_config_res: app_config_js
           }
         },
@@ -1565,11 +1995,13 @@ complete_js = {
         },
         users_mgmt: {
           type: "object",
-          required: ["user_apps_autostart_res", "user_shared_folders_res", "web_browser_res", "file_browser_res", "user_launchers_res", "desktop_menu_res", "desktop_control_res", "folder_sharing_res", "screensaver_res","folder_sync_res", "user_mount_res","shutdown_options_res","desktop_background_res"],
+          required: ["user_apps_autostart_res", "user_shared_folders_res", "web_browser_res", "email_client_res", "file_browser_res", "user_launchers_res", "desktop_menu_res", "desktop_control_res", "folder_sharing_res", "screensaver_res","folder_sync_res", "user_mount_res","shutdown_options_res","desktop_background_res","user_alerts_res"],
           properties: {
             user_shared_folders_res: user_shared_folders_js,
             web_browser_res: web_browser_js,
+            email_client_res: email_client_js,
             file_browser_res: file_browser_js,
+            user_alerts_res: user_alerts_js,
             user_launchers_res: user_launchers_js,
             desktop_background_res: desktop_background_js,
             desktop_menu_res: desktop_menu_js,

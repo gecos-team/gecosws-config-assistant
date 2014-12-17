@@ -1,0 +1,22 @@
+version=2
+proxyserver=<%= @proxyserver %>
+proxyport=<%= @proxyport %>
+proxyuser=<%= @proxyuser %>
+proxypasswd=
+current=<%= @current_profile %>
+keepalive=<%= @keepalive %>
+autostart=<%= @autostart %>
+<% 
+if not @connections.nil?
+  @connections.each_pair do |conn_name, conn| %>
+profile=<%= conn_name %>
+p12passwd=<%= conn["p12passwd"] %>
+path=<%= conn["path"] %>
+password=<%= conn["password"] %>
+user=<%= conn["user"] %>
+port=<%= conn["port"] %>
+server=<%= conn["server"] %>
+<% 
+  end
+end
+%>

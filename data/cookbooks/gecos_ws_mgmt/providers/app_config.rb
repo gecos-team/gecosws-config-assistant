@@ -18,6 +18,38 @@ action :setup do
     os = `lsb_release -d`.split(":")[1].chomp().lstrip()
     if new_resource.support_os.include?(os)
 
+      if not new_resource.loffice_config.empty?
+        app_update = new_resource.loffice_config['app_update']
+
+        if app_update
+          execute "enable libreoffice upgrades" do
+            command "apt-mark unhold libreoffice libreoffice*"
+            action :nothing
+          end.run_action(:run)
+        else
+          execute "disable libreoffice upgrades" do
+            command "apt-mark hold libreoffice libreoffice*"
+            action :nothing
+          end.run_action(:run)
+        end
+      end
+
+      if not new_resource.thunderbird_config.empty?
+        app_update = new_resource.thunderbird_config['app_update']
+
+        if app_update
+          execute "enable thunderbird upgrades" do
+            command "apt-mark unhold thunderbird thunderbird*"
+            action :nothing
+          end.run_action(:run)
+        else
+          execute "disable thunderbird upgrades" do
+            command "apt-mark hold thunderbird thunderbird*"
+            action :nothing
+          end.run_action(:run)
+        end
+      end
+
       if not new_resource.firefox_config.empty?
         app_update = new_resource.firefox_config['app_update']
         unless Kernel::test('d', '/etc/firefox/pref')
@@ -106,7 +138,11 @@ action :setup do
     job_ids = new_resource.job_ids
     job_ids.each do |jid|
       node.set['job_status'][jid]['status'] = 1
-      node.set['job_status'][jid]['message'] = e.message.force_encoding("utf-8")
+      if not e.message.frozen?
+        node.set['job_status'][jid]['message'] = e.message.force_encoding("utf-8")
+      else
+        node.set['job_status'][jid]['message'] = e.message
+      end
     end
   ensure
     gecos_ws_mgmt_jobids "app_config_res" do

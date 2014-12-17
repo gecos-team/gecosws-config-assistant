@@ -51,6 +51,13 @@ gecos_ws_mgmt_web_browser 'web browser' do
   action :setup
 end
 
+gecos_ws_mgmt_email_client 'email client' do
+  users node[:gecos_ws_mgmt][:users_mgmt][:email_client_res][:users]
+  job_ids node[:gecos_ws_mgmt][:users_mgmt][:email_client_res][:job_ids]
+  support_os node[:gecos_ws_mgmt][:users_mgmt][:email_client_res][:support_os]
+  action :setup
+end
+
 gecos_ws_mgmt_shutdown_options 'shutdown options' do
   users node[:gecos_ws_mgmt][:users_mgmt][:shutdown_options_res][:users]
   systemset node[:gecos_ws_mgmt][:users_mgmt][:shutdown_options_res][:systemset]
@@ -98,5 +105,12 @@ gecos_ws_mgmt_user_modify_nm 'user modify nm' do
   users node[:gecos_ws_mgmt][:users_mgmt][:user_modify_nm_res][:users]
   job_ids node[:gecos_ws_mgmt][:users_mgmt][:user_modify_nm_res][:job_ids]
   support_os node[:gecos_ws_mgmt][:users_mgmt][:user_modify_nm_res][:support_os]
+  action :setup
+end
+
+gecos_ws_mgmt_user_alerts 'user alerts' do
+  users node[:gecos_ws_mgmt][:users_mgmt][:user_alerts_res][:users]
+  job_ids node[:gecos_ws_mgmt][:users_mgmt][:user_alerts_res][:job_ids]
+  support_os node[:gecos_ws_mgmt][:users_mgmt][:user_alerts_res][:support_os]
   action :setup
 end

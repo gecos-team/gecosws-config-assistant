@@ -52,11 +52,17 @@ action :setup do
             end.run_action(:create)
             bash "copy skel to #{username}" do
               code <<-EOH 
-                cp -r /etc/skel/.* #{user_home}
+                rsync -av /etc/skel/ #{user_home}
                 chown -R #{username}: #{user_home}
                 EOH
               action :nothing
             end.run_action(:run)
+ 
+            execute "create user dirs" do
+              command "sudo -iu #{username} xdg-user-dirs-update"
+              action :nothing
+            end.run_action(:run)
+
           end
 
           grps.each do |g|

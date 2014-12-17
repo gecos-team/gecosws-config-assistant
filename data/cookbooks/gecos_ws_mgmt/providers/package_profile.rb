@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: gecos-ws-mgmt
-# Provider:: local_groups
+# Provider:: package_profile
 #
 # Copyright 2013, Junta de Andalucia
 # http://www.juntadeandalucia.es/
@@ -13,17 +13,13 @@ action :setup do
   begin
     os = `lsb_release -d`.split(":")[1].chomp().lstrip()
     if new_resource.support_os.include?(os)
-      groups_list = new_resource.groups_list
-
-    	groups_list.each do |item|
-    		gid = item.group
-    		uids = item.users
-
-    		group "#{gid}" do
-    		  members uids
-    		  append true
-    		  action :nothing
-        end.run_action(:modify)
+      if new_resource.package_list.any? 
+        Chef::Log.info("Installing package profile list")
+        new_resource.package_list.each do |pkg|
+          package pkg do
+            action :nothing
+          end.run_action(:install)
+        end
       end
     else
       Chef::Log.info("This resource is not support into your OS")
@@ -49,9 +45,10 @@ action :setup do
       end
     end
   ensure
-    gecos_ws_mgmt_jobids "local_groups_res" do
+    gecos_ws_mgmt_jobids "package_profile_res" do
       provider "gecos_ws_mgmt_jobids"
-      recipe "misc_mgmt"
+      recipe "software_mgmt"
     end.run_action(:reset)
   end
 end
+

@@ -32,6 +32,10 @@ action :setup do
         name = printer.name
         make = printer.manufacturer
         model = printer.model
+        oppolicy = 'default'
+        if printer.attribute?("oppolicy")
+          oppolicy = printer.oppolicy
+        end
         ppd = ""
         if printer.attribute?("ppd")
           ppd = printer.ppd
@@ -59,43 +63,57 @@ action :setup do
           user "root"
           code <<-EOH
 import cups
+import cupshelpers
 connection=cups.Connection()
-drivers = connection.getPPDs(ppd_make_and_model='#{make} #{model}')
-ppd = '#{ppd}'
-if ppd != '':
-    for key in drivers.keys():
-        if key.startswith('lsb/usr') and key.endswith('#{model}/'+ppd):
-            ppd = key
+if '#{name}' not in connection.getPrinters().keys():
+    drivers = connection.getPPDs(ppd_make_and_model='#{make} #{model}')
+    ppd = '#{ppd}'
+    if ppd != '':
+        for key in drivers.keys():
+            if key.startswith('lsb/usr') and key.endswith('#{model}/'+ppd):
+                ppd = key
 
-if ppd == '':
-    ppd = drivers.keys()[0]
+    if ppd == '':
+        ppd = drivers.keys()[0]
 
-connection.addPrinter('#{name}',ppdname=ppd, device='#{uri}')
-connection.enablePrinter('#{name}')
-connection.acceptJobs('#{name}')
-
+    connection.addPrinter('#{name}',ppdname=ppd, device='#{uri}')
+    printer = cupshelpers.Printer('#{name}',connection)
+    printer.setOperationPolicy('#{oppolicy}')
+    connection.enablePrinter('#{name}')
+    connection.acceptJobs('#{name}')
+else:
+    print "Printer #{name} already exists"
+    print "Change operation policy"
+    printer = cupshelpers.Printer('#{name}',connection)
+    printer.setOperationPolicy('#{oppolicy}')
     EOH
         end.run_action(:run)
 
       end
     end
-    # TODO:
-    # save current job ids (new_resource.job_ids) as "ok"
+
     job_ids = new_resource.job_ids
     job_ids.each do |jid|
       node.set['job_status'][jid]['status'] = 0
     end
-  rescue
-    # TODO:
+
+  rescue Exception => e
     # just save current job ids as "failed"
     # save_failed_job_ids
     Chef::Log.error(e.message)
     job_ids = new_resource.job_ids
     job_ids.each do |jid|
       node.set['job_status'][jid]['status'] = 1
-      node.set['job_status'][jid]['message'] = e.message.force_encoding("utf-8")
+      if not e.message.frozen?
+        node.set['job_status'][jid]['message'] = e.message.force_encoding("utf-8")
+      else
+        node.set['job_status'][jid]['message'] = e.message
+      end
     end
-    
+  ensure
+    gecos_ws_mgmt_jobids "printers_res" do
+      provider "gecos_ws_mgmt_jobids"
+      recipe "printers_mgmt"
+    end.run_action(:reset)
   end
 end
-

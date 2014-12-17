@@ -9,18 +9,18 @@
 # http://www.osor.eu/eupl
 #
 
+gecos_ws_mgmt_local_users 'manage local users' do
+  users_list node[:gecos_ws_mgmt][:misc_mgmt][:local_users_res][:users_list]
+  job_ids node[:gecos_ws_mgmt][:misc_mgmt][:local_users_res][:job_ids]
+  support_os node[:gecos_ws_mgmt][:misc_mgmt][:local_users_res][:support_os]
+  action :setup
+end
+
 gecos_ws_mgmt_local_file 'manage local files' do
   delete_files node[:gecos_ws_mgmt][:misc_mgmt][:local_file_res][:delete_files]
   copy_files node[:gecos_ws_mgmt][:misc_mgmt][:local_file_res][:copy_files]
   job_ids node[:gecos_ws_mgmt][:misc_mgmt][:local_file_res][:job_ids]
   support_os node[:gecos_ws_mgmt][:misc_mgmt][:local_file_res][:support_os]
-  action :setup
-end
-
-gecos_ws_mgmt_local_users 'manage local users' do
-  users_list node[:gecos_ws_mgmt][:misc_mgmt][:local_users_res][:users_list]
-  job_ids node[:gecos_ws_mgmt][:misc_mgmt][:local_users_res][:job_ids]
-  support_os node[:gecos_ws_mgmt][:misc_mgmt][:local_users_res][:support_os]
   action :setup
 end
 
@@ -69,5 +69,18 @@ gecos_ws_mgmt_local_admin_users 'assert users list as sudoers' do
   local_admin_list node[:gecos_ws_mgmt][:misc_mgmt][:local_admin_users_res][:local_admin_list]
   job_ids node[:gecos_ws_mgmt][:misc_mgmt][:local_admin_users_res][:job_ids]
   support_os node[:gecos_ws_mgmt][:misc_mgmt][:local_admin_users_res][:support_os]
+  action :setup
+end
+
+gecos_ws_mgmt_remote_shutdown 'remote shutdown' do
+  shutdown_mode node[:gecos_ws_mgmt][:misc_mgmt][:remote_shutdown_res][:shutdown_mode]
+  job_ids node[:gecos_ws_mgmt][:misc_mgmt][:remote_shutdown_res][:job_ids]
+  support_os node[:gecos_ws_mgmt][:misc_mgmt][:remote_shutdown_res][:support_os]
+  action :setup
+end
+
+gecos_ws_mgmt_cert 'cert' do
+  job_ids node[:gecos_ws_mgmt][:misc_mgmt][:cert_res][:job_ids]
+  support_os node[:gecos_ws_mgmt][:misc_mgmt][:cert_res][:support_os]
   action :setup
 end
