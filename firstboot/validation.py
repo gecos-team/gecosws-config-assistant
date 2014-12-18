@@ -30,7 +30,7 @@ def is_empty(value):
     return ret
 
 def is_qname(value):
-    m = re.search(r'^[a-zA-Z][\w-]+$', value)
+    m = re.search(r'^[a-zA-Z]([\w-]|\.)+$', value)
     #print '> %s :: %s' % (m != None, value)
     return m != None
 
