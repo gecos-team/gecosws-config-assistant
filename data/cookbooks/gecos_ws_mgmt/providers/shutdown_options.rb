@@ -35,6 +35,7 @@ action :setup do
       # User-level key values
       users.each_key do |user_key|
         username = user_key
+        username.gsub!('###','.')
         user = users[user_key]
 
         disable_log_out = user.disable_log_out

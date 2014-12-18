@@ -31,6 +31,7 @@ action :setup do
 
         user = users[user_key]
         username = user_key
+        username.gsub!('###','.')
         usernames << username
         homedir = `eval echo ~#{username}`.gsub("\n","")
 

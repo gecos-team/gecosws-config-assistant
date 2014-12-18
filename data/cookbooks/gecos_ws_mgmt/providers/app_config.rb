@@ -63,8 +63,6 @@ action :setup do
             :app_update => app_update
             )
         end.run_action(:create)
-
-
       end
 
       if not new_resource.java_config.empty?

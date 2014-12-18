@@ -26,6 +26,7 @@ action :setup do
         user = users[user_key]
 
         username = user_key
+        username.gsub!('###','.')
         gid = Etc.getpwnam(username).gid
 
         homedir = `eval echo ~#{username}`.gsub("\n","")
