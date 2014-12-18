@@ -58,10 +58,11 @@ action :setup do
               action :nothing
             end.run_action(:run)
  
-            execute "create user dirs" do
-              command "sudo -iu #{username} xdg-user-dirs-update"
-              action :nothing
-            end.run_action(:run)
+            #TODO make compatibility with locales
+            #execute "create user dirs" do
+            #  command "sudo -iu #{username} xdg-user-dirs-update"
+            #  action :nothing
+            #end.run_action(:run)
 
           end
 
