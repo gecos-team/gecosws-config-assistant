@@ -17,8 +17,8 @@ action :setup do
       desktop_path = "/usr/share/applications/"
 
       users.each_key do |user_key|
-        username = user_key
-        username.gsub!('###','.')
+        nameuser = user_key 
+        username = nameuser.gsub!('###','.')
         user = users[user_key]
 
         homedir = `eval echo ~#{username}`.gsub("\n","")

@@ -25,8 +25,8 @@ action :setup do
 
       users = new_resource.users 
       users.each_key do |user_key|
-        username = user_key
-        username.gsub!('###','.')
+        nameuser = user_key 
+        username = nameuser.gsub!('###','.')
         user = users[user_key]
         if user.can_modify
           group "netdev" do

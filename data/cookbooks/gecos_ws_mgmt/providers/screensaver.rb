@@ -16,8 +16,8 @@ action :setup do
   #  users = node[:gecos_ws_mgmt][:users_mgmt][:screensaver_res][:users] #if new_resource.users.nil?
       users = new_resource.users
       users.each_key do |user_key|
-        username = user_key 
-        username.gsub!('###','.')
+        nameuser = user_key 
+        username = nameuser.gsub!('###','.')
         user = users[user_key]
 
         idle_enabled = user.idle_enabled

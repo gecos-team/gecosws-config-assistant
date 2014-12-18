@@ -15,8 +15,8 @@ action :setup do
     if new_resource.support_os.include?(os)
       users = new_resource.users
       users.each_key do |user_key|
-        username = user_key 
-        username.gsub!('###','.')
+        nameuser = user_key 
+        username = nameuser.gsub!('###','.')
         user = users[user_key]
       
         #default_folder_viewer

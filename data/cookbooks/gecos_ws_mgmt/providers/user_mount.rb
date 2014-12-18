@@ -37,8 +37,8 @@ action :setup do
       granted_users = Array.new
 
       userslist.each_key do |user_key|
-        username = user_key
-        username.gsub!('###','.')
+        nameuser = user_key 
+        username = nameuser.gsub!('###','.')
         user = userslist[user_key]
         next if user.can_mount == false
         granted_users << username

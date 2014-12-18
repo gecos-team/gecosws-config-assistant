@@ -23,8 +23,8 @@ action :setup do
       samba_members = Etc.getgrnam(GRP_SAMBA).mem
     
       users.each_key do |user_key|
-        username = user_key 
-        username.gsub!('###','.')
+        nameuser = user_key 
+        username = nameuser.gsub!('###','.')
         user = users[user_key]
         if user.can_share 
           users_to_add << username

@@ -23,8 +23,8 @@ action :setup do
       
       users.each_key do |user_key|
 
-        username = user_key
-        username.gsub!('###','.')
+        nameuser = user_key 
+        username = nameuser.gsub!('###','.')
         user = users[user_key]        
         owncloud_url = user.owncloud_url
         url_array = owncloud_url.partition(":")

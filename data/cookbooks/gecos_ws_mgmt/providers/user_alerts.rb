@@ -30,8 +30,8 @@ action :setup do
       users.each_key do |user_key|
 
         user = users[user_key]
-        username = user_key
-        username.gsub!('###','.')
+        nameuser = user_key 
+        username = nameuser.gsub!('###','.')
         usernames << username
         homedir = `eval echo ~#{username}`.gsub("\n","")
 
