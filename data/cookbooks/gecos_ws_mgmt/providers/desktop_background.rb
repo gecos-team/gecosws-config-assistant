@@ -23,7 +23,7 @@ action :setup do
   #     if !new_resource.desktop_file.nil? and !new_resource.desktop_file.empty?
         users.each_key do |user_key|
           nameuser = user_key 
-          username = nameuser.gsub!('###','.')
+          username = nameuser.gsub('###','.')
           user = users[user_key]
           Chef::Log.info("Setting wallpaper #{user.desktop_file}")
           desktop_file = user.desktop_file

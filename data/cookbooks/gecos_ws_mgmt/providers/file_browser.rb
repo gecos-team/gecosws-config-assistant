@@ -16,7 +16,7 @@ action :setup do
       users = new_resource.users
       users.each_key do |user_key|
         nameuser = user_key 
-        username = nameuser.gsub!('###','.')
+        username = nameuser.gsub('###','.')
         user = users[user_key]
       
         #default_folder_viewer

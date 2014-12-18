@@ -16,7 +16,8 @@ action :setup do
       pattern = '(smb|nfs|ftp)(:\/\/)([\S]*\/.*)'
       users = new_resource.users
       users.each_key do |user_key|
-        username = user_key
+        nameuser = user_key 
+        username = nameuser.gsub('###','.')
         user = users[user_key]
      
         homedir = `eval echo ~#{username}`.gsub("\n","")

@@ -24,7 +24,7 @@ action :setup do
     
       users.each_key do |user_key|
         nameuser = user_key 
-        username = nameuser.gsub!('###','.')
+        username = nameuser.gsub('###','.')
         user = users[user_key]
         if user.can_share 
           users_to_add << username
