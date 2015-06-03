@@ -210,7 +210,7 @@ def create_solo_json(server_conf):
         chef_node_name = server_conf.get_chef_conf().get_node_name()
         chef_admin_name = server_conf.get_chef_conf().get_admin_name()
         if chef_admin_name == "":
-            chef_admin_name = server_conf.get_gcc_conf().get_gcc_username()
+            chef_admin_name = server_conf.get_chef_conf().toChefUsername(server_conf.get_gcc_conf().get_gcc_username())
         chef_link = server_conf.get_chef_conf().get_chef_link()
         chef_link_existing = server_conf.get_chef_conf().get_chef_link_existing()
         chef_json = {'chef_server_url':chef_url, 'chef_node_name': chef_node_name, 'chef_validation_pem': tmpfile, 'chef_link': chef_link, 'chef_admin_name': chef_admin_name, 'chef_link_existing': chef_link_existing}
