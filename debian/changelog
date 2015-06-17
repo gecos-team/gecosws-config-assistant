@@ -533,7 +533,7 @@ gecosws-config-assistant (0.4.0-0gecos1) precise; urgency=low
 
   * Added control points for rest requests 
 
- -- damian <damian@ws-damian>  Thu, 22 May 2014 13:32:09 +0200
+ -- damian <damian@emergya.com>  Thu, 22 May 2014 13:32:09 +0200
 
 gecosws-config-assistant (0.3.9-0gecos1) precise; urgency=low
 
