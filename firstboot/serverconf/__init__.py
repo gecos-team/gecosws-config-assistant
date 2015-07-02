@@ -344,6 +344,7 @@ def apply_changes():
         fp.close()
     print filepath
     run_chef_solo(filepath, _("Configuring the client to link with Gecos Control Center, this may take several minutes.\nPlease wait a moment"))
+    os.unlink(filepath)
 
     (fd, filepath) = tempfile.mkstemp(dir='/tmp')
     fp = os.fdopen(fd, "w+b")
@@ -352,6 +353,8 @@ def apply_changes():
         fp.close()
     print filepath
     run_chef_solo(filepath, _("Configuring the client to link authentication method, this may take several minutes.\nPlease wait a moment"), False, True)
+    os.unlink(filepath)
+
 
 
 def destroy_pgbar(widget, response, dialog, thread):
@@ -513,6 +516,7 @@ def unlink_from_sssd(leave=True):
         fp.write(json.dumps(json_solo,indent=2))
         fp.close()
     run_chef_solo(filepath, _("Restoring authentication configuration"), True)
+    os.unlink(filepath)
     return []
 
 
@@ -533,6 +537,7 @@ def unlink_from_gcc(password):
         fp.write(json.dumps(json_solo,indent=2))
         fp.close()
     run_chef_solo(filepath, _("Unlink from GCC"), True)
+    os.unlink(filepath)
     return []
 
 def unlink_from_chef():
@@ -558,6 +563,7 @@ def unlink_from_chef():
         fp.write(json.dumps(json_solo,indent=2))
         fp.close()
     run_chef_solo(filepath, _("Unlink from Server"), True)
+    os.unlink(filepath)
     return []
 #    try:
 #

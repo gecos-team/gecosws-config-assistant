@@ -24,6 +24,7 @@ import os
 import subprocess
 import shlex
 import threading
+import time
 from firstboot_lib.firstbootconfig import get_prefix
 
 
@@ -44,8 +45,9 @@ class ChefSolo(threading.Thread):
         gem_repo = self.server_conf.get_gem_repo()
         envs = os.environ
         envs['LANG'] = 'es_ES.UTF-8'
-        log_chef_solo = open('/tmp/chef-solo', "w", 1)
-        log_chef_solo_err = open('/tmp/chef-solo-err', "w", 1)
+        log_timestamp = time.strftime("%Y%m%d%H%M%S")
+        log_chef_solo = open("/tmp/chef-solo-%s"%(log_timestamp), "w", 1)
+        log_chef_solo_err = open("/tmp/chef-solo-err-%s"%(log_timestamp), "w", 1)
 
         cmd = '"/opt/chef/embedded/bin/gem" "source" "--list"'
         cmd_split = shlex.split(cmd)
@@ -61,19 +63,46 @@ class ChefSolo(threading.Thread):
         for source in sources:
             cmd = '"/opt/chef/embedded/bin/gem" "source" "-r" "%s"' % (source)
             cmd_split = shlex.split(cmd)
+            log_chef_solo.write(cmd)
+            log_chef_solo.write("\n---------------------------------------\n")
+            log_chef_solo.flush()
+            log_chef_solo_err.write(cmd)
+            log_chef_solo_err.write("\n---------------------------------------\n")
+            log_chef_solo_err.flush()
             process = subprocess.Popen(cmd_split, stdout=log_chef_solo, stderr=log_chef_solo_err, env=envs)
             os.waitpid(process.pid, 0)
+            log_chef_solo.flush()
+            log_chef_solo_err.flush()
+
 
         cmd = '"/opt/chef/embedded/bin/gem" "source" "-a" "%s"' % (gem_repo)
         cmd_split = shlex.split(cmd)
+        log_chef_solo.write(cmd)
+        log_chef_solo.write("\n---------------------------------------\n")
+        log_chef_solo.flush()
+        log_chef_solo_err.write(cmd)
+        log_chef_solo_err.write("\n---------------------------------------\n")
+        log_chef_solo_err.flush()
         process = subprocess.Popen(cmd_split, stdout=log_chef_solo, stderr=log_chef_solo_err, env=envs)
         os.waitpid(process.pid, 0)
+        log_chef_solo.flush()
+        log_chef_solo_err.flush()
 
         solo_rb = get_prefix() + '/share/gecosws-config-assistant/solo.rb'
         cmd = '"chef-solo" "-c" "%s" "-j" "%s"' % (solo_rb, self.filepath)
         cmd_split = shlex.split(cmd)
+        log_chef_solo.write(cmd)
+        log_chef_solo.write("\n---------------------------------------\n")
+        log_chef_solo.flush()
+        log_chef_solo_err.write(cmd)
+        log_chef_solo_err.write("\n---------------------------------------\n")
+        log_chef_solo_err.flush()
+
         process = subprocess.Popen(cmd_split, stdout=log_chef_solo, stderr=log_chef_solo_err, env=envs)
         self.exit_code = os.waitpid(process.pid, 0)
+        log_chef_solo.flush()
+        log_chef_solo_err.flush()
+
         output = process.communicate()[0]
         if not self.unlink and self.gcc_conf and self.chef_conf and os.path.exists("/usr/bin/chef-client-wrapper"):
             cmd = '"chef-client-wrapper"'
