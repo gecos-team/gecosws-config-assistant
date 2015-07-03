@@ -368,13 +368,17 @@ def destroy_pgbar(widget, response, dialog, thread):
 def run_chef_solo(fp, message, unlink=False, jsssd=False):
     try:
         server_conf = get_server_conf(None)
-        thread = ChefSolo(fp, server_conf, unlink, gcc_is_configured(), chef_is_configured())
+        status = Gtk.Label()
+        log = Gtk.TextView()
+        log.set_editable(False)
+        thread = ChefSolo(fp, server_conf, unlink, gcc_is_configured(), chef_is_configured(), status, log)
         dialog = Gtk.Dialog(_('Configuring the client'), None,
                 Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, (Gtk.STOCK_OK, Gtk.ResponseType.OK))
-        description = Gtk.Label();
-        progressbar = Gtk.ProgressBar();
+        dialog.set_default_size(600, 400)
+        description = Gtk.Label()
+        progressbar = Gtk.ProgressBar()
         description.set_text(message)
-        box = Gtk.VBox();
+        box = Gtk.VBox()
         content_area = dialog.get_content_area()
         content_area.set_spacing(10)
         content_area.pack_start(Gtk.Fixed(),False,False,0)
@@ -382,6 +386,16 @@ def run_chef_solo(fp, message, unlink=False, jsssd=False):
         content_area.pack_start(Gtk.Fixed(),False,False,0)
         box.pack_start(description,False,False,10)
         box.pack_start(progressbar, False, False, 10)
+        box.pack_start(status, False, False, 10)
+
+        sw = Gtk.ScrolledWindow()
+        sw.set_hexpand(True)
+        sw.set_vexpand(True)
+        sw.set_size_request(300, 200)
+        sw.set_shadow_type(Gtk.ShadowType.ETCHED_IN)
+        sw.add(log)
+        box.pack_start(sw, False, False, 10)
+        
         dialog.connect("delete-event", destroy_pgbar, None, thread)
         dialog.show_all()  
         dialog.get_children()[0].set_spacing(10)
@@ -404,8 +418,9 @@ def run_chef_solo(fp, message, unlink=False, jsssd=False):
         progressbar.set_fraction(1.0)
         exit_code = thread.get_exit_code()
         description.set_text(_("The client has been configured"))
+        status.set_text("")
         if exit_code[1] != 0 and not unlink:
-            dialog.hide()
+            description.set_text(_('An error has ocurred running chef-solo'))
             messages = [(_('An error has ocurred running chef-solo'))]
             display_errors(_("Configuration Error"), messages)
 

@@ -25,17 +25,32 @@ import subprocess
 import shlex
 import threading
 import time
+import re
 from firstboot_lib.firstbootconfig import get_prefix
+from gettext import gettext as _
+import gettext
+gettext.textdomain('gecosws-config-assistant')
 
+def handle_data(source, condition):
+    print "handle data!"
+    data = source.recv(12)
+    print len(data)
+    if len(data) > 0:
+        return True #run forever
+    else:
+        print 'closed'
+        return False # stop looping
 
 class ChefSolo(threading.Thread):
-    def __init__(self, filepath, server_conf, unlink, gcc_conf, chef_conf):
+    def __init__(self, filepath, server_conf, unlink, gcc_conf, chef_conf, status_label, log):
         self.filepath = filepath
         self.unlink = unlink
         self.gcc_conf = gcc_conf
         self.chef_conf = chef_conf
         self.server_conf = server_conf
         self.exit_code = 0
+        self.status_label = status_label
+        self.log = log
         threading.Thread.__init__(self)
 
     def get_exit_code(self):
@@ -49,6 +64,7 @@ class ChefSolo(threading.Thread):
         log_chef_solo = open("/tmp/chef-solo-%s"%(log_timestamp), "w", 1)
         log_chef_solo_err = open("/tmp/chef-solo-err-%s"%(log_timestamp), "w", 1)
 
+        self.status_label.set_text(_("Preparing GEMs..."))
         cmd = '"/opt/chef/embedded/bin/gem" "source" "--list"'
         cmd_split = shlex.split(cmd)
         process = subprocess.Popen(cmd_split, stdout=subprocess.PIPE, env=envs)
@@ -88,6 +104,7 @@ class ChefSolo(threading.Thread):
         log_chef_solo.flush()
         log_chef_solo_err.flush()
 
+        self.status_label.set_text(_("Running chef-solo..."))
         solo_rb = get_prefix() + '/share/gecosws-config-assistant/solo.rb'
         cmd = '"chef-solo" "-c" "%s" "-j" "%s"' % (solo_rb, self.filepath)
         cmd_split = shlex.split(cmd)
@@ -98,15 +115,26 @@ class ChefSolo(threading.Thread):
         log_chef_solo_err.write("\n---------------------------------------\n")
         log_chef_solo_err.flush()
 
-        process = subprocess.Popen(cmd_split, stdout=log_chef_solo, stderr=log_chef_solo_err, env=envs)
+        process = subprocess.Popen(cmd_split, stdout=subprocess.PIPE, env=envs)
+        p = re.compile( '\\[[^\\[]+\\]')
+        for line in process.stdout:
+            buf = self.log.get_buffer()
+            buf.insert_at_cursor(p.sub('', line.decode())) 
+            log_chef_solo.write(line.decode())
+            self.log.scroll_to_mark(buf.get_insert(), 0, False, 0, 0)
+
         self.exit_code = os.waitpid(process.pid, 0)
         log_chef_solo.flush()
         log_chef_solo_err.flush()
 
         output = process.communicate()[0]
         if not self.unlink and self.gcc_conf and self.chef_conf and os.path.exists("/usr/bin/chef-client-wrapper"):
+            self.status_label.set_text(_("Running chef-client-wrapper..."))
             cmd = '"chef-client-wrapper"'
             cmd_split = shlex.split(cmd)
             process = subprocess.Popen(cmd_split, env=envs)
             self.exit_code = os.waitpid(process.pid, 0)
             output = process.communicate()[0]
+
+        
+            
