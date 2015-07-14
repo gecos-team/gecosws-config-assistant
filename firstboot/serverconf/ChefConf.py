@@ -98,5 +98,11 @@ class ChefConf():
         return self._data['chef_admin_name'].encode('utf-8')
 
     def set_admin_name(self, admin_name):
-        self._data['chef_admin_name'] = admin_name
+        self._data['chef_admin_name'] = self.toChefUsername(admin_name)
         return self
+
+# Transform an username into a Chef username
+# by replacing the dots by "___"
+#
+    def toChefUsername(self, username):
+        return username.replace('.', '___')
