@@ -1,8 +1,14 @@
+gecosws-config-assistant (0.9.0-0gecos2) trusty; urgency=medium
+
+  * Server notes shown
+
+ -- Gecos Team <gecos@guadalinex.org>  Wed, 18 Jul 2015 14:11:00 +0100
+
 gecosws-config-assistant (0.9.0-0gecos1) trusty; urgency=medium
 
   * Logging and debug improved
 
- -- Gecos Teamn <gecos@guadalinex.org>  Wed, 18 Jul 2015 11:11:00 +0100
+ -- Gecos Team <gecos@guadalinex.org>  Wed, 18 Jul 2015 11:11:00 +0100
 
 gecosws-config-assistant (0.8.0-0gecos4) trusty; urgency=medium
 
