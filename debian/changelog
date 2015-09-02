@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.9.1-0gecos1) trusty; urgency=medium
+
+  * chef-client-wrapper connnections work with self-signed SSL api
+
+ -- Gecos Team <gecos@guadalinex.org>  Wed, 2 Sep 2015 14:07:00 +0100
+
 gecosws-config-assistant (0.9.0-0gecos2) trusty; urgency=medium
 
   * Server notes shown
