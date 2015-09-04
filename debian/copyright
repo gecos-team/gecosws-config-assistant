@@ -1,9 +1,9 @@
 Format: http://anonscm.debian.org/viewvc/dep/web/deps/dep5.mdwn?revision=174&view=co
-Upstream-Name: hans
-Upstream-Contact: David Amián Valle <damian@emergya.com>
+Upstream-Name: gecosws-config-assistant
+Upstream-Contact: Gecos Team <gecos@guadalinex.org>
 Source: https://github.com/gecos-team/gecosws-config-assistant
 Files: *
-Copyright: 2011 by David Amian <damian@emergya.com>
+Copyright: 2015 Junta de Andalucia <gecos@guadalinex.org>
 License: 
  This program is free software; you can redistribute it
  and/or modify it under the terms of the GNU General Public

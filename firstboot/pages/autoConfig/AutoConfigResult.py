@@ -55,7 +55,7 @@ class AutoConfigResult(PageWindow.PageWindow):
         self.server_conf = serverconf.get_server_conf(None)
         self.ui.lblVersionValue.set_label(self.server_conf.get_version())
         self.ui.lblOrganizationValue.set_label(self.server_conf.get_organization())
-#           self.ui.lblNotesValue.set_label(self.server_conf.get_notes())
+        self.ui.lblNotesValue.set_label(self.server_conf.get_notes())
 		
 
 

@@ -537,7 +537,7 @@ msgid "Use this URL by default in the \"Link to Server\" page."
 msgstr ""
 
 #: ../firstboot/serverconf/__init__.py:86
-msgid "You need to enter your GCC credentials to restoring the Workstation."
+msgid "You need to enter your GCC credentials to restore the Workstation."
 msgstr ""
 
 #: ../firstboot/serverconf/__init__.py:89

@@ -48,6 +48,7 @@ if not node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_server_url].nil?
       grep chef-client-wrapper root
       if [[ $? -eq 1 ]]; then
          echo "*/30 * * * * chef-client-wrapper" >> root
+         chmod 600 root
       fi
     EOF
     not_if "grep chef-client-wrapper root"
