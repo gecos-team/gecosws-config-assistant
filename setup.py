@@ -146,7 +146,7 @@ class Clean(Command):
 
 DistUtilsExtra.auto.setup(
     name='gecosws-config-assistant',
-    version='0.9.3-0gecos1',
+    version='0.9.4-0gecos1',
     license='GPL-2',
     author='GECOS Team',
     author_email='gecos@guadalinex.org',

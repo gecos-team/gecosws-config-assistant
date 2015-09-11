@@ -60,8 +60,6 @@ if not node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_server_url].nil?
     support_os node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:support_os]
     action  :setup
   end
-
-
 end
 
 if not node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:uri_gcc].nil?
