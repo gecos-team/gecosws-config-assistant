@@ -36,7 +36,7 @@ if not node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_server_url].nil?
   
   Chef::Log.info("Enabling GECOS Agent in cron")
   
-  cron "GECOS Agent"
+  cron "GECOS Agent" do
     minute '30'
     command '/usr/bin/chef-client-wrapper'
     action :create
