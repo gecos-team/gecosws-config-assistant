@@ -146,11 +146,11 @@ class Clean(Command):
 
 DistUtilsExtra.auto.setup(
     name='gecosws-config-assistant',
-    version='0.9.2-0gecos1',
+    version='0.9.3-0gecos1',
     license='GPL-2',
     author='GECOS Team',
     author_email='gecos@guadalinex.org',
-    description='First start assistant for helping to connect a GECOS \
+    description='Configuration assistant for helping to connect a GECOS \
 workstation to different services',
     url='https://github.com/gecos-team/gecosws-config-assistant',
 

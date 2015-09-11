@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.9.3-0gecos1) UNRELEASED; urgency=medium
+
+  * chef-client-wrapper launched in standar cron
+
+ -- Alfonso de Cala <alfem@SDTPC302>  Fri, 11 Sep 2015 12:50:03 +0200
+
 gecosws-config-assistant (0.9.2-0gecos1) trusty; urgency=medium
 
   * fixed chef-client-wrapper cron execution
