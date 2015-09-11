@@ -1,6 +1,6 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 
-# This file is part of Guadalinex
+# This file is part of GECOS
 #
 # This software is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -83,7 +83,7 @@ def validate_credentials(url, err_chef_solo=False):
     if not validate:
         if err_chef_solo:
             user, password = auth_dialog(_('Authentication Required'),
-            _('You need to enter your GCC credentials to restoring the Workstation.'))
+            _('You need to enter your Control Center credentials to restore this workstation.'))
         else:
             user, password = auth_dialog(_('Authentication Required'),
             _('You need to enter your credentials to access the requested resource.'))
@@ -95,7 +95,7 @@ def validate_credentials(url, err_chef_solo=False):
             credentials.append([user, password])
             ACTUAL_USER = (user, password)
         else:
-            raise ServerConfException(_('Authentication is failed.'))
+            raise ServerConfException(_('Authentication failed.'))
     if hasattr(r,'text'):
         return r.text
     else:  
