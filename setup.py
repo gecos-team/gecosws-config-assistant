@@ -53,40 +53,6 @@ def get_datafiles(datadir):
 datafiles = get_datafiles('data')
 datafiles.append(('share/applications/', glob.glob('data/gecos-config-assistant.desktop')))
 
-def update_config(values={}):
-
-    oldvalues = {}
-    try:
-        fin = file('firstboot_lib/firstbootconfig.py', 'r')
-        fout = file(fin.name + '.new', 'w')
-
-        for line in fin:
-            fields = line.split(' = ')  # Separate variable from value
-            if fields[0] in values:
-                oldvalues[fields[0]] = fields[1].strip()
-                line = "%s = %s\n" % (fields[0], values[fields[0]])
-            fout.write(line)
-
-        fout.flush()
-        fout.close()
-        fin.close()
-        os.rename(fout.name, fin.name)
-    except (OSError, IOError), e:
-        print ("ERROR: Can't find firstboot_lib/firstbootconfig.py")
-        sys.exit(1)
-    return oldvalues
-
-
-def create_solo_rb(datadir):
-    try:
-        fout = file('data\solo.rb', 'w')
-        line = "cookbook_path \"" + datadir + "cookbooks/\""
-        fout.write(line)
-        fout.close()
-    except (OSError, IOError), e:
-        print ("ERROR: Can't create data/solo.rb file")
-        sys.exit(1)
-
 
 def update_desktop_file(datadir):
 
@@ -113,15 +79,13 @@ def copy_pages(pages_path):
 
 class InstallAndUpdateDataDirectory(DistUtilsExtra.auto.install_auto):
     def run(self):
-        values = {'__firstboot_data_directory__': "'%s'" % (
-                                        self.prefix + '/share/gecosws-config-assistant/'),
-                  '__version__': "'%s'" % self.distribution.get_version(),
-                  '__firstboot_prefix__': "'%s'" % self.prefix}
-        previous_values = update_config(values)
-        update_desktop_file(self.prefix + '/share/gecosws-config-assistant/')
-        create_solo_rb(self.prefix + '/share/gecosws-config-assistant/')
-        DistUtilsExtra.auto.install_auto.run(self)
-        update_config(previous_values)
+#        values = {'__firstboot_data_directory__': "'%s'" % (
+#                                        self.prefix + '/share/gecosws-config-assistant/'),
+#                  '__version__': "'%s'" % self.distribution.get_version(),
+#                  '__firstboot_prefix__': "'%s'" % self.prefix}
+#        update_desktop_file(self.prefix + '/share/gecosws-config-assistant/')
+#        DistUtilsExtra.auto.install_auto.run(self)
+        return true
 
 
 class Clean(Command):
@@ -140,6 +104,55 @@ class Clean(Command):
         update_data_path(prefix, oldvalue)
 
 
+class Check(Command):
+    description = "Run unit tests"
+
+    user_options = [
+        ('module=', 'm', 'The test module to run'),
+        ]
+
+    def initialize_options(self):
+        self.module = None
+
+    def finalize_options(self):
+        pass
+
+    def get_command_name(self):
+        return 'test'
+
+    def run(self):
+        import unittest
+        from tests.dto.NTPServerTest import NTPServerTest
+        from tests.dto.NetworkInterfaceTest import NetworkInterfaceTest
+        from tests.dto.WorkstationDataTest import WorkstationDataTest
+        from tests.dto.GecosAccessDataTest import GecosAccessDataTest
+        from tests.dto.LocalUserTest import LocalUserTest
+        from tests.dto.UserAuthenticationMethodTest import UserAuthenticationMethodTest
+        from tests.dto.LocalUsersAuthMethodTest import LocalUsersAuthMethodTest
+        from tests.dto.ADSetupDataTest import ADSetupDataTest
+        from tests.dto.LDAPSetupDataTest import LDAPSetupDataTest
+        from tests.dto.ADAuthMethodTest import ADAuthMethodTest
+        from tests.dto.LDAPAuthMethodTest import LDAPAuthMethodTest
+        from tests.dto.SystemStatusTest import SystemStatusTest
+
+        suite = unittest.TestSuite()
+        suite.addTest(NTPServerTest())
+        suite.addTest(NetworkInterfaceTest())
+        suite.addTest(WorkstationDataTest())
+        suite.addTest(GecosAccessDataTest())
+        suite.addTest(LocalUserTest())
+        suite.addTest(UserAuthenticationMethodTest())
+        suite.addTest(LocalUsersAuthMethodTest())
+        suite.addTest(ADSetupDataTest())
+        suite.addTest(LDAPSetupDataTest())
+        suite.addTest(ADAuthMethodTest())
+        suite.addTest(LDAPAuthMethodTest())
+        suite.addTest(SystemStatusTest())
+        
+        
+        return unittest.TextTestRunner(verbosity=2).run(suite)    
+        
+        
 ##################################################################################
 ###################### YOU SHOULD MODIFY ONLY WHAT IS BELOW ######################
 ##################################################################################
@@ -157,50 +170,22 @@ workstation to different services',
     keywords=['python', 'gnome', 'guadalinex', 'gecos'],
 
     packages=[
-        'firstboot',
-        'firstboot_lib',
-        'firstboot.pages',
-        'firstboot.serverconf',
-        'firstboot.pages.installSoftware',
-        'firstboot.pages.linkToChef',
-        'firstboot.pages.linkToServer',
-        'firstboot.pages.localUsers',
-        'firstboot.pages.network',
-        'firstboot.pages.pcLabel',
-        'firstboot.pages.dateSync',
-        'firstboot.pages.autoConfig',
+        'dto',
     ],
 
     package_dir={
-        'firstboot': 'firstboot',
-        'firstboot_lib': 'firstboot_lib',
-        'firstboot.pages': 'firstboot/pages',
-        'firstboot.serverconf': 'firstboot/serverconf',
-        'firstboot.pages.installSoftware': 'firstboot/pages/installSoftware',
-        'firstboot.pages.linkToServer': 'firstboot/pages/linkToServer',
-        'firstboot.pages.linkToChef': 'firstboot/pages/linkToChef',
-        'firstboot.pages.localUsers': 'firstboot/pages/localUsers',
-        'firstboot.pages.network': 'firstboot/pages/network',
-        'firstboot.pages.pcLabel': 'firstboot/pages/pcLabel',
-        'firstboot.pages.dateSync': 'firstboot/pages/dateSync',
-        'firstboot.pages.autoConfig': 'firstboot/pages/autoConfig',
+        'dto': 'dto',
         },
 
     scripts=[
-        'bin/gecos-config-assistant',
-        'bin/gecos-config-assistant-launcher'
+#        'bin/gecos-config-assistant',
+#        'bin/gecos-config-assistant-launcher'
     ],
     data_files = datafiles,
-  #  data_files=[
-  #     ('share/gecosws-config-assistant/media', glob.glob('data/media/*')),
-  #     ('share/gecosws-config-assistant/cookbooks', glob.glob('data/cookbooks/*')),
-  #     ('share/gecosws-config-assistant/ui', glob.glob('data/ui/*')),
-  #     #('/etc/xdg/autostart/', glob.glob('data/gecos-config-assistant.desktop')),
-  #  ],
-
     cmdclass={
         'install': InstallAndUpdateDataDirectory,
         "build": build_extra.build_extra,
         "build_i18n":  build_i18n.build_i18n,
+        'check': Check,
     }
 )

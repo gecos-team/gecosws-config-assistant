@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 
 # This file is part of Guadalinex
@@ -16,4 +15,30 @@
 # You should have received a copy of the GNU General Public License
 # along with this package; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+
+__author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
+__copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
+__license__ = "GPL-2"
+
+
+import unittest
+from dto.ADSetupData import ADSetupData
+
+class ADSetupDataTest(unittest.TestCase):
+    '''
+    Unit test that check getters and setters
+    '''
+
+
+    def runTest(self):
+        obj = ADSetupData()
+        
+        obj.set_domain('test_domain')
+        self.assertEqual(obj.get_domain(), 'test_domain')
+        self.assertEqual(obj.domain, 'test_domain')
+
+        obj.set_workgroup('test_workgroup')
+        self.assertEqual(obj.get_workgroup(), 'test_workgroup')
+        self.assertEqual(obj.workgroup, 'test_workgroup')
+
 

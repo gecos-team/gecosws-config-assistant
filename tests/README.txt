@@ -38,6 +38,7 @@ Now bind mount your testing environment:
     schroot -c gecos
     apt-get update
     apt-get install python
+    apt-get install python-distutils-extra
     adduser jenkins
     exit
     mount -o bind /home/jenkins /srv/chroot/gecos/home/jenkins
