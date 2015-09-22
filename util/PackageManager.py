@@ -38,12 +38,18 @@ class PackageManager(object):
         
 
     def is_package_installed(self, package_name):
+        self.logger.debug('is_package_installed BEGIN')
         if package_name is None:
             raise ValueError('package_name is None')
+
+        self.logger.debug('is_package_installed(%s)'%(package_name))
+
         
         try:
             import apt
             cache = apt.Cache()
+            self.logger.debug('is_package_installed(%s) APT: %s'%(package_name, 
+                cache[package_name].is_installed))
             return cache[package_name].is_installed
         
         except ImportError:
@@ -56,25 +62,29 @@ class PackageManager(object):
 
 
     def install_package(self, package_name):
+        self.logger.debug('install_package BEGIN')
         if package_name is None:
             raise ValueError('package_name is None')
+        
+        self.logger.debug('install_package(%s)'%(package_name))
         
         try:
             import apt
             cache = apt.Cache()
             pkg = cache[package_name]
             if pkg is None:
-                self.logger.error(_('Package not found:'), package_name)
+                self.logger.error(_('Package not found:') + package_name)
             elif pkg.is_installed:
-                self.logger.error(_('Package already installed:'), package_name)
+                self.logger.error(_('Package already installed:') + package_name)
             else:
                 pkg.mark_install()
 
                 try:
                     cache.commit()
+                    self.logger.debug('Package installed successfully')
                     return
                 except Exception:
-                    self.logger.error(_('Package installation failed:'), package_name)
+                    self.logger.error(_('Package installation failed:') + package_name)
                     self.logger.error(str(traceback.format_exc()))
                 
                 
@@ -89,25 +99,31 @@ class PackageManager(object):
 
 
     def remove_package(self, package_name):
+        self.logger.debug('remove_package - BEGIN')
+        
         if package_name is None:
             raise ValueError('package_name is None')
+        
+        self.logger.debug('remove_package(%s)'%(package_name))
+        
         
         try:
             import apt
             cache = apt.Cache()
             pkg = cache[package_name]
             if pkg is None:
-                self.logger.error(_('Package not found:'), package_name)
+                self.logger.error(_('Package not found:') + package_name)
             elif not pkg.is_installed:
-                self.logger.error(_('Package is not installed:'), package_name)
+                self.logger.error(_('Package is not installed:') + package_name)
             else:
                 pkg.mark_delete()
 
                 try:
                     cache.commit()
+                    self.logger.debug('Package removed successfully')
                     return
                 except Exception:
-                    self.logger.error(_('Package removal failed:'), package_name)
+                    self.logger.error(_('Package removal failed:') + package_name)
                     self.logger.error(str(traceback.format_exc()))
                 
                 

@@ -40,6 +40,7 @@ Now bind mount your testing environment:
     apt-get install python
     apt-get install python-distutils-extra
     apt-get install python-coverage
+    apt-get install gecosws-meta
     adduser jenkins
     exit
     mount -o bind /home/jenkins /srv/chroot/gecos/home/jenkins

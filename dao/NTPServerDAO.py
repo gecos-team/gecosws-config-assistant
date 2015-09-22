@@ -43,6 +43,7 @@ class NTPServerDAO(object):
         '''
         
         self.logger = logging.getLogger('NTPServerDAO')
+        self.data_file = '/etc/default/ntpdate'
         self.initiated = False
         
         # Check if 'ntpdate' package exists
@@ -53,20 +54,21 @@ class NTPServerDAO(object):
                 self.pm.install_package('ntpdate')
                 self.initiated = True
             except Exception:
-                self.logger.error(_('Package installation failed:'), 'ntpdate')
+                self.logger.error(_('Package installation failed:') + 'ntpdate')
                 self.logger.error(str(traceback.format_exc())) 
         else:
             self.initiated = True               
         
 
     def load(self):
+        self.logger.debug('load - BEGIN')
         ntpServer = None
         
         if self.initiated:
-            # Get server from /etc/default/ntpdate
+            # Get server from data file
             try:
                 address = None
-                with open('/etc/default/ntpdate') as fp:
+                with open(self.data_file) as fp:
                     for line in fp:
                         if line.startswith('NTPSERVERS='):
                             address = line[len('NTPSERVERS='):]
@@ -79,47 +81,52 @@ class NTPServerDAO(object):
                     ntpServer.set_address(address)     
                 
             except Exception:
-                self.logger.error(_('Error reading file:'), '/etc/default/ntpdate')
+                self.logger.error(_('Error reading file:') + self.data_file)
                 self.logger.error(str(traceback.format_exc()))             
             
         else:
             self.logger.warn(_('NTPServerDAO used without a proper initialization!'))
         
-        
+        if ntpServer is None:
+            self.logger.debug('load - END - ntpServer is None')
+        else:
+            self.logger.debug('load - END - ntpServer=%s'%(ntpServer))
         return ntpServer
 
 
     def save(self, ntp_server):
+        self.logger.debug('save - BEGIN')
         if ntp_server is None:
             raise ValueError('ntp_server is None')
         
         if not isinstance(ntp_server, NTPServer):
             raise ValueError('ntp_server is not a NTPServer instance')
             
+        self.logger.debug('save("%s")'%(ntp_server.get_address()))
+        
         if self.initiated:
             # Check the previous value
             previous = self.load()
             if previous is not None and previous.get_address() == ntp_server.get_address():
                 return
             
-            # Save the value to /etc/default/ntpdate
+            # Save the value to data file
             template = Template()
             template.source = 'templates/ntpdate'
-            template.destination = '/etc/default/ntpdate'
+            template.destination = self.data_file
             template.owner = 'root'
             template.group = 'root'
             template.mode = 00644
             template.variables = { 'ntp_server':  ntp_server.get_address()}
             
             template.save()
+            self.logger.debug('%s saved?', self.data_file)
             
         else:
             self.logger.warn(_('NTPServerDAO used without a proper initialization!'))
         
         
 
-    def delete(self, ntp_server):
-        raise TypeError('Can not delete the NTP server configuration!')
 
 
 

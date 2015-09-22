@@ -20,41 +20,42 @@ __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
 __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
-
-import unittest
-
-from dao.NTPServerDAO import NTPServerDAO
-from dto.NTPServer import NTPServer
+import logging
+import traceback
+import json
 
 
-class NTPServerDAOTest(unittest.TestCase):
+import gettext
+from gettext import gettext as _
+gettext.textdomain('gecosws-config-assistant')
+
+class JSONUtil(object):
     '''
-    Unit test that check NTPServerDAO class
+    Utility class to manipulate JSON.
     '''
 
-    def findInFile(self, filepath, value):
-        with open(filepath) as fp:
-            for line in fp:
-                if value in line:
-                    return True        
+
+    def __init__(self):
+        '''
+        Constructor
+        '''
+        self.logger = logging.getLogger('JSONUtil')
         
-        return False
+    def loadJSONFromFile(self, filepath):        
+        json_data = None
+        # Get data from data file
+        try:
+            gcc_control_file = open(filepath, 'r')
+            content = gcc_control_file.read()
+            gcc_control_file.close()
+            
+            json_data = json.loads(content)
+            
+        except Exception:
+            self.logger.warn(_('Error reading file: ') + filepath)
+            #self.logger.warn(str(traceback.format_exc()))
+            
+        return json_data            
 
 
-    def runTest(self):
-        dao = NTPServerDAO()
-        
-        originalServer = dao.load() 
-        
-        # Set a new time server
-        newServer = NTPServer()
-        newServer.set_address('hora.roa.es')
-        dao.save(newServer)
-        
-        self.assertTrue(self.findInFile('/etc/default/ntpdate', 'hora.roa.es'))
-        
-        if originalServer is not None:
-            dao.save(originalServer)
-            self.assertTrue(self.findInFile('/etc/default/ntpdate', 
-                                            originalServer.get_address()))
 

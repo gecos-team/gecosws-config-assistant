@@ -33,6 +33,15 @@ class WorkstationData(object):
         '''
         self.name = ''
         self.ou = ''
+        self.node_name = ''
+
+    def get_node_name(self):
+        return self.__node_name
+
+
+    def set_node_name(self, value):
+        self.__node_name = value
+
 
     def get_name(self):
         return self.__name
@@ -48,9 +57,11 @@ class WorkstationData(object):
 
     def set_ou(self, value):
         self.__ou = value
+    
 
     name = property(get_name, set_name, None, None)
     ou = property(get_ou, set_ou, None, None)
+    node_name = property(get_node_name, set_node_name, None, None)
 
 
 

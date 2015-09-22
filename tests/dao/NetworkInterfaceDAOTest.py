@@ -23,38 +23,26 @@ __license__ = "GPL-2"
 
 import unittest
 
-from dao.NTPServerDAO import NTPServerDAO
-from dto.NTPServer import NTPServer
+from dao.NetworkInterfaceDAO import NetworkInterfaceDAO
+from dto.NetworkInterface import NetworkInterface
 
 
-class NTPServerDAOTest(unittest.TestCase):
+class NetworkInterfaceDAOTest(unittest.TestCase):
     '''
-    Unit test that check NTPServerDAO class
+    Unit test that check NetworkInterfaceDAO class
     '''
-
-    def findInFile(self, filepath, value):
-        with open(filepath) as fp:
-            for line in fp:
-                if value in line:
-                    return True        
-        
-        return False
 
 
     def runTest(self):
-        dao = NTPServerDAO()
+        dao = NetworkInterfaceDAO()
         
-        originalServer = dao.load() 
+        interfaces = dao.loadAll() 
+        self.assertTrue(isinstance(interfaces, list))
         
-        # Set a new time server
-        newServer = NTPServer()
-        newServer.set_address('hora.roa.es')
-        dao.save(newServer)
-        
-        self.assertTrue(self.findInFile('/etc/default/ntpdate', 'hora.roa.es'))
-        
-        if originalServer is not None:
-            dao.save(originalServer)
-            self.assertTrue(self.findInFile('/etc/default/ntpdate', 
-                                            originalServer.get_address()))
-
+        print 'Network interfaces: '
+        for interface in interfaces:
+            self.assertTrue(isinstance(interface, NetworkInterface))
+            print 'NAME: ', interface.get_name(), ' IP: ', interface.get_ip_address()
+            self.assertNotEqual(interface.get_name(), '')
+            self.assertNotEqual(interface.get_ip_address(), '')
+            

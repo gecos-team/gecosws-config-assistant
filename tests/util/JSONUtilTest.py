@@ -22,39 +22,35 @@ __license__ = "GPL-2"
 
 
 import unittest
+import traceback
+from util.JSONUtil import JSONUtil
 
-from dao.NTPServerDAO import NTPServerDAO
-from dto.NTPServer import NTPServer
 
-
-class NTPServerDAOTest(unittest.TestCase):
+class JSONUtilTest(unittest.TestCase):
     '''
-    Unit test that check NTPServerDAO class
+    Unit test that check JSONUtil methods
     '''
-
-    def findInFile(self, filepath, value):
-        with open(filepath) as fp:
-            for line in fp:
-                if value in line:
-                    return True        
-        
-        return False
 
 
     def runTest(self):
-        dao = NTPServerDAO()
+        # create a temp file with json
         
-        originalServer = dao.load() 
+        # Save name to pclabel file
+        try:
+            data = '{"data_key": "data_value"}'
+            fd = open('/tmp/jsonutil_test.json', 'w')
+            if fd != None:
+                fd.write(data)
+                fd.close()
+            
+        except Exception:
+            self.logger.error('Error writing file: /tmp/jsonutil_test.json')
+            self.logger.error(str(traceback.format_exc()))                
         
-        # Set a new time server
-        newServer = NTPServer()
-        newServer.set_address('hora.roa.es')
-        dao.save(newServer)
         
-        self.assertTrue(self.findInFile('/etc/default/ntpdate', 'hora.roa.es'))
+        jsonutil = JSONUtil()
+        json_data = jsonutil.loadJSONFromFile('/tmp/jsonutil_test.json')
         
-        if originalServer is not None:
-            dao.save(originalServer)
-            self.assertTrue(self.findInFile('/etc/default/ntpdate', 
-                                            originalServer.get_address()))
+        self.assertEqual(json_data['data_key'], 'data_value')
 
+       

@@ -22,39 +22,38 @@ __license__ = "GPL-2"
 
 
 import unittest
+import os
 
-from dao.NTPServerDAO import NTPServerDAO
-from dto.NTPServer import NTPServer
+from dao.WorkstationDataDAO import WorkstationDataDAO
+from dto.WorkstationData import WorkstationData
 
 
-class NTPServerDAOTest(unittest.TestCase):
+class WorkstationDataDAOTest(unittest.TestCase):
     '''
-    Unit test that check NTPServerDAO class
+    Unit test that check WorkstationDataDAO class
     '''
-
-    def findInFile(self, filepath, value):
-        with open(filepath) as fp:
-            for line in fp:
-                if value in line:
-                    return True        
-        
-        return False
 
 
     def runTest(self):
-        dao = NTPServerDAO()
+        dao = WorkstationDataDAO()
         
-        originalServer = dao.load() 
         
-        # Set a new time server
-        newServer = NTPServer()
-        newServer.set_address('hora.roa.es')
-        dao.save(newServer)
+        originalData = dao.load() 
         
-        self.assertTrue(self.findInFile('/etc/default/ntpdate', 'hora.roa.es'))
+        # Set a new name for this pc
+        newData = WorkstationData()
+        newData.set_name('test_name')
+        newData.set_node_name('test_node_name')
+        dao.save(newData)
         
-        if originalServer is not None:
-            dao.save(originalServer)
-            self.assertTrue(self.findInFile('/etc/default/ntpdate', 
-                                            originalServer.get_address()))
+        newData = dao.load()
+        
+        self.assertEqual(newData.get_name(), 'test_name')
+        self.assertEqual(newData.get_node_name(), 'test_node_name')
+        
+        dao.delete(newData)
+        self.assertFalse(os.path.isfile('/etc/pclabel'))
+        
+        if originalData is not None:
+            dao.save(originalData)
 

@@ -157,13 +157,21 @@ class Check(Command):
 
         from tests.util.PackageManagerTest import PackageManagerTest
         from tests.util.TemplateTest import TemplateTest
+        from tests.util.JSONUtilTest import JSONUtilTest
         
         suite.addTest(PackageManagerTest())
         suite.addTest(TemplateTest())
+        suite.addTest(JSONUtilTest())
 
         from tests.dao.NTPServerDAOTest import NTPServerDAOTest
+        from tests.dao.NetworkInterfaceDAOTest import NetworkInterfaceDAOTest
+        from tests.dao.WorkstationDataDAOTest import WorkstationDataDAOTest
+        from tests.dao.GecosAccessDataDAOTest import GecosAccessDataDAOTest
 
         suite.addTest(NTPServerDAOTest())
+        suite.addTest(NetworkInterfaceDAOTest())
+        suite.addTest(WorkstationDataDAOTest())
+        suite.addTest(GecosAccessDataDAOTest())
 
         
         return unittest.TextTestRunner(verbosity=2).run(suite)    

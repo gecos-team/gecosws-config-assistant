@@ -41,4 +41,7 @@ class WorkstationDataTest(unittest.TestCase):
         self.assertEqual(obj.get_ou(), 'test_ou')
         self.assertEqual(obj.ou, 'test_ou')
 
+        obj.set_node_name('aabbccddeeffgg')
+        self.assertEqual(obj.get_node_name(), 'aabbccddeeffgg')
+        self.assertEqual(obj.node_name, 'aabbccddeeffgg')
 
