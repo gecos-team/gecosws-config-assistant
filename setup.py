@@ -122,6 +122,11 @@ class Check(Command):
 
     def run(self):
         import unittest
+        
+        import logging
+        logging.basicConfig()
+        
+        
         from tests.dto.NTPServerTest import NTPServerTest
         from tests.dto.NetworkInterfaceTest import NetworkInterfaceTest
         from tests.dto.WorkstationDataTest import WorkstationDataTest
@@ -149,6 +154,17 @@ class Check(Command):
         suite.addTest(LDAPAuthMethodTest())
         suite.addTest(SystemStatusTest())
         
+
+        from tests.util.PackageManagerTest import PackageManagerTest
+        from tests.util.TemplateTest import TemplateTest
+        
+        suite.addTest(PackageManagerTest())
+        suite.addTest(TemplateTest())
+
+        from tests.dao.NTPServerDAOTest import NTPServerDAOTest
+
+        suite.addTest(NTPServerDAOTest())
+
         
         return unittest.TextTestRunner(verbosity=2).run(suite)    
         

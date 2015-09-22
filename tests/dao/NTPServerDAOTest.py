@@ -20,44 +20,41 @@ __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
 __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
-import subprocess
 
-import logging
+import unittest
 
-class NTPServer(object):
+from dao.NTPServerDAO import NTPServerDAO
+from dto.NTPServer import NTPServer
+
+
+class NTPServerDAOTest(unittest.TestCase):
     '''
-    DTO object that represents a NTP server.
+    Unit test that check getters and setters
     '''
 
-
-    def __init__(self):
-        '''
-        Constructor
-        '''
-        self.address = ''
-        self.logger = logging.getLogger('NTPServer')
-        self.logger.setLevel(logging.DEBUG)
-
-    def syncrhonize(self):
-        if self.address is None or self.address.strip() == '':
-            return False
-        else:
-            p = subprocess.Popen('ntpdate-debian -u %s'%(self.address), shell=True, 
-                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            for line in p.stdout.readlines():
-                self.logger.debug(line)
-            retval = p.wait()   
-             
-            return (retval == 0)    
-
-    def get_address(self):
-        return self.__address
+    def findInFile(self, filepath, value):
+        with open(filepath) as fp:
+            for line in fp:
+                if value in line:
+                    return True        
+        
+        return False
 
 
-    def set_address(self, value):
-        self.__address = value
-
-    address = property(get_address, set_address, None, None)
-
-
+    def runTest(self):
+        dao = NTPServerDAO()
+        
+        originalServer = dao.load() 
+        
+        # Set a new time server
+        newServer = NTPServer()
+        newServer.set_address('hora.roa.es')
+        dao.save(newServer)
+        
+        self.assertTrue(self.findInFile('/etc/default/ntpdate', 'hora.roa.es'))
+        
+        if originalServer is not None:
+            dao.save(originalServer)
+            self.assertTrue(self.findInFile('/etc/default/ntpdate', 
+                                            originalServer.get_address()))
 

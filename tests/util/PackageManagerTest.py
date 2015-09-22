@@ -20,44 +20,33 @@ __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
 __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
-import subprocess
 
-import logging
+import unittest
+from util.PackageManager import PackageManager
 
-class NTPServer(object):
+
+class PackageManagerTest(unittest.TestCase):
     '''
-    DTO object that represents a NTP server.
+    Unit test that check Package manager functions
     '''
 
 
-    def __init__(self):
-        '''
-        Constructor
-        '''
-        self.address = ''
-        self.logger = logging.getLogger('NTPServer')
-        self.logger.setLevel(logging.DEBUG)
+    def runTest(self):
+        test_package_name = 'ed'
+        
+        pm = PackageManager()
+        
+        # Start from a Linux installation without that package
+        self.assertEqual(pm.is_package_installed(test_package_name), False)
+        
+        # Install the package
+        pm.install_package(test_package_name)
+        self.assertEqual(pm.is_package_installed(test_package_name), True)
+        
+        # Remove the package
+        pm.remove_package(test_package_name)
+        self.assertEqual(pm.is_package_installed(test_package_name), False)
 
-    def syncrhonize(self):
-        if self.address is None or self.address.strip() == '':
-            return False
-        else:
-            p = subprocess.Popen('ntpdate-debian -u %s'%(self.address), shell=True, 
-                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            for line in p.stdout.readlines():
-                self.logger.debug(line)
-            retval = p.wait()   
-             
-            return (retval == 0)    
-
-    def get_address(self):
-        return self.__address
-
-
-    def set_address(self, value):
-        self.__address = value
-
-    address = property(get_address, set_address, None, None)
 
 
 
