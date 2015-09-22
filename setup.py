@@ -167,11 +167,13 @@ class Check(Command):
         from tests.dao.NetworkInterfaceDAOTest import NetworkInterfaceDAOTest
         from tests.dao.WorkstationDataDAOTest import WorkstationDataDAOTest
         from tests.dao.GecosAccessDataDAOTest import GecosAccessDataDAOTest
+        from tests.dao.LocalUserDAOTest import LocalUserDAOTest
 
         suite.addTest(NTPServerDAOTest())
         suite.addTest(NetworkInterfaceDAOTest())
         suite.addTest(WorkstationDataDAOTest())
         suite.addTest(GecosAccessDataDAOTest())
+        suite.addTest(LocalUserDAOTest())
 
         
         return unittest.TextTestRunner(verbosity=2).run(suite)    
