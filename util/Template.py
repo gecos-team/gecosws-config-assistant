@@ -63,6 +63,35 @@ class Template(object):
             for key, value in self.variables.items():
                 contents = contents.replace('${%s}'%(key), value)
                 
+            # Eliminate non existing IF blocks
+            lines = contents.splitlines()
+            keeplines = []
+            inIfBlock = False
+            existKey = False
+            lineno = 0
+            for line in lines:
+                lineno = lineno + 1
+                if line.strip() == '#{ENDIF}':
+                    if inIfBlock:
+                        inIfBlock = False
+                        existKey = False
+                        continue
+                    else:
+                        self.logger.warn('Detected ENDIF without IF in line %s'%(lineno))
+                
+                if line.strip().startswith('#{IF '):
+                    key = line.replace('#{IF ', '').replace('}','').strip()
+                    inIfBlock = True
+                    existKey = (key in self.variables.keys())
+                    continue
+                
+                if inIfBlock and not existKey:
+                    continue
+                
+                keeplines.append(line)
+            
+            contents = "\n".join(keeplines)
+                
             # Save the file
             with open(self.destination, 'w') as f:
                 f.write(contents)
@@ -95,7 +124,7 @@ class Template(object):
                  
             return True
         
-        except ImportError:
+        except:
             self.logger.error(_('Error saving template:') + self.source)
             self.logger.error(str(traceback.format_exc()))
 

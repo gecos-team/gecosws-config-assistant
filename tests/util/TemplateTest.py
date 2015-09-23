@@ -49,7 +49,8 @@ class TemplateTest(unittest.TestCase):
         template.owner = 'root'
         template.group = 'root'
         template.mode = 00644
-        template.variables = { 'test_value':  'TEST_VALUE_1'}        
+        template.variables = { 'test_value':  'TEST_VALUE_1',
+                              'test_2_value':  'TEST_2_VALUE_1'}        
         
 
         # Delete the file is exist
@@ -60,13 +61,22 @@ class TemplateTest(unittest.TestCase):
         # Create the file
         template.save()
         self.assertTrue(self.findInFile(template.destination, 'TEST_VALUE_1'), 
-                        'Error saving template!')
+                        'Can not find TEST_VALUE_1!')
+        self.assertTrue(self.findInFile(template.destination, 'TEST_2_VALUE_1'), 
+                        'Can not find TEST_2_VALUE_1!')
+        self.assertFalse(self.findInFile(template.destination, 'test_3_value'), 
+                        'Found test_3_value!')
         
         # update the file
-        template.variables = { 'test_value':  'TEST_VALUE_2'}  
+        template.variables = { 'test_value':  'TEST_VALUE_2',
+                              'test_3_value':  'TEST_3_VALUE_1'}  
         template.save()
         self.assertTrue(self.findInFile(template.destination, 'TEST_VALUE_2'), 
-                        'Error updating template!')
+                        'Can not find TEST_VALUE_2!')
+        self.assertTrue(self.findInFile(template.destination, 'TEST_3_VALUE_1'), 
+                        'Can not find TEST_3_VALUE_1!')
+        self.assertFalse(self.findInFile(template.destination, 'test_2_value'), 
+                        'Found test_2_value!')
         
 
         # Change mode and owner
