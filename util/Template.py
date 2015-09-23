@@ -93,6 +93,7 @@ class Template(object):
             if self.mode is not None and m != self.mode:
                 os.chmod(self.destination, self.mode)
                  
+            return True
         
         except ImportError:
             self.logger.error(_('Error saving template:') + self.source)

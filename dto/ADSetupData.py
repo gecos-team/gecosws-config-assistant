@@ -33,6 +33,24 @@ class ADSetupData(object):
         '''
         self.domain = ''
         self.workgroup = ''
+        self.ad_administrator_user = None
+        self.ad_administrator_pass = None
+
+    def get_ad_administrator_user(self):
+        return self.__ad_administrator_user
+
+
+    def get_ad_administrator_pass(self):
+        return self.__ad_administrator_pass
+
+
+    def set_ad_administrator_user(self, value):
+        self.__ad_administrator_user = value
+
+
+    def set_ad_administrator_pass(self, value):
+        self.__ad_administrator_pass = value
+
 
     def get_domain(self):
         return self.__domain
@@ -51,6 +69,8 @@ class ADSetupData(object):
 
     domain = property(get_domain, set_domain, None, None)
     workgroup = property(get_workgroup, set_workgroup, None, None)
+    ad_administrator_user = property(get_ad_administrator_user, set_ad_administrator_user, None, None)
+    ad_administrator_pass = property(get_ad_administrator_pass, set_ad_administrator_pass, None, None)
 
 
 
