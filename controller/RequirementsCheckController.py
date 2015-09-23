@@ -20,13 +20,15 @@ __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
 __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
-import subprocess
+from controller.AutoSetupController import AutoSetupController
+from controller.NTPServerController import NTPServerController
+from controller.NetworkInterfaceController import NetworkInterfaceController
 
 import logging
 
-class NTPServer(object):
+class RequirementsCheckController(object):
     '''
-    DTO object that represents a NTP server.
+    Controller class for the requirements check functionality.
     '''
 
 
@@ -34,30 +36,29 @@ class NTPServer(object):
         '''
         Constructor
         '''
-        self.address = ''
-        self.logger = logging.getLogger('NTPServer')
-        #self.logger.setLevel(logging.DEBUG)
+        self.view = None # TODO!
+        self.ntpServer = NTPServerController()
+        self.networkInterface = NetworkInterfaceController()
+        self.autoSetup = AutoSetupController()
+        self.logger = logging.getLogger('RequirementsCheckController')
 
-    def syncrhonize(self):
-        if self.address is None or self.address.strip() == '':
-            return False
-        else:
-            p = subprocess.Popen('ntpdate-debian -u %s'%(self.address), shell=True, 
-                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            for line in p.stdout.readlines():
-                self.logger.debug(line)
-            retval = p.wait()   
-             
-            return (retval == 0)    
+    def show(self):
+        # TODO!
+        pass
 
-    def get_address(self):
-        return self.__address
+    def hide(self):
+        # TODO!
+        pass
+    
+    def showNetworkInterfaces(self):
+        # TODO!
+        pass
 
+    def showAutoSetup(self):
+        # TODO!
+        pass
 
-    def set_address(self, value):
-        self.__address = value
-
-    address = property(get_address, set_address, None, None)
-
-
+    def showNTPServer(self):
+        # TODO!
+        pass
 

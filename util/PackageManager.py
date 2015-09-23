@@ -23,6 +23,9 @@ __license__ = "GPL-2"
 import logging
 import traceback
 
+import gettext
+from gettext import gettext as _
+gettext.textdomain('gecosws-config-assistant')
 
 class PackageManager(object):
     '''

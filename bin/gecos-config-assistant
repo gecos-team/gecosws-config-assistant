@@ -25,6 +25,8 @@ __license__ = "GPL-2"
 import sys
 import os
 import subprocess
+import logging
+import traceback
 
 import gettext
 from gettext import gettext as _
@@ -41,14 +43,17 @@ if os.path.abspath(__file__).startswith('/opt'):
         opt_path = path.replace('/usr', '/opt/extras.ubuntu.com/firstboot')
         python_path.insert(0, opt_path)
         sys.path.insert(0, opt_path)
-if (os.path.exists(os.path.join(PROJECT_ROOT_DIRECTORY, 'firstboot'))
+
+if (os.path.exists(os.path.join(PROJECT_ROOT_DIRECTORY, 'firstboot_lib'))
     and PROJECT_ROOT_DIRECTORY not in sys.path):
     python_path.insert(0, PROJECT_ROOT_DIRECTORY)
     sys.path.insert(0, PROJECT_ROOT_DIRECTORY)
+
 if python_path:
     os.putenv('PYTHONPATH', "%s:%s" % (os.getenv('PYTHONPATH', ''), ':'.join(python_path))) # for subprocesses
-import firstboot
+
 from firstboot_lib.firstbootconfig import get_prefix
+from util.PackageManager import PackageManager
 
 if get_prefix() == '/usr/local':
     gettext.bindtextdomain('gecosws-config-assistant', '/usr/local/share/locale')
@@ -73,10 +78,25 @@ def check_live():
     return os.path.exists('/var/lib/dpkg/info/ubiquity.list')
 
 if __name__ == '__main__':
-   if os.getuid() != 0:
+    # Check root in Linux but not in Cygwin
+    if os.getuid() != 0 and not os.path.abspath(__file__).startswith('/cygdrive/'):
        sys.stdout.write(_('You need to be root to run this program.'))
        sys.stdout.flush()
        sys.exit(1)
-   #if not check_live():
-   #    fix_psmouse()
-   firstboot.main()
+    #if not check_live():
+    #    fix_psmouse()
+    logging.basicConfig()   
+   
+    # Check if 'python-tk' package exists
+    pm = PackageManager()
+    if not pm.is_package_installed('python-tk'):
+        # Try to install the package
+        try:
+            pm.install_package('python-tk')
+        except Exception:
+            print 'Package installation failed:', 'python-tk'
+            print str(traceback.format_exc())
+
+    from controller.MainMenuController import MainMenuController
+    controller = MainMenuController()
+    controller.show()
