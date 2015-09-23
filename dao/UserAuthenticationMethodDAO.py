@@ -23,6 +23,7 @@ __license__ = "GPL-2"
 from dto.LocalUsersAuthMethod import LocalUsersAuthMethod
 from dto.UserAuthenticationMethod import UserAuthenticationMethod
 from dto.LDAPAuthMethod import LDAPAuthMethod
+from dto.LDAPSetupData import LDAPSetupData
 from dto.ADAuthMethod import ADAuthMethod
 from dto.ADSetupData import ADSetupData
 from util.Template import Template
@@ -72,19 +73,179 @@ class UserAuthenticationMethodDAO(object):
             self.initiated = True            
       
     def _load_ldap(self):
-        # TODO!
-        return None
+        data = LDAPSetupData()
+        
+        # Get the data from /etc/sssd/sssd.conf
+        with open(self.main_data_file) as fp:
+            for line in fp:
+                if line.strip().startswith('ldap_uri'):
+                    parts = line.split('=')
+                    del parts[0]
+                    data.set_uri('='.join(parts).strip())
+                    continue      
+
+                if line.strip().startswith('ldap_search_base'):
+                    parts = line.split('=')
+                    del parts[0]
+                    data.set_base('='.join(parts).strip())
+                    continue      
+
+                if line.strip().startswith('ldap_group_search_base'):
+                    parts = line.split('=')
+                    del parts[0]
+                    data.set_base_group('='.join(parts).strip())
+                    continue      
+
+                if line.strip().startswith('ldap_default_bind_dn'):
+                    parts = line.split('=')
+                    del parts[0]
+                    data.set_bind_user_dn('='.join(parts).strip())
+                    continue      
+
+                if line.strip().startswith('ldap_default_authtok') and not line.strip().startswith('ldap_default_authtok_type'):
+                    parts = line.split('=')
+                    del parts[0]
+                    data.set_bind_user_pwd('='.join(parts).strip())
+                    continue      
+                
+                
+        method = LDAPAuthMethod();
+        method.set_data(data)
+         
+        return method
     
     def _save_ldap(self, method):
         self.logger.debug('Saving LDAP user authentication method')
         data = method.get_data()
-        # TODO!
+        
+        # Check data values
+        if data.get_uri() is None or data.get_uri().strip() == '':
+            raise ValueError('LDAP URI is empty!')
+        
+        if data.get_base() is None or data.get_base().strip() == '':
+            raise ValueError('LDAP base is empty!')
+
+              
+        self.logger.debug('Save /etc/sssd/sssd.conf file')
+        # Save /etc/samba/sssd.conf file
+        template = Template()
+        template.source = 'templates/sssd.conf.ldap'
+        template.destination = self.main_data_file
+        template.owner = 'root'
+        template.group = 'root'
+        template.mode = 00600
+        template.variables = { 'ldap_uri':  data.get_uri(), 
+                              'ldap_search_base': data.get_base()}
+        
+        if (data.get_bind_user_dn() is not None and 
+            data.get_bind_user_dn().strip() != '' and
+            data.get_bind_user_pwd() is not None and 
+            data.get_bind_user_pwd().strip() != ''):
+            template.variables['bind_dn'] = data.get_bind_user_dn()
+            template.variables['bind_password'] = data.get_bind_user_pwd()
+
+        if (data.get_base_group() is not None and 
+            data.get_base_group().strip() != ''):
+            template.variables['base_group'] = data.get_base_group()
+
+        
+        if not template.save():
+            self.logger.error('Error saving /etc/sssd/sssd.conf file')
+            return False
+        
+        # Restart SSSD service
+        self.logger.debug('Restart SSSD service')
+        p = subprocess.Popen('service sssd restart', shell=True, 
+                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        for line in p.stdout.readlines():
+            self.logger.debug(line)
+                
+        retval = p.wait()
+        if retval != 0:
+            self.logger.error(_('Error running command: ')+'service sssd restart')
+            return False        
+        
+        self.logger.debug('Save /usr/share/pam-configs/my_mkhomedir file')
+        # Save /usr/share/pam-configs/my_mkhomedir file
+        template = Template()
+        template.source = 'templates/my_mkhomedir'
+        template.destination = '/usr/share/pam-configs/my_mkhomedir'
+        template.owner = 'root'
+        template.group = 'root'
+        template.mode = 00644
+        template.variables = { }
+        
+        if not template.save():
+            self.logger.error('Error saving /usr/share/pam-configs/my_mkhomedir file')
+            return False        
+        
+        # Execute command pam-auth-update
+        self.logger.debug('Execute command pam-auth-update')
+        p = subprocess.Popen('pam-auth-update --package', shell=True, 
+                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        for line in p.stdout.readlines():
+            self.logger.debug(line)
+                
+        retval = p.wait()
+        if retval != 0:
+            self.logger.error(_('Error running command: ')+'pam-auth-update')
+            return False           
+        
+        
+        self.logger.debug('Save /etc/gca-sssd.control file')
+        # Save /etc/gca-sssd.control file
+        template = Template()
+        template.source = 'templates/gca-sssd.control'
+        template.destination = '/etc/gca-sssd.control'
+        template.owner = 'root'
+        template.group = 'root'
+        template.mode = 00644
+        template.variables = { 'auth_type':  'ldap' }
+        
+        if not template.save():
+            self.logger.error('Error saving /etc/gca-sssd.control file')
+            return False           
+        
+        return True
+        
         
         
     def _delete_ldap(self, method):
         self.logger.debug('Deleting LDAP user authentication method')
-        data = method.get_data()  
-        # TODO!
+
+        self.logger.debug('Save /etc/sssd/sssd.conf file')
+        # Save /etc/samba/sssd.conf file
+        template = Template()
+        template.source = 'templates/sssd.conf.local'
+        template.destination = self.main_data_file
+        template.owner = 'root'
+        template.group = 'root'
+        template.mode = 00600
+        template.variables = { }
+        
+        if not template.save():
+            self.logger.error('Error saving /etc/sssd/sssd.conf file')
+            return False
+        
+        # Restart SSSD service
+        self.logger.debug('Restart SSSD service')
+        p = subprocess.Popen('service sssd restart', shell=True, 
+                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        for line in p.stdout.readlines():
+            self.logger.debug(line)
+                
+        retval = p.wait()
+        if retval != 0:
+            self.logger.error(_('Error running command: ')+'service sssd restart')
+            return False        
+        
+        self.logger.debug('Delete %s file'%('/etc/gca-sssd.control'))
+        if os.path.isfile('/etc/gca-sssd.control'):
+            os.remove('/etc/gca-sssd.control')        
+
+        return True
+
+
           
 
     def _load_active_directory(self):

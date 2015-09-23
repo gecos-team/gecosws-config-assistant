@@ -27,8 +27,8 @@ from dao.LocalUserDAO import LocalUserDAO
 from dao.UserAuthenticationMethodDAO import UserAuthenticationMethodDAO
 from dto.LocalUser import LocalUser
 from dto.LocalUsersAuthMethod import LocalUsersAuthMethod
-from dto.UserAuthenticationMethod import UserAuthenticationMethod
 from dto.LDAPAuthMethod import LDAPAuthMethod
+from dto.LDAPSetupData import LDAPSetupData
 from dto.ADAuthMethod import ADAuthMethod
 from dto.ADSetupData import ADSetupData
 
@@ -88,6 +88,7 @@ class UserAuthenticationMethodDAOTest(unittest.TestCase):
         
         print 'Check a local user login'
         self.assertTrue(self.check_pam_login('tstuser', 'tstuserpwd'))
+        self.assertFalse(self.check_pam_login('tstuser', 'badpassword!'))
 
         print 'Set the authentication method to Active Directory'
         method = ADAuthMethod()
@@ -117,6 +118,41 @@ class UserAuthenticationMethodDAOTest(unittest.TestCase):
 
         currentMethod = authMethodDao.load()
         self.assertTrue(isinstance(currentMethod, LocalUsersAuthMethod))
+
+
+        print 'Set the authentication method to LDAP'
+        method = LDAPAuthMethod()
+        data = LDAPSetupData()
+        
+        # Data of a LDAP server used for tests 
+        data.set_uri('ldap://test.ldap.server')
+        data.set_base('ou=users,dc=us,dc=es')
+        data.set_base_group('ou=groups,dc=us,dc=es')
+        data.set_bind_user_dn('cn=admin,dc=us,dc=es')
+        data.set_bind_user_pwd('demoevaos')
+        
+        method.set_data(data)
+        self.assertTrue(authMethodDao.save(method))
+        
+        # Check if the changes has been done properly
+        currentMethod = authMethodDao.load()
+        self.assertEqual(currentMethod.get_name(), method.get_name())
+        self.assertEqual(currentMethod.get_data().get_uri(), method.get_data().get_uri())
+        self.assertEqual(currentMethod.get_data().get_base(), method.get_data().get_base())
+        self.assertEqual(currentMethod.get_data().get_base_group(), method.get_data().get_base_group())
+        self.assertEqual(currentMethod.get_data().get_bind_user_dn(), method.get_data().get_bind_user_dn())
+        self.assertEqual(currentMethod.get_data().get_bind_user_pwd(), method.get_data().get_bind_user_pwd())
+
+        print 'Check a LDAP test user login'
+        self.assertTrue(self.check_pam_login('pperez', 'pperez'))   
+        
+             
+        print 'Set the authentication method back to local users'
+        self.assertTrue(authMethodDao.delete(method))
+
+        currentMethod = authMethodDao.load()
+        self.assertTrue(isinstance(currentMethod, LocalUsersAuthMethod))
+
 
         print 'Delete the test user'
         localUserDao.delete(tstuser)   
