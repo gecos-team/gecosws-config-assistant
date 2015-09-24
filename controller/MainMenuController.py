@@ -29,10 +29,6 @@ from controller.SystemStatusController import SystemStatusController
 from view.MainMenuDialog import MainMenuDialog
 
 import logging
-import traceback
-
-from Tkinter import Tk
-import tkMessageBox
 
 import gettext
 from gettext import gettext as _
@@ -58,28 +54,16 @@ class MainMenuController(object):
         self.logger = logging.getLogger('MainMenuController')
         self.logger.setLevel(logging.DEBUG)
         
-
-    def on_closing(self):
-        if tkMessageBox.askokcancel(_("Quit"), _("Do you want to quit?")):
-            self.root.destroy()
-
     def show(self):
-        self.root = Tk()
-        #root.geometry("800x400")
-        self.view = MainMenuDialog(self.root)
-        self.view.set_controller(self)
-        self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
-        self.root.mainloop()          
-
-        pass
+        self.view = MainMenuDialog(self)
+        self.view.show()
 
 
     def hide(self):
         self.root.destroy()
     
     def showRequirementsCheckDialog(self):
-        # TODO!
-        pass
+        self.requirementsCheck.show(self.view)
 
     def showConnectWithGecosCCDialog(self):
         # TODO!

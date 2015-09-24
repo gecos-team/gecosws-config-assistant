@@ -36,6 +36,14 @@ class NTPServerDAO(object):
     DAO class to manipulate NTPServer DTO objects.
     '''
 
+    # Singleton pattern
+    _instance = None
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super(NTPServerDAO, cls).__new__(
+                                cls, *args, **kwargs)
+        return cls._instance
+
 
     def __init__(self):
         '''
@@ -119,13 +127,11 @@ class NTPServerDAO(object):
             template.mode = 00644
             template.variables = { 'ntp_server':  ntp_server.get_address()}
             
-            template.save()
-            self.logger.debug('%s saved?', self.data_file)
-            
+            return template.save()
         else:
             self.logger.warn(_('NTPServerDAO used without a proper initialization!'))
         
-        
+        return False
 
 
 

@@ -21,6 +21,7 @@ __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 from dao.NetworkInterfaceDAO import NetworkInterfaceDAO
+from view.NetworkInterfaceListView import NetworkInterfaceListView
 
 import logging
 
@@ -38,9 +39,10 @@ class NetworkInterfaceController(object):
         self.dao = NetworkInterfaceDAO()
         self.logger = logging.getLogger('NetworkInterfaceController')
 
-    def show(self):
-        # TODO!
-        pass
+    def show(self, mainWindow):
+        self.view = NetworkInterfaceListView(mainWindow, self)
+        self.view.set_data(self.dao.loadAll())
+        self.view.show()   
 
     def hide(self):
         # TODO!

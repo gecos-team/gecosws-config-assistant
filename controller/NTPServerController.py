@@ -22,7 +22,14 @@ __license__ = "GPL-2"
 
 from dao.NTPServerDAO import NTPServerDAO
 
+from view.NTPServerElemView import NTPServerElemView
+
 import logging
+import tkMessageBox
+
+import gettext
+from gettext import gettext as _
+gettext.textdomain('gecosws-config-assistant')
 
 class NTPServerController(object):
     '''
@@ -38,18 +45,38 @@ class NTPServerController(object):
         self.dao = NTPServerDAO()
         self.logger = logging.getLogger('NTPServerController')
 
-    def show(self):
-        # TODO!
-        pass
+    def show(self, mainWindow):
+        self.logger.debug('show - BEGIN')
+        self.view = NTPServerElemView(mainWindow, self)
+
+        self.view.set_data(self.dao.load())
+        
+        self.view.show()   
+        self.logger.debug('show - END')
 
     def hide(self):
-        # TODO!
-        pass
+        self.logger.debug('hide')
+        self.view.cancel()
     
     def save(self):
-        # TODO!
-        pass
+        self.logger.debug('save')
+        data = self.view.get_data()
+        try:
+            if self.dao.save(data):
+                self.hide()
+            else:
+                # Show error message
+                tkMessageBox.showerror(_("Error"), 
+                    _("Error saving NTP server data.") + "\n" + _("See log for more details."),
+                    parent = self.view)
+        except:
+            # Show error message
+            tkMessageBox.showerror(_("Error"), 
+                _("Error saving NTP server data.") + "\n" + _("See log for more details."),
+                parent = self.view)
+            
 
     def test(self):
-        # TODO!
-        pass
+        self.logger.debug('test')
+        data = self.view.get_data()
+        return data.syncrhonize()
