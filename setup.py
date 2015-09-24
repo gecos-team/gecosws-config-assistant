@@ -158,10 +158,14 @@ class Check(Command):
         from tests.util.PackageManagerTest import PackageManagerTest
         from tests.util.TemplateTest import TemplateTest
         from tests.util.JSONUtilTest import JSONUtilTest
+        from tests.util.ValidationTest import ValidationTest
+        from tests.util.GecosCCTest import GecosCCTest
         
         suite.addTest(PackageManagerTest())
         suite.addTest(TemplateTest())
         suite.addTest(JSONUtilTest())
+        suite.addTest(ValidationTest())
+        suite.addTest(GecosCCTest())
 
         from tests.dao.NTPServerDAOTest import NTPServerDAOTest
         from tests.dao.NetworkInterfaceDAOTest import NetworkInterfaceDAOTest
@@ -175,8 +179,12 @@ class Check(Command):
         suite.addTest(WorkstationDataDAOTest())
         suite.addTest(GecosAccessDataDAOTest())
         suite.addTest(LocalUserDAOTest())
-        suite.addTest(UserAuthenticationMethodDAOTest())
+        # suite.addTest(UserAuthenticationMethodDAOTest())
 
+        from tests.controller.AutoSetupControllerTest import AutoSetupControllerTest
+        suite.addTest(AutoSetupControllerTest())
+        
+        
         
         return unittest.TextTestRunner(verbosity=2).run(suite)    
         

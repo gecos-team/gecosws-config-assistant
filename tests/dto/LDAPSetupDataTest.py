@@ -53,6 +53,15 @@ class LDAPSetupDataTest(unittest.TestCase):
         self.assertEqual(obj.get_bind_user_pwd(), 'test_bind_user_pwd')
         self.assertEqual(obj.bindUserPWD, 'test_bind_user_pwd')
 
+        # Check LDAP connection
+        obj.set_uri('ldap://test.ldap.server')
+        obj.set_base('ou=users,dc=us,dc=es')
+        obj.set_base_group('ou=groups,dc=us,dc=es')
+        obj.set_bind_user_dn('cn=admin,dc=us,dc=es')
+        obj.set_bind_user_pwd('demoevaos')       
+        
+        self.assertTrue(obj.test()) 
 
-
+        obj.set_bind_user_pwd('badpassword')       
+        self.assertFalse(obj.test()) 
 

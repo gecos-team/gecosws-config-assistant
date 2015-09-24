@@ -53,13 +53,16 @@ class GecosAccessDataDAO(object):
         
         self.logger = logging.getLogger('GecosAccessDataDAO')
         self.data_file = '/etc/gcc.control'
-            
+        self.previous_saved_data = None
            
 
     def load(self):
         self.logger.debug('load - BEGIN')
         data = GecosAccessData()
         
+        # Check previous saved data (in memory cache)
+        if self.previous_saved_data is not None:
+            return self.previous_saved_data
 
         # Get data from data file
         jsonUtil = JSONUtil()
@@ -88,6 +91,9 @@ class GecosAccessDataDAO(object):
         if not isinstance(data, GecosAccessData):
             raise ValueError('data is not a GecosAccessData instance')        
         
+        # Insert the data in cache memory
+        self.previous_saved_data = data
+        
         # Get data from data file
         jsonUtil = JSONUtil()
         json_data = jsonUtil.loadJSONFromFile(self.data_file)
@@ -108,9 +114,7 @@ class GecosAccessDataDAO(object):
             'gcc_nodename':  gcc_nodename, 
         }        
         
-        template.save()
-
-        self.logger.debug('save - END')
+        return template.save()
 
         
     def delete(self, data):
@@ -122,6 +126,8 @@ class GecosAccessDataDAO(object):
         if not isinstance(data, GecosAccessData):
             raise ValueError('data is not a GecosAccessData instance')        
  
+        # Remove data from memory
+        self.previous_saved_data = None
         
         # Remove data file
         try:

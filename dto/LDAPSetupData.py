@@ -20,6 +20,9 @@ __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
 __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
+import logging
+import traceback
+import ldap
 
 class LDAPSetupData(object):
     '''
@@ -37,6 +40,8 @@ class LDAPSetupData(object):
         self.baseGroup = ''
         self.bindUserDN = ''
         self.bindUserPWD = ''
+        self.logger = logging.getLogger('LDAPSetupData')
+        self.logger.setLevel(logging.DEBUG)        
 
     def get_uri(self):
         return self.__uri
@@ -76,7 +81,55 @@ class LDAPSetupData(object):
 
     def set_bind_user_pwd(self, value):
         self.__bindUserPWD = value
+        
+    def test(self):
+        # Test LDAP connection
+        result = False
+        
+        if self.get_uri() is None or self.get_uri().strip() == '':
+            self.logger.debug('Empty URI!')
+            return False
 
+        if self.get_base() is None or self.get_base().strip() == '':
+            self.logger.debug('Empty base DN!')
+            return False
+
+        if (self.get_bind_user_dn() is not None and self.get_bind_user_dn().strip() != ''
+            and (self.get_bind_user_pwd() is None or self.get_bind_user_pwd().strip() == '')):
+            self.logger.debug('Empty bind user password!')
+            return False
+
+        
+        try:
+            ld = ldap.initialize(self.get_uri())
+            
+            if self.get_bind_user_dn() is None or self.get_bind_user_dn().strip() == '':
+                #  Bind anonymously
+                ld.simple_bind_s()
+            else:
+                ld.simple_bind_s(self.get_bind_user_dn(), self.get_bind_user_pwd())
+
+            # Check user DN
+            ldapfilter = "(objectclass=*)"
+            results = ld.search_s(self.get_base(), ldap.SCOPE_SUBTREE, ldapfilter)
+            if results is None:
+                return False            
+
+
+            # Check user groups DN
+            if self.get_base_group() is None or self.get_base_group().strip() == '':
+                results = ld.search_s(self.get_base_group(), ldap.SCOPE_SUBTREE, ldapfilter)
+                if results is None:
+                    return False
+
+            return True
+
+        except:
+            self.logger.warn('Error connecting to LDAP server: %s'%(self.get_uri()))
+            self.logger.warn(str(traceback.format_exc()))          
+            
+        return result
+            
     uri = property(get_uri, set_uri, None, None)
     base = property(get_base, set_base, None, None)
     baseGroup = property(get_base_group, set_base_group, None, None)

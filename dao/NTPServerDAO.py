@@ -116,7 +116,7 @@ class NTPServerDAO(object):
             # Check the previous value
             previous = self.load()
             if previous is not None and previous.get_address() == ntp_server.get_address():
-                return
+                return True
             
             # Save the value to data file
             template = Template()

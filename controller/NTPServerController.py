@@ -23,9 +23,9 @@ __license__ = "GPL-2"
 from dao.NTPServerDAO import NTPServerDAO
 
 from view.NTPServerElemView import NTPServerElemView
+from view.CommonDialog import showerror
 
 import logging
-import tkMessageBox
 
 import gettext
 from gettext import gettext as _
@@ -66,14 +66,14 @@ class NTPServerController(object):
                 self.hide()
             else:
                 # Show error message
-                tkMessageBox.showerror(_("Error"), 
+                showerror(_("Error"), 
                     _("Error saving NTP server data.") + "\n" + _("See log for more details."),
-                    parent = self.view)
+                    self.view)
         except:
             # Show error message
-            tkMessageBox.showerror(_("Error"), 
+            showerror(_("Error"), 
                 _("Error saving NTP server data.") + "\n" + _("See log for more details."),
-                parent = self.view)
+                self.view)
             
 
     def test(self):

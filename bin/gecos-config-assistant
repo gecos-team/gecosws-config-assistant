@@ -31,6 +31,7 @@ import traceback
 import gettext
 from gettext import gettext as _
 
+MOCK_TEST_CLASSES = False
 
 # Add project root directory (enable symlink and trunk execution)
 PROJECT_ROOT_DIRECTORY = os.path.abspath(
@@ -97,6 +98,16 @@ if __name__ == '__main__':
             print 'Package installation failed:', 'python-tk'
             print str(traceback.format_exc())
 
+    # Check if 'python-ldap' package exists
+    pm = PackageManager()
+    if not pm.is_package_installed('python-ldap'):
+        # Try to install the package
+        try:
+            pm.install_package('python-ldap')
+        except Exception:
+            print 'Package installation failed:', 'python-ldap'
+            print str(traceback.format_exc())            
+            
     from controller.MainMenuController import MainMenuController
     controller = MainMenuController()
     controller.show()

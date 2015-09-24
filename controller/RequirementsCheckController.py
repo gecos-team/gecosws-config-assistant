@@ -28,6 +28,7 @@ from view.RequirementsCheckDialog import RequirementsCheckDialog
 
 from dao.NetworkInterfaceDAO import NetworkInterfaceDAO
 from dao.NTPServerDAO import NTPServerDAO
+from dao.GecosAccessDataDAO import GecosAccessDataDAO
 
 import logging
 
@@ -70,6 +71,16 @@ class RequirementsCheckController(object):
         if ntpServerDao.load() is not None:
             self.view.setNTPServerStatusLabel(_('OK'))
             self.logger.debug('NTP Server OK')        
+
+        # Auto Setup status        
+        self.logger.debug('Check auto setup status')
+        gecosAccessDataDao = GecosAccessDataDAO()
+        if (gecosAccessDataDao.load() is not None and
+            gecosAccessDataDao.load().get_password() is not None and
+            gecosAccessDataDao.load().get_password().strip() != ''):
+            self.view.setAutoSetupStatus(_('OK'))
+            self.logger.debug('Auto setup already done?')        
+
 
     def show(self, mainWindow):
         self.logger.debug('show - BEGIN')
