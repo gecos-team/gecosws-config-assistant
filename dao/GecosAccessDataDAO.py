@@ -43,6 +43,7 @@ class GecosAccessDataDAO(object):
         if not cls._instance:
             cls._instance = super(GecosAccessDataDAO, cls).__new__(
                                 cls, *args, **kwargs)
+            cls._instance.previous_saved_data = None
         return cls._instance
 
 
@@ -53,7 +54,6 @@ class GecosAccessDataDAO(object):
         
         self.logger = logging.getLogger('GecosAccessDataDAO')
         self.data_file = '/etc/gcc.control'
-        self.previous_saved_data = None
            
 
     def load(self):

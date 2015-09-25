@@ -31,8 +31,6 @@ import traceback
 import gettext
 from gettext import gettext as _
 
-MOCK_TEST_CLASSES = False
-
 # Add project root directory (enable symlink and trunk execution)
 PROJECT_ROOT_DIRECTORY = os.path.abspath(
     os.path.dirname(os.path.dirname(os.path.realpath(sys.argv[0]))))
@@ -86,7 +84,7 @@ if __name__ == '__main__':
        sys.exit(1)
     #if not check_live():
     #    fix_psmouse()
-    logging.basicConfig()   
+    logging.basicConfig(filename='/tmp/gecos-config-assistant.log', level=logging.DEBUG)  
    
     # Check if 'python-tk' package exists
     pm = PackageManager()

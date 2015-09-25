@@ -25,3 +25,6 @@ import tkMessageBox
 def showerror(title, message, parent_window):
     tkMessageBox.showerror(title, message, parent = parent_window)
     
+def askyesno(title, message, parent_window):
+    return tkMessageBox.askyesno(title, message, parent = parent_window)
+        

@@ -51,7 +51,6 @@ class RequirementsCheckController(object):
         self.networkInterface = NetworkInterfaceController()
         self.autoSetup = AutoSetupController()
         self.logger = logging.getLogger('RequirementsCheckController')
-        self.logger.setLevel(logging.DEBUG)
 
     def _updateStatus(self):
         # Check if there is at least one connection interface 

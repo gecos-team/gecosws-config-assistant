@@ -36,7 +36,6 @@ class NTPServer(object):
         '''
         self.address = ''
         self.logger = logging.getLogger('NTPServer')
-        self.logger.setLevel(logging.DEBUG)
 
     def syncrhonize(self):
         if self.address is None or self.address.strip() == '':

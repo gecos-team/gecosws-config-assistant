@@ -26,6 +26,9 @@ import unittest
 from controller.AutoSetupController import AutoSetupController
 from util.UtilMocks import GecosCC
 from view.ViewMocks import ViewMock
+from dao.UserAuthenticationMethodDAO import UserAuthenticationMethodDAO
+from dto.ADAuthMethod import ADAuthMethod
+from dto.ADSetupData import ADSetupData
 
 
 class AutoSetupControllerTest(unittest.TestCase):
@@ -42,7 +45,7 @@ class AutoSetupControllerTest(unittest.TestCase):
         mainWindow = ViewMock()
         controller.show(mainWindow)
 
-        print "Prepare Gecos CC Mock with LDAP user authentication"
+        print "Prepare Gecos CC Mock with default LDAP parameters"
         gecosCC = GecosCC()
         gecosCC.set_last_request_content(
          '{ ' + "\n" +
@@ -71,5 +74,81 @@ class AutoSetupControllerTest(unittest.TestCase):
         
         print "Simulate setup"        
         self.assertTrue(controller.setup())
+
+        print "Prepare Gecos CC Mock with LDAP user authentication"
+        gecosCC = GecosCC()
+        gecosCC.set_last_request_content(
+         '{ ' + "\n" +
+         '  "uri_ntp": "0.centos.pool.ntp.org", ' +  "\n" +
+         '  "gem_repo": "http://v2.gecos.guadalinex.org/gems/", ' + "\n" +
+         '  "gcc": { '+ "\n" +
+         '       "gcc_username": "amacias", ' + "\n" +
+         '       "gcc_link": true, ' + "\n" +
+         '       "uri_gcc": "http://192.168.1.139"}, ' + "\n" +
+         '  "auth": { '+ "\n" +
+         '       "auth_type": "LDAP", '+ "\n" +
+         '       "auth_properties": { '+ "\n" +
+         '             "basegroup": "ou=groups,dc=us,dc=es", ' + "\n" +
+         '             "binddn": "cn=admin,dc=us,dc=es", ' + "\n" +
+         '             "base": "ou=users,dc=us,dc=es", '+ "\n" +
+         '             "bindpwd": "demoevaos", '+ "\n" +
+         '             "uri": "ldap://test.ldap.server"} '+ "\n" +
+         '       }, '+ "\n" +
+         '  "chef": { '+ "\n" +
+         '       "chef_server_uri": "https://192.168.1.139/", ' + "\n" +
+         '       "chef_link": true, '+ "\n" +
+         '       "chef_validation": "VALIDATION_DATA"}, ' + "\n" +
+         '  "version": "0.2.0", ' + "\n" +
+         '  "organization": "Junta de Andaluc\u00eda" '+ "\n" +
+         '}')
+        
+        
+        print "Simulate setup"        
+        self.assertTrue(controller.setup())
+
+
+        print "Prepare Gecos CC Mock with AD user authentication"
+        gecosCC = GecosCC()
+        gecosCC.set_last_request_content(
+         '{ ' + "\n" +
+         '  "uri_ntp": "0.centos.pool.ntp.org", ' +  "\n" +
+         '  "gem_repo": "http://v2.gecos.guadalinex.org/gems/", ' + "\n" +
+         '  "gcc": { '+ "\n" +
+         '       "gcc_username": "amacias", ' + "\n" +
+         '       "gcc_link": true, ' + "\n" +
+         '       "uri_gcc": "http://192.168.1.139"}, ' + "\n" +
+         '  "auth": { '+ "\n" +
+         '       "auth_type": "AD", '+ "\n" +
+         '       "auth_properties": { '+ "\n" +
+         '             "specific_conf": false, ' + "\n" +
+         '             "ad_properties": { ' + "\n" +
+         '                 "fqdn": "evaos.local", '+ "\n" +
+         '                 "workgroup": "evaos"}} '+ "\n" +
+         '       }, '+ "\n" +
+         '  "chef": { '+ "\n" +
+         '       "chef_server_uri": "https://192.168.1.139/", ' + "\n" +
+         '       "chef_link": true, '+ "\n" +
+         '       "chef_validation": "VALIDATION_DATA"}, ' + "\n" +
+         '  "version": "0.2.0", ' + "\n" +
+         '  "organization": "Junta de Andaluc\u00eda" '+ "\n" +
+         '}')
+        
+        print "Simulate setup"        
+        self.assertTrue(controller.setup())
+
+        print "Return user authentication to local users"
+        authMethodDao = UserAuthenticationMethodDAO()
+        method = ADAuthMethod()
+        data = ADSetupData()
+                
+        # Data of an Active Directory server used for tests 
+        data.set_domain('evaos.local')
+        data.set_workgroup('evaos')
+        data.set_ad_administrator_user('Administrador')
+        data.set_ad_administrator_pass('Evaos.2014')
+        
+        method.set_data(data)
+        self.assertTrue(authMethodDao.delete(method))        
+        
         
         print "End ;)"

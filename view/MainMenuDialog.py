@@ -43,7 +43,6 @@ class MainMenuDialog(Tk):
         self.body = Frame(self, padding="20 20 20 20")    
         self.controller = mainController
         self.logger = logging.getLogger('MainMenuDialog')
-        self.logger.setLevel(logging.DEBUG)
         
         self.initUI()        
 
@@ -114,9 +113,12 @@ class MainMenuDialog(Tk):
 
     def showConnectWithGecosCCDialog(self):
         self.logger.debug("showConnectWithGecosCCDialog")
+        self.controller.showConnectWithGecosCCDialog()
 
     def showUserAuthenticationMethod(self):
         self.logger.debug("showUserAuthenticationMethod")
+        self.controller.showUserAuthenticationMethod()
+        
         
     def showSoftwareManager(self):
         self.logger.debug("showSoftwareManager")

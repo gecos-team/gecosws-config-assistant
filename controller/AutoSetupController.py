@@ -26,18 +26,19 @@ from dao.UserAuthenticationMethodDAO import UserAuthenticationMethodDAO
 from dao.WorkstationDataDAO import WorkstationDataDAO
 
 import sys
+import socket
 
 
 if 'check' in sys.argv:
     # Mock view classes for testing purposses
     print "==> Loading mocks..."
-    from view.ViewMocks import showerror, AutoSetupDialog, AutoSetupProcessView, ADSetupDateElemView
+    from view.ViewMocks import showerror, AutoSetupDialog, AutoSetupProcessView, ADSetupDataElemView
     from util.UtilMocks import GecosCC
 else:
     # Use real view classes
     from view.AutoSetupDialog import AutoSetupDialog
     from view.AutoSetupProcessView import AutoSetupProcessView
-    from view.ADSetupDateElemView import ADSetupDateElemView
+    from view.ADSetupDataElemView import ADSetupDataElemView
     from view.CommonDialog import showerror
     from util.GecosCC import GecosCC
 
@@ -78,7 +79,6 @@ class AutoSetupController(object):
         self.workstationDataDao = WorkstationDataDAO()
         
         self.logger = logging.getLogger('AutoSetupController')
-        self.logger.setLevel(logging.DEBUG)
         
         self.auto_setup_success = False
 
@@ -208,6 +208,11 @@ class AutoSetupController(object):
                  self.processView)              
             return False           
 
+        # If default parameters, skip user authentication
+        if conf["auth"]["auth_properties"]["uri"] == 'URL_LDAP':
+            self.logger.info('Default LDAP URI detected. Skip user authentication setup!')
+            return True
+        
         
         ldapSetupData.set_uri(conf["auth"]["auth_properties"]["uri"])
         ldapSetupData.set_base(conf["auth"]["auth_properties"]["base"])
@@ -300,13 +305,28 @@ class AutoSetupController(object):
                 return False          
 
         
+            # Check fqdn
+            ipaddress = None
+            try:
+                ipaddress = socket.gethostbyname(ad_properties["fqdn"])
+            except:
+                self.logger.error("Can't resolv fqdn: %s"%(ad_properties["fqdn"]))
+                self.logger.error(str(traceback.format_exc()))
+                
+            if ipaddress is None:
+                self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
+                self.processView.enableAcceptButton()
+                showerror(_("Auto setup error"), 
+                    _("Can't resolv FQDN!\nPlease check your DNS configuration."),
+                     self.processView)  
+                return False
 
         
             adSetupData.set_workgroup(ad_properties["workgroup"])
             adSetupData.set_domain(ad_properties["fqdn"])
             
             # Ask the user for Active Directory administrator user and password
-            askForActiveDirectoryCredentialsView = ADSetupDateElemView(self.processView, self)
+            askForActiveDirectoryCredentialsView = ADSetupDataElemView(self.processView, self)
             askForActiveDirectoryCredentialsView.set_data(adSetupData)
             askForActiveDirectoryCredentialsView.show()
 
@@ -354,6 +374,7 @@ class AutoSetupController(object):
 
         # Show process view
         self.processView = AutoSetupProcessView(self.view, self)
+        self.processView.show()
 
         # Get auto setup JSON
         self.processView.setAutoSetupDataLoadStatus(_('IN PROCESS'))
@@ -405,13 +426,13 @@ class AutoSetupController(object):
             return False
         
         # --> LDAP authentication method
-        if conf["auth"]["auth_type"] != 'LDAP':
+        if conf["auth"]["auth_type"] == 'LDAP':
             if not self._setup_ldap_authentication_method(conf):
                 return False
             
 
         # --> Active Directory authentication method
-        if conf["auth"]["auth_type"] != 'AD':
+        if conf["auth"]["auth_type"] == 'AD':
             if not self._setup_ad_authentication_method(conf):
                 return False      
             

@@ -52,7 +52,6 @@ class MainMenuController(object):
         self.systemStatus = SystemStatusController()
         
         self.logger = logging.getLogger('MainMenuController')
-        self.logger.setLevel(logging.DEBUG)
         
     def show(self):
         self.view = MainMenuDialog(self)
@@ -70,8 +69,7 @@ class MainMenuController(object):
         pass
 
     def showUserAuthenticationMethod(self):
-        # TODO!
-        pass
+        self.userAuthenticationMethod.show(self.view)
 
     def showSoftwareManager(self):
         # TODO!

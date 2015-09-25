@@ -23,17 +23,23 @@ __license__ = "GPL-2"
 import logging
 
 from dto.GecosAccessData import GecosAccessData
+from dto.ADSetupData import ADSetupData
 
 
 def showerror(title, message, parent_window):
-    print "showerror('%s', '%s')"%(title, message)
+    logger = logging.getLogger('tkMessageBox')
+    logger.debug("showerror('%s', '%s')"%(title, message))
 
+def askyesno(title, message, parent_window):
+    logger = logging.getLogger('tkMessageBox')
+    logger.debug("askyesno('%s', '%s')"%(title, message))
+    return True
 
 class ViewMock(object):
     def wait_window(self, window):
         pass
 
-class ADSetupDateElemView(ViewMock):
+class ADSetupDataElemView(ViewMock):
     '''
     Dialog class to ask the user for the Active Directory administrator user and password.
     '''
@@ -47,12 +53,16 @@ class ADSetupDateElemView(ViewMock):
         self.controller = mainController
         self.data = None
         
-        self.logger = logging.getLogger('ADSetupDateElemView')
-        self.logger.setLevel(logging.DEBUG)        
+        self.logger = logging.getLogger('ADSetupDataElemView')
         
-        self.initUI()        
 
     def get_data(self):
+        self.logger.debug("Return test AD access data")
+        self.__data = ADSetupData()
+        self.__data.set_domain('evaos.local')
+        self.__data.set_workgroup('evaos')
+        self.__data.set_ad_administrator_user('Administrador')            
+        self.__data.set_ad_administrator_pass('Evaos.2014')            
         return self.__data
 
 
@@ -85,7 +95,6 @@ class AutoSetupDialog(ViewMock):
         self.parent = parent
         self.controller = mainController
         self.logger = logging.getLogger('AutoSetupDialog')
-        self.logger.setLevel(logging.DEBUG)
         
         self.data = None
         
@@ -139,7 +148,6 @@ class AutoSetupProcessView(ViewMock):
         self.parent = parent
         self.controller = mainController
         self.logger = logging.getLogger('AutoSetupProcessView')
-        self.logger.setLevel(logging.DEBUG)
         
         
 
@@ -169,5 +177,66 @@ class AutoSetupProcessView(ViewMock):
         self.logger.debug("enableAcceptButton")
     
         
-    
+class UserAuthenticationMethodElemView(ViewMock):
+    '''
+    View class to setup the user authentication method.
+    '''
+
+
+    def __init__(self, parent, mainController):
+        '''
+        Constructor
+        '''
+        self.parent = parent
+        self.controller = mainController
+        self.logger = logging.getLogger('UserAuthenticationMethodElemView')
+        
+        self.data = None
+        
+
+    def get_data(self):
+        return self.__data
+
+
+    def set_data(self, value):
+        self.__data = value
+
+
+    def show(self):
+        self.logger.debug("Show")
+ 
+    def accept(self):
+        self.logger.debug("Accept")
+
+
+    def cancel(self):
+        self.logger.debug("cancel")
+
+    def setup(self):
+        self.logger.debug("setup")
+       
+    def focusLdapUriField(self):
+        self.logger.debug("focusLdapUriField")              
+
+    def focusUserBaseDNField(self):
+        self.logger.debug("focusUserBaseDNField")               
+
+    def focusAdDomainField(self):
+        self.logger.debug("focusAdDomainField")               
+
+    def focusAdWorkgroupField(self):
+        self.logger.debug("focusAdWorkgroupField")         
+
+    def focusAdUserField(self):
+        self.logger.debug("focusAdUserField")          
+
+    def focusAdPasswordField(self):
+        self.logger.debug("focusAdPasswordField")        
+               
+    data = property(get_data, set_data, None, None)
+
+
+
+        
+
        

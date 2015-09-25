@@ -65,3 +65,22 @@ class LDAPSetupDataTest(unittest.TestCase):
         obj.set_bind_user_pwd('badpassword')       
         self.assertFalse(obj.test()) 
 
+        obj = LDAPSetupData()
+        obj.set_uri('ldap://test.ldap.server')
+        obj.set_base('ou=users,dc=us,dc=es')
+        
+        self.assertTrue(obj.test()) 
+
+        obj = LDAPSetupData()
+        obj.set_uri('ldap://test.ldap.server')
+        obj.set_base('ou=users,dc=us,dc=es')
+        obj.set_bind_user_dn('cn=admin,dc=us,dc=es')
+        obj.set_bind_user_pwd('demoevaos')       
+        self.assertTrue(obj.test()) 
+
+        obj = LDAPSetupData()
+        obj.set_uri('ldap://test.ldap.server')
+        obj.set_base('ou=users,dc=us,dc=es')
+        obj.set_base_group('ou=groups,dc=us,dc=es')
+        self.assertTrue(obj.test()) 
+

@@ -41,4 +41,27 @@ class ADSetupDataTest(unittest.TestCase):
         self.assertEqual(obj.get_workgroup(), 'test_workgroup')
         self.assertEqual(obj.workgroup, 'test_workgroup')
 
+        obj.set_ad_administrator_user('test_user')
+        self.assertEqual(obj.get_ad_administrator_user(), 'test_user')
+        self.assertEqual(obj.ad_administrator_user, 'test_user')
+
+        obj.set_ad_administrator_pass('test_pass')
+        self.assertEqual(obj.get_ad_administrator_pass(), 'test_pass')
+        self.assertEqual(obj.ad_administrator_pass, 'test_pass')
+
+
+        # Test connection with wrong password
+        obj.set_domain('evaos.local')
+        obj.set_workgroup('evaos')
+        obj.set_ad_administrator_user('Administrador')
+        obj.set_ad_administrator_pass('wrongpass')
+        self.assertFalse(obj.test())
+
+        # Test connection with correct data
+        obj.set_domain('evaos.local')
+        obj.set_workgroup('evaos')
+        obj.set_ad_administrator_user('Administrador')
+        obj.set_ad_administrator_pass('Evaos.2014')
+        self.assertTrue(obj.test())
+
 

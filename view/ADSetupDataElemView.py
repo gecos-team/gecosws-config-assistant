@@ -32,7 +32,7 @@ from dto.ADSetupData import ADSetupData
 
 import tkMessageBox
 
-class ADSetupDateElemView(Toplevel):
+class ADSetupDataElemView(Toplevel):
     '''
     Dialog class to ask the user for the Active Directory administrator user and password.
     '''
@@ -46,8 +46,7 @@ class ADSetupDateElemView(Toplevel):
         self.parent = parent
         self.body = Frame(self, padding="20 20 20 20")   
         self.controller = mainController
-        self.logger = logging.getLogger('ADSetupDateElemView')
-        self.logger.setLevel(logging.DEBUG)
+        self.logger = logging.getLogger('ADSetupDataElemView')
         
         self.data = None
         
@@ -77,7 +76,7 @@ class ADSetupDateElemView(Toplevel):
         padding_y = 10
 
         # Explanation
-        explanationLabel1 =  Label(self.body, text=_("To setup the Active Directory authentication method you"))
+        explanationLabel1 =  Label(self.body, text=_("To setup or remove the Active Directory authentication method you"))
         explanationLabel1.grid(column=0, row=1, columnspan=3, sticky=E+W, padx=padding_x, pady=padding_y)
 
         explanationLabel2 =  Label(self.body, text=_("have to specify an AD administrator user and password:"))
@@ -90,7 +89,6 @@ class ADSetupDateElemView(Toplevel):
         
         self.adDomainEntry = Entry(self.body)
         self.adDomainEntry.grid(column=1, row=3, columnspan=2, sticky=E+W, padx=padding_x, pady=padding_y)
-        self.adDomainEntry.config(state='disabled')
 
         # Workgroup
         adWorkgroupLabel = Label(self.body, text=_("Workgroup:"))
@@ -98,7 +96,6 @@ class ADSetupDateElemView(Toplevel):
         
         self.adWorkgroupEntry = Entry(self.body)
         self.adWorkgroupEntry.grid(column=1, row=4, columnspan=2, sticky=E+W, padx=padding_x, pady=padding_y)
-        self.adWorkgroupEntry.config(state='disabled')
 
         # User
         adUserLabel = Label(self.body, text=_("User:"))
@@ -141,9 +138,11 @@ class ADSetupDateElemView(Toplevel):
         if data is not None:
             self.adDomainEntry.delete(0, END)
             self.adDomainEntry.insert(0, data.get_domain())
+            self.adDomainEntry.config(state='disabled')
 
             self.adWorkgroupEntry.delete(0, END)
             self.adWorkgroupEntry.insert(0, data.get_workgroup())
+            self.adWorkgroupEntry.config(state='disabled')
 
         
         self.transient(self.parent)

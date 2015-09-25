@@ -20,6 +20,9 @@ __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
 __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
+import logging
+import traceback
+import ldap
 
 class ADSetupData(object):
     '''
@@ -35,6 +38,8 @@ class ADSetupData(object):
         self.workgroup = ''
         self.ad_administrator_user = None
         self.ad_administrator_pass = None
+        
+        self.logger = logging.getLogger('ADSetupData')
 
     def get_ad_administrator_user(self):
         return self.__ad_administrator_user
@@ -66,6 +71,49 @@ class ADSetupData(object):
 
     def set_workgroup(self, value):
         self.__workgroup = value
+
+
+    def test(self):
+        # Test AD connection
+        result = False
+        
+        if self.get_domain() is None or self.get_domain().strip() == '':
+            self.logger.debug('Empty domain!')
+            return False
+
+        if self.get_workgroup() is None or self.get_workgroup().strip() == '':
+            self.logger.debug('Empty workgroup!')
+            return False
+
+        if self.get_ad_administrator_user() is None or self.get_ad_administrator_user().strip() == '':
+            self.logger.debug('Empty administrator username!')
+            return False
+
+        if self.get_ad_administrator_pass() is None or self.get_ad_administrator_pass().strip() == '':
+            self.logger.debug('Empty administrator pass!')
+            return False
+
+
+        
+        try:
+            ld = ldap.initialize('ldap://%s'%(self.get_domain()))
+            ld.protocol_version = 3
+            ld.set_option(ldap.OPT_REFERRALS, 0)
+            
+            user = "%s@%s"%(self.get_ad_administrator_user(), self.get_domain())
+            password = self.get_ad_administrator_pass()
+            ld.simple_bind_s(user, password) 
+
+            return True
+
+        except:
+            self.logger.warn('Error connecting to AD server: %s'%(self.get_domain()))
+            self.logger.warn(str(traceback.format_exc()))          
+            
+        return result
+
+
+
 
     domain = property(get_domain, set_domain, None, None)
     workgroup = property(get_workgroup, set_workgroup, None, None)

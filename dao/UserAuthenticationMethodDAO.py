@@ -58,7 +58,6 @@ class UserAuthenticationMethodDAO(object):
         '''
         
         self.logger = logging.getLogger('UserAuthenticationMethodDAO')
-        self.logger.setLevel(logging.DEBUG)
         
         self.main_data_file = '/etc/sssd/sssd.conf'
         self.samba_conf_file = '/etc/samba/smb.conf'

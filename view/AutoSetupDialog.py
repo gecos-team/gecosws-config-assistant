@@ -45,7 +45,6 @@ class AutoSetupDialog(Toplevel):
         self.body = Frame(self, padding="20 20 20 20")   
         self.controller = mainController
         self.logger = logging.getLogger('AutoSetupDialog')
-        self.logger.setLevel(logging.DEBUG)
         
         self.data = None
         

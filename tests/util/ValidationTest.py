@@ -42,5 +42,19 @@ class ValidationTest(unittest.TestCase):
         self.assertFalse(validation.isUrl('http://es'))
         self.assertTrue(validation.isUrl('http://www.google.es'))
         self.assertTrue(validation.isUrl('https://www.google.es/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q=caca'))
+        self.assertTrue(validation.isUrl('http://192.168.10.20:8080/'))
 
-       
+
+        self.assertFalse(validation.isLdapUri(None))
+        self.assertFalse(validation.isLdapUri(''))
+        self.assertFalse(validation.isLdapUri('malformed url'))
+        self.assertFalse(validation.isLdapUri('ldapQ://www.google.es'))
+        self.assertFalse(validation.isLdapUri('ldap:/www.google.es'))
+        self.assertFalse(validation.isLdapUri('ldap://es'))
+        self.assertTrue(validation.isLdapUri('ldap://www.google.es'))
+        self.assertTrue(validation.isLdapUri('ldaps://www.google.es:1234/'))
+        self.assertTrue(validation.isLdapUri('ldaps://192.168.10.20:1234/'))
+        self.assertTrue(validation.isLdapUri('ldap://test.ldap.server'))
+        
+
+        

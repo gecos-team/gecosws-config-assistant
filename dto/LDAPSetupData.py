@@ -41,7 +41,6 @@ class LDAPSetupData(object):
         self.bindUserDN = ''
         self.bindUserPWD = ''
         self.logger = logging.getLogger('LDAPSetupData')
-        self.logger.setLevel(logging.DEBUG)        
 
     def get_uri(self):
         return self.__uri
@@ -117,7 +116,7 @@ class LDAPSetupData(object):
 
 
             # Check user groups DN
-            if self.get_base_group() is None or self.get_base_group().strip() == '':
+            if self.get_base_group() is not None and self.get_base_group().strip() != '':
                 results = ld.search_s(self.get_base_group(), ldap.SCOPE_SUBTREE, ldapfilter)
                 if results is None:
                     return False

@@ -44,7 +44,6 @@ class AutoSetupProcessView(Toplevel):
         self.body = Frame(self, padding="20 20 20 20")   
         self.controller = mainController
         self.logger = logging.getLogger('AutoSetupProcessView')
-        self.logger.setLevel(logging.DEBUG)
         
         self.initUI()        
 
@@ -103,6 +102,8 @@ class AutoSetupProcessView(Toplevel):
         self.logger.debug("Show")
         self.transient(self.parent)
         self.grab_set()
+        self.update()
+        
 
 
     def accept(self):
@@ -115,16 +116,21 @@ class AutoSetupProcessView(Toplevel):
                 
     def setAutoSetupDataLoadStatus(self, status):
         self.autoSetupDataLoadStatusLabel['text'] = status
+        self.update()
 
     def setNTPServerSetupStatus(self, status):
         self.ntpServerSetupStatusLabel['text'] = status
+        self.update()
 
     def setUserAuthenticationSetupStatus(self, status):
         self.userAuthenticationSetupStatusLabel['text'] = status
+        self.update()
 
     def setGecosCCConnectionSetupStatus(self, status):
         self.gecosCCConnectionSetupStatusLabel['text'] = status
+        self.update()
         
     def enableAcceptButton(self):
         self.acceptButton.config(state='enabled')
+        self.update()
     

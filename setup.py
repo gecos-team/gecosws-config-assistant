@@ -124,7 +124,7 @@ class Check(Command):
         import unittest
         
         import logging
-        logging.basicConfig()
+        logging.basicConfig(level=logging.DEBUG)
         
         
         from tests.dto.NTPServerTest import NTPServerTest
@@ -179,10 +179,13 @@ class Check(Command):
         suite.addTest(WorkstationDataDAOTest())
         suite.addTest(GecosAccessDataDAOTest())
         suite.addTest(LocalUserDAOTest())
-        # suite.addTest(UserAuthenticationMethodDAOTest())
+        #suite.addTest(UserAuthenticationMethodDAOTest())
 
+        from tests.controller.UserAuthenticationMethodControllerTest import UserAuthenticationMethodControllerTest
         from tests.controller.AutoSetupControllerTest import AutoSetupControllerTest
-        suite.addTest(AutoSetupControllerTest())
+        
+        suite.addTest(UserAuthenticationMethodControllerTest())
+        #suite.addTest(AutoSetupControllerTest())
         
         
         

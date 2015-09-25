@@ -43,7 +43,6 @@ class RequirementsCheckDialog(Toplevel):
         self.body = Frame(self, padding="20 20 20 20")   
         self.controller = mainController
         self.logger = logging.getLogger('RequirementsCheckDialog')
-        self.logger.setLevel(logging.DEBUG)
         
         self.initUI()        
 

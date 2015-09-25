@@ -50,3 +50,22 @@ class Validation(object):
             return True
         else:
             return False
+
+    def isLdapUri(self, url):
+        if url is None:
+            False
+        
+        regex = re.compile(
+            r'^(ldap)s?://' # ldap:// or ldaps://
+            r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|' #domain...
+            r'localhost|' #localhost...
+            r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})' # ...or ip
+            r'(?::\d+)?' # optional port
+            r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+        
+        if regex.match(str(url)):
+            return True
+        else:
+            return False
+
+
