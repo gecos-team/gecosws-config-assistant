@@ -11,8 +11,11 @@
 
 action :setup do
   begin
-    os = `lsb_release -d`.split(":")[1].chomp().lstrip()
-    if new_resource.support_os.include?(os)
+# OS identification moved to recipes/default.rb
+#    os = `lsb_release -d`.split(":")[1].chomp().lstrip()
+#    if new_resource.support_os.include?(os)
+    if new_resource.support_os.include?($gecos_os)
+
       if new_resource.delete_files.any?
         new_resource.delete_files.each do |value|
         makebackup = 1 if value.backup 
@@ -33,31 +36,49 @@ action :setup do
       end
 
       if new_resource.copy_files.any?
-        new_resource.copy_files.each do |file|       
-          if file.overwrite 
-             grp_members = ::Etc.getgrnam(file.group).mem
-             remote_file file.file_dest do
-               source file.file_orig
-               owner file.user
-               mode file.mode
-               group file.group
-               action :nothing
-             end.run_action(:create)
-           else
-             grp_members = ::Etc.getgrnam(file.group).mem 
-             remote_file file.file_dest do
-                source file.file_orig
-                owner file.user
-                mode file.mode
-                group file.group
-                action :nothing
-             end.run_action(:create_if_missing)
+        new_resource.copy_files.each do |file|                 
+          if file.attribute?(:mode)
+            local_mode = file.mode
+          else
+            local_mode = '755'
           end
-        end
-      end
-    else
-      Chef::Log.info("This resource is not support into your OS")
-    end
+          if file.attribute?(:user)
+            local_user = file.user 
+          else
+            local_user = 'root'
+          end
+          if file.attribute?(:group)
+            local_group = file.group
+          else
+            local_group = Etc.getpwnam(local_user).gid
+          end
+          if ::File.directory?(file.file_dest)
+            file.file_dest.concat(::File.basename(file.file_orig))
+          end         
+          if file.overwrite 
+# Not used   grp_members = ::Etc.getgrnam(file.group).mem
+            remote_file file.file_dest do
+              source file.file_orig
+              owner local_user
+              mode local_mode
+              group local_group
+              action :nothing
+            end.run_action(:create)
+          else
+ # Not used  grp_members = ::Etc.getgrnam(file.group).mem 
+            remote_file file.file_dest do
+               source file.file_orig
+               owner local_user
+               mode local_mode
+               group local_group
+               action :nothing
+             end.run_action(:create_if_missing)
+           end
+         end
+       end
+     else
+       Chef::Log.info("This resource is not support into your OS")
+     end
     
     # save current job ids (new_resource.job_ids) as "ok"
     job_ids = new_resource.job_ids

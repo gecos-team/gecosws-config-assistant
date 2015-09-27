@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: gecos-ws-mgmt
-# Provider:: package_profile
+# Provider:: appconfig_libreoffice
 #
 # Copyright 2013, Junta de Andalucia
 # http://www.juntadeandalucia.es/
@@ -9,19 +9,28 @@
 # http://www.osor.eu/eupl
 #
 
+require 'chef/mixin/shell_out'
+include Chef::Mixin::ShellOut
+
 action :setup do
   begin
-# OS identification moved to recipes/default.rb
-#    os = `lsb_release -d`.split(":")[1].chomp().lstrip()
-#    if new_resource.support_os.include?(os)
-    if new_resource.support_os.include?($gecos_os)
+    alternatives_cmd = 'update-alternatives'
+     if new_resource.support_os.include?($gecos_os)
+#      if not new_resource.loffice_config.empty?
+       if not new_resource.config_libreoffice.empty?
+#        app_update = new_resource.loffice_config['app_update']
+         app_update = new_resource.config_libreoffice['app_update']
 
-      if new_resource.package_list.any? 
-        Chef::Log.info("Installing package profile list")
-        new_resource.package_list.each do |pkg|
-          package pkg do
+        if app_update
+          execute "enable libreoffice upgrades" do
+            command "apt-mark unhold libreoffice libreoffice*"
             action :nothing
-          end.run_action(:install)
+          end.run_action(:run)
+        else
+          execute "disable libreoffice upgrades" do
+            command "apt-mark hold libreoffice libreoffice*"
+            action :nothing
+          end.run_action(:run)
         end
       end
     else
@@ -48,10 +57,9 @@ action :setup do
       end
     end
   ensure
-    gecos_ws_mgmt_jobids "package_profile_res" do
+    gecos_ws_mgmt_jobids "appconfig_libreoffice_res" do
       provider "gecos_ws_mgmt_jobids"
       recipe "software_mgmt"
     end.run_action(:reset)
   end
 end
-

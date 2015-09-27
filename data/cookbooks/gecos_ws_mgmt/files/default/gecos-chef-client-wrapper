@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 __author__ = "David Amian Valle <damian@emergya.com>"
-__copyright__ = "Copyright (C) 2014, Junta de Andalucía <devmaster@guadalinex.org>"
+__copyright__ = "Copyright (C) 2014, Junta de Andalucía <gecos@guadalinex.org>"
 __license__ = "GPL-2"
 
 import os
@@ -16,7 +16,7 @@ if __name__ == '__main__':
     try:
         gcc_flag = open ('/etc/gcc.control')
     except Exception as e:
-        fp.write("This workstation is not linked")
+        fp.write("This workstation is not linked to a Control Center")
         fp.close()
         sys.exit(1)
     content = gcc_flag.read()

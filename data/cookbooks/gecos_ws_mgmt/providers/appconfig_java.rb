@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: gecos-ws-mgmt
-# Provider:: app_config
+# Provider:: appconfig_java
 #
 # Copyright 2013, Junta de Andalucia
 # http://www.juntadeandalucia.es/
@@ -15,66 +15,16 @@ include Chef::Mixin::ShellOut
 action :setup do
   begin
     alternatives_cmd = 'update-alternatives'
-# OS identification moved to recipes/default.rb
-#    os = `lsb_release -d`.split(":")[1].chomp().lstrip()
-#    if new_resource.support_os.include?(os)
      if new_resource.support_os.include?($gecos_os)
-      if not new_resource.loffice_config.empty?
-        app_update = new_resource.loffice_config['app_update']
-
-        if app_update
-          execute "enable libreoffice upgrades" do
-            command "apt-mark unhold libreoffice libreoffice*"
-            action :nothing
-          end.run_action(:run)
-        else
-          execute "disable libreoffice upgrades" do
-            command "apt-mark hold libreoffice libreoffice*"
-            action :nothing
-          end.run_action(:run)
-        end
-      end
-
-      if not new_resource.thunderbird_config.empty?
-        app_update = new_resource.thunderbird_config['app_update']
-
-        if app_update
-          execute "enable thunderbird upgrades" do
-            command "apt-mark unhold thunderbird thunderbird*"
-            action :nothing
-          end.run_action(:run)
-        else
-          execute "disable thunderbird upgrades" do
-            command "apt-mark hold thunderbird thunderbird*"
-            action :nothing
-          end.run_action(:run)
-        end
-      end
-
-      if not new_resource.firefox_config.empty?
-        app_update = new_resource.firefox_config['app_update']
-        unless Kernel::test('d', '/etc/firefox/pref')
-          FileUtils.mkdir_p '/etc/firefox/pref'
-        end
-
-        template "/etc/firefox/pref/update.js" do
-          source "update.js.erb"
-          action :nothing
-          variables(
-            :app_update => app_update
-            )
-        end.run_action(:create)
-      end
-
-      if not new_resource.java_config.empty?
-        version = new_resource.java_config['version']
-        plug_version = new_resource.java_config['plug_version']
-        sec = new_resource.java_config['sec']
-        crl = new_resource.java_config['crl']
-        ocsp = new_resource.java_config['ocsp']
-        warn_cert = new_resource.java_config['warn_cert']
-        mix_code = new_resource.java_config['mix_code']
-        array_attrs = new_resource.java_config['array_attrs']
+      if not new_resource.config_java.empty?
+        version = new_resource.config_java['version']
+        plug_version = new_resource.config_java['plug_version']
+        sec = new_resource.config_java['sec']
+        crl = new_resource.config_java['crl']
+        ocsp = new_resource.config_java['ocsp']
+        warn_cert = new_resource.config_java['warn_cert']
+        mix_code = new_resource.config_java['mix_code']
+        array_attrs = new_resource.config_java['array_attrs']
 
         unless Kernel::test('d', '/etc/.java/deployment/')
           FileUtils.mkdir_p '/etc/.java/deployment/'
@@ -144,7 +94,7 @@ action :setup do
       end
     end
   ensure
-    gecos_ws_mgmt_jobids "app_config_res" do
+    gecos_ws_mgmt_jobids "appconfig_java_res" do
       provider "gecos_ws_mgmt_jobids"
       recipe "software_mgmt"
     end.run_action(:reset)

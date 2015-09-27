@@ -54,6 +54,27 @@ default[:gecos_ws_mgmt][:software_mgmt][:app_config_res][:job_ids] = []
 default[:gecos_ws_mgmt][:software_mgmt][:app_config_res][:updated_by] = {} 
 default[:gecos_ws_mgmt][:software_mgmt][:app_config_res][:support_os] = ["GECOS V2", "Gecos V2 Lite"]
 
+default[:gecos_ws_mgmt][:software_mgmt][:appconfig_libreoffice_res][:config_libreoffice] = {} 
+default[:gecos_ws_mgmt][:software_mgmt][:appconfig_libreoffice_res][:job_ids] = [] 
+default[:gecos_ws_mgmt][:software_mgmt][:appconfig_libreoffice_res][:updated_by] = {} 
+default[:gecos_ws_mgmt][:software_mgmt][:appconfig_libreoffice_res][:support_os] = ["GECOS V2", "Gecos V2 Lite"]
+
+default[:gecos_ws_mgmt][:software_mgmt][:appconfig_thunderbird_res][:config_thunderbird] = {} 
+default[:gecos_ws_mgmt][:software_mgmt][:appconfig_thunderbird_res][:job_ids] = [] 
+default[:gecos_ws_mgmt][:software_mgmt][:appconfig_thunderbird_res][:updated_by] = {} 
+default[:gecos_ws_mgmt][:software_mgmt][:appconfig_thunderbird_res][:support_os] = ["GECOS V2", "Gecos V2 Lite"]
+
+default[:gecos_ws_mgmt][:software_mgmt][:appconfig_firefox_res][:config_firefox] = {} 
+default[:gecos_ws_mgmt][:software_mgmt][:appconfig_firefox_res][:job_ids] = [] 
+default[:gecos_ws_mgmt][:software_mgmt][:appconfig_firefox_res][:updated_by] = {} 
+default[:gecos_ws_mgmt][:software_mgmt][:appconfig_firefox_res][:support_os] = ["GECOS V2", "Gecos V2 Lite"]
+
+default[:gecos_ws_mgmt][:software_mgmt][:appconfig_java_res][:config_java] = {} 
+default[:gecos_ws_mgmt][:software_mgmt][:appconfig_java_res][:job_ids] = [] 
+default[:gecos_ws_mgmt][:software_mgmt][:appconfig_java_res][:updated_by] = {} 
+default[:gecos_ws_mgmt][:software_mgmt][:appconfig_java_res][:support_os] = ["GECOS V2", "Gecos V2 Lite"]
+
+
 default[:gecos_ws_mgmt][:printers_mgmt][:printers_res][:printers_list] = []
 default[:gecos_ws_mgmt][:printers_mgmt][:printers_res][:job_ids] = []
 default[:gecos_ws_mgmt][:printers_mgmt][:printers_res][:updated_by] = {}
@@ -102,11 +123,12 @@ default[:gecos_ws_mgmt][:misc_mgmt][:local_groups_res][:updated_by] = {}
 default[:gecos_ws_mgmt][:misc_mgmt][:local_groups_res][:support_os] = ["GECOS V2", "Gecos V2 Lite"]
 
 default[:gecos_ws_mgmt][:misc_mgmt][:local_admin_users_res][:local_admin_list] = []
+default[:gecos_ws_mgmt][:misc_mgmt][:local_admin_users_res][:local_admin_remove_list] = []
 default[:gecos_ws_mgmt][:misc_mgmt][:local_admin_users_res][:job_ids] = []
 default[:gecos_ws_mgmt][:misc_mgmt][:local_admin_users_res][:updated_by] = {}
 default[:gecos_ws_mgmt][:misc_mgmt][:local_admin_users_res][:support_os] = ["GECOS V2", "Gecos V2 Lite"]
 
-default[:gecos_ws_mgmt][:misc_mgmt][:cert_res][:java_keystores] = [ '/etc/java/cacerts-gcj' ]
+default[:gecos_ws_mgmt][:misc_mgmt][:cert_res][:java_keystores] = []
 default[:gecos_ws_mgmt][:misc_mgmt][:cert_res][:ca_root_certs] = []
 default[:gecos_ws_mgmt][:misc_mgmt][:cert_res][:job_ids] = []
 default[:gecos_ws_mgmt][:misc_mgmt][:cert_res][:updated_by] = {}
@@ -150,7 +172,7 @@ default[:gecos_ws_mgmt][:users_mgmt][:desktop_control_res][:support_os] = []
 
 default[:gecos_ws_mgmt][:users_mgmt][:folder_sharing_res][:users] = {}
 default[:gecos_ws_mgmt][:users_mgmt][:folder_sharing_res][:job_ids] = []
-default[:gecos_ws_mgmt][:users_mgmt][:folder_sharing_res][:support_os] = ["GECOS V2", "Gecos V2 Lite"]
+default[:gecos_ws_mgmt][:users_mgmt][:folder_sharing_res][:support_os] = ["GECOS V2"]
 
 default[:gecos_ws_mgmt][:users_mgmt][:screensaver_res][:users] = {}
 default[:gecos_ws_mgmt][:users_mgmt][:screensaver_res][:job_ids] = []
@@ -182,4 +204,3 @@ default[:gecos_ws_mgmt][:users_mgmt][:user_alerts_res][:support_os] = ["GECOS V2
 default[:gecos_ws_mgmt][:misc_mgmt][:remote_shutdown_res][:shutdown_mode] = ''
 default[:gecos_ws_mgmt][:misc_mgmt][:remote_shutdown_res][:job_ids] = []
 default[:gecos_ws_mgmt][:misc_mgmt][:remote_shutdown_res][:support_os] = ["GECOS V2", "Gecos V2 Lite"]
-

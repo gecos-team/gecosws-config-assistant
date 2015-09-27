@@ -20,8 +20,11 @@ require 'json'
 
 action :setup do
   begin
-    os = `lsb_release -d`.split(":")[1].chomp().lstrip()
-    if new_resource.support_os.include?(os)
+   # OS identification moved to recipes/default.rb
+#    os = `lsb_release -d`.split(":")[1].chomp().lstrip()
+#    if new_resource.support_os.include?(os)
+    if new_resource.support_os.include?($gecos_os)
+
       gem_depends = [ 'rest_client' ]
 
       gem_depends.each do |gem|
@@ -136,7 +139,7 @@ action :setup do
     # just save current job ids as "failed"
     # save_failed_job_ids
     Chef::Log.error(e.message)
-    raise e
+    #raise e
     job_ids = new_resource.job_ids
     job_ids.each do |jid|
       node.set['job_status'][jid]['status'] = 1

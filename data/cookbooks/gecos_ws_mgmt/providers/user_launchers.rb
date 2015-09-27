@@ -11,8 +11,10 @@
 
 action :setup do
   begin
-    os = `lsb_release -d`.split(":")[1].chomp().lstrip()
-    if new_resource.support_os.include?(os)
+# OS identification moved to recipes/default.rb
+#    os = `lsb_release -d`.split(":")[1].chomp().lstrip()
+#    if new_resource.support_os.include?(os)
+    if new_resource.support_os.include?($gecos_os)
       users = new_resource.users 
       applications_path = "/usr/share/applications/"
 
@@ -21,21 +23,37 @@ action :setup do
         username = nameuser.gsub('###','.')
         user = users[user_key]
 
-        homedir = `eval echo ~#{username}`.gsub("\n","")
+        homedir = Etc.getpwnam(username).dir
+#TODO: change desktop path to localizated (xdg) version. Put it in a generic function in default.rb
         desktop_path = "#{homedir}/Escritorio/"
-
         gid = Etc.getpwnam(username).gid
+#Create desktop directory if missing (user never logged in to desktop)        
+        if !::File.directory? desktop_path
+          directory desktop_path do
+            owner username
+            group gid
+            mode '755'
+            action :nothing
+          end.run_action(:create)
+        end  
         user.launchers.each do |desktopfile|
+# Add ".desktop" if not present in launcher's name
+          if ! desktopfile.include? "\.desktop"
+	    desktopfile.concat(".desktop")
+	  end
+
           if FileTest.exist? applications_path + desktopfile and not desktopfile.empty?
             FileUtils.cp "#{applications_path}#{desktopfile}",  desktop_path
             FileUtils.chown(username, gid, desktop_path + desktopfile)
             FileUtils.chmod 0755, desktop_path + desktopfile
-          end
+	  else
+	    Chef::Log.warn("Desktop file #{desktopfile} not found")
+           end
         end
 
       end
     else
-      Chef::Log.info("This resource is not support into your OS")
+      Chef::Log.info("Policy is not compatible with this operative system")
     end
 
     # save current job ids (new_resource.job_ids) as "ok"

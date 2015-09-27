@@ -26,10 +26,10 @@ if not node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_server_url].nil?
     
   Chef::Log.info("Installing GECOS Agent")
 
-  cookbook_file "chef-client-wrapper" do
-    path "/usr/bin/chef-client-wrapper"
+  cookbook_file "gecos-chef-client-wrapper" do
+    path "/usr/bin/gecos-chef-client-wrapper"
     owner 'root'
-    mode '0755'
+    mode '0700'
     group 'root'
     action :nothing
   end.run_action(:create_if_missing)
@@ -38,17 +38,18 @@ if not node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_server_url].nil?
   
   cron "GECOS Agent" do
     minute '30'
-    command '/usr/bin/chef-client-wrapper'
+    command '/usr/bin/gecos-chef-client-wrapper'
     action :create
   end
 
-  Chef::Log.info("Disabling old chef-client service")
+# This chef-client upstart service is not created anymore
+#  Chef::Log.info("Disabling old chef-client service")
 
-  service 'chef-client' do
-    provider Chef::Provider::Service::Upstart
-    supports :status => true, :restart => true, :reload => true
-    action [:disable, :stop]
-  end
+#  service 'chef-client' do
+#    provider Chef::Provider::Service::Upstart
+#    supports :status => true, :restart => true, :reload => true
+#    action [:disable, :stop]
+#  end
 
   gecos_ws_mgmt_chef node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_server_url] do
     chef_link node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_link]
@@ -60,6 +61,8 @@ if not node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_server_url].nil?
     support_os node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:support_os]
     action  :setup
   end
+
+
 end
 
 if not node[:gecos_ws_mgmt][:misc_mgmt][:gcc_res][:uri_gcc].nil?

@@ -15,10 +15,11 @@ include Chef::Mixin::ShellOut
 action :setup do
 
   begin
-    os = `lsb_release -d`.split(":")[1].chomp().lstrip()
+# OS identification moved to recipes/default.rb
+#   os = `lsb_release -d`.split(":")[1].chomp().lstrip()
 
     # Checking OS and Thunderbird
-    if new_resource.support_os.include?(os) and ::File.exist?('/usr/bin/thunderbird')
+    if new_resource.support_os.include?($gecos_os) and ::File.exist?('/usr/bin/thunderbird')
 
       users = new_resource.users
       users.each_key do |user_key|

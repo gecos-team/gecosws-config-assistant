@@ -11,8 +11,11 @@
 
 action :setup do
   begin
-    os = `lsb_release -d`.split(":")[1].chomp().lstrip()
-    if new_resource.support_os.include?(os)
+# OS identification moved to recipes/default.rb
+#    os = `lsb_release -d`.split(":")[1].chomp().lstrip()
+#    if new_resource.support_os.include?(os)
+    if new_resource.support_os.include?($gecos_os)
+
       
       # install depends
       package "libnss3-tools" do
@@ -42,10 +45,16 @@ action :setup do
             execute "importing '#{cert}' into java keystore" do
               command "/bin/bash -c \"echo '' | sudo keytool -cacert -keystore '#{keystore}' -file '#{cert}' &>/dev/null; exit 0\""
               action :nothing
-              only_if do not ::File.exist?(dir_ca_imported + ::File.basename(cert)) end
+              only_if do not ::File.exist?(dir_ca_imported + keystore + ::File.basename(cert)) end
             end.run_action(:run)
+            directory dir_ca_imported + keystore do
+              owner 'root'
+              group 'root'
+              mode '0755'
+              action :nothing
+            end.run_action(:create)
             remote_file "Copy '#{cert}' to imported folder" do
-              path dir_ca_imported + ::File.basename(cert)
+              path dir_ca_imported + keystore + ::File.basename(cert)
               source "file://" + cert
               owner 'root'
               group 'root'
