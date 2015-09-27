@@ -67,6 +67,7 @@ end
 
 gecos_ws_mgmt_local_admin_users 'assert users list as sudoers' do
   local_admin_list node[:gecos_ws_mgmt][:misc_mgmt][:local_admin_users_res][:local_admin_list]
+  local_admin_remove_list node[:gecos_ws_mgmt][:misc_mgmt][:local_admin_users_res][:local_admin_remove_list]
   job_ids node[:gecos_ws_mgmt][:misc_mgmt][:local_admin_users_res][:job_ids]
   support_os node[:gecos_ws_mgmt][:misc_mgmt][:local_admin_users_res][:support_os]
   action :setup

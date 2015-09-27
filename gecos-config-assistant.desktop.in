@@ -1,6 +1,6 @@
 [Desktop Entry]
 _Name=GECOS Config Assistant
-_Comment=GECOS Config Asssistant application
+_Comment=GECOS Config Assistant application
 Categories=GNOME;Utility;
 Exec=gecos-config-assistant
 Icon=/usr/local/share/firstboot/media/wizard1.png

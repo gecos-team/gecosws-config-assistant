@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: gecos-ws-mgmt
-# Resource:: local_admin_users
+# Resource:: appconfig_libreoffice
 #
 # Copyright 2013, Junta de Andalucia
 # http://www.juntadeandalucia.es/
@@ -11,7 +11,6 @@
 
 actions :setup
 
-attribute :local_admin_list, :kind_of => Array
-attribute :local_admin_remove_list, :kind_of => Array
+attribute :config_libreoffice, :kind_of => Object
 attribute :job_ids, :kind_of => Array
 attribute :support_os, :kind_of => Array

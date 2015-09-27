@@ -99,6 +99,11 @@ class ServerConf():
             print msg % ('organization',)
 
         try:
+            self.set_notes(conf['notes'])
+        except KeyError as e:
+            print msg % ('notes',)
+
+        try:
             self.set_gem_repo(conf['gem_repo'])
         except KeyError as e:
             print msg % ('gem_repo',)
@@ -148,6 +153,13 @@ class ServerConf():
 
     def set_organization(self, organization):
         self._data['organization'] = organization
+        return self
+
+    def get_notes(self):
+        return self._data['notes'].encode('utf-8')
+
+    def set_notes(self, notes):
+        self._data['notes'] = notes
         return self
 
     def get_auth_conf(self):

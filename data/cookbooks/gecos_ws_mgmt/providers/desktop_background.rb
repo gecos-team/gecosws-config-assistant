@@ -14,9 +14,11 @@ action :setup do
     package "dconf-tools" do
       action :nothing
     end.run_action(:install)
+# OS identification moved to recipes/default.rb
+#    os = `lsb_release -d`.split(":")[1].chomp().lstrip()
+#    if new_resource.support_os.include?(os)
+    if new_resource.support_os.include?($gecos_os)
 
-    os = `lsb_release -d`.split(":")[1].chomp().lstrip()
-    if new_resource.support_os.include?(os)
 
       if !new_resource.users.nil? and !new_resource.users.empty?
         users = new_resource.users

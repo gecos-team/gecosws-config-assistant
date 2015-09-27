@@ -43,3 +43,32 @@ gecos_ws_mgmt_app_config 'applications config' do
   support_os node[:gecos_ws_mgmt][:software_mgmt][:app_config_res][:support_os]
   action :setup
 end
+
+gecos_ws_mgmt_appconfig_libreoffice 'libreoffice config' do
+  config_libreoffice node[:gecos_ws_mgmt][:software_mgmt][:appconfig_libreoffice_res][:config_libreoffice]
+  job_ids node[:gecos_ws_mgmt][:software_mgmt][:appconfig_libreoffice_res][:job_ids]
+  support_os node[:gecos_ws_mgmt][:software_mgmt][:appconfig_libreoffice_res][:support_os]
+  action :setup
+end
+
+gecos_ws_mgmt_appconfig_thunderbird 'thunderbird config' do
+  config_thunderbird node[:gecos_ws_mgmt][:software_mgmt][:appconfig_thunderbird_res][:config_thunderbird]
+  job_ids node[:gecos_ws_mgmt][:software_mgmt][:appconfig_thunderbird_res][:job_ids]
+  support_os node[:gecos_ws_mgmt][:software_mgmt][:appconfig_thunderbird_res][:support_os]
+  action :setup
+end
+
+gecos_ws_mgmt_appconfig_firefox 'firefox config' do
+  config_firefox node[:gecos_ws_mgmt][:software_mgmt][:appconfig_firefox_res][:config_firefox]
+  job_ids node[:gecos_ws_mgmt][:software_mgmt][:appconfig_firefox_res][:job_ids]
+  support_os node[:gecos_ws_mgmt][:software_mgmt][:appconfig_firefox_res][:support_os]
+  action :setup
+end
+
+gecos_ws_mgmt_appconfig_java 'java config' do
+  config_java node[:gecos_ws_mgmt][:software_mgmt][:appconfig_java_res][:config_java]
+  job_ids node[:gecos_ws_mgmt][:software_mgmt][:appconfig_java_res][:job_ids]
+  support_os node[:gecos_ws_mgmt][:software_mgmt][:appconfig_java_res][:support_os]
+  action :setup
+end
+

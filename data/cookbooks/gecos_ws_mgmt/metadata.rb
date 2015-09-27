@@ -1,9 +1,10 @@
+#encoding:UTF-8
 name              "gecos_ws_mgmt"
-maintainer        "Roberto C. Morano"
-maintainer_email  "rcmorano@emergya.com"
+maintainer        "GECOS Team"
+maintainer_email  "gecos@guadalinex.org"
 license           "Apache 2.0"
 description       "Cookbook for GECOS workstations administration"
-version           "0.3.8"
+version           "0.3.12"
 
 depends "apt"
 depends "chef-client"
@@ -12,7 +13,7 @@ depends "chef-client"
   supports os
 end
 
-# more complete input definition via json-schemas:
+# better fields definition via json-schemas:
 
 updated_js = {
   title: "Updated by",
@@ -27,7 +28,7 @@ updated_js = {
 }
 
 support_os_js = {
-  title: "Support OS",
+  title: "Supported OS",
   title_es: "Sistemas operativos compatibles",
   type: "array",
   minItems: 0,
@@ -164,13 +165,13 @@ forticlientvpn_js = {
 
 sssd_js = {
   title: "Authenticate System",
-  title_es: "Autenticación del sistema",
+  title_es: "Sistema de Autenticación",
   type: "object",
   required: ["auth_type", "enabled"],
   properties: {
-    krb_url: { type: "string" , title: "Url Kerberos file configuration", title_es: "Archivo de configuración Url Kerberos"},
-    smb_url: { type: "string" , title: "Url Samba file configuration", title_es: "Archivo de configuración Url Samba"},
-    sssd_url: { type: "string" , title: "Url SSSD file configuration", title_es: "Archivo de configuración Url SSSD"},
+    krb_url: { type: "string" , title: "Url of Kerberos file configuration", title_es: "Archivo de configuración Url Kerberos"},
+    smb_url: { type: "string" , title: "Url of Samba file configuration", title_es: "Archivo de configuración Url Samba"},
+    sssd_url: { type: "string" , title: "Url of SSSD file configuration", title_es: "Archivo de configuración Url SSSD"},
     domain_list: {
       type:"array",
       items: {
@@ -193,7 +194,7 @@ sssd_js = {
     },
     auth_type:{
       title: "Authenticate type",
-      title_es: "Autenticación del tipo",
+      title_es: "Tipo de Autenticación",
       type: "string"
     },
     uri:{
@@ -472,8 +473,8 @@ user_launchers_js = {
               type: "array",
               title: "Shortcut",
               title_es: "Acceso directo",
-              description: "Enter the absolute path and add .desktop at the end of the application", 
-              description_es: "Introduzca la ruta absoluta y añada al final .desktop después de la aplicación",
+              description: "Enter the name of a .desktop file describing the application", 
+              description_es: "Introduzca el nombre del fichero .desktop que describe la aplicación",
               minItems: 0,
               uniqueItems: true,
               items: {
@@ -595,7 +596,7 @@ cert_js = {
       title: "Java Keystores",
       title_es: "Almacenes de claves de Java",
       description: "Path of java keystore: e.g. /etc/java/cacerts-gcj",
-      description_es: "Ruta del almacen de claves: p.ej. /etc/java/cacerts-gcj",
+      description_es: "Ruta del almacén de claves: p.ej. /etc/java/cacerts-gcj",
       type: "array",
       minItems: 0,
       uniqueItems: true,
@@ -988,8 +989,8 @@ user_shared_folders_js = {
 }
 
 app_config_js = {
-  title: "Applications Config",
-  title_es: "Configuración de aplicaciones",
+  title: "DEPRECATED: Applications Config",
+  title_es: "OBSOLETA: Configuración de aplicaciones",
   type: "object",
  # required: ["citrix_config", "java_config", "firefox_config", "thunderbird_config", "loffice_config"],
   required: ["java_config", "loffice_config"],
@@ -1103,6 +1104,196 @@ app_config_js = {
           type: "boolean",
           enum: [true,false],
           default: false
+        }
+      }
+    },
+    job_ids: {
+        type: "array",
+        minItems: 0,
+        uniqueItems: true,
+        items: {
+          type: "string"
+        }
+    }, 
+    support_os: support_os_js.clone,
+    updated_by: updated_js
+  }
+}
+
+appconfig_libreoffice_js = {
+  title: "LibreOffice Config",
+  title_es: "Configuración de LibreOffice",
+  type: "object",
+  required: ["config_libreoffice"],
+  properties: {
+    config_libreoffice: {
+      title: "LibreOffice Configuration",
+      title_es: "Configuración de LibreOffice",
+      type: "object",
+      properties: {
+        app_update: {
+          title: "Enable/Disable auto update",
+          title_es: "Activar/Desactivar actualizaciones automáticas",
+          type: "boolean",
+          enum: [true,false],
+          default: false
+        }
+      }
+    },
+    job_ids: {
+        type: "array",
+        minItems: 0,
+        uniqueItems: true,
+        items: {
+          type: "string"
+        }
+    }, 
+    support_os: support_os_js.clone,
+    updated_by: updated_js
+  }
+}
+
+appconfig_thunderbird_js = {
+  title: "Thunderbird Config",
+  title_es: "Configuración de Thunderbird",
+  type: "object",
+  required: ["config_thunderbird"],
+  properties: {
+    config_thunderbird: {
+      title: "Thunderbird Configuration",
+      title_es: "Configuración de Thunderbird",
+      type: "object",
+      properties: {
+        app_update: {
+          title: "Enable/Disable auto update",
+          title_es: "Activar/Desactivar actualizaciones automáticas",
+          type: "boolean",
+          enum: [true,false],
+          default: false
+        }
+      }
+    },
+    job_ids: {
+        type: "array",
+        minItems: 0,
+        uniqueItems: true,
+        items: {
+          type: "string"
+        }
+    }, 
+    support_os: support_os_js.clone,
+    updated_by: updated_js
+  }
+}
+
+appconfig_firefox_js = {
+  title: "Firefox Config",
+  title_es: "Configuración de Firefox",
+  type: "object",
+  required: ["config_firefox"],
+  properties: {
+    config_firefox: {
+      title: "Firefox Configuration",
+      title_es: "Configuración de Firefox",
+      type: "object",
+      properties: {
+        app_update: {
+          title: "Enable/Disable auto update",
+          title_es: "Activar/Desactivar actualizaciones automáticas",
+          type: "boolean",
+          enum: [true,false],
+          default: false
+        }
+      }
+    },
+    job_ids: {
+        type: "array",
+        minItems: 0,
+        uniqueItems: true,
+        items: {
+          type: "string"
+        }
+    }, 
+    support_os: support_os_js.clone,
+    updated_by: updated_js
+  }
+}
+
+appconfig_java_js = {
+  title: "Java Config",
+  title_es: "Configuración de Java",
+  type: "object",
+  required: ["config_java"],
+  properties: {
+   config_java: {
+      title: "Java Configuration",
+      title_es: "Configuración de Java",
+      type: "object",
+      order: ["version", "plug_version", "sec", "crl", "warn_cert", "mix_code", "ocsp", "array_attrs"],
+      properties: {
+        version: {
+          title: "Java Version",
+          title_es: "Versión de Java",
+	  description: "Path to an installed Java version, example: /usr/lib/jvm/java-7-oracle",
+	  description_es: "Path a una versión instalada de Java, ej.: /usr/lib/jvm/java-7-oracle",
+          type: "string"
+        },
+        plug_version: {
+          title: "Plugins Java version",
+          title_es: "Plugins versión de Java",
+	  description: "Path to an installed Java version, example: /usr/lib/jvm/java-7-oracle",
+	  description_es: "Path a una versión instalada de Java, ej.: /usr/lib/jvm/java-7-oracle",
+          type: "string"
+        },
+        sec: {
+          title: "Security Level",
+          title_es: "Nivel de Seguridad",
+          type: "string",
+          enum: ["MEDIUM", "HIGH", "VERY_HIGH"],
+          default: "MEDIUM"
+        },
+        crl: {
+          title: "Use Certificate Revocation List",
+          title_es: "Utilizar lista de revocación de certificados",
+          type: "boolean",
+          enum: [true,false],
+          default: false
+        },
+        ocsp: {
+          title: "Enable or disable Online Certificate Status Protocol",
+          title_es: "Activar o desactivar el protocolo de estado de certificados en linea",
+          type: "boolean",
+          enum: [true,false],
+          default: false
+        },
+        warn_cert: {
+          title: "Show host-mismatch warning for certificate?",
+          title_es: "¿Mostrar advertencia de incompatibilidad de host para el certificado?",
+          type: "boolean",
+          enum: [true,false],
+          default: false
+        },
+        mix_code: {
+          title: "Security verification of mix code",
+          title_es: "Verificación de la seguridad de la combinación de código",
+          type: "string",
+          enum: ["ENABLE", "HIDE_RUN", "HIDE_CANCEL", "DISABLED"],
+          default: "ENABLE"
+        },
+        array_attrs: {
+          type: "array",
+          minItems: 0,
+          title: "Another configuration properties",
+          title_es: "Otras propiedades de configuración",
+          uniqueItems: true,
+          items:{
+            type: "object",
+            required: ["key", "value"],
+            properties: {
+              key: {type: "string", title: "Key", title_es: "Clave"},
+              value: {type: "string", title: "Value", title_es: "Valor"}
+            }
+          }
         }
       }
     },
@@ -1244,13 +1435,23 @@ user_apps_autostart_js = {
       type: "object",
       patternProperties: {
         ".*" => { type: "object", title: "Username", title_es: "Nombre de usuario",
-          required: ["desktops"],
+        order: ["desktops", "desktops_to_remove"],        
           properties: {
-            desktops: {
-              title: "Desktop files",
+              desktops: {
+              title: "Applications",
               title_es: "Aplicaciones",
-              description: "It is necessary to add .desktop at the end of the application",
-              description_es: "Es necesario añadir .desktop al final de la aplicación",
+              description: ".desktop file must exist in /usr/share/applications",
+              description_es: "Es necesario que exista el .desktop en /usr/share/applications",
+              type: "array",
+              minItems: 0,
+              uniqueItems: true,
+              items: {type: "string"}
+              },
+              desktops_to_remove: {
+              title: "Applications to remove from autostart",
+              title_es: "Aplicaciones a eliminar del inicio",
+              description: "Applications will not be run at session start anymore",
+              description_es: "Las aplicaciones ya no se ejecutarán al inicio de sesión",
               type: "array",
               minItems: 0,
               uniqueItems: true,
@@ -1678,11 +1879,13 @@ local_groups_js = {
       title_es: "Grupos para gestionar",
       items: {
         type:"object",
-        required: ["group"],
-        order:["users", "group"],
+        required: ["group","users","remove_users","create"],
+        order:["users", "group", "remove_users", "create"],
         properties:{
           group: { type: "string", title: "Group", title_es: "Grupo" },
-          users: { type: "array",title: "Users", title_es: "Usuarios", items: { type: "string" } }
+          users: { type: "array",title: "Users", title_es: "Usuarios", items: { type: "string" } },
+          remove_users: { type: "boolean", title: "Remove users", title_es: "Eliminar usuarios", description: "Remove users in list", description_es: "Eliminar los usuarios de la lista", default: false },
+          create: { type: "boolean", title: "Create group", title_es: "Crear grupo", description: "Create group if it doesn't exist in node", description_es: "Crear grupo si no existe", default: false } 
         }
      }
   },
@@ -1756,13 +1959,22 @@ local_admin_users_js = {
   title_es: "Administradores locales",
   type: "object",
   required: ["local_admin_list"],
+  order: ["local_admin_list", "local_admin_remove_list"],
   properties:
   {local_admin_list: {
       type:"array",
       title: "users",
       title_es: "Usuarios", 
-      description: "Enter a local user to grant administrator",
+      description: "Enter a local user to grant administrator rights",
       description_es: "Escriba un usuario local para concederle permisos de administrador",
+      items: { type:"string"}
+  },
+local_admin_remove_list: {
+      type:"array",
+      title: "users_to_remove",
+      title_es: "Usuarios a eliminar", 
+      description: "Enter a local user to revoke administrator rights",
+      description_es: "Escriba un usuario local para eliminar sus permisos de administrador",
       items: { type:"string"}
   },
   job_ids: {
@@ -1813,7 +2025,7 @@ power_conf_js = {
   title: "Power management",
   title_es: "Administración de energía",
   type: "object",
-  required: ["cpu_freq_gov","auto_shutdown","usb_autosuspend"],
+#  required: ["cpu_freq_gov","auto_shutdown","usb_autosuspend"],
   order: ["cpu_freq_gov", "usb_autosuspend", "auto_shutdown"],
   properties:
     {cpu_freq_gov: {
@@ -1917,6 +2129,10 @@ software_sources_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Li
 package_js[:properties][:support_os][:default]=["GECOS V2","Ubuntu 14.04.1 LTS","Gecos V2 Lite"]
 package_profile_js[:properties][:support_os][:default]=["GECOS V2","Ubuntu 14.04.1 LTS","Gecos V2 Lite"]
 app_config_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
+appconfig_libreoffice_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
+appconfig_thunderbird_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
+appconfig_firefox_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
+appconfig_java_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
 printers_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
 user_shared_folders_js[:properties][:support_os][:default]=["GECOS V2"]
 web_browser_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
@@ -1927,7 +2143,7 @@ desktop_background_js[:properties][:support_os][:default]=["GECOS V2"]
 desktop_menu_js[:properties][:support_os][:default]=[]
 desktop_control_js[:properties][:support_os][:default]=[]
 user_apps_autostart_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
-folder_sharing_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
+folder_sharing_js[:properties][:support_os][:default]=["GECOS V2"]
 screensaver_js[:properties][:support_os][:default]=["GECOS V2"]
 folder_sync_js[:properties][:support_os][:default]=["GECOS V2"]
 user_mount_js[:properties][:support_os][:default]=["GECOS V2","Gecos V2 Lite"]
@@ -1979,12 +2195,16 @@ complete_js = {
         },
         software_mgmt: {
           type: "object",
-          required: ["software_sources_res","package_res", "app_config_res","package_profile_res"],
+          required: ["software_sources_res","package_res", "app_config_res","appconfig_libreoffice_res","appconfig_thunderbird_res","appconfig_firefox_res","appconfig_java_res","package_profile_res"],
           properties: {
             software_sources_res: software_sources_js,
             package_res: package_js,
             package_profile_res: package_profile_js,
-            app_config_res: app_config_js
+            app_config_res: app_config_js,
+	    appconfig_libreoffice_res: appconfig_libreoffice_js,
+            appconfig_thunderbird_res: appconfig_thunderbird_js,
+	    appconfig_firefox_res: appconfig_firefox_js,
+	    appconfig_java_res: appconfig_java_js
           }
         },
         printers_mgmt: {

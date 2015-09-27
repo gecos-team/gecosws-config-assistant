@@ -1,6 +1,6 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 
-# This file is part of Guadalinex
+# This file is part of GECOS
 #
 # This software is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -83,7 +83,7 @@ def validate_credentials(url, err_chef_solo=False):
     if not validate:
         if err_chef_solo:
             user, password = auth_dialog(_('Authentication Required'),
-            _('You need to enter your GCC credentials to restoring the Workstation.'))
+            _('You need to enter your Control Center credentials to restore this workstation.'))
         else:
             user, password = auth_dialog(_('Authentication Required'),
             _('You need to enter your credentials to access the requested resource.'))
@@ -95,7 +95,7 @@ def validate_credentials(url, err_chef_solo=False):
             credentials.append([user, password])
             ACTUAL_USER = (user, password)
         else:
-            raise ServerConfException(_('Authentication is failed.'))
+            raise ServerConfException(_('Authentication failed.'))
     if hasattr(r,'text'):
         return r.text
     else:  
@@ -196,8 +196,8 @@ def ad_is_configured():
 def create_solo_json(server_conf):
     json_solo = {}
     json_solo_sssd = {}
-    json_solo['run_list'] = ["recipe[ohai-gecos::default]", "recipe[chef-client::upstart_service]", "recipe[gecos_ws_mgmt::local]"]
-    json_solo_sssd['run_list'] = ["recipe[ohai-gecos::default]", "recipe[chef-client::upstart_service]", "recipe[gecos_ws_mgmt::local]"]
+    json_solo['run_list'] = ["recipe[ohai-gecos::default]", "recipe[gecos_ws_mgmt::local]"]
+    json_solo_sssd['run_list'] = ["recipe[ohai-gecos::default]", "recipe[gecos_ws_mgmt::local]"]
     json_solo['gecos_ws_mgmt'] = {}
     json_solo_sssd['gecos_ws_mgmt'] = {}
     json_solo['gecos_ws_mgmt']['misc_mgmt'] = {}
@@ -210,7 +210,7 @@ def create_solo_json(server_conf):
         chef_node_name = server_conf.get_chef_conf().get_node_name()
         chef_admin_name = server_conf.get_chef_conf().get_admin_name()
         if chef_admin_name == "":
-            chef_admin_name = server_conf.get_gcc_conf().get_gcc_username()
+            chef_admin_name = server_conf.get_chef_conf().toChefUsername(server_conf.get_gcc_conf().get_gcc_username())
         chef_link = server_conf.get_chef_conf().get_chef_link()
         chef_link_existing = server_conf.get_chef_conf().get_chef_link_existing()
         chef_json = {'chef_server_url':chef_url, 'chef_node_name': chef_node_name, 'chef_validation_pem': tmpfile, 'chef_link': chef_link, 'chef_admin_name': chef_admin_name, 'chef_link_existing': chef_link_existing}
@@ -344,6 +344,7 @@ def apply_changes():
         fp.close()
     print filepath
     run_chef_solo(filepath, _("Configuring the client to link with Gecos Control Center, this may take several minutes.\nPlease wait a moment"))
+    os.unlink(filepath)
 
     (fd, filepath) = tempfile.mkstemp(dir='/tmp')
     fp = os.fdopen(fd, "w+b")
@@ -352,6 +353,8 @@ def apply_changes():
         fp.close()
     print filepath
     run_chef_solo(filepath, _("Configuring the client to link authentication method, this may take several minutes.\nPlease wait a moment"), False, True)
+    os.unlink(filepath)
+
 
 
 def destroy_pgbar(widget, response, dialog, thread):
@@ -365,13 +368,17 @@ def destroy_pgbar(widget, response, dialog, thread):
 def run_chef_solo(fp, message, unlink=False, jsssd=False):
     try:
         server_conf = get_server_conf(None)
-        thread = ChefSolo(fp, server_conf, unlink, gcc_is_configured(), chef_is_configured())
+        status = Gtk.Label()
+        log = Gtk.TextView()
+        log.set_editable(False)
+        thread = ChefSolo(fp, server_conf, unlink, gcc_is_configured(), chef_is_configured(), status, log)
         dialog = Gtk.Dialog(_('Configuring the client'), None,
                 Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT, (Gtk.STOCK_OK, Gtk.ResponseType.OK))
-        description = Gtk.Label();
-        progressbar = Gtk.ProgressBar();
+        dialog.set_default_size(600, 400)
+        description = Gtk.Label()
+        progressbar = Gtk.ProgressBar()
         description.set_text(message)
-        box = Gtk.VBox();
+        box = Gtk.VBox()
         content_area = dialog.get_content_area()
         content_area.set_spacing(10)
         content_area.pack_start(Gtk.Fixed(),False,False,0)
@@ -379,6 +386,16 @@ def run_chef_solo(fp, message, unlink=False, jsssd=False):
         content_area.pack_start(Gtk.Fixed(),False,False,0)
         box.pack_start(description,False,False,10)
         box.pack_start(progressbar, False, False, 10)
+        box.pack_start(status, False, False, 10)
+
+        sw = Gtk.ScrolledWindow()
+        sw.set_hexpand(True)
+        sw.set_vexpand(True)
+        sw.set_size_request(300, 200)
+        sw.set_shadow_type(Gtk.ShadowType.ETCHED_IN)
+        sw.add(log)
+        box.pack_start(sw, False, False, 10)
+        
         dialog.connect("delete-event", destroy_pgbar, None, thread)
         dialog.show_all()  
         dialog.get_children()[0].set_spacing(10)
@@ -401,8 +418,9 @@ def run_chef_solo(fp, message, unlink=False, jsssd=False):
         progressbar.set_fraction(1.0)
         exit_code = thread.get_exit_code()
         description.set_text(_("The client has been configured"))
+        status.set_text("")
         if exit_code[1] != 0 and not unlink:
-            dialog.hide()
+            description.set_text(_('An error has ocurred running chef-solo'))
             messages = [(_('An error has ocurred running chef-solo'))]
             display_errors(_("Configuration Error"), messages)
 
@@ -513,6 +531,7 @@ def unlink_from_sssd(leave=True):
         fp.write(json.dumps(json_solo,indent=2))
         fp.close()
     run_chef_solo(filepath, _("Restoring authentication configuration"), True)
+    os.unlink(filepath)
     return []
 
 
@@ -533,6 +552,7 @@ def unlink_from_gcc(password):
         fp.write(json.dumps(json_solo,indent=2))
         fp.close()
     run_chef_solo(filepath, _("Unlink from GCC"), True)
+    os.unlink(filepath)
     return []
 
 def unlink_from_chef():
@@ -558,6 +578,7 @@ def unlink_from_chef():
         fp.write(json.dumps(json_solo,indent=2))
         fp.close()
     run_chef_solo(filepath, _("Unlink from Server"), True)
+    os.unlink(filepath)
     return []
 #    try:
 #

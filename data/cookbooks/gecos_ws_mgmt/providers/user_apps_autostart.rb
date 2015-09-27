@@ -11,8 +11,10 @@
 
 action :setup do
   begin
-    os = `lsb_release -d`.split(":")[1].chomp().lstrip()
-    if new_resource.support_os.include?(os)
+# OS identification moved to recipes/default.rb
+#    os = `lsb_release -d`.split(":")[1].chomp().lstrip()
+#    if new_resource.support_os.include?(os)
+    if new_resource.support_os.include?($gecos_os)
       users = new_resource.users 
       desktop_path = "/usr/share/applications/"
 
@@ -30,8 +32,21 @@ action :setup do
         end
       
         user.desktops.each do |desktopfile|
+# Add ".desktop" if not present in launcher's name
+          if ! desktopfile.include? "\.desktop"
+	    desktopfile.concat(".desktop")
+	  end
           if FileTest.exist? desktop_path + desktopfile and not desktopfile.empty? 
             FileUtils.cp "#{desktop_path}#{desktopfile}",  autostart_path
+          end
+        end
+        user.desktops_to_remove.each do |desktopfile|
+# Add ".desktop" if not present in launcher's name
+          if ! desktopfile.include? "\.desktop"
+	    desktopfile.concat(".desktop")
+	  end
+          if FileTest.exist? autostart_path + desktopfile and not desktopfile.empty? 
+            FileUtils.rm "#{autostart_path}#{desktopfile}"
           end
         end
 

@@ -15,8 +15,10 @@ action :setup do
     onstop_update = new_resource.onstop_update
     days = new_resource.days
     date = new_resource.date
-    os = `lsb_release -d`.split(":")[1].chomp().lstrip()
-    if new_resource.support_os.include?(os)
+# OS identification moved to recipes/default.rb
+#    os = `lsb_release -d`.split(":")[1].chomp().lstrip()
+#    if new_resource.support_os.include?(os)
+    if new_resource.support_os.include?($gecos_os)
 
       Chef::Log.info("Setting automatic updates")
       log_file = '/var/log/automatic-updates.log'
