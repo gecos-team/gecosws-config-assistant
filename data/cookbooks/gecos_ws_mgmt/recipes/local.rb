@@ -24,34 +24,32 @@ end
 
 if not node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_server_url].nil?
     
-  Chef::Log.info("Installing wrapper")
-  cookbook_file "chef-client-wrapper" do
-    path "/usr/bin/chef-client-wrapper"
+  Chef::Log.info("Installing GECOS Agent")
+
+  cookbook_file "gecos-chef-client-wrapper" do
+    path "/usr/bin/gecos-chef-client-wrapper"
     owner 'root'
-    mode '0755'
+    mode '0700'
     group 'root'
     action :nothing
   end.run_action(:create_if_missing)
   
-  Chef::Log.info("Enable chef-client-wrapper")
+  Chef::Log.info("Enabling GECOS Agent in cron")
   
-  file "/var/spool/cron/crontabs/root" do
-    owner 'root'
-    group 'root'
-    action :nothing
-  end.run_action(:create_if_missing)
-  
-  bash "Added cron line for wrapper" do 
-    user "root"
-    cwd "/var/spool/cron/crontabs/"
-    code <<-EOF
-      grep chef-client-wrapper root
-      if [[ $? -eq 1 ]]; then
-         echo "*/30 * * * * chef-client-wrapper" >> root
-      fi
-    EOF
-    not_if "grep chef-client-wrapper root"
-  end.run_action(:run)
+  cron "GECOS Agent" do
+    minute '30'
+    command '/usr/bin/gecos-chef-client-wrapper'
+    action :create
+  end
+
+# This chef-client upstart service is not created anymore
+#  Chef::Log.info("Disabling old chef-client service")
+
+#  service 'chef-client' do
+#    provider Chef::Provider::Service::Upstart
+#    supports :status => true, :restart => true, :reload => true
+#    action [:disable, :stop]
+#  end
 
   gecos_ws_mgmt_chef node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_server_url] do
     chef_link node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_link]
@@ -64,11 +62,6 @@ if not node[:gecos_ws_mgmt][:misc_mgmt][:chef_conf_res][:chef_server_url].nil?
     action  :setup
   end
 
-  service 'chef-client' do
-    provider Chef::Provider::Service::Upstart
-    supports :status => true, :restart => true, :reload => true
-    action [:disable, :stop]
-  end
 
 end
 
