@@ -1,3 +1,9 @@
+gecosws-config-assistant (0.9.5-2gecos1) trusty; urgency=medium
+
+  * Fixed os detection bug in chef-solo local recipes
+
+ -- Gecos Team <gecos@guadalinex.org>  Sun, 28 Sep 2015 13:13:03 +0200
+
 gecosws-config-assistant (0.9.5-1gecos1) trusty; urgency=medium
 
   * Fixed os detection bug in chef-solo local recipes
