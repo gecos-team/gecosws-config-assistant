@@ -22,10 +22,11 @@ action :setup do
     package 'chef' do
       action :nothing
     end.run_action(:install)
-# OS identification moved to recipes/default.rb
-#    os = `lsb_release -d`.split(":")[1].chomp().lstrip()
-#    if new_resource.support_os.include?(os)
-    if new_resource.support_os.include?($gecos_os)
+# We moved OS identification to recipes/default.rb
+# But this recipe launches alone, and default.rb is not executed
+    os = `lsb_release -d`.split(":")[1].chomp().lstrip()
+    if new_resource.support_os.include?(os)
+#    if new_resource.support_os.include?($gecos_os)
 
       if not new_resource.chef_link_existing
         if new_resource.chef_link
@@ -59,11 +60,14 @@ action :setup do
               action :nothing
             end.run_action(:run)
             Chef::Log.info("Activating service chef-client")
-            service 'chef-client' do
-              provider Chef::Provider::Service::Upstart
-              supports :status => true, :restart => true, :reload => true
-              action [:enable, :start]
-            end
+
+#Do not enable chef service, as we are using our own wrapper
+#            service 'chef-client' do
+#              provider Chef::Provider::Service::Upstart
+#              supports :status => true, :restart => true, :reload => true
+#              action [:enable, :start]
+#            end
+
 #TODO: delete this unnecesary file, and use just /etc/chef/client.rb
             Chef::Log.info("Chef: Creating control file")
             template "/etc/chef.control" do

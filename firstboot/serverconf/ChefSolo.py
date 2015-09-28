@@ -59,7 +59,8 @@ class ChefSolo(threading.Thread):
     def run(self):
         gem_repo = self.server_conf.get_gem_repo()
         envs = os.environ
-        envs['LANG'] = 'es_ES.UTF-8'
+#TODO: do not use this forced localization
+#        envs['LANG'] = 'es_ES.UTF-8'
         log_timestamp = time.strftime("%Y%m%d%H%M%S")
         log_chef_solo = open("/tmp/chef-solo-%s"%(log_timestamp), "w", 1)
         log_chef_solo_err = open("/tmp/chef-solo-err-%s"%(log_timestamp), "w", 1)
@@ -128,9 +129,9 @@ class ChefSolo(threading.Thread):
         log_chef_solo_err.flush()
 
         output = process.communicate()[0]
-        if not self.unlink and self.gcc_conf and self.chef_conf and os.path.exists("/usr/bin/chef-client-wrapper"):
+        if not self.unlink and self.gcc_conf and self.chef_conf and os.path.exists("/usr/bin/gecos-chef-client-wrapper"):
             self.status_label.set_text(_("Running chef-client-wrapper..."))
-            cmd = '"chef-client-wrapper"'
+            cmd = '"gecos-chef-client-wrapper"'
             cmd_split = shlex.split(cmd)
             process = subprocess.Popen(cmd_split, env=envs)
             self.exit_code = os.waitpid(process.pid, 0)
