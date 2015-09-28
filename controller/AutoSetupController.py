@@ -142,7 +142,7 @@ class AutoSetupController(object):
         if not gecosCC.validate_credentials(gecosAccessData):
             self.logger.debug("Bad access data!")
             showerror(_("Error in form data"), 
-                _("Can't connect to Gecos CC!") + "\n" +  _("Please double-check all the data and your network setup."),
+                _("Can't connect to GECOS CC!") + "\n" +  _("Please double-check all the data and your network setup."),
                  self.view)
             self.view.focusPasswordField()            
             return False
@@ -383,14 +383,14 @@ class AutoSetupController(object):
         try:
             conf = gecosCC.get_json_autoconf(gecosAccessData)
         except:
-            self.logger.error('Error loading auto setup data from Gecos')
+            self.logger.error('Error loading auto setup data from GECOS')
             self.logger.error(str(traceback.format_exc()))
             
         if not conf:
             self.processView.setAutoSetupDataLoadStatus(_('ERROR'))
             self.processView.enableAcceptButton()
             showerror(_("Auto setup error"), 
-                _("Can't read auto setup configuration data from Gecos Control Center!"),
+                _("Can't read auto setup configuration data from GECOS Control Center!"),
                  self.processView)            
             return False
             

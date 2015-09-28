@@ -238,5 +238,170 @@ class UserAuthenticationMethodElemView(ViewMock):
 
 
         
+class ConnectWithGecosCCDialog(ViewMock):
+    '''
+    Dialog class that shows the Auto setup Dialog.
+    '''
 
+
+    def __init__(self, parent, mainController):
+        '''
+        Constructor
+        '''
+        self.parent = parent
+        self.controller = mainController
+        self.logger = logging.getLogger('ConnectWithGecosCCDialog')
+        
+        self.gecos_access_data = None
+        self.workstation_data = None
+        
+   
+
+    def get_gecos_access_data(self):
+        return self.__gecos_access_data
+
+
+    def get_workstation_data(self):
+        return self.__workstation_data
+
+
+    def set_gecos_access_data(self, value):
+        self.__gecos_access_data = value
+
+
+    def set_workstation_data(self, value):
+        self.__workstation_data = value
        
+
+    def show(self):
+        self.logger.debug("Show")
+
+
+    def connect(self):
+        self.logger.debug("connect")
+
+    def disconnect(self):
+        self.logger.debug("disconnect")
+
+
+    def patternSearch(self):
+        self.logger.debug("patternSearch")
+        
+    def cancel(self):
+        self.logger.debug("cancel")
+                
+    def focusUrlField(self):
+        self.logger.debug("focusUrlField")               
+
+    def focusUsernameField(self):
+        self.logger.debug("focusUsernameField")                 
+
+    def focusPasswordField(self):
+        self.logger.debug("focusPasswordField")   
+        
+    def focusSeachFilterField(self):
+        self.logger.debug("focusSeachFilterField")     
+              
+    def focusWorkstationNameField(self):
+        self.logger.debug("focusWorkstationNameField")   
+
+    gecos_access_data = property(get_gecos_access_data, set_gecos_access_data, None, None)
+    workstation_data = property(get_workstation_data, set_workstation_data, None, None)
+                
+        
+class GecosCCSetupProcessView(ViewMock):
+    '''
+    Dialog class that shows the process of GECOS CC connection/disconnection.
+    '''
+
+
+    def __init__(self, parent, mainController):
+        '''
+        Constructor
+        '''
+        self.parent = parent
+        self.controller = mainController
+        self.logger = logging.getLogger('GecosCCSetupProcessView')
+        
+
+    def show(self):
+        self.logger.debug("Show")
+
+
+    def accept(self):
+        self.logger.debug("accept")
+  
+    def hide(self):
+        self.logger.debug("hide")
+                
+    def setCheckGecosCredentialsStatus(self, status):
+        self.logger.debug("setCheckGecosCredentialsStatus")
+
+    def setCheckWorkstationDataStatus(self, status):
+        self.logger.debug("setCheckWorkstationDataStatus")
+
+    def setChefCertificateRetrievalStatus(self, status):
+        self.logger.debug("setChefCertificateRetrievalStatus")
+
+    def setLinkToChefLabel(self, text):
+        self.logger.debug("setLinkToChefLabel")
+        
+    def setLinkToChefStatus(self, status):
+        self.logger.debug("setLinkToChefStatus")
+        
+    def setRegisterInGecosLabel(self, text):
+        self.logger.debug("setRegisterInGecosLabel")
+        
+        
+    def setRegisterInGecosStatus(self, status):
+        self.logger.debug("setRegisterInGecosStatus")
+        
+    def setCleanStatus(self, status):
+        self.logger.debug("setCleanStatus")
+        
+        
+    def enableAcceptButton(self):
+        self.logger.debug("enableAcceptButton")
+
+
+class ChefValidationCertificateDialog(ViewMock):
+    '''
+    Dialog class to ask the user for the Active Directory administrator user and password.
+    '''
+
+
+    def __init__(self, parent, mainController):
+        '''
+        Constructor
+        '''
+        self.parent = parent
+        self.controller = mainController
+        self.logger = logging.getLogger('ChefValidationCertificateDialog')
+        
+        self.data = None
+        
+    def get_data(self):
+        return self.__data
+
+
+    def set_data(self, value):
+        self.__data = value
+
+
+    def show(self):
+        self.logger.debug("Show")
+
+    def accept(self):
+        self.logger.debug("Accept")
+
+
+    def cancel(self):
+        self.logger.debug("cancel")
+                
+    data = property(get_data, set_data, None, None)
+
+
+
+        
+
+           

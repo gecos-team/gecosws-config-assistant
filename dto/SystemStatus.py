@@ -94,7 +94,7 @@ class SystemStatus(object):
 
     def set_gecos_access_data(self, value):
         if value is not None and not isinstance(value, GecosAccessData):
-            raise TypeError('"Gecos access data" must be an object of class GecosAccessData')        
+            raise TypeError('"GECOS access data" must be an object of class GecosAccessData')        
         self.__gecosAccessData = value
 
 

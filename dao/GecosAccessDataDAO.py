@@ -21,12 +21,14 @@ __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 from dto.GecosAccessData import GecosAccessData
+from dao.NetworkInterfaceDAO import NetworkInterfaceDAO
 from util.JSONUtil import JSONUtil
 from util.Template import Template
 
 import logging
 import traceback
 import os
+import hashlib
 
 import gettext
 from gettext import gettext as _
@@ -94,12 +96,26 @@ class GecosAccessDataDAO(object):
         # Insert the data in cache memory
         self.previous_saved_data = data
         
-        # Get data from data file
-        jsonUtil = JSONUtil()
-        json_data = jsonUtil.loadJSONFromFile(self.data_file)
-        gcc_nodename = ''
-        if json_data is not None:
-            gcc_nodename = json_data['gcc_nodename']
+        # Get gcc_nodename from data file
+        try:
+            jsonUtil = JSONUtil()
+            json_data = jsonUtil.loadJSONFromFile(self.data_file)
+            gcc_nodename = ''
+            if json_data is not None:
+                gcc_nodename = json_data['gcc_nodename']
+        except:
+            # Can't get gcc_nodename from file, calculate it
+            networkDao = NetworkInterfaceDAO()
+            interfaces = networkDao.loadAll()
+            no_localhost_name = None
+            for inter in interfaces:
+                if not inter.get_ip_address().startswith('127.0'):
+                    no_localhost_name = inter.get_name()
+                    break
+            self.logger.debug("Selected interface name is: %s"%(no_localhost_name))
+            mac = self._getHwAddr(no_localhost_name)
+            gcc_nodename = hashlib.md5(mac.encode()).hexdigest()
+            self.logger.debug("New node name is: %s"%(gcc_nodename))            
                     
         # Save data to data file
         template = Template()

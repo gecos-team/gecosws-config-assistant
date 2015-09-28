@@ -65,8 +65,7 @@ class MainMenuController(object):
         self.requirementsCheck.show(self.view)
 
     def showConnectWithGecosCCDialog(self):
-        # TODO!
-        pass
+        self.connectWithGecosCC.show(self.view)
 
     def showUserAuthenticationMethod(self):
         self.userAuthenticationMethod.show(self.view)

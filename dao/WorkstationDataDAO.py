@@ -93,7 +93,7 @@ class WorkstationDataDAO(object):
                 data.set_name(name)    
                                             
         
-        # Can't get OU from Gecos CC!!!
+        # Can't get OU from GECOS CC!!!
         
         # Get node name from gcc.control file
         jsonUtil = JSONUtil()
@@ -131,7 +131,7 @@ class WorkstationDataDAO(object):
             self.logger.error(_('Error writing file:') + self.pclabel_file)
             self.logger.error(str(traceback.format_exc()))             
         
-        # Do not save OU in Gecos CC at this point!!
+        # Do not save OU in GECOS CC at this point!!
         
         # save node_name to gcc.control file
         jsonUtil = JSONUtil()

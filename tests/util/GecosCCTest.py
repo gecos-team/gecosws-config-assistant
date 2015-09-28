@@ -79,6 +79,23 @@ class GecosCCTest(unittest.TestCase):
         # Check autoconfiguration JSON
         conf = gecosCC.get_json_autoconf(validCredentials)
         self.assertNotEqual(conf, None, "None returned!")
-       
         print "AutoSetup JSON:", json.dumps(conf)
        
+        # Check ou search
+        result = gecosCC.search_ou_by_text(validCredentials, '')
+        self.assertTrue(isinstance(result, (list, tuple)), 'OUs must be a list!')
+       
+        for res in result:
+            result2 = gecosCC.search_ou_by_text(validCredentials, res[1])
+            self.assertTrue(isinstance(result2, (list, tuple)), 'OU: %s must exist!'%(res[1]))
+       
+        # Get all computer names
+        result = gecosCC.get_computer_names(validCredentials)
+        self.assertTrue(isinstance(result, (list, tuple)), 'Computer names must be a list!')
+
+        # Get content from URL
+        result = gecosCC.get_file_content_from_url('http://192.168.1.139/')
+        self.assertGreater(result.index('GECOS'), 0, 'URL content must contain "GECOS"')
+
+
+        
