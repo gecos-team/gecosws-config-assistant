@@ -9,7 +9,7 @@ module GECOSReports
     def report
       gcc_control = {}
       
-      `gecosws-chef-snitch-client --set-active false`
+      `gecos-snitch-client --set-active false`
       
       if File.file?('/etc/gcc.control')
         File.open('/etc/gcc.control', 'r') do |f|
