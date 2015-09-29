@@ -27,8 +27,11 @@ from controller.LocalUserController import LocalUserController
 from controller.SystemStatusController import SystemStatusController
 
 from view.MainMenuDialog import MainMenuDialog
+from view.CommonDialog import askyesno, showerror, showinfo
+from util.PackageManager import PackageManager 
 
 import logging
+import os
 
 import gettext
 from gettext import gettext as _
@@ -71,15 +74,28 @@ class MainMenuController(object):
         self.userAuthenticationMethod.show(self.view)
 
     def showSoftwareManager(self):
-        # TODO!
-        pass
+        self.logger.debug("showSoftwareManager")
+        cmd = '/usr/sbin/synaptic'
+        os.spawnlp(os.P_NOWAIT, cmd, cmd)
 
     def showLocalUserListView(self):
         self.localUserList.showList(self.view)
 
     def updateConfigAsystant(self):
-        # TODO!
-        pass
+        if askyesno(_("Update GECOS Config Assistant"), _("Are you sure you want to update the GECOS Config Assistant?"), self.view):
+            pm = PackageManager()
+            if not pm.update_cache():
+                showerror(_("Update Error"), _("An error occurred during the upgrade"), self.view)
+            else:
+                try:
+                    if not pm.upgrade_package('gecosws-config-assistant'):
+                        showerror(_("Update Error"), _("CGA is already at the newest version!"), self.view)
+                    else:
+                        showinfo(_("Update GECOS Config Assistant"), _("GECOS Config Assistant has been udpated. Please restart GCA"), self.view)
+                except:
+                    showerror(_("Update Error"), _("An error occurred during the upgrade"), self.view)
+                    
+        
 
     def showSystemStatus(self):
         self.systemStatus.show(self.view)

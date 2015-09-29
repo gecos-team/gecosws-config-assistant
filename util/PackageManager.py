@@ -64,6 +64,47 @@ class PackageManager(object):
         return False
 
 
+    def upgrade_package(self, package_name):
+        self.logger.debug('upgrade_package BEGIN')
+        if package_name is None:
+            raise ValueError('package_name is None')
+        
+        self.logger.debug('upgrade_package(%s)'%(package_name))
+        
+        try:
+            import apt
+            cache = apt.Cache()
+            pkg = cache[package_name]
+            if pkg is None:
+                self.logger.error(_('Package not found:') + package_name)
+            elif not pkg.is_installed:
+                self.logger.error(_('Package not installed:') + package_name)
+            elif not pkg.is_upgradable:
+                self.logger.error(_('Package not upgradable:') + package_name)
+                return False
+            else:
+                pkg.mark_install()
+
+                try:
+                    cache.commit()
+                    self.logger.debug('Package upgrade successfully')
+                    return True
+                except Exception:
+                    self.logger.error(_('Package upgrade failed:') + package_name)
+                    self.logger.error(str(traceback.format_exc()))
+                
+                
+        
+        except ImportError:
+            self.logger.info(_('No apt library available'))
+
+        # TODO: Yum version?
+        
+        
+        raise OSError(_('Package upgrade failed!'))
+
+
+
     def install_package(self, package_name):
         self.logger.debug('install_package BEGIN')
         if package_name is None:
@@ -85,7 +126,7 @@ class PackageManager(object):
                 try:
                     cache.commit()
                     self.logger.debug('Package installed successfully')
-                    return
+                    return True
                 except Exception:
                     self.logger.error(_('Package installation failed:') + package_name)
                     self.logger.error(str(traceback.format_exc()))
@@ -100,6 +141,29 @@ class PackageManager(object):
         
         raise OSError(_('Package installation failed!'))
 
+    def update_cache(self):
+        self.logger.debug('update_cache - BEGIN')
+        
+        try:
+            import apt
+            cache = apt.Cache()
+            try:
+                cache.update()
+                self.logger.debug('Packages cache updated successfully')
+                return True
+            except Exception:
+                self.logger.error(_('Package update failed!'))
+                self.logger.error(str(traceback.format_exc()))
+                
+                
+        
+        except ImportError:
+            self.logger.info(_('No apt library available'))
+
+        # TODO: Yum version?
+        
+        
+        raise OSError(_('Package cache update failed!'))
 
     def remove_package(self, package_name):
         self.logger.debug('remove_package - BEGIN')
@@ -124,7 +188,7 @@ class PackageManager(object):
                 try:
                     cache.commit()
                     self.logger.debug('Package removed successfully')
-                    return
+                    return True
                 except Exception:
                     self.logger.error(_('Package removal failed:') + package_name)
                     self.logger.error(str(traceback.format_exc()))

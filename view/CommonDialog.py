@@ -22,6 +22,10 @@ __license__ = "GPL-2"
 
 import tkMessageBox
 
+def showinfo(title, message, parent_window):
+    tkMessageBox.showinfo(title, message, parent = parent_window)
+
+
 def showerror(title, message, parent_window):
     tkMessageBox.showerror(title, message, parent = parent_window)
     
