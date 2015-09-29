@@ -53,6 +53,7 @@ class ConnectWithGecosCCControllerTest(unittest.TestCase):
         workstationData = WorkstationData()
         workstationData.set_name("testpc")
         workstationData.set_ou("computers")
+        workstationData.set_node_name("d8d0aac2b47abdc9e221eb0ff583d0f9")
         
         controller.view.set_gecos_access_data(gecosAccessData)
         controller.view.set_workstation_data(workstationData)
@@ -118,8 +119,12 @@ class ConnectWithGecosCCControllerTest(unittest.TestCase):
         
         print "Simulate link to GECOS CC"        
         self.assertTrue(controller.connect())
+        
+      
 
-    
+        print "Simulate unlink from GECOS CC"
+        self.assertTrue(controller.disconnect())
+        
         
         
         print "End ;)"

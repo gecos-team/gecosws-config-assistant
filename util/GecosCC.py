@@ -166,6 +166,7 @@ class GecosCC(object):
         if conf["chef"]["chef_server_uri"] == "https://localhost/":
             chef_uri = conf["gcc"]["uri_gcc"].split('//')[1].split(':')[0]
             conf["chef"]["chef_server_uri"] = "https://" + chef_uri + '/'
+            
         return conf
 
 
@@ -273,7 +274,7 @@ class GecosCC(object):
             headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
             user = data.get_login()
             password = data.get_password()
-            r = requests.get(url, auth=(user,password), headers=headers, 
+            r = requests.delete(url, auth=(user,password), headers=headers, 
                 verify=False, timeout=self.timeout)
             if r.ok:
                 self.logger.debug('Response: %s'%(url))
@@ -405,4 +406,3 @@ class GecosCC(object):
             self.logger.warn(str(traceback.format_exc()))
             
         return None          
-          

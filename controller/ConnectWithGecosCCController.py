@@ -39,15 +39,11 @@ from util.Template import Template
 
 from dao.GecosAccessDataDAO import GecosAccessDataDAO
 from dao.WorkstationDataDAO import WorkstationDataDAO
-from dao.NetworkInterfaceDAO import NetworkInterfaceDAO
+
 
 
 
 import logging
-import hashlib
-import socket
-import fcntl
-import struct
 import traceback
 import os
 import pwd
@@ -138,12 +134,7 @@ class ConnectWithGecosCCController(object):
         
         return True
 
-    def _getHwAddr(self, ifname):
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        info = fcntl.ioctl(s.fileno(), 0x8927,  struct.pack('256s', ifname[:15]))
-        return ''.join(['%02x:' % ord(char) for char in info[18:24]])[:-1]  
-
-    def _check_workstation_data(self, workstationData):
+    def _check_workstation_data(self, workstationData, check_ou):
         self.logger.debug("_check_workstation_data")
         # Validate Gecos workstation data
         if (workstationData.get_name() is None or
@@ -176,27 +167,20 @@ class ConnectWithGecosCCController(object):
                 return False     
                     
             # Create a new node_name
-            networkDao = NetworkInterfaceDAO()
-            interfaces = networkDao.loadAll()
-            no_localhost_name = None
-            for inter in interfaces:
-                if not inter.get_ip_address().startswith('127.0'):
-                    no_localhost_name = inter.get_name()
-                    break
-            self.logger.debug("Selected interface name is: %s"%(no_localhost_name))
-            mac = self._getHwAddr(no_localhost_name)
-            node_name = hashlib.md5(mac.encode()).hexdigest()
-            self.logger.debug("New node name is: %s"%(node_name))
+            node_name = self.accessDataDao.calculate_workstation_node_name()
             workstationData.set_node_name(node_name)
 
-        if (workstationData.get_ou() is None or
-            workstationData.get_ou().strip() == ''):
-            self.logger.debug("Empty OU name!")
-            showerror(_("Error in form data"), 
-                _("You must select an OU!") + "\n" + _("Please fill all the mandatory fields."),
-                 self.view)
-            self.view.focusSeachFilterField()            
-            return False   
+        if check_ou:
+            if (workstationData.get_ou() is None or
+                workstationData.get_ou().strip() == ''):
+                self.logger.debug("Empty OU name!")
+                showerror(_("Error in form data"), 
+                    _("You must select an OU!") + "\n" + _("Please fill all the mandatory fields."),
+                     self.view)
+                self.view.focusSeachFilterField()            
+                return False   
+            else:
+                self.logger.debug("Selected OU: %s"%(workstationData.get_ou()))
         
         return True     
 
@@ -283,6 +267,21 @@ class ConnectWithGecosCCController(object):
         
         return True                  
     
+    def _clean_connection_files_on_error(self):
+        self.logger.debug("_clean_connection_files_on_error")
+        self._remove_file('/etc/chef/validation.pem')
+        self._remove_file('/etc/chef/client.pem')        
+        self._remove_file('/etc/chef/client.rb')        
+        self._remove_file('/etc/chef/knife.rb')        
+        self._remove_file('/etc/chef.control')        
+        self._remove_file('/etc/gcc.control')        
+
+
+    def _clean_disconnection_files_on_error(self):
+        self.logger.debug("_clean_disconnection_files_on_error")
+        self._remove_file('/etc/chef/validation.pem')
+        
+    
     def connect(self):
         self.logger.debug("connect")
 
@@ -316,7 +315,7 @@ class ConnectWithGecosCCController(object):
         
         self.processView.setCheckGecosCredentialsStatus(_('DONE'))
         self.processView.setCheckWorkstationDataStatus(_('IN PROCESS'))
-        if not self._check_workstation_data(self.view.get_workstation_data()):
+        if not self._check_workstation_data(self.view.get_workstation_data(), True):
             self.processView.setCheckWorkstationDataStatus(_('ERROR'))
             self.processView.enableAcceptButton()
             return False
@@ -324,6 +323,8 @@ class ConnectWithGecosCCController(object):
         self.processView.setCheckWorkstationDataStatus(_('DONE'))
         self.processView.setChefCertificateRetrievalStatus(_('IN PROCESS'))
 
+        # Save workstation data
+        self.workstationDataDao.save(self.view.get_workstation_data())
         
         # Get validation.pem from server
         self.logger.debug("Get validation.pem from server")
@@ -338,7 +339,8 @@ class ConnectWithGecosCCController(object):
         
         if chef_validation is None:
             # Ask the user for the validation.pem URL
-            self.certificate_url_view.show(self.processView, self)
+            self.certificate_url_view = ChefValidationCertificateDialog(self.processView, self)
+            self.certificate_url_view.show()
             if self.certificate_url_view.get_data() is None:
                 self.processView.setChefCertificateRetrievalStatus(_('CANCELED'))
                 self.processView.enableAcceptButton()
@@ -353,6 +355,7 @@ class ConnectWithGecosCCController(object):
             showerror(_("Error saving validation certificate"), 
                 _("There was an error while saving validation certificate"),
                  self.view)
+            self._clean_connection_files_on_error()
             return False
 
         self.processView.setChefCertificateRetrievalStatus(_('DONE'))
@@ -398,6 +401,7 @@ class ConnectWithGecosCCController(object):
             showerror(_("Error linking to Chef"), 
                 _("Can't create/modify /etc/chef/client.rb file"),
                  self.view)
+            self._clean_connection_files_on_error()
             return False            
         
       
@@ -410,6 +414,7 @@ class ConnectWithGecosCCController(object):
             showerror(_("Error unlinking from Chef"), 
                 _("Can't link to chef server"),
                  self.view)
+            self._clean_connection_files_on_error()
             return False 
         
         self.logger.debug('- Start chef client service ')
@@ -430,8 +435,9 @@ class ConnectWithGecosCCController(object):
             self.processView.setLinkToChefStatus(_('ERROR'))
             self.processView.enableAcceptButton()
             showerror(_("Error linking to Chef"), 
-                _("Can't create/modify /etc/chef/client.rb file"),
+                _("Can't create/modify /etc/chef.control file"),
                  self.view)
+            self._clean_connection_files_on_error()
             return False    
     
         
@@ -451,6 +457,7 @@ class ConnectWithGecosCCController(object):
             showerror(_("Error registering from GECOS CC"), 
                 _("Can't register the computer in GECOS CC"),
                  self.view)
+            self._clean_connection_files_on_error()
             return False          
         
 
@@ -460,6 +467,7 @@ class ConnectWithGecosCCController(object):
             showerror(_("Error Registering from GECOS CC"), 
                 _("Can't save /etc/gcc.control file"),
                  self.view)
+            self._clean_connection_files_on_error()
             return False    
         
         self.processView.setRegisterInGecosStatus(_('DONE'))
@@ -492,7 +500,7 @@ class ConnectWithGecosCCController(object):
         
         self.processView.setCheckGecosCredentialsStatus(_('DONE'))
         self.processView.setCheckWorkstationDataStatus(_('IN PROCESS'))
-        if not self._check_workstation_data(self.view.get_workstation_data()):
+        if not self._check_workstation_data(self.view.get_workstation_data(), False):
             self.processView.setCheckWorkstationDataStatus(_('ERROR'))
             self.processView.enableAcceptButton()
             return False
@@ -500,7 +508,9 @@ class ConnectWithGecosCCController(object):
         self.processView.setCheckWorkstationDataStatus(_('DONE'))
         self.processView.setChefCertificateRetrievalStatus(_('IN PROCESS'))
 
-        
+        # Save workstation data
+        self.workstationDataDao.save(self.view.get_workstation_data())
+
         # Get validation.pem from server
         self.logger.debug("Get validation.pem from server")
         gecosCC = GecosCC()
@@ -530,10 +540,25 @@ class ConnectWithGecosCCController(object):
             showerror(_("Error saving validation certificate"), 
                 _("There was an error while saving validation certificate"),
                  self.view)
+            self._clean_disconnection_files_on_error()
             return False
 
         self.processView.setChefCertificateRetrievalStatus(_('DONE'))
         self.processView.setLinkToChefStatus(_('IN PROCESS'))
+
+        # Unregister from GECOS Control Center
+        self.logger.debug("Unregister computer")
+        workstationData = self.view.get_workstation_data()
+        if not gecosCC.unregister_computer(self.view.get_gecos_access_data(), 
+                workstationData.get_node_name()):
+            self.processView.setRegisterInGecosStatus(_('ERROR'))
+            self.processView.enableAcceptButton()
+            showerror(_("Error unregistering from GECOS CC"), 
+                _("Can't unregister the computer from GECOS CC"),
+                 self.view)
+            self._clean_disconnection_files_on_error()
+            return False          
+
         
         # Unlink from Chef
         self.logger.debug("Unlink from Chef")
@@ -555,6 +580,7 @@ class ConnectWithGecosCCController(object):
             showerror(_("Error unlinking from Chef"), 
                 _("Can't create/modify /etc/chef/client.rb file"),
                  self.view)
+            self._clean_disconnection_files_on_error()
             return False            
         
         self.logger.debug("- Prepare /etc/chef/knife.rb")
@@ -592,6 +618,7 @@ class ConnectWithGecosCCController(object):
             showerror(_("Error unlinking from Chef"), 
                 _("Can't create/modify /etc/chef/knife.rb file"),
                  self.view)
+            self._clean_disconnection_files_on_error()
             return False 
 
         self.logger.debug("- Remove control file")
@@ -601,6 +628,7 @@ class ConnectWithGecosCCController(object):
             showerror(_("Error unlinking from Chef"), 
                 _("Can't remove /etc/chef.control file"),
                  self.view)
+            self._clean_disconnection_files_on_error()
             return False 
 
         self.logger.debug("- Remove client.pem")
@@ -610,9 +638,10 @@ class ConnectWithGecosCCController(object):
             showerror(_("Error unlinking from Chef"), 
                 _("Can't remove /etc/chef/client.pem file"),
                  self.view)
+            self._clean_disconnection_files_on_error()
             return False 
 
-        workstationData = self.view.get_workstation_data()
+
         self.logger.debug('- Deleting node ' + workstationData.get_node_name())
         if not self._execute_command('knife node delete "' + workstationData.get_node_name() + '" -c /etc/chef/knife.rb -y'):
             self.processView.setLinkToChefStatus(_('ERROR'))
@@ -620,6 +649,7 @@ class ConnectWithGecosCCController(object):
             showerror(_("Error unlinking from Chef"), 
                 _("Can't delete Chef node"),
                  self.view)
+            self._clean_disconnection_files_on_error()
             return False 
         
         self.logger.debug("- Remove chef-client-wrapper")
@@ -629,6 +659,7 @@ class ConnectWithGecosCCController(object):
             showerror(_("Error unlinking from Chef"), 
                 _("Can't remove /usr/bin/chef-client-wrapper file"),
                  self.view)
+            self._clean_disconnection_files_on_error()
             return False         
 
         self.logger.debug('- Deleting client ' + workstationData.get_node_name())
@@ -637,6 +668,7 @@ class ConnectWithGecosCCController(object):
             showerror(_("Error unlinking from Chef"), 
                 _("Can't delete Chef node"),
                  self.view)
+            self._clean_disconnection_files_on_error()
             return False 
 
         self.logger.debug('- Stop chef client service ')
@@ -646,23 +678,13 @@ class ConnectWithGecosCCController(object):
         self.processView.setLinkToChefStatus(_('DONE'))
         self.processView.setRegisterInGecosStatus(_('IN PROCESS'))
         
-        # Unregister from GECOS Control Center
-        if not gecosCC.unregister_computer(self.view.get_gecos_access_data(), 
-                workstationData.get_node_name()):
-            self.processView.setRegisterInGecosStatus(_('ERROR'))
-            self.processView.enableAcceptButton()
-            showerror(_("Error unregistering from GECOS CC"), 
-                _("Can't unregister the computer from GECOS CC"),
-                 self.view)
-            return False          
-        
-
         if not self.accessDataDao.delete(self.view.get_gecos_access_data()):
             self.processView.setRegisterInGecosStatus(_('ERROR'))
             self.processView.enableAcceptButton()
             showerror(_("Error unregistering from GECOS CC"), 
                 _("Can't remove /etc/gcc.control file"),
                  self.view)
+            self._clean_disconnection_files_on_error()
             return False    
         
         self.processView.setRegisterInGecosStatus(_('DONE'))
@@ -699,5 +721,8 @@ class ConnectWithGecosCCController(object):
         return result 
         
 
-    def proccess_dialog_accept(self):
+    def proccess_dialog_accept(self, error_status):
         self.logger.debug("proccess_dialog_accept")
+        self.processView.hide()
+        if not error_status:
+            self.hide()

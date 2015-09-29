@@ -105,7 +105,7 @@ class ConnectWithGecosCCDialog(Toplevel):
         workstationNameLabel = Label(workstationFrame, text=_("Workstation name:"))
         workstationNameLabel.grid(column=0, row=3, sticky=E+W, padx=padding_x, pady=padding_y)
         
-        self.workstationNameEntry = Entry(self.body)
+        self.workstationNameEntry = Entry(workstationFrame)
         self.workstationNameEntry.grid(column=1, row=3, columnspan=2, sticky=E+W, padx=padding_x, pady=padding_y)
 
         self.workstationNameEntry.delete(0, END)
@@ -238,7 +238,7 @@ class ConnectWithGecosCCDialog(Toplevel):
         self.logger.debug("connect")
         
         if self.get_gecos_access_data() is None:
-            self.get_gecos_access_data(GecosAccessData())
+            self.set_gecos_access_data(GecosAccessData())
         self.get_gecos_access_data().set_url(self.gecosCCurlEntry.get())
         self.get_gecos_access_data().set_login(self.gecosCCuserEntry.get())
         self.get_gecos_access_data().set_password(self.gecosCCpassEntry.get())
@@ -274,7 +274,7 @@ class ConnectWithGecosCCDialog(Toplevel):
         self.logger.debug("patternSearch")
         
         if self.get_gecos_access_data() is None:
-            self.get_gecos_access_data(GecosAccessData())
+            self.set_gecos_access_data(GecosAccessData())
         self.get_gecos_access_data().set_url(self.gecosCCurlEntry.get())
         self.get_gecos_access_data().set_login(self.gecosCCuserEntry.get())
         self.get_gecos_access_data().set_password(self.gecosCCpassEntry.get())

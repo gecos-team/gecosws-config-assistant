@@ -124,7 +124,7 @@ class GecosCCSetupProcessView(Toplevel):
 
     def accept(self):
         self.logger.debug("accept")
-        self.controller.proccess_dialog_accept()
+        self.controller.proccess_dialog_accept(self.error_status)
   
     def hide(self):
         self.logger.debug("hide")
@@ -133,14 +133,17 @@ class GecosCCSetupProcessView(Toplevel):
     def setCheckGecosCredentialsStatus(self, status):
         self.gecosCredentialsStatusLabel['text'] = status
         self.update()
+        self.error_status = (status == _('ERROR'))
 
     def setCheckWorkstationDataStatus(self, status):
         self.workstationDataStatusLabel['text'] = status
         self.update()
+        self.error_status = (status == _('ERROR'))
 
     def setChefCertificateRetrievalStatus(self, status):
         self.chefCertificateStatusLabel['text'] = status
         self.update()
+        self.error_status = (status == _('ERROR'))
 
     def setLinkToChefLabel(self, text):
         self.linkToChefLabel['text'] = text
@@ -149,6 +152,7 @@ class GecosCCSetupProcessView(Toplevel):
     def setLinkToChefStatus(self, status):
         self.linkToChefStatusLabel['text'] = status
         self.update()
+        self.error_status = (status == _('ERROR'))
         
     def setRegisterInGecosLabel(self, text):
         self.registerInGecosLabel['text'] = text
@@ -158,10 +162,12 @@ class GecosCCSetupProcessView(Toplevel):
     def setRegisterInGecosStatus(self, status):
         self.registerInGecosStatusLabel['text'] = status
         self.update()
+        self.error_status = (status == _('ERROR'))
         
     def setCleanStatus(self, status):
         self.cleanStatusLabel['text'] = status
         self.update()
+        self.error_status = (status == _('ERROR'))
         
         
     def enableAcceptButton(self):
