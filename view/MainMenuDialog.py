@@ -119,17 +119,20 @@ class MainMenuDialog(Tk):
         self.logger.debug("showUserAuthenticationMethod")
         self.controller.showUserAuthenticationMethod()
         
-        
     def showSoftwareManager(self):
         self.logger.debug("showSoftwareManager")
+        self.controller.showSoftwareManager()
         
     def showLocalUserListView(self):
         self.logger.debug("showLocalUserListView")
+        self.controller.showLocalUserListView()
         
     def updateConfigAssistant(self):
         self.logger.debug("updateConfigAssistant")
+        self.controller.updateConfigAsystant()
         
     def showSystemStatus(self):
         self.logger.debug("showSystemStatus")
+        self.controller.showSystemStatus()
         
     

@@ -57,4 +57,10 @@ class ValidationTest(unittest.TestCase):
         self.assertTrue(validation.isLdapUri('ldap://test.ldap.server'))
         
 
+        self.assertFalse(validation.isLogin(None))
+        self.assertFalse(validation.isLogin(''))
+        self.assertFalse(validation.isLogin('Contains Space'))
+        self.assertFalse(validation.isLogin('Contains + Symbol'))
+        self.assertFalse(validation.isLogin('Contains Ñ character'))
+        self.assertTrue(validation.isLogin('amacias'))
         

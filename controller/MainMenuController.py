@@ -75,15 +75,13 @@ class MainMenuController(object):
         pass
 
     def showLocalUserListView(self):
-        # TODO!
-        pass
+        self.localUserList.showList(self.view)
 
     def updateConfigAsystant(self):
         # TODO!
         pass
 
     def showSystemStatus(self):
-        # TODO!
-        pass
+        self.systemStatus.show(self.view)
 
 

@@ -187,7 +187,7 @@ class Check(Command):
         
         #suite.addTest(UserAuthenticationMethodControllerTest())
         #suite.addTest(AutoSetupControllerTest())
-        suite.addTest(ConnectWithGecosCCControllerTest())
+        #suite.addTest(ConnectWithGecosCCControllerTest())
         
         
         

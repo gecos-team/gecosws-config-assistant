@@ -58,6 +58,19 @@ class LocalUser(object):
     def set_name(self, value):
         self.__name = value
 
+
+    def isEqual(self, other):
+        if other is None:
+            return False
+        
+        if self.get_login() != other.get_login():
+            return False
+
+        if self.get_name() != other.get_name():
+            return False
+        
+        return True
+
     login = property(get_login, set_login, None, None)
     password = property(get_password, set_password, None, None)
     name = property(get_name, set_name, None, None)

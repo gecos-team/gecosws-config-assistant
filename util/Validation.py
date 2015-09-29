@@ -36,7 +36,7 @@ class Validation(object):
         
     def isUrl(self, url):
         if url is None:
-            False
+            return False
         
         regex = re.compile(
             r'^(?:http|ftp)s?://' # http:// or https://
@@ -53,7 +53,7 @@ class Validation(object):
 
     def isLdapUri(self, url):
         if url is None:
-            False
+            return False
         
         regex = re.compile(
             r'^(ldap)s?://' # ldap:// or ldaps://
@@ -68,4 +68,14 @@ class Validation(object):
         else:
             return False
 
+    def isLogin(self, login):
+        if login is None:
+            return False
+        
+        regex = re.compile("^[A-Za-z0-9_]+$")
+        
+        if regex.match(str(login)):
+            return True
+        else:
+            return False
 
