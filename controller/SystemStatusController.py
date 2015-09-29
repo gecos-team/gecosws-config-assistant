@@ -20,12 +20,17 @@ __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
 __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
+from view.SystemStatusElemView import SystemStatusElemView
+
+from dto.SystemStatus import SystemStatus 
 from dao.NTPServerDAO import NTPServerDAO
 from dao.GecosAccessDataDAO import GecosAccessDataDAO
 from dao.WorkstationDataDAO import WorkstationDataDAO
 from dao.LocalUserDAO import LocalUserDAO
 from dao.NetworkInterfaceDAO import NetworkInterfaceDAO
 from dao.UserAuthenticationMethodDAO import UserAuthenticationMethodDAO
+
+from util.PackageManager import PackageManager 
 
 import logging
 
@@ -48,9 +53,24 @@ class SystemStatusController(object):
         self.userAuthenticationMethodDao = UserAuthenticationMethodDAO()
         self.logger = logging.getLogger('SystemStatusController')
 
-    def show(self):
-        # TODO!
-        pass
+
+    def show(self, mainWindow):
+        self.view = SystemStatusElemView(mainWindow, self)
+        pm = PackageManager()
+        
+        
+        status = SystemStatus()
+        status.set_cga_version(pm.get_package_version('gecosws-config-assistant'))
+        status.set_network_interfaces(self.networkInterfaceDao.loadAll())
+        status.set_time_server(self.ntpServerDao.load())
+        status.set_workstation_data(self.workstationDataDao.load())
+        status.set_gecos_access_data(self.gecosAccessDao.load())
+        status.set_local_users(self.localUserDao.loadAll())
+        status.set_user_authentication_method(self.userAuthenticationMethodDao.load())
+        
+        
+        self.view.set_data(status)
+        self.view.show()   
 
     def hide(self):
         # TODO!

@@ -44,6 +44,15 @@ class SystemStatus(object):
         self.gecosAccessData = None
         self.localUsers = []
         self.userAuthenticationMethod = None
+        self.cgaVersion = None
+
+    def get_cga_version(self):
+        return self.__cgaVersion
+
+
+    def set_cga_version(self, value):
+        self.__cgaVersion = value
+
 
     def get_network_interfaces(self):
         return self.__networkInterfaces
@@ -114,12 +123,16 @@ class SystemStatus(object):
             raise TypeError('"user authentication method" data must be an object of class UserAuthenticationMethod')        
         self.__userAuthenticationMethod = value
 
+
+
+
     networkInterfaces = property(get_network_interfaces, set_network_interfaces, None, None)
     timeServer = property(get_time_server, set_time_server, None, None)
     workstationData = property(get_workstation_data, set_workstation_data, None, None)
     gecosAccessData = property(get_gecos_access_data, set_gecos_access_data, None, None)
     localUsers = property(get_local_users, set_local_users, None, None)
     userAuthenticationMethod = property(get_user_authentication_method, set_user_authentication_method, None, None)
+    cgaVersion = property(get_cga_version, set_cga_version, None, None)
         
 
 
