@@ -28,7 +28,8 @@ from view.RequirementsCheckDialog import RequirementsCheckDialog
 
 from dao.NetworkInterfaceDAO import NetworkInterfaceDAO
 from dao.NTPServerDAO import NTPServerDAO
-from dao.GecosAccessDataDAO import GecosAccessDataDAO
+from dao.UserAuthenticationMethodDAO import UserAuthenticationMethodDAO
+from dto.LocalUsersAuthMethod import LocalUsersAuthMethod 
 
 import logging
 
@@ -73,10 +74,9 @@ class RequirementsCheckController(object):
 
         # Auto Setup status        
         self.logger.debug('Check auto setup status')
-        gecosAccessDataDao = GecosAccessDataDAO()
-        if (gecosAccessDataDao.load() is not None and
-            gecosAccessDataDao.load().get_password() is not None and
-            gecosAccessDataDao.load().get_password().strip() != ''):
+        userAuthMethodDao = UserAuthenticationMethodDAO()
+        if (userAuthMethodDao.load() is not None and
+            not isinstance(userAuthMethodDao.load(), LocalUsersAuthMethod)):
             self.view.setAutoSetupStatus(_('OK'))
             self.logger.debug('Auto setup already done?')        
 

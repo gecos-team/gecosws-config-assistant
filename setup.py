@@ -186,7 +186,7 @@ class Check(Command):
         from tests.controller.ConnectWithGecosCCControllerTest import ConnectWithGecosCCControllerTest
         
         #suite.addTest(UserAuthenticationMethodControllerTest())
-        #suite.addTest(AutoSetupControllerTest())
+        suite.addTest(AutoSetupControllerTest())
         #suite.addTest(ConnectWithGecosCCControllerTest())
         
         

@@ -151,4 +151,51 @@ class AutoSetupControllerTest(unittest.TestCase):
         self.assertTrue(authMethodDao.delete(method))        
         
         
+        
+        print "Prepare Gecos CC Mock with AD user authentication (specific setup)"
+        gecosCC = GecosCC()
+        gecosCC.set_last_request_content(
+         '{ ' + "\n" +
+         '  "uri_ntp": "0.centos.pool.ntp.org", ' +  "\n" +
+         '  "gem_repo": "http://v2.gecos.guadalinex.org/gems/", ' + "\n" +
+         '  "gcc": { '+ "\n" +
+         '       "gcc_username": "amacias", ' + "\n" +
+         '       "gcc_link": true, ' + "\n" +
+         '       "uri_gcc": "http://192.168.1.139"}, ' + "\n" +
+         '  "auth": { '+ "\n" +
+         '       "auth_type": "AD", '+ "\n" +
+         '       "auth_properties": { '+ "\n" +
+         '             "specific_conf": true, ' + "\n" +
+         '             "ad_properties": { ' + "\n" +
+         '             "krb5_conf": "W2xpYmRlZmF1bHRzXQogZGVmYXVsdF9yZWFsbSA9IEVWQU9TLkxPQ0FMCiBkbnNfbG9va3VwX3Jl\\nYWxtID0gdHJ1ZQogZG5zX2xvb2t1cF9rZGMgPSB0cnVlCiB0aWNrZXRfbGlmZXRpbWUgPSAyNGgK\\nIHJlbmV3X2xpZmV0aW1lID0gN2QKIHJkbnMgPSBmYWxzZQogZm9yd2FyZGFibGUgPSB5ZXMKIGRl\\nZmF1bHRfdGdzX2VuY3R5cGVzID0gcmM0LWhtYWMKIGRlZmF1bHRfdGt0X2VuY3R5cGVzID0gcmM0\\nLWhtYWMKIHBlcm1pdHRlZF9lbmN0eXBlcyA9IHJjNC1obWFjCgpbcmVhbG1zXQojIERlZmluaXIg\\nc29sbyBzaSBlbCBETlMgbm8gZnVuY2lvbmEgYmllbgojRVZBT1MuTE9DQUwgPSB7CiMga2RjID0g\\nc3J2MS5ldmFvcy5sb2NhbAojIGFkbWluX3NlcnZlciA9IHNydjEuZXZhb3MubG9jYWwKI30KCltk\\nb21haW5fcmVhbG1dCiMgRGVmaW5pciBzb2xvIHNpIGVsIEROUyBubyBmdW5jaW9uYSBiaWVuCiMg\\nLmV2YW9zLmxvY2FsID0gRVZBT1MuTE9DQUwKIyBldmFvcy5sb2NhbCA9IEVWQU9TLkxPQ0FMCg==\\n", ' +"\n" +
+         '             "sssd_conf": "W3Nzc2RdCmNvbmZpZ19maWxlX3ZlcnNpb24gPSAyCmRvbWFpbnMgPSBldmFvcy5sb2NhbApzZXJ2\\naWNlcyA9IG5zcywgcGFtLCBwYWMKZGVidWdfbGV2ZWwgPSAwCgpbbnNzXQoKW3BhbV0gCltkb21h\\naW4vZXZhb3MubG9jYWxdCiMgTGEgZW51bWVyYWNpb24gbm8gZXN0YSByZWNvbWVuZGFkYSBlbiBl\\nbnRvcm5vcyBjb24gbXVjaG9zIHVzdWFyaW9zCmNhY2hlX2NyZWRlbnRpYWxzPXRydWUKZW51bWVy\\nYXRlID0gZmFsc2UKCmlkX3Byb3ZpZGVyID0gYWQKYXV0aF9wcm92aWRlciA9IGFkCmNocGFzc19w\\ncm92aWRlciA9IGFkCmFjY2Vzc19wcm92aWRlciA9IGFkCgpvdmVycmlkZV9ob21lZGlyID0gL2hv\\nbWUvJXU=\\n",  ' +"\n" +
+         '             "smb_conf": "W2dsb2JhbF0KICAgd29ya2dyb3VwID0gZXZhb3MKICAgY2xpZW50IHNpZ25pbmcgPSB5ZXMKICAg\\nY2xpZW50IHVzZSBzcG5lZ28gPSB5ZXMKICAga2VyYmVyb3MgbWV0aG9kID0gc2VjcmV0cyBhbmQg\\na2V5dGFiCiAgIGxvZyBmaWxlID0gL3Zhci9sb2cvc2FtYmEvJW0ubG9nCiAgIHJlYWxtID0gRVZB\\nT1MuTE9DQUwKICAgc2VjdXJpdHkgPSBhZHMK\\n",  ' +"\n" +
+         '             "pam_conf": "IyAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t\\nLS0tLS0tLS0tLS0tLS0tLS0tLS0jCiMgL2V0Yy9wYW0uY29uZgkJCQkJCQkJICAgICAjCiMgLS0t\\nLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t\\nLS0tLS0tLS0tLS0tLS0tIwojCiMgTk9URQojIC0tLS0KIwojIE5PVEU6IE1vc3QgcHJvZ3JhbSB1\\nc2UgYSBmaWxlIHVuZGVyIHRoZSAvZXRjL3BhbS5kLyBkaXJlY3RvcnkgdG8gc2V0dXAgdGhlaXIK\\nIyBQQU0gc2VydmljZSBtb2R1bGVzLiBUaGlzIGZpbGUgaXMgdXNlZCBvbmx5IGlmIHRoYXQgZGly\\nZWN0b3J5IGRvZXMgbm90IGV4aXN0LgojIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t\\nLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSMKCiMgRm9ybWF0Ogoj\\nIHNlcnYuCW1vZHVsZQkgICBjdHJsCSAgICAgIG1vZHVsZSBbcGF0aF0JLi4uW2FyZ3MuLl0JCSAg\\nICAgIwojIG5hbWUJdHlwZQkgICBmbGFnCQkJCQkJCSAgICAgIwoK\\n"  ' +"\n" +
+         '       }}}, '+ "\n" +
+         '  "chef": { '+ "\n" +
+         '       "chef_server_uri": "https://192.168.1.139/", ' + "\n" +
+         '       "chef_link": true, '+ "\n" +
+         '       "chef_validation": "VALIDATION_DATA"}, ' + "\n" +
+         '  "version": "0.2.0", ' + "\n" +
+         '  "organization": "Junta de Andaluc\u00eda" '+ "\n" +
+         '}')
+        
+        print "Simulate setup"        
+        self.assertTrue(controller.setup())
+
+        print "Return user authentication to local users"
+        authMethodDao = UserAuthenticationMethodDAO()
+        method = ADAuthMethod()
+        data = ADSetupData()
+                
+        # Data of an Active Directory server used for tests 
+        data.set_domain('evaos.local')
+        data.set_workgroup('evaos')
+        data.set_ad_administrator_user('Administrador')
+        data.set_ad_administrator_pass('Evaos.2014')
+        
+        method.set_data(data)
+        self.assertTrue(authMethodDao.delete(method))        
+        
+        
         print "End ;)"

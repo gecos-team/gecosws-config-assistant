@@ -27,12 +27,13 @@ from dao.WorkstationDataDAO import WorkstationDataDAO
 
 import sys
 import socket
+import base64
 
 
 if 'check' in sys.argv:
     # Mock view classes for testing purposses
     print "==> Loading mocks..."
-    from view.ViewMocks import showerror, AutoSetupDialog, AutoSetupProcessView, ADSetupDataElemView
+    from view.ViewMocks import showerror, AutoSetupDialog, AutoSetupProcessView, ADSetupDataElemView, ConnectWithGecosCCDialog
     from util.UtilMocks import GecosCC
 else:
     # Use real view classes
@@ -41,9 +42,11 @@ else:
     from view.ADSetupDataElemView import ADSetupDataElemView
     from view.CommonDialog import showerror
     from util.GecosCC import GecosCC
+    from view.ConnectWithGecosCCDialog import ConnectWithGecosCCDialog 
 
 
 from util.Validation import Validation
+from util.Template import Template
 
 from dto.NTPServer import NTPServer
 from dto.LDAPSetupData import LDAPSetupData
@@ -54,6 +57,7 @@ from dto.ADAuthMethod import ADAuthMethod
 
 import logging
 import traceback
+import subprocess 
 
 
 import gettext
@@ -247,6 +251,32 @@ class AutoSetupController(object):
         
         return True
 
+    def _save_base64_file(self, filename, data):
+        self.logger.debug("_save_base64_file BEGIN")
+
+        if filename is None:
+            self.logger.error("Filename is None")
+            return False
+        
+        if data is None:
+            self.logger.error("Data is None")
+            return False
+        
+        try:
+            fd = open(filename, 'w');
+            fd.write(base64.decodestring(data))
+            fd.close()
+
+            
+            return True
+        except:
+            self.logger.error("Error saving %s file"%(filename))
+            self.logger.error(str(traceback.format_exc()))
+            
+        return False
+
+            
+
 
     def _setup_ad_authentication_method(self, conf):
         self.logger.debug("_setup_ad_authentication_method")
@@ -270,12 +300,200 @@ class AutoSetupController(object):
 
         specific_conf = conf["auth"]["auth_properties"]["specific_conf"]
         if specific_conf:
-            # TODO!!
-            self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
-            self.processView.enableAcceptButton()
-            showerror(_("Auto setup error"), 
-                _("TODO!"),
-                 self.processView)
+            if not conf["auth"]["auth_properties"].has_key("ad_properties"):
+                self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
+                self.processView.enableAcceptButton()
+                showerror(_("Auto setup error"), 
+                    _("AD authentication method needs 'ad_properties' parameter!"),
+                     self.processView)              
+                return False
+
+            ad_properties = conf["auth"]["auth_properties"]["ad_properties"]
+            
+            if not ad_properties.has_key("krb5_conf"):
+                self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
+                self.processView.enableAcceptButton()
+                showerror(_("Auto setup error"), 
+                    _("AD authentication method needs krb5.conf file!"),
+                     self.processView)              
+                return False          
+
+            if not ad_properties.has_key("sssd_conf"):
+                self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
+                self.processView.enableAcceptButton()
+                showerror(_("Auto setup error"), 
+                    _("AD authentication method needs sssd.conf file!"),
+                     self.processView)              
+                return False          
+
+            if not ad_properties.has_key("smb_conf"):
+                self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
+                self.processView.enableAcceptButton()
+                showerror(_("Auto setup error"), 
+                    _("AD authentication method needs smb.conf file!"),
+                     self.processView)              
+                return False          
+
+            if not ad_properties.has_key("pam_conf"):
+                self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
+                self.processView.enableAcceptButton()
+                showerror(_("Auto setup error"), 
+                    _("AD authentication method needs pam.conf file!"),
+                     self.processView)              
+                return False          
+
+            
+            # Save files
+            if not self._save_base64_file(
+                self.userAuthenticationMethodDao.main_data_file, 
+                    ad_properties["sssd_conf"]):
+                self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
+                self.processView.enableAcceptButton()
+                showerror(_("Auto setup error"), 
+                    _("Error saving sssd.conf file!"),
+                     self.processView)              
+                return False          
+                
+            if not self._save_base64_file(
+                self.userAuthenticationMethodDao.samba_conf_file, 
+                    ad_properties["smb_conf"]):
+                self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
+                self.processView.enableAcceptButton()
+                showerror(_("Auto setup error"), 
+                    _("Error saving smb.conf file!"),
+                     self.processView)              
+                return False          
+                
+            if not self._save_base64_file(
+                self.userAuthenticationMethodDao.krb_conf_file, 
+                    ad_properties["krb5_conf"]):
+                self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
+                self.processView.enableAcceptButton()
+                showerror(_("Auto setup error"), 
+                    _("Error saving krb5.conf file!"),
+                     self.processView)              
+                return False          
+                
+            if not self._save_base64_file(
+                    '/etc/pam.conf', 
+                    ad_properties["pam_conf"]):
+                self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
+                self.processView.enableAcceptButton()
+                showerror(_("Auto setup error"), 
+                    _("Error saving pam.conf file!"),
+                     self.processView)              
+                return False          
+            
+            adSetupData = ADSetupData()
+            if isinstance(self.userAuthenticationMethodDao.load(), ADAuthMethod):
+                adSetupData = self.userAuthenticationMethodDao.load().get_data()
+            
+            # Ask the user for Active Directory administrator user and password
+            askForActiveDirectoryCredentialsView = ADSetupDataElemView(self.processView, self)
+            askForActiveDirectoryCredentialsView.set_data(adSetupData)
+            askForActiveDirectoryCredentialsView.show()
+
+            adSetupData = askForActiveDirectoryCredentialsView.get_data()
+            if adSetupData is None:
+                self.logger.error("Operation canceled by user!")
+                self.processView.setUserAuthenticationSetupStatus(_('CANCELED'))
+                self.processView.enableAcceptButton()
+                return False
+            
+            # Run "net ads join" command
+            command = 'net ads join -U {0}%{1}'.format(
+                    adSetupData.get_ad_administrator_user(), 
+                    adSetupData.get_ad_administrator_pass())
+            self.logger.debug('running: %s'%(command))
+            p = subprocess.Popen(command, shell=True, 
+                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            for line in p.stdout.readlines():
+                self.logger.debug(line)
+                    
+            retval = p.wait()
+            if retval != 0:
+                self.logger.error(_('Error running command: ')+command)
+                self.processView.setUserAuthenticationSetupStatus(_('CANCELED'))
+                self.processView.enableAcceptButton()
+                showerror(_("Auto setup error"), 
+                    _("Error executing net ads join"),
+                     self.processView)              
+                return False
+                  
+                  
+            # Restart SSSD service
+            self.logger.debug('Restart SSSD service')
+            p = subprocess.Popen('service sssd restart', shell=True, 
+                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            for line in p.stdout.readlines():
+                self.logger.debug(line)
+                    
+            retval = p.wait()
+            if retval != 0:
+                self.logger.error(_('Error running command: ')+'service sssd restart')
+                self.processView.setUserAuthenticationSetupStatus(_('CANCELED'))
+                self.processView.enableAcceptButton()
+                showerror(_("Auto setup error"), 
+                    _("Error restarting sssd service"),
+                     self.processView)              
+                return False        
+            
+            self.logger.debug('Save /usr/share/pam-configs/my_mkhomedir file')
+            # Save /usr/share/pam-configs/my_mkhomedir file
+            template = Template()
+            template.source = 'templates/my_mkhomedir'
+            template.destination = '/usr/share/pam-configs/my_mkhomedir'
+            template.owner = 'root'
+            template.group = 'root'
+            template.mode = 00644
+            template.variables = { }
+            
+            if not template.save():
+                self.logger.error('Error saving /usr/share/pam-configs/my_mkhomedir file')
+                self.processView.setUserAuthenticationSetupStatus(_('CANCELED'))
+                self.processView.enableAcceptButton()
+                showerror(_("Auto setup error"), 
+                    _("Error saving my_mkhomedir file"),
+                     self.processView)              
+                return False        
+            
+            # Execute command pam-auth-update
+            self.logger.debug('Execute command pam-auth-update')
+            p = subprocess.Popen('pam-auth-update --package', shell=True, 
+                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            for line in p.stdout.readlines():
+                self.logger.debug(line)
+                    
+            retval = p.wait()
+            if retval != 0:
+                self.logger.error(_('Error running command: ')+'pam-auth-update')
+                self.processView.setUserAuthenticationSetupStatus(_('CANCELED'))
+                self.processView.enableAcceptButton()
+                showerror(_("Auto setup error"), 
+                    _("Error executing pam-auth-update"),
+                     self.processView)              
+                return False           
+            
+            
+            self.logger.debug('Save /etc/gca-sssd.control file')
+            # Save /etc/gca-sssd.control file
+            template = Template()
+            template.source = 'templates/gca-sssd.control'
+            template.destination = '/etc/gca-sssd.control'
+            template.owner = 'root'
+            template.group = 'root'
+            template.mode = 00644
+            template.variables = { 'auth_type':  'ad' }
+            
+            if not template.save():
+                self.logger.error('Error saving /etc/gca-sssd.control file')
+                self.processView.setUserAuthenticationSetupStatus(_('CANCELED'))
+                self.processView.enableAcceptButton()
+                showerror(_("Auto setup error"), 
+                    _("Error saving /etc/gca-sssd.control file"),
+                     self.processView)              
+                return False           
+            
             
         else:              
             if not conf["auth"]["auth_properties"].has_key("ad_properties"):
@@ -436,12 +654,8 @@ class AutoSetupController(object):
             if not self._setup_ad_authentication_method(conf):
                 return False      
             
+        self.processView.setUserAuthenticationSetupStatus(_('DONE'))
 
-        
-        #self.userAuthenticationMethodDao = UserAuthenticationMethodDAO()
-        #self.workstationDataDao = WorkstationDataDAO()        
-        
-        
         # Auto setup success
         self.auto_setup_success = True
         self.processView.enableAcceptButton()

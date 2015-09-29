@@ -20,8 +20,8 @@ __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
 __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
-from Tkinter import N, S, W, E, Toplevel, END
-from ttk import Frame, Button, Style, Label, Entry
+from Tkinter import N, S, W, E, Toplevel
+from ttk import Frame, Button, Style, Label
 import logging
 
 
@@ -83,13 +83,6 @@ class AutoSetupProcessView(Toplevel):
         self.userAuthenticationSetupStatusLabel =  Label(self.body, text=_("PENDING"))
         self.userAuthenticationSetupStatusLabel.grid(column=1, row=3, sticky=E+W, padx=padding_x, pady=padding_y)
 
-        # Gecos CC connection setup
-        gecosCCConnectionSetupLabel =  Label(self.body, text=_("Gecos CC connection setup:"))
-        gecosCCConnectionSetupLabel.grid(column=0, row=4, sticky=E+W, padx=padding_x, pady=padding_y)
-
-        self.gecosCCConnectionSetupStatusLabel =  Label(self.body, text=_("PENDING"))
-        self.gecosCCConnectionSetupStatusLabel.grid(column=1, row=4, sticky=E+W, padx=padding_x, pady=padding_y)
-
         # Accept button
         self.acceptButton = Button(self.body, text=_("Accept"),
             command=self.accept)
@@ -126,10 +119,6 @@ class AutoSetupProcessView(Toplevel):
         self.userAuthenticationSetupStatusLabel['text'] = status
         self.update()
 
-    def setGecosCCConnectionSetupStatus(self, status):
-        self.gecosCCConnectionSetupStatusLabel['text'] = status
-        self.update()
-        
     def enableAcceptButton(self):
         self.acceptButton.config(state='enabled')
         self.update()
