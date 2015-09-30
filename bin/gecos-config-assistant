@@ -75,6 +75,22 @@ elif get_prefix() == '/usr':
 def check_live():
     return os.path.exists('/var/lib/dpkg/info/ubiquity.list')
 
+def redirect_to_log_file():
+	path = '/tmp/gecos-config-assistant.log'
+	try:
+		dirname = os.path.dirname(path)
+		if not os.path.exists(dirname):
+			os.makedirs(dirname)
+		
+		buf = file(path, "a", 0)
+	except IOError, err:
+		return
+	
+	sys.stderr = buf
+	sys.stdout = buf
+	print "#################################################"
+    
+    
 if __name__ == '__main__':
     # Check root in Linux but not in Cygwin
     if os.getuid() != 0 and not os.path.abspath(__file__).startswith('/cygdrive/'):
@@ -83,7 +99,8 @@ if __name__ == '__main__':
        sys.exit(1)
     #if not check_live():
     #    fix_psmouse()
-    logging.basicConfig(filename='/tmp/gecos-config-assistant.log', level=logging.DEBUG)  
+    redirect_to_log_file()
+    logging.basicConfig(level=logging.DEBUG)  
    
     from controller.MainMenuController import MainMenuController
     controller = MainMenuController()

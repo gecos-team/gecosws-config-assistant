@@ -34,6 +34,8 @@ from dto.ADAuthMethod import ADAuthMethod
 from dto.LDAPSetupData import LDAPSetupData
 from dto.ADSetupData import ADSetupData
 
+from view.CommonDialog import showerror
+
 class UserAuthenticationMethodElemView(Toplevel):
     '''
     View class to setup the user authentication method.
@@ -371,7 +373,11 @@ class UserAuthenticationMethodElemView(Toplevel):
         self._populate_data()
         
         if self.controller.test():
-            self.controller.save() 
+            if not self.controller.save():
+                showerror(_("Error saving authentication method"), 
+                    _("An error happened while saving the users authentication method!") + "\n" + _("See log for more details."),
+                     self.view)
+                 
 
 
     def focusLdapUriField(self):
