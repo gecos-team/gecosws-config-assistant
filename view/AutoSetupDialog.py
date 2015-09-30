@@ -82,7 +82,7 @@ class AutoSetupDialog(Toplevel):
 
 
         # Gecos CC URL
-        gecosCCurlLabel = Label(self.body, text=_("Gecos Control Center URL:"))
+        gecosCCurlLabel = Label(self.body, text=_("GECOS Control Center URL:"))
         gecosCCurlLabel.grid(column=0, row=3, sticky=E+W, padx=padding_x, pady=padding_y)
         
         self.gecosCCurlEntry = Entry(self.body)

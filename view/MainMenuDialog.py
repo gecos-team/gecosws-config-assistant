@@ -48,7 +48,7 @@ class MainMenuDialog(Tk):
 
     def initUI(self):
       
-        self.title(_('Gecos config assistant'))
+        self.title(_('GECOS config assistant'))
         self.body.style = Style()
         self.body.style.theme_use("default")        
         self.body.pack()

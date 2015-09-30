@@ -93,7 +93,10 @@ class SystemStatusElemView(Toplevel):
         
         data = self.get_data()
         if data is not None:
-            statusText = _('Assistant version: ') + data.get_cga_version() + "\n"
+            if data.get_cga_version() is not None:
+                statusText = _('Assistant version: ') + data.get_cga_version() + "\n"
+            else:
+                statusText = _('Assistant version: ') + _("UNKNOWN VERSION")+ "\n"
             
             if data.get_workstation_data() is not None:
                 d = data.get_workstation_data()
@@ -122,7 +125,7 @@ class SystemStatusElemView(Toplevel):
                 statusText += "\n" + _('Local users: ')  + "\n"
                 statusText += "=====================================\n"
                 for d in data.get_local_users():
-                    statusText += d.get_login() + "\t\t" + d.get_name() + "\n"
+                    statusText += d.get_login() + "\t\t" + d.get_name().encode('utf-8') + "\n"
 
 
             if data.get_user_authentication_method() is not None:

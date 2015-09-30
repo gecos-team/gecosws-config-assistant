@@ -79,3 +79,17 @@ class Validation(object):
         else:
             return False
 
+    def isAscii(self, text):
+        if text is None:
+            return False
+        
+        try:
+            asciiText = text.encode('ascii')
+        
+            if asciiText == text:
+                return True
+            else:
+                return False
+        except:
+            return False
+

@@ -31,6 +31,9 @@ import gettext
 from gettext import gettext as _
 gettext.textdomain('gecosws-config-assistant')
 
+from firstboot_lib.firstbootconfig import get_data_file
+
+
 class NTPServerDAO(object):
     '''
     DAO class to manipulate NTPServer DTO objects.
@@ -120,7 +123,7 @@ class NTPServerDAO(object):
             
             # Save the value to data file
             template = Template()
-            template.source = 'templates/ntpdate'
+            template.source = get_data_file('templates/ntpdate')
             template.destination = self.data_file
             template.owner = 'root'
             template.group = 'root'

@@ -29,6 +29,8 @@ import traceback
 import subprocess
 import os
 
+from firstboot_lib.firstbootconfig import get_data_file
+
 import gettext
 from gettext import gettext as _
 gettext.textdomain('gecosws-config-assistant')
@@ -143,7 +145,7 @@ class WorkstationDataDAO(object):
             gcc_username = json_data['gcc_username']  
         
         template = Template()
-        template.source = 'templates/gcc.control'
+        template.source = get_data_file('templates/gcc.control')
         template.destination = self.gcc_control_file
         template.owner = 'root'
         template.group = 'root'
@@ -191,7 +193,7 @@ class WorkstationDataDAO(object):
             gcc_username = json_data['gcc_username']  
         
         template = Template()
-        template.source = 'templates/gcc.control'
+        template.source = get_data_file('templates/gcc.control')
         template.destination = self.gcc_control_file
         template.owner = 'root'
         template.group = 'root'

@@ -74,7 +74,7 @@ class RequirementsCheckDialog(Toplevel):
 
 
         # Auto setup        
-        autoSetupLabel =  Label(self.body, text=_("The system has obtained automatic setup parameters from a Gecos server"))
+        autoSetupLabel =  Label(self.body, text=_("The system has obtained automatic setup parameters from a GECOS server"))
         autoSetupLabel.grid(column=1, row=2, sticky=E+W, padx=padding_x, pady=padding_y)
         
         self.autoSetupStatusLabel =  Label(self.body, text=_("PENDING"))

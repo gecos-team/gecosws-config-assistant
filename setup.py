@@ -53,6 +53,29 @@ def get_datafiles(datadir):
 datafiles = get_datafiles('data')
 datafiles.append(('share/applications/', glob.glob('data/gecos-config-assistant.desktop')))
 
+def update_config(values={}):
+
+    oldvalues = {}
+    try:
+        fin = file('firstboot_lib/firstbootconfig.py', 'r')
+        fout = file(fin.name + '.new', 'w')
+
+        for line in fin:
+            fields = line.split(' = ')  # Separate variable from value
+            if fields[0] in values:
+                oldvalues[fields[0]] = fields[1].strip()
+                line = "%s = %s\n" % (fields[0], values[fields[0]])
+            fout.write(line)
+
+        fout.flush()
+        fout.close()
+        fin.close()
+        os.rename(fout.name, fin.name)
+    except (OSError, IOError), e:
+        print ("ERROR: Can't find firstboot_lib/firstbootconfig.py")
+        sys.exit(1)
+    return oldvalues
+
 
 def update_desktop_file(datadir):
 
@@ -79,13 +102,16 @@ def copy_pages(pages_path):
 
 class InstallAndUpdateDataDirectory(DistUtilsExtra.auto.install_auto):
     def run(self):
-#        values = {'__firstboot_data_directory__': "'%s'" % (
-#                                        self.prefix + '/share/gecosws-config-assistant/'),
-#                  '__version__': "'%s'" % self.distribution.get_version(),
-#                  '__firstboot_prefix__': "'%s'" % self.prefix}
-#        update_desktop_file(self.prefix + '/share/gecosws-config-assistant/')
-#        DistUtilsExtra.auto.install_auto.run(self)
-        return true
+        values = {'__firstboot_data_directory__': "'%s'" % (
+                                        self.prefix + '/share/gecosws-config-assistant/'),
+                  '__version__': "'%s'" % self.distribution.get_version(),
+                  '__firstboot_prefix__': "'%s'" % self.prefix}
+        previous_values = update_config(values)
+        update_desktop_file(self.prefix + '/share/gecosws-config-assistant/')
+        #create_solo_rb(self.prefix + '/share/gecosws-config-assistant/')
+        DistUtilsExtra.auto.install_auto.run(self)
+        update_config(previous_values)
+        return True
 
 
 class Clean(Command):
@@ -212,15 +238,25 @@ workstation to different services',
 
     packages=[
         'dto',
+        'dao',
+        'controller',
+        'view',
+        'util',
+        'firstboot_lib',
     ],
 
     package_dir={
         'dto': 'dto',
+        'dao': 'dao',
+        'controller': 'controller',
+        'view': 'view',
+        'util': 'util',
+        'firstboot_lib': 'firstboot_lib',
         },
 
     scripts=[
-#        'bin/gecos-config-assistant',
-#        'bin/gecos-config-assistant-launcher'
+        'bin/gecos-config-assistant',
+        'bin/gecos-config-assistant-launcher'
     ],
     data_files = datafiles,
     cmdclass={

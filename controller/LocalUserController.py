@@ -97,7 +97,6 @@ class LocalUserController(object):
             self.elemView.focusNameField() 
             return False
 
-
         # Test password
         if check_password:
             if obj.get_password() is None or obj.get_password().strip() == '':
@@ -107,6 +106,16 @@ class LocalUserController(object):
                     self.elemView)
                 self.elemView.focusPasswordField() 
                 return False
+
+        if obj.get_password() is not None or obj.get_password().strip() != '':
+            if not Validation().isAscii(obj.get_password()):
+                self.logger.debug("Bad password!")
+                showerror(_('Error in user data'), 
+                     _("The password field contains not allowed characters."),
+                    self.elemView)
+                self.elemView.focusPasswordField() 
+                return False
+
 
         return True
 

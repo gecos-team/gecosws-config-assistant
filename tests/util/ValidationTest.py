@@ -64,3 +64,10 @@ class ValidationTest(unittest.TestCase):
         self.assertFalse(validation.isLogin('Contains Ñ character'))
         self.assertTrue(validation.isLogin('amacias'))
         
+        self.assertFalse(validation.isAscii(None))
+        self.assertFalse(validation.isAscii('áéíóú'))
+        self.assertTrue(validation.isAscii(''))
+        self.assertTrue(validation.isAscii('ascii'))
+        self.assertTrue(validation.isAscii('ascii with spaces'))
+        self.assertTrue(validation.isAscii('ascii symbols: + . ; _ -'))
+        

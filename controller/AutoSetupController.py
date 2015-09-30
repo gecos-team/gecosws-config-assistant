@@ -54,6 +54,8 @@ from dto.LDAPAuthMethod import LDAPAuthMethod
 from dto.ADSetupData import ADSetupData
 from dto.ADAuthMethod import ADAuthMethod
 
+from firstboot_lib.firstbootconfig import get_data_file
+
 
 import logging
 import traceback
@@ -441,7 +443,7 @@ class AutoSetupController(object):
             self.logger.debug('Save /usr/share/pam-configs/my_mkhomedir file')
             # Save /usr/share/pam-configs/my_mkhomedir file
             template = Template()
-            template.source = 'templates/my_mkhomedir'
+            template.source = get_data_file('templates/my_mkhomedir')
             template.destination = '/usr/share/pam-configs/my_mkhomedir'
             template.owner = 'root'
             template.group = 'root'
@@ -478,7 +480,7 @@ class AutoSetupController(object):
             self.logger.debug('Save /etc/gca-sssd.control file')
             # Save /etc/gca-sssd.control file
             template = Template()
-            template.source = 'templates/gca-sssd.control'
+            template.source = get_data_file('templates/gca-sssd.control')
             template.destination = '/etc/gca-sssd.control'
             template.owner = 'root'
             template.group = 'root'

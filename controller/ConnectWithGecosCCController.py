@@ -40,6 +40,7 @@ from util.Template import Template
 from dao.GecosAccessDataDAO import GecosAccessDataDAO
 from dao.WorkstationDataDAO import WorkstationDataDAO
 
+from firstboot_lib.firstbootconfig import get_data_file
 
 
 
@@ -386,7 +387,7 @@ class ConnectWithGecosCCController(object):
             self.logger.debug("chef_admin_name retrieved from GECOS auto conf")               
         
         template = Template()
-        template.source = 'templates/client.rb'
+        template.source = get_data_file('templates/client.rb')
         template.destination = '/etc/chef/client.rb'
         template.owner = 'root'
         template.group = 'root'
@@ -422,7 +423,7 @@ class ConnectWithGecosCCController(object):
         
         self.logger.debug('- Create a control file ')
         template = Template()
-        template.source = 'templates/chef.control'
+        template.source = get_data_file('templates/chef.control')
         template.destination = '/etc/chef.control'
         template.owner = 'root'
         template.group = 'root'
@@ -565,7 +566,7 @@ class ConnectWithGecosCCController(object):
         
         self.logger.debug("- Set /etc/chef/client.rb with default values")
         template = Template()
-        template.source = 'templates/client.rb'
+        template.source = get_data_file('templates/client.rb')
         template.destination = '/etc/chef/client.rb'
         template.owner = 'root'
         template.group = 'root'
@@ -604,7 +605,7 @@ class ConnectWithGecosCCController(object):
 
         
         template = Template()
-        template.source = 'templates/knife.rb'
+        template.source = get_data_file('templates/knife.rb')
         template.destination = '/etc/chef/knife.rb'
         template.owner = 'root'
         template.group = 'root'

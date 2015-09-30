@@ -73,7 +73,7 @@ def get_data_path():
     and /usr/share/firstboot in an installed version but this path
     is specified at installation time.
     """
-
+    
     # Get pathname absolute or relative.
     path = os.path.join(
         os.path.dirname(__file__), __firstboot_data_directory__)

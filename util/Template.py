@@ -26,6 +26,10 @@ import grp
 import pwd
 import os
 
+import gettext
+from gettext import gettext as _
+gettext.textdomain('gecosws-config-assistant')
+
 
 class Template(object):
     '''

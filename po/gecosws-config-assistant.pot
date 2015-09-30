@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-11 10:44+0100\n"
+"POT-Creation-Date: 2015-09-30 14:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,641 +17,1376 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../firstboot/FirstbootWindow.py:126
-msgid "GECOS Config Assistant"
-msgstr ""
-
-#: ../firstboot/FirstbootWindow.py:128
-msgid "Previous"
-msgstr ""
-
-#: ../firstboot/FirstbootWindow.py:129
-msgid "Next"
-msgstr ""
-
-#: ../firstboot/FirstbootWindow.py:130
-#: ../firstboot/pages/localUsers/__init__.py:99
-msgid "Apply"
-msgstr ""
-
-#: ../firstboot/FirstbootWindow.py:131
-msgid "Update this assistant"
-msgstr ""
-
-#: ../firstboot/FirstbootWindow.py:132
-msgid "Version: "
-msgstr ""
-
-#: ../firstboot/FirstbootWindow.py:152
-msgid "Are you sure you close Gecos Config Assistant?"
-msgstr ""
-
-#: ../firstboot/FirstbootWindow.py:169 ../firstboot/FirstbootWindow.py:175
-msgid "Update GECOS Config Assistant"
-msgstr ""
-
-#: ../firstboot/FirstbootWindow.py:169
-msgid "Are you sure you want to update the GECOS Config Assistant?"
-msgstr ""
-
-#: ../firstboot/FirstbootWindow.py:173
-msgid "Update Error"
-msgstr ""
-
-#: ../firstboot/FirstbootWindow.py:173
-msgid "An error occurred during the upgrade"
-msgstr ""
-
-#: ../firstboot/FirstbootWindow.py:175
-msgid "GECOS Config Assistant has been udpated. Please restart GCA"
-msgstr ""
-
-#: ../firstboot/pages/installSoftware/__init__.py:35
-#: ../firstboot/pages/installSoftware/__init__.py:56
-msgid "Install software"
-msgstr ""
-
-#: ../firstboot/pages/installSoftware/__init__.py:51
-msgid "Close"
-msgstr ""
-
-#: ../firstboot/pages/installSoftware/__init__.py:57
-msgid ""
-"Install software packages from a safe repository.\n"
-"\n"
-"You can skip this step if this workstation will be managed from your GECOS "
-"server."
-msgstr ""
-
-#: ../firstboot/pages/network/__init__.py:37
-msgid "Configure the network"
-msgstr ""
-
-#: ../firstboot/pages/network/__init__.py:54
-msgid "Configure a network interface"
-msgstr ""
-
-#: ../firstboot/pages/network/__init__.py:55
-msgid ""
-"This workstation needs a network connection in order to autenticate users, "
-"link to GECOS Control Center, and software installation."
-msgstr ""
-
-#: ../firstboot/pages/network/__init__.py:57
-msgid "Available network cards are listed below:"
-msgstr ""
-
-#: ../firstboot/pages/network/__init__.py:72
-msgid "Interface"
-msgstr ""
-
-#: ../firstboot/pages/network/__init__.py:78
-msgid "IP"
-msgstr ""
-
-#: ../firstboot/pages/autoConfig/AutoConfigResult.py:63
-msgid "This is the information about autoconfig file"
-msgstr ""
-
-#: ../firstboot/pages/autoConfig/AutoConfigResult.py:67
-msgid "Version"
-msgstr ""
-
-#: ../firstboot/pages/autoConfig/AutoConfigResult.py:68
-msgid "Organization"
-msgstr ""
-
-#: ../firstboot/pages/autoConfig/AutoConfigResult.py:69
-msgid "Notes"
-msgstr ""
-
-#: ../firstboot/pages/autoConfig/__init__.py:40
-msgid "Auto Configuration"
-msgstr ""
-
-#: ../firstboot/pages/autoConfig/__init__.py:77
-msgid ""
-"Parameters can be filled automatically if an autoconfiguration file is "
-"available in your GECOS Control Center"
-msgstr ""
-
-#: ../firstboot/pages/autoConfig/__init__.py:79
-msgid "Default parameters are cached, download again?"
-msgstr ""
-
-#: ../firstboot/pages/autoConfig/__init__.py:81
-msgid "Download a file with default configuration parameters."
-msgstr ""
-
-#: ../firstboot/pages/autoConfig/__init__.py:84
-msgid "Control Center URL"
-msgstr ""
-
-#: ../firstboot/pages/linkToServer/LinkToServerResultsPage.py:67
-#: ../firstboot/pages/linkToServer/__init__.py:157
-#: ../firstboot/pages/linkToChef/LinkToChefResultsPage.py:69
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:212
-#: ../firstboot/pages/linkToChef/__init__.py:123
-msgid "The configuration was updated successfully."
-msgstr ""
-
-#: ../firstboot/pages/linkToServer/LinkToServerResultsPage.py:72
-#: ../firstboot/pages/linkToChef/LinkToChefResultsPage.py:74
-msgid "There are some errors you must fix."
-msgstr ""
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:100
-msgid ""
-"These parameters are required in order to join an authentication server:"
-msgstr ""
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:108
-msgid "Base DN for users"
-msgstr ""
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:109
-msgid "Base DN for groups"
-msgstr ""
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:111
-#: ../firstboot/pages/localUsers/__init__.py:93
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:76
-msgid "Password"
-msgstr ""
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:113
-msgid "Workgroup"
-msgstr ""
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:114
-msgid "Change specific configuration from server?"
-msgstr ""
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:135
-#: ../firstboot/pages/linkToServer/__init__.py:187
-#: ../firstboot/serverconf/__init__.py:85
-#: ../firstboot/serverconf/__init__.py:88
-msgid "Authentication Required"
-msgstr ""
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:136
-#: ../firstboot/pages/linkToServer/__init__.py:188
-msgid "Please, provide administration credentials for the Active Directory."
-msgstr ""
-
-#: ../firstboot/pages/linkToServer/__init__.py:44
-msgid "Select authentication method"
-msgstr ""
-
-#: ../firstboot/pages/linkToServer/__init__.py:103
-msgid ""
-"Users in this workstation can be authenticated against a external system.\n"
-"\n"
-msgstr ""
-
-#: ../firstboot/pages/linkToServer/__init__.py:106
-#: ../firstboot/pages/linkToServer/__init__.py:108
-msgid "This workstation currently uses an authentication user method."
-msgstr ""
-
-#: ../firstboot/pages/linkToServer/__init__.py:110
-msgid "No authentication system is currently configured."
-msgstr ""
-
-#: ../firstboot/pages/linkToServer/__init__.py:112
-msgid "Select the authentication method you would like to use:"
-msgstr ""
-
-#: ../firstboot/pages/linkToServer/__init__.py:117
-#: ../firstboot/pages/linkToServer/__init__.py:118
-msgid "Unlink from authentication method"
-msgstr ""
-
-#: ../firstboot/pages/linkToServer/__init__.py:119
-msgid "LDAP"
-msgstr ""
-
-#: ../firstboot/pages/linkToServer/__init__.py:120
+#: ../build/lib.linux-i686-2.7/dto/ADAuthMethod.py:44
+#: ../dto/ADAuthMethod.py:44 ../tests/dto/ADAuthMethodTest.py:40
+#: ../view/UserAuthenticationMethodElemView.py:99
+#: ../view/UserAuthenticationMethodElemView.py:296
+#: ../view/UserAuthenticationMethodElemView.py:309
+#: ../view/UserAuthenticationMethodElemView.py:343
 msgid "Active Directory"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:121
-msgid "None"
+#: ../build/lib.linux-i686-2.7/dto/LDAPAuthMethod.py:43
+#: ../dto/LDAPAuthMethod.py:43 ../tests/dto/LDAPAuthMethodTest.py:40
+#: ../view/UserAuthenticationMethodElemView.py:99
+#: ../view/UserAuthenticationMethodElemView.py:294
+#: ../view/UserAuthenticationMethodElemView.py:312
+#: ../view/UserAuthenticationMethodElemView.py:332
+msgid "LDAP"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:151
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:206
-#: ../firstboot/pages/linkToChef/__init__.py:117
-msgid "The configuration file is valid."
+#: ../build/lib.linux-i686-2.7/dto/LocalUsersAuthMethod.py:43
+#: ../dto/LocalUsersAuthMethod.py:43
+#: ../tests/dto/LocalUsersAuthMethodTest.py:39
+#: ../view/UserAuthenticationMethodElemView.py:97
+#: ../view/UserAuthenticationMethodElemView.py:99
+#: ../view/UserAuthenticationMethodElemView.py:315
+#: ../view/UserAuthenticationMethodElemView.py:321
+msgid "Internal"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:169
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:224
-#: ../firstboot/pages/linkToChef/__init__.py:135
-msgid "Trying to connect..."
+#: ../controller/AutoSetupController.py:115
+#: ../controller/AutoSetupController.py:123
+#: ../controller/AutoSetupController.py:132
+#: ../controller/AutoSetupController.py:141
+#: ../controller/AutoSetupController.py:150
+#: ../controller/ConnectWithGecosCCController.py:95
+#: ../controller/ConnectWithGecosCCController.py:103
+#: ../controller/ConnectWithGecosCCController.py:112
+#: ../controller/ConnectWithGecosCCController.py:121
+#: ../controller/ConnectWithGecosCCController.py:130
+#: ../controller/ConnectWithGecosCCController.py:144
+#: ../controller/ConnectWithGecosCCController.py:164
+#: ../controller/ConnectWithGecosCCController.py:178
+#: ../controller/UserAuthenticationMethodController.py:203
+#: ../controller/UserAuthenticationMethodController.py:211
+#: ../controller/UserAuthenticationMethodController.py:220
+#: ../controller/UserAuthenticationMethodController.py:228
+#: ../controller/UserAuthenticationMethodController.py:242
+#: ../controller/UserAuthenticationMethodController.py:257
+#: ../controller/UserAuthenticationMethodController.py:267
+#: ../controller/UserAuthenticationMethodController.py:276
+#: ../controller/UserAuthenticationMethodController.py:286
+#: ../controller/UserAuthenticationMethodController.py:295
+msgid "Error in form data"
 msgstr ""
 
-#: ../firstboot/pages/linkToServer/__init__.py:232
-msgid "The hostname can't not be longer than 15 characters"
+#: ../controller/AutoSetupController.py:116
+#: ../controller/ConnectWithGecosCCController.py:96
+msgid "The URL field is empty!"
 msgstr ""
 
-#: ../firstboot/pages/localUsers/Dialogs.py:34
-msgid "New user"
+#: ../controller/AutoSetupController.py:116
+#: ../controller/AutoSetupController.py:133
+#: ../controller/AutoSetupController.py:142
+#: ../controller/ConnectWithGecosCCController.py:96
+#: ../controller/ConnectWithGecosCCController.py:113
+#: ../controller/ConnectWithGecosCCController.py:122
+#: ../controller/ConnectWithGecosCCController.py:145
+#: ../controller/ConnectWithGecosCCController.py:179
+#: ../controller/LocalUserController.py:77
+#: ../controller/LocalUserController.py:95
+#: ../controller/LocalUserController.py:105
+#: ../controller/UserAuthenticationMethodController.py:204
+#: ../controller/UserAuthenticationMethodController.py:221
+#: ../controller/UserAuthenticationMethodController.py:243
+#: ../controller/UserAuthenticationMethodController.py:268
+#: ../controller/UserAuthenticationMethodController.py:278
+#: ../controller/UserAuthenticationMethodController.py:288
+#: ../view/LocalUserElemView.py:157
+msgid "Please fill all the mandatory fields."
 msgstr ""
 
-#: ../firstboot/pages/localUsers/Dialogs.py:38
-msgid "Type the new user information:"
+#: ../controller/AutoSetupController.py:124
+#: ../controller/ConnectWithGecosCCController.py:104
+msgid "Malformed URL in URL field!"
 msgstr ""
 
-#: ../firstboot/pages/localUsers/Dialogs.py:41
-msgid "name"
+#: ../controller/AutoSetupController.py:124
+#: ../controller/ConnectWithGecosCCController.py:104
+msgid "Please double-check it."
 msgstr ""
 
-#: ../firstboot/pages/localUsers/Dialogs.py:51
-msgid "login"
+#: ../controller/AutoSetupController.py:133
+#: ../controller/ConnectWithGecosCCController.py:113
+msgid "The Username field is empty!"
 msgstr ""
 
-#: ../firstboot/pages/localUsers/Dialogs.py:61
-#: ../firstboot/serverconf/__init__.py:887
-#: ../firstboot/serverconf/__init__.py:943
-msgid "password"
+#: ../controller/AutoSetupController.py:142
+#: ../controller/ConnectWithGecosCCController.py:122
+msgid "The Password field is empty!"
 msgstr ""
 
-#: ../firstboot/pages/localUsers/Dialogs.py:72
-msgid "confirm"
+#: ../controller/AutoSetupController.py:151
+#: ../controller/ConnectWithGecosCCController.py:131
+msgid "Can't connect to GECOS CC!"
 msgstr ""
 
-#: ../firstboot/pages/localUsers/Dialogs.py:105
-msgid "Remove user"
+#: ../controller/AutoSetupController.py:151
+#: ../controller/ConnectWithGecosCCController.py:131
+msgid "Please double-check all the data and your network setup."
 msgstr ""
 
-#: ../firstboot/pages/localUsers/Dialogs.py:109
-#, python-format
-msgid "The user %s is going to be removed, are you sure?"
+#: ../controller/AutoSetupController.py:161
+#: ../controller/AutoSetupController.py:172
+#: ../controller/AutoSetupController.py:180
+#: ../controller/AutoSetupController.py:194
+#: ../controller/AutoSetupController.py:202
+#: ../controller/AutoSetupController.py:210
+#: ../controller/AutoSetupController.py:235
+#: ../controller/AutoSetupController.py:245
+#: ../controller/AutoSetupController.py:288
+#: ../controller/AutoSetupController.py:296
+#: ../controller/AutoSetupController.py:306
+#: ../controller/AutoSetupController.py:316
+#: ../controller/AutoSetupController.py:324
+#: ../controller/AutoSetupController.py:332
+#: ../controller/AutoSetupController.py:340
+#: ../controller/AutoSetupController.py:352
+#: ../controller/AutoSetupController.py:362
+#: ../controller/AutoSetupController.py:372
+#: ../controller/AutoSetupController.py:382
+#: ../controller/AutoSetupController.py:502
+#: ../controller/AutoSetupController.py:512
+#: ../controller/AutoSetupController.py:520
+#: ../controller/AutoSetupController.py:537
+#: ../controller/AutoSetupController.py:565
+#: ../controller/AutoSetupController.py:610
+#: ../controller/AutoSetupController.py:633
+#: ../controller/AutoSetupController.py:641
+#: ../controller/ConnectWithGecosCCController.py:301
+#: ../controller/ConnectWithGecosCCController.py:307
+#: ../controller/ConnectWithGecosCCController.py:313
+#: ../controller/ConnectWithGecosCCController.py:320
+#: ../controller/ConnectWithGecosCCController.py:354
+#: ../controller/ConnectWithGecosCCController.py:400
+#: ../controller/ConnectWithGecosCCController.py:413
+#: ../controller/ConnectWithGecosCCController.py:436
+#: ../controller/ConnectWithGecosCCController.py:456
+#: ../controller/ConnectWithGecosCCController.py:466
+#: ../controller/ConnectWithGecosCCController.py:498
+#: ../controller/ConnectWithGecosCCController.py:505
+#: ../controller/ConnectWithGecosCCController.py:539
+#: ../controller/ConnectWithGecosCCController.py:555
+#: ../controller/ConnectWithGecosCCController.py:579
+#: ../controller/ConnectWithGecosCCController.py:617
+#: ../controller/ConnectWithGecosCCController.py:627
+#: ../controller/ConnectWithGecosCCController.py:637
+#: ../controller/ConnectWithGecosCCController.py:648
+#: ../controller/ConnectWithGecosCCController.py:658
+#: ../controller/ConnectWithGecosCCController.py:668
+#: ../controller/ConnectWithGecosCCController.py:683
+#: ../view/GecosCCSetupProcessView.py:136
+#: ../view/GecosCCSetupProcessView.py:141
+#: ../view/GecosCCSetupProcessView.py:146
+#: ../view/GecosCCSetupProcessView.py:155
+#: ../view/GecosCCSetupProcessView.py:165
+#: ../view/GecosCCSetupProcessView.py:170
+msgid "ERROR"
 msgstr ""
 
-#: ../firstboot/pages/localUsers/Dialogs.py:112
-msgid "Remove the user home?"
+#: ../controller/AutoSetupController.py:163
+#: ../controller/AutoSetupController.py:174
+#: ../controller/AutoSetupController.py:182
+#: ../controller/AutoSetupController.py:196
+#: ../controller/AutoSetupController.py:204
+#: ../controller/AutoSetupController.py:212
+#: ../controller/AutoSetupController.py:237
+#: ../controller/AutoSetupController.py:247
+#: ../controller/AutoSetupController.py:290
+#: ../controller/AutoSetupController.py:298
+#: ../controller/AutoSetupController.py:308
+#: ../controller/AutoSetupController.py:318
+#: ../controller/AutoSetupController.py:326
+#: ../controller/AutoSetupController.py:334
+#: ../controller/AutoSetupController.py:342
+#: ../controller/AutoSetupController.py:354
+#: ../controller/AutoSetupController.py:364
+#: ../controller/AutoSetupController.py:374
+#: ../controller/AutoSetupController.py:384
+#: ../controller/AutoSetupController.py:420
+#: ../controller/AutoSetupController.py:438
+#: ../controller/AutoSetupController.py:457
+#: ../controller/AutoSetupController.py:474
+#: ../controller/AutoSetupController.py:494
+#: ../controller/AutoSetupController.py:504
+#: ../controller/AutoSetupController.py:514
+#: ../controller/AutoSetupController.py:522
+#: ../controller/AutoSetupController.py:539
+#: ../controller/AutoSetupController.py:567
+#: ../controller/AutoSetupController.py:612
+#: ../controller/AutoSetupController.py:635
+#: ../controller/AutoSetupController.py:643
+msgid "Auto setup error"
 msgstr ""
 
-#: ../firstboot/pages/localUsers/Dialogs.py:131
+#: ../controller/AutoSetupController.py:164
+msgid "NTP server URI value isn't in auto setup data!"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:175
+msgid "Can't synchronize with NTP server!"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:183
+msgid "Error saving NTP server data!"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:197
+msgid "LDAP authentication method needs data!"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:205
+msgid "LDAP authentication method needs LDAP server URI!"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:213
+msgid "LDAP authentication method needs LDAP users base DN!"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:238
+msgid "Can't synchronize with LDAP server!"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:248
+msgid "Can't save LDAP server information!"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:291
+msgid "AD authentication method needs data!"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:299
+msgid "AD authentication method needs 'specific_conf' parameter!"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:309
+#: ../controller/AutoSetupController.py:505
+msgid "AD authentication method needs 'ad_properties' parameter!"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:319
+msgid "AD authentication method needs krb5.conf file!"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:327
+msgid "AD authentication method needs sssd.conf file!"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:335
+msgid "AD authentication method needs smb.conf file!"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:343
+msgid "AD authentication method needs pam.conf file!"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:355
+msgid "Error saving sssd.conf file!"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:365
+msgid "Error saving smb.conf file!"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:375
+msgid "Error saving krb5.conf file!"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:385
+msgid "Error saving pam.conf file!"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:401
+#: ../controller/AutoSetupController.py:418
+#: ../controller/AutoSetupController.py:436
+#: ../controller/AutoSetupController.py:455
+#: ../controller/AutoSetupController.py:472
+#: ../controller/AutoSetupController.py:492
+#: ../controller/AutoSetupController.py:556
+#: ../controller/ConnectWithGecosCCController.py:346
+#: ../controller/ConnectWithGecosCCController.py:531
+msgid "CANCELED"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:417
+#: ../controller/AutoSetupController.py:435
+#: ../controller/AutoSetupController.py:471
+#: ../dao/UserAuthenticationMethodDAO.py:175
+#: ../dao/UserAuthenticationMethodDAO.py:201
+#: ../dao/UserAuthenticationMethodDAO.py:249
+#: ../dao/UserAuthenticationMethodDAO.py:360
+#: ../dao/UserAuthenticationMethodDAO.py:387
+#: ../dao/UserAuthenticationMethodDAO.py:413
+#: ../dao/UserAuthenticationMethodDAO.py:448
+#: ../dao/UserAuthenticationMethodDAO.py:484
+msgid "Error running command: "
+msgstr ""
+
+#: ../controller/AutoSetupController.py:421
+msgid "Error executing net ads join"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:439
+msgid "Error restarting sssd service"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:458
+msgid "Error saving my_mkhomedir file"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:475
+msgid "Error executing pam-auth-update"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:495
+msgid "Error saving /etc/gca-sssd.control file"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:515
+msgid "AD authentication method needs FQDN!"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:523
+msgid "AD authentication method needs workgroup!"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:540
+msgid ""
+"Can't resolv FQDN!\n"
+"Please check your DNS configuration."
+msgstr ""
+
+#: ../controller/AutoSetupController.py:568
+msgid "Can't save AD server information!"
+msgstr ""
+
+#. Get auto setup JSON
+#. Setup NTP server
+#. Setup user authentication method
+#: ../controller/AutoSetupController.py:600
+#: ../controller/AutoSetupController.py:621
+#: ../controller/AutoSetupController.py:630
+#: ../controller/ConnectWithGecosCCController.py:297
+#: ../controller/ConnectWithGecosCCController.py:318
+#: ../controller/ConnectWithGecosCCController.py:325
+#: ../controller/ConnectWithGecosCCController.py:363
+#: ../controller/ConnectWithGecosCCController.py:447
+#: ../controller/ConnectWithGecosCCController.py:475
+#: ../controller/ConnectWithGecosCCController.py:496
+#: ../controller/ConnectWithGecosCCController.py:503
+#: ../controller/ConnectWithGecosCCController.py:510
+#: ../controller/ConnectWithGecosCCController.py:548
+#: ../controller/ConnectWithGecosCCController.py:680
+#: ../controller/ConnectWithGecosCCController.py:692
+msgid "IN PROCESS"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:613
+msgid "Can't read auto setup configuration data from GECOS Control Center!"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:618
+#: ../controller/AutoSetupController.py:627
+#: ../controller/AutoSetupController.py:659
+#: ../controller/ConnectWithGecosCCController.py:317
+#: ../controller/ConnectWithGecosCCController.py:324
+#: ../controller/ConnectWithGecosCCController.py:362
+#: ../controller/ConnectWithGecosCCController.py:446
+#: ../controller/ConnectWithGecosCCController.py:474
+#: ../controller/ConnectWithGecosCCController.py:480
+#: ../controller/ConnectWithGecosCCController.py:502
+#: ../controller/ConnectWithGecosCCController.py:509
+#: ../controller/ConnectWithGecosCCController.py:547
+#: ../controller/ConnectWithGecosCCController.py:679
+#: ../controller/ConnectWithGecosCCController.py:691
+#: ../controller/ConnectWithGecosCCController.py:698
+msgid "DONE"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:636
+msgid "Authentication method values aren't in auto setup data!"
+msgstr ""
+
+#: ../controller/AutoSetupController.py:644
+msgid "Unknown user authentication method: "
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:145
+msgid "The GECOS workstation name field is empty!"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:165
+msgid "The GECOS workstation name already exist!"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:165
+msgid "Please choose a different name."
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:179
+msgid "You must select an OU!"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:218 ../util/Template.py:114
+msgid "Can not find user to be used as owner: "
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:225 ../util/Template.py:121
+msgid "Can not find group to be used as owner: "
+msgstr ""
+
+#. Linking/unlinking to Chef server
+#: ../controller/ConnectWithGecosCCController.py:290
+#: ../view/GecosCCSetupProcessView.py:86
+msgid "Link to Chef"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:291
+msgid "Register in GECOS CC"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:356
+#: ../controller/ConnectWithGecosCCController.py:541
+msgid "Error saving validation certificate"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:357
+#: ../controller/ConnectWithGecosCCController.py:542
+msgid "There was an error while saving validation certificate"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:402
+#: ../controller/ConnectWithGecosCCController.py:438
+msgid "Error linking to Chef"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:403
+#: ../controller/ConnectWithGecosCCController.py:582
+msgid "Can't create/modify /etc/chef/client.rb file"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:415
+#: ../controller/ConnectWithGecosCCController.py:581
+#: ../controller/ConnectWithGecosCCController.py:619
+#: ../controller/ConnectWithGecosCCController.py:629
+#: ../controller/ConnectWithGecosCCController.py:639
+#: ../controller/ConnectWithGecosCCController.py:650
+#: ../controller/ConnectWithGecosCCController.py:660
+#: ../controller/ConnectWithGecosCCController.py:669
+msgid "Error unlinking from Chef"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:416
+msgid "Can't link to chef server"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:439
+msgid "Can't create/modify /etc/chef.control file"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:458
+msgid "Error registering from GECOS CC"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:459
+msgid "Can't register the computer in GECOS CC"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:468
+msgid "Error Registering from GECOS CC"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:469
+msgid "Can't save /etc/gcc.control file"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:490
+msgid "Unlink from Chef"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:491
+msgid "Unregister from GECOS CC"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:557
+#: ../controller/ConnectWithGecosCCController.py:685
+msgid "Error unregistering from GECOS CC"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:558
+msgid "Can't unregister the computer from GECOS CC"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:620
+msgid "Can't create/modify /etc/chef/knife.rb file"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:630
+msgid "Can't remove /etc/chef.control file"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:640
+msgid "Can't remove /etc/chef/client.pem file"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:651
+#: ../controller/ConnectWithGecosCCController.py:670
+msgid "Can't delete Chef node"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:661
+msgid "Can't remove /usr/bin/chef-client-wrapper file"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:686
+msgid "Can't remove /etc/gcc.control file"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:716
+msgid "Error getting data from GECOS CC"
+msgstr ""
+
+#: ../controller/ConnectWithGecosCCController.py:717
+msgid "Can't get OUs from GECOS Control Center"
+msgstr ""
+
+#: ../controller/LocalUserController.py:76
+#: ../controller/LocalUserController.py:84
+#: ../controller/LocalUserController.py:94
+#: ../controller/LocalUserController.py:104
+#: ../controller/LocalUserController.py:113 ../view/LocalUserElemView.py:155
+#: ../view/LocalUserElemView.py:164
+msgid "Error in user data"
+msgstr ""
+
+#: ../controller/LocalUserController.py:77
+msgid "The login field is empty!"
+msgstr ""
+
+#: ../controller/LocalUserController.py:85
+msgid "The login field contains not allowed characters!"
+msgstr ""
+
+#: ../controller/LocalUserController.py:95
+msgid "The name field is empty!"
+msgstr ""
+
+#: ../controller/LocalUserController.py:105
+msgid "The password field is empty!"
+msgstr ""
+
+#: ../controller/LocalUserController.py:114
+msgid "The password field contains not allowed characters."
+msgstr ""
+
+#: ../controller/LocalUserController.py:162
+msgid "Are you sure?"
+msgstr ""
+
+#: ../controller/LocalUserController.py:163
+msgid "Do you really want to delete this user? "
+msgstr ""
+
+#: ../controller/MainMenuController.py:85
+#: ../controller/MainMenuController.py:94
+msgid "Update GECOS Config Assistant"
+msgstr ""
+
+#: ../controller/MainMenuController.py:85
+msgid "Are you sure you want to update the GECOS Config Assistant?"
+msgstr ""
+
+#: ../controller/MainMenuController.py:88
+#: ../controller/MainMenuController.py:92
+#: ../controller/MainMenuController.py:96
+msgid "Update Error"
+msgstr ""
+
+#: ../controller/MainMenuController.py:88
+#: ../controller/MainMenuController.py:96
+msgid "An error occurred during the upgrade"
+msgstr ""
+
+#: ../controller/MainMenuController.py:92
+msgid "CGA is already at the newest version!"
+msgstr ""
+
+#: ../controller/MainMenuController.py:94
+msgid "GECOS Config Assistant has been udpated. Please restart GCA"
+msgstr ""
+
+#. Show error message
+#: ../controller/NTPServerController.py:69
+#: ../controller/NTPServerController.py:74
 msgid "Error"
 msgstr ""
 
-#: ../firstboot/pages/localUsers/__init__.py:42
-msgid "Manage local users"
+#: ../controller/NTPServerController.py:70
+#: ../controller/NTPServerController.py:75
+msgid "Error saving NTP server data."
 msgstr ""
 
-#: ../firstboot/pages/localUsers/__init__.py:88
+#: ../controller/NTPServerController.py:70
+#: ../controller/NTPServerController.py:75
+msgid "See log for more details."
+msgstr ""
+
+#: ../controller/RequirementsCheckController.py:65
+#: ../controller/RequirementsCheckController.py:72
+#: ../controller/RequirementsCheckController.py:80
+msgid "OK"
+msgstr ""
+
+#: ../controller/UserAuthenticationMethodController.py:138
+msgid "Data changed"
+msgstr ""
+
+#: ../controller/UserAuthenticationMethodController.py:138
 msgid ""
-"You can create or delete local users on thisworkstation. \n"
-"\n"
-"Users authenticated by external services (AD, LDAP...) directory do not need "
-"to be created here\n"
-"\n"
-"Check default OEM users and change its passwords if needed."
+"The user authentication data has changed.\n"
+"Do you want to setup the user authentication method using this new data?"
 msgstr ""
 
-#: ../firstboot/pages/localUsers/__init__.py:92
-msgid "Name"
+#: ../controller/UserAuthenticationMethodController.py:204
+msgid "The URI field is empty!"
 msgstr ""
 
-#: ../firstboot/pages/localUsers/__init__.py:94
-msgid "Confirm"
+#: ../controller/UserAuthenticationMethodController.py:212
+msgid "Malformed LDAP URI!"
 msgstr ""
 
-#: ../firstboot/pages/localUsers/__init__.py:95
-msgid "Groups"
+#: ../controller/UserAuthenticationMethodController.py:212
+msgid "Please check that the URI starts with 'ldap://' or 'ldaps://'."
 msgstr ""
 
-#: ../firstboot/pages/localUsers/__init__.py:96
-msgid "Add"
+#: ../controller/UserAuthenticationMethodController.py:221
+msgid "The users base DN field is empty!"
 msgstr ""
 
-#: ../firstboot/pages/localUsers/__init__.py:97
-msgid "Remove"
+#: ../controller/UserAuthenticationMethodController.py:229
+msgid "Can't connect to LDAP server!"
 msgstr ""
 
-#: ../firstboot/pages/localUsers/__init__.py:98
+#: ../controller/UserAuthenticationMethodController.py:229
+#: ../controller/UserAuthenticationMethodController.py:297
+msgid "Please check all the fields and your network connection."
+msgstr ""
+
+#: ../controller/UserAuthenticationMethodController.py:243
+msgid "The Domain field is empty!"
+msgstr ""
+
+#: ../controller/UserAuthenticationMethodController.py:258
+msgid "Can't resolv the Active Directory Domain name!"
+msgstr ""
+
+#: ../controller/UserAuthenticationMethodController.py:259
+msgid "Please check the Domain field and your DNS configuration."
+msgstr ""
+
+#: ../controller/UserAuthenticationMethodController.py:268
+msgid "The Workgroup field is empty!"
+msgstr ""
+
+#: ../controller/UserAuthenticationMethodController.py:277
+msgid "The AD administrator user field is empty!"
+msgstr ""
+
+#: ../controller/UserAuthenticationMethodController.py:287
+msgid "The AD administrator password field is empty!"
+msgstr ""
+
+#: ../controller/UserAuthenticationMethodController.py:296
+msgid "Can't connect to Active Directory server!"
+msgstr ""
+
+#: ../dao/GecosAccessDataDAO.py:172 ../dao/WorkstationDataDAO.py:183
+msgid "Error removing file:"
+msgstr ""
+
+#: ../dao/LocalUserDAO.py:119
+msgid "Error creating user: "
+msgstr ""
+
+#: ../dao/LocalUserDAO.py:131
+msgid "Error modifying user name: "
+msgstr ""
+
+#: ../dao/LocalUserDAO.py:145
+msgid "Error modifying user password: "
+msgstr ""
+
+#: ../dao/LocalUserDAO.py:169
+msgid "Error deleting user: "
+msgstr ""
+
+#: ../dao/LocalUserDAO.py:179
+msgid "Error deleting user home: "
+msgstr ""
+
+#: ../dao/NTPServerDAO.py:68 ../dao/UserAuthenticationMethodDAO.py:79
+#: ../util/PackageManager.py:131
+msgid "Package installation failed:"
+msgstr ""
+
+#: ../dao/NTPServerDAO.py:95 ../dao/UserAuthenticationMethodDAO.py:523
+#: ../dao/WorkstationDataDAO.py:81
+msgid "Error reading file:"
+msgstr ""
+
+#: ../dao/NTPServerDAO.py:99 ../dao/NTPServerDAO.py:135
+msgid "NTPServerDAO used without a proper initialization!"
+msgstr ""
+
+#: ../dao/UserAuthenticationMethodDAO.py:498
+#: ../dao/UserAuthenticationMethodDAO.py:540
+#: ../dao/UserAuthenticationMethodDAO.py:566
+msgid "UserAuthenticationMethodDAO used without a proper initialization!"
+msgstr ""
+
+#: ../dao/WorkstationDataDAO.py:133
+msgid "Error writing file:"
+msgstr ""
+
+#: ../util/JSONUtil.py:55
+msgid "Error reading file: "
+msgstr ""
+
+#: ../util/PackageManager.py:59 ../util/PackageManager.py:99
+#: ../util/PackageManager.py:137 ../util/PackageManager.py:161
+#: ../util/PackageManager.py:192 ../util/PackageManager.py:231
+msgid "No apt library available"
+msgstr ""
+
+#: ../util/PackageManager.py:79 ../util/PackageManager.py:120
+#: ../util/PackageManager.py:183 ../util/PackageManager.py:214
+msgid "Package not found:"
+msgstr ""
+
+#: ../util/PackageManager.py:81
+msgid "Package not installed:"
+msgstr ""
+
+#: ../util/PackageManager.py:83
+msgid "Package not upgradable:"
+msgstr ""
+
+#: ../util/PackageManager.py:93
+msgid "Package upgrade failed:"
+msgstr ""
+
+#. TODO: Yum version?
+#: ../util/PackageManager.py:104
+msgid "Package upgrade failed!"
+msgstr ""
+
+#: ../util/PackageManager.py:122
+msgid "Package already installed:"
+msgstr ""
+
+#. TODO: Yum version?
+#: ../util/PackageManager.py:142
+msgid "Package installation failed!"
+msgstr ""
+
+#: ../util/PackageManager.py:155
+msgid "Package update failed!"
+msgstr ""
+
+#. TODO: Yum version?
+#: ../util/PackageManager.py:166
+msgid "Package cache update failed!"
+msgstr ""
+
+#: ../util/PackageManager.py:185 ../util/PackageManager.py:216
+msgid "Package is not installed:"
+msgstr ""
+
+#: ../util/PackageManager.py:225
+msgid "Package removal failed:"
+msgstr ""
+
+#. TODO: Yum version?
+#: ../util/PackageManager.py:236
+msgid "Package removal failed!"
+msgstr ""
+
+#: ../util/Template.py:132
+msgid "Error saving template:"
+msgstr ""
+
+#: ../view/ADSetupDataElemView.py:66
+msgid "Active Directory credentials needed"
+msgstr ""
+
+#. Explanation
+#: ../view/ADSetupDataElemView.py:79
+msgid "To setup or remove the Active Directory authentication method you"
+msgstr ""
+
+#: ../view/ADSetupDataElemView.py:82
+msgid "have to specify an AD administrator user and password:"
+msgstr ""
+
+#. Domain
+#: ../view/ADSetupDataElemView.py:87 ../view/SystemStatusElemView.py:138
+#: ../view/UserAuthenticationMethodElemView.py:138
+msgid "Domain:"
+msgstr ""
+
+#. Workgroup
+#: ../view/ADSetupDataElemView.py:94 ../view/SystemStatusElemView.py:139
+#: ../view/UserAuthenticationMethodElemView.py:145
+msgid "Workgroup:"
+msgstr ""
+
+#. User
+#. Gecos CC user
+#. User
+#: ../view/ADSetupDataElemView.py:101 ../view/AutoSetupDialog.py:95
+#: ../view/ConnectWithGecosCCDialog.py:132
+#: ../view/UserAuthenticationMethodElemView.py:152
+msgid "User:"
+msgstr ""
+
+#. Password
+#. Gecos CC password
+#. Password
+#: ../view/ADSetupDataElemView.py:111 ../view/AutoSetupDialog.py:105
+#: ../view/ConnectWithGecosCCDialog.py:142 ../view/LocalUserElemView.py:98
+#: ../view/UserAuthenticationMethodElemView.py:161
+msgid "Password:"
+msgstr ""
+
+#. Cancel button
+#: ../view/ADSetupDataElemView.py:122 ../view/AutoSetupDialog.py:120
+#: ../view/ChefValidationCertificateDialog.py:91
+#: ../view/LocalUserElemView.py:116
 msgid "Cancel"
 msgstr ""
 
-#: ../firstboot/pages/localUsers/__init__.py:114
-msgid "User"
+#. Accept button
+#. Cancel button
+#. Accept button
+#: ../view/ADSetupDataElemView.py:127 ../view/AutoSetupProcessView.py:87
+#: ../view/ChefValidationCertificateDialog.py:96
+#: ../view/ConnectWithGecosCCDialog.py:190
+#: ../view/GecosCCSetupProcessView.py:110 ../view/LocalUserElemView.py:121
+#: ../view/LocalUserListView.py:129 ../view/NetworkInterfaceListView.py:118
+#: ../view/NTPServerElemView.py:103 ../view/RequirementsCheckDialog.py:99
+#: ../view/SystemStatusElemView.py:84
+#: ../view/UserAuthenticationMethodElemView.py:112
+msgid "Accept"
 msgstr ""
 
-#: ../firstboot/pages/localUsers/__init__.py:304
-msgid "Duplicated user"
+#: ../view/ADSetupDataElemView.py:164
+msgid "Active Directory connection error"
 msgstr ""
 
-#: ../firstboot/pages/localUsers/__init__.py:376
-msgid "User login is empty or contains invalid characters."
-msgstr ""
-
-#: ../firstboot/pages/localUsers/__init__.py:380
-msgid "User password can not be empty."
-msgstr ""
-
-#: ../firstboot/pages/localUsers/__init__.py:384
-msgid "Passwords do not match."
-msgstr ""
-
-#: ../firstboot/pages/pcLabel/__init__.py:37
-#: ../firstboot/pages/pcLabel/__init__.py:64
-msgid "Workstation Name"
-msgstr ""
-
-#: ../firstboot/pages/pcLabel/__init__.py:60
+#: ../view/ADSetupDataElemView.py:165
 msgid ""
-"Workstation name. This text doesn't need to be unique, and you can use "
-"spaces or symbols. \n"
-"You will find this description in your GECOS server reports later."
+"Can't connect to Active Directory.\n"
+"Please double-check all the fields"
 msgstr ""
 
-#: ../firstboot/pages/pcLabel/__init__.py:70
-msgid "PC label has been updated correctly."
+#: ../view/AutoSetupDialog.py:64
+msgid "Auto setup"
 msgstr ""
 
-#: ../firstboot/pages/dateSync/__init__.py:41
-msgid "Date/Time Synchronization"
+#. Explanation
+#: ../view/AutoSetupDialog.py:77
+msgid "Some of the setup parameters can be filled automatically"
 msgstr ""
 
-#: ../firstboot/pages/dateSync/__init__.py:62
-msgid ""
-"Workstations and server time must be synchronized.\n"
-"Please, provide the name or IP address of a valid Network Time Protocol "
-"server."
+#: ../view/AutoSetupDialog.py:80
+msgid "if you have a setup file in your GECOS server."
 msgstr ""
 
-#: ../firstboot/pages/dateSync/__init__.py:66
-msgid "NTP Server"
+#. Gecos CC URL
+#: ../view/AutoSetupDialog.py:85 ../view/ConnectWithGecosCCDialog.py:122
+msgid "GECOS Control Center URL:"
 msgstr ""
 
-#: ../firstboot/pages/dateSync/__init__.py:115
-msgid "Incorrect value for NTP Server"
+#. Setup Gecos CC
+#. Setup button
+#: ../view/AutoSetupDialog.py:115 ../view/RequirementsCheckDialog.py:71
+#: ../view/RequirementsCheckDialog.py:83 ../view/RequirementsCheckDialog.py:95
+#: ../view/UserAuthenticationMethodElemView.py:107
+msgid "Setup"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:69
-msgid "These parameters are required in order to join a Control Center:"
+#: ../view/AutoSetupProcessView.py:52
+msgid "Auto setup process"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:72
-msgid ""
-"\"Control Center URL\": an existant URL in your server where GECOS Control "
-"Center is installed."
+#. Auto setup data load
+#: ../view/AutoSetupProcessView.py:65
+msgid "Auto setup data load:"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:73
-msgid ""
-"\"Username\": User with administrative privilees (This will not be "
-"workstation user)"
+#: ../view/AutoSetupProcessView.py:68 ../view/AutoSetupProcessView.py:76
+#: ../view/AutoSetupProcessView.py:83 ../view/GecosCCSetupProcessView.py:68
+#: ../view/GecosCCSetupProcessView.py:75 ../view/GecosCCSetupProcessView.py:82
+#: ../view/GecosCCSetupProcessView.py:89 ../view/GecosCCSetupProcessView.py:96
+#: ../view/GecosCCSetupProcessView.py:103
+#: ../view/RequirementsCheckDialog.py:68 ../view/RequirementsCheckDialog.py:80
+#: ../view/RequirementsCheckDialog.py:92
+msgid "PENDING"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:75
-msgid "Control Center Username"
+#. NTP server setup
+#: ../view/AutoSetupProcessView.py:73
+msgid "NTP server setup:"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:77
-msgid "Link to an existing workstation?"
+#. User authentication method setup
+#: ../view/AutoSetupProcessView.py:80
+msgid "User authentication method setup:"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:93
-#: ../firstboot/serverconf/__init__.py:791
-msgid "Select OU"
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:93
-msgid "Select the OU to link into GCC Ui"
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:101
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:148
+#: ../view/ChefValidationCertificateDialog.py:66
 msgid "Url Chef Certificate Required"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:101
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:148
+#. Explanation
+#: ../view/ChefValidationCertificateDialog.py:79
 msgid ""
 "You need to enter url with certificate file\n"
 " in protocol://domain/resource format"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:105
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:152
-msgid "Can not download pem file"
+#. Certificate URL
+#: ../view/ChefValidationCertificateDialog.py:83
+msgid "Certificate URL:"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:138
-#: ../firstboot/serverconf/__init__.py:740
-msgid "Select Workstation"
+#: ../view/ChefValidationCertificateDialog.py:121
+msgid "URL connection error"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:138
-msgid "Select a workstation to link"
+#: ../view/ChefValidationCertificateDialog.py:122
+msgid "Can't get certificate file from this URL"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:140
-msgid "You need selected a workstation"
+#: ../view/ConnectWithGecosCCDialog.py:76
+msgid "Connect with GECOS Control Center"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:186
-msgid "Chef URL must be valid URL and need certificate"
+#: ../view/ConnectWithGecosCCDialog.py:92
+msgid "Workstation name"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:190
-msgid "Some GCC attributes are incorrect or blank"
+#: ../view/ConnectWithGecosCCDialog.py:97
+msgid "Workstation name must be unique. Spaces and symbols may be used."
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/__init__.py:42
-msgid "Link workstation to GECOS Control Center"
+#: ../view/ConnectWithGecosCCDialog.py:101
+msgid "This description apperars in the GECOS control center reports."
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/__init__.py:80
-msgid ""
-"When a workstation is linked to a Control Center can be easily managed "
-"remotely.\n"
-"\n"
+#. Workstation name field
+#: ../view/ConnectWithGecosCCDialog.py:105
+msgid "Workstation name:"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/__init__.py:84
-msgid "Unlink from Control Center"
+#: ../view/ConnectWithGecosCCDialog.py:118
+msgid "GECOS Control Center Connection parameters"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/__init__.py:85
-msgid "Link to Control Center server?"
+#: ../view/ConnectWithGecosCCDialog.py:155
+msgid "Select OU to connect to GECOS Control Center"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/__init__.py:86
-#: ../firstboot/pages/linkToChef/__init__.py:94
-msgid "Unlink Locally"
+#. Search filter
+#: ../view/ConnectWithGecosCCDialog.py:159
+msgid "Search filter:"
 msgstr ""
 
-#: ../firstboot/pages/linkToChef/__init__.py:94
-msgid "Are you sure to unlink locally this workstation?"
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/__init__.py:103
-msgid "Unlink Error"
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/__init__.py:103
-msgid "An error occurred during the locally unlink"
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/__init__.py:185
-msgid "Error in user and password"
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:60
-msgid ""
-"You must provide an unique valid short name for the workstation. Only ASCII "
-"letters, numbers and the hyphen (-) are allowed."
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:64
-msgid "Hostname"
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:85
-msgid "This name is already used."
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:102
-msgid "Host name can not be empty."
-msgstr ""
-
-#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:106
-msgid "This name already exists in your organization."
-msgstr ""
-
-#: ../firstboot/__init__.py:42
-msgid "Show debug messages (-vv debugs firstboot_lib also)"
-msgstr ""
-
-#: ../firstboot/__init__.py:46
-msgid "Debug mode. Force run the application after the first start"
-msgstr ""
-
-#: ../firstboot/__init__.py:50
-msgid "Use this URL by default in the \"Link to Server\" page."
-msgstr ""
-
-#: ../firstboot/serverconf/__init__.py:86
-msgid "You need to enter your GCC credentials to restoring the Workstation."
-msgstr ""
-
-#: ../firstboot/serverconf/__init__.py:89
-msgid "You need to enter your credentials to access the requested resource."
-msgstr ""
-
-#: ../firstboot/serverconf/__init__.py:98
-#: ../firstboot/serverconf/__init__.py:670
-#: ../firstboot/serverconf/__init__.py:709
-msgid "Authentication is failed."
-msgstr ""
-
-#: ../firstboot/serverconf/__init__.py:320
-msgid ""
-"The Date/Time Syncronization parameters are incorrect, please got to Date/"
-"Time section or review your autconf file"
-msgstr ""
-
-#: ../firstboot/serverconf/__init__.py:323
-msgid ""
-"The GCC parameters are incorrect, please got to GCC section or review your "
-"autconf file"
-msgstr ""
-
-#: ../firstboot/serverconf/__init__.py:326
-msgid ""
-"The Chef parameters are incorrect, please got to GCC section or review your "
-"autconf file"
-msgstr ""
-
-#: ../firstboot/serverconf/__init__.py:329
-msgid "The Local Users parameters are incorrect, please go to Users section"
-msgstr ""
-
-#: ../firstboot/serverconf/__init__.py:335
-msgid ""
-"The authentication parameters are incorrect, please go to Authentication "
-"section or review your autconf file"
-msgstr ""
-
-#: ../firstboot/serverconf/__init__.py:338
-#: ../firstboot/serverconf/__init__.py:407
-#: ../firstboot/serverconf/__init__.py:455
-#: ../firstboot/serverconf/__init__.py:458
-msgid "Configuration Error"
-msgstr ""
-
-#: ../firstboot/serverconf/__init__.py:346
-msgid ""
-"Configuring the client to link with Gecos Control Center, this may take "
-"several minutes.\n"
-"Please wait a moment"
-msgstr ""
-
-#: ../firstboot/serverconf/__init__.py:354
-msgid ""
-"Configuring the client to link authentication method, this may take several "
-"minutes.\n"
-"Please wait a moment"
-msgstr ""
-
-#: ../firstboot/serverconf/__init__.py:369
-msgid "Configuring the client"
-msgstr ""
-
-#: ../firstboot/serverconf/__init__.py:403
-msgid "The client has been configured"
-msgstr ""
-
-#: ../firstboot/serverconf/__init__.py:406
-msgid "An error has ocurred running chef-solo"
-msgstr ""
-
-#: ../firstboot/serverconf/__init__.py:454
-msgid "No connection to the server. It will unlink locally"
-msgstr ""
-
-#: ../firstboot/serverconf/__init__.py:515
-msgid "Restoring authentication configuration"
-msgstr ""
-
-#: ../firstboot/serverconf/__init__.py:535
-msgid "Unlink from GCC"
-msgstr ""
-
-#: ../firstboot/serverconf/__init__.py:560
-msgid "Unlink from Server"
-msgstr ""
-
-#: ../firstboot/serverconf/__init__.py:593
-msgid "Url Certificate"
-msgstr ""
-
-#: ../firstboot/serverconf/__init__.py:622
-msgid "OU Name"
-msgstr ""
-
-#: ../firstboot/serverconf/__init__.py:735
-#: ../firstboot/serverconf/__init__.py:786
-msgid "Pattern search"
-msgstr ""
-
-#: ../firstboot/serverconf/__init__.py:810
+#: ../view/ConnectWithGecosCCDialog.py:167
 msgid "Search"
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:881
-msgid "GCC Password"
+#. Select OU
+#: ../view/ConnectWithGecosCCDialog.py:172
+msgid "Select OU:"
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:885
-msgid "Please insert GCC password for user "
+#. Connect/disconnect to Gecos CC
+#: ../view/ConnectWithGecosCCDialog.py:185
+#: ../view/ConnectWithGecosCCDialog.py:228
+msgid "Connect to GECOS CC"
 msgstr ""
 
-#: ../firstboot/serverconf/__init__.py:933
-msgid "user"
+#: ../view/ConnectWithGecosCCDialog.py:209
+msgid "Disconnect from GECOS CC"
+msgstr ""
+
+#: ../view/GecosCCSetupProcessView.py:52
+msgid "GECOS CC connection process"
+msgstr ""
+
+#. Checking GECOS credentials
+#: ../view/GecosCCSetupProcessView.py:65
+msgid "Check GECOS credentials"
+msgstr ""
+
+#. Checking workstation data
+#: ../view/GecosCCSetupProcessView.py:72
+msgid "Check workstation data"
+msgstr ""
+
+#. Obtaining Chef validation certificate
+#: ../view/GecosCCSetupProcessView.py:79
+msgid "Get chef certificate"
+msgstr ""
+
+#. Registering computer in GECOS CC
+#: ../view/GecosCCSetupProcessView.py:93
+msgid "Register in GECOS"
+msgstr ""
+
+#. Removing old configuration files
+#: ../view/GecosCCSetupProcessView.py:100
+msgid "Clean setup data"
+msgstr ""
+
+#: ../view/LocalUserElemView.py:65 ../view/LocalUserElemView.py:141
+msgid "Add local user"
+msgstr ""
+
+#. Name
+#: ../view/LocalUserElemView.py:79
+msgid "Name:"
+msgstr ""
+
+#. Login
+#: ../view/LocalUserElemView.py:88 ../view/SystemStatusElemView.py:122
+msgid "Login:"
+msgstr ""
+
+#. Password confirmation
+#: ../view/LocalUserElemView.py:107
+msgid "Confirm:"
+msgstr ""
+
+#: ../view/LocalUserElemView.py:133
+msgid "Modifiy local user"
+msgstr ""
+
+#: ../view/LocalUserElemView.py:156
+msgid "The password confirmation field is empty!"
+msgstr ""
+
+#: ../view/LocalUserElemView.py:165
+msgid "The password confirmation is different from password"
+msgstr ""
+
+#: ../view/LocalUserListView.py:63
+msgid "Manage local users"
+msgstr ""
+
+#. Explanation
+#: ../view/LocalUserListView.py:76
+msgid "You can create, update or delete local users in this workstation."
+msgstr ""
+
+#: ../view/LocalUserListView.py:79
+msgid ""
+"It isn't necessary to create here the users that are authenticated by "
+"external services (LDAP, AD, ...)"
+msgstr ""
+
+#: ../view/LocalUserListView.py:85
+msgid "Please check default OEM users and change their passwords when needed:"
+msgstr ""
+
+#: ../view/LocalUserListView.py:93
+msgid "Login"
+msgstr ""
+
+#: ../view/LocalUserListView.py:94
+msgid "Name"
+msgstr ""
+
+#. New user button
+#: ../view/LocalUserListView.py:113
+msgid "New"
+msgstr ""
+
+#. Update user button
+#: ../view/LocalUserListView.py:118
+msgid "Update"
+msgstr ""
+
+#. Delete user button
+#: ../view/LocalUserListView.py:123
+msgid "Delete"
+msgstr ""
+
+#: ../view/MainMenuDialog.py:51
+msgid "GECOS config assistant"
+msgstr ""
+
+#: ../view/MainMenuDialog.py:63
+msgid "Check setup requirements"
+msgstr ""
+
+#: ../view/MainMenuDialog.py:67
+msgid "Connect / disconnect to GECOS Control Center"
+msgstr ""
+
+#: ../view/MainMenuDialog.py:71
+msgid "Setup user authentication method"
+msgstr ""
+
+#: ../view/MainMenuDialog.py:75
+msgid "Software manager"
+msgstr ""
+
+#: ../view/MainMenuDialog.py:79
+msgid "Local user manager"
+msgstr ""
+
+#: ../view/MainMenuDialog.py:83
+msgid "Update this assistant"
+msgstr ""
+
+#: ../view/MainMenuDialog.py:88
+msgid "View status"
+msgstr ""
+
+#: ../view/MainMenuDialog.py:92
+msgid "Close"
+msgstr ""
+
+#: ../view/MainMenuDialog.py:106
+msgid "Quit"
+msgstr ""
+
+#: ../view/MainMenuDialog.py:106
+msgid "Do you want to quit?"
+msgstr ""
+
+#: ../view/NetworkInterfaceListView.py:63
+msgid "Network setup"
+msgstr ""
+
+#. Explanation
+#: ../view/NetworkInterfaceListView.py:76
+msgid "This workstations needs a network connection to authenticate"
+msgstr ""
+
+#: ../view/NetworkInterfaceListView.py:79
+msgid "the users, link with the GECOS server and install software"
+msgstr ""
+
+#: ../view/NetworkInterfaceListView.py:85
+msgid "Available network connections are:"
+msgstr ""
+
+#: ../view/NetworkInterfaceListView.py:93
+msgid "Interface"
+msgstr ""
+
+#: ../view/NetworkInterfaceListView.py:94
+msgid "IP"
+msgstr ""
+
+#. Setup network interface button
+#: ../view/NetworkInterfaceListView.py:113
+msgid "Setup network interface"
+msgstr ""
+
+#: ../view/NTPServerElemView.py:66
+msgid "Time synchronization"
+msgstr ""
+
+#. Explanation
+#: ../view/NTPServerElemView.py:79
+msgid "A precise time is mandatory to coordinate some services"
+msgstr ""
+
+#: ../view/NTPServerElemView.py:82
+msgid "Please set your NTP server address:"
+msgstr ""
+
+#. NTP server address
+#: ../view/NTPServerElemView.py:87
+msgid "NTP server:"
+msgstr ""
+
+#. Setup network interface button
+#: ../view/NTPServerElemView.py:98
+msgid "Test"
+msgstr ""
+
+#: ../view/NTPServerElemView.py:140
+msgid "Can't synchronize time"
+msgstr ""
+
+#: ../view/NTPServerElemView.py:141
+msgid ""
+"Can't connect with NTP server.\n"
+"Please double-check the NTP server address"
+msgstr ""
+
+#: ../view/NTPServerElemView.py:144
+msgid "Success"
+msgstr ""
+
+#: ../view/NTPServerElemView.py:145
+msgid "NTP server connection successful"
+msgstr ""
+
+#: ../view/RequirementsCheckDialog.py:52
+msgid "Check basic setup requirements"
+msgstr ""
+
+#. Network interfaces
+#: ../view/RequirementsCheckDialog.py:65
+msgid "The system is connected to a network"
+msgstr ""
+
+#. Auto setup
+#: ../view/RequirementsCheckDialog.py:77
+msgid "The system has obtained automatic setup parameters from a GECOS server"
+msgstr ""
+
+#. NTP Server
+#: ../view/RequirementsCheckDialog.py:89
+msgid "The system has synchronized the time with a NTP server"
+msgstr ""
+
+#: ../view/SystemStatusElemView.py:66
+msgid "System status"
+msgstr ""
+
+#: ../view/SystemStatusElemView.py:97 ../view/SystemStatusElemView.py:99
+msgid "Assistant version: "
+msgstr ""
+
+#: ../view/SystemStatusElemView.py:99
+msgid "UNKNOWN VERSION"
+msgstr ""
+
+#: ../view/SystemStatusElemView.py:104
+msgid "Workstation name: "
+msgstr ""
+
+#: ../view/SystemStatusElemView.py:109
+msgid "Time server: "
+msgstr ""
+
+#: ../view/SystemStatusElemView.py:112
+msgid "Network interfaces: "
+msgstr ""
+
+#: ../view/SystemStatusElemView.py:118
+msgid "GECOS Control Center connection data: "
+msgstr ""
+
+#: ../view/SystemStatusElemView.py:121
+msgid "Server URL:"
+msgstr ""
+
+#: ../view/SystemStatusElemView.py:125
+msgid "Local users: "
+msgstr ""
+
+#: ../view/SystemStatusElemView.py:132
+msgid "User authentication method: "
+msgstr ""
+
+#: ../view/SystemStatusElemView.py:135
+msgid "Method:"
+msgstr ""
+
+#: ../view/SystemStatusElemView.py:142
+msgid "Server URI:"
+msgstr ""
+
+#. Users base DN
+#: ../view/SystemStatusElemView.py:143
+#: ../view/UserAuthenticationMethodElemView.py:217
+msgid "Users base DN:"
+msgstr ""
+
+#: ../view/SystemStatusElemView.py:144
+msgid "Groups base DN:"
+msgstr ""
+
+#: ../view/SystemStatusElemView.py:149
+msgid "No status data!"
+msgstr ""
+
+#: ../view/UserAuthenticationMethodElemView.py:70
+msgid "User authentication method"
+msgstr ""
+
+#. Explanation
+#: ../view/UserAuthenticationMethodElemView.py:83
+msgid "The users of this workstation may authenticate by using"
+msgstr ""
+
+#: ../view/UserAuthenticationMethodElemView.py:86
+msgid "an external system like LDAP or Microsoft Active Directory."
+msgstr ""
+
+#: ../view/UserAuthenticationMethodElemView.py:89
+msgid "Also, they can be authenticated by using local users of this O.S."
+msgstr ""
+
+#. Authentication Type
+#: ../view/UserAuthenticationMethodElemView.py:93
+msgid "Authentication type:"
+msgstr ""
+
+#. Options frame
+#: ../view/UserAuthenticationMethodElemView.py:123
+msgid "Active Directory authentication"
+msgstr ""
+
+#: ../view/UserAuthenticationMethodElemView.py:134
+msgid ""
+"Please fill the data to setup the Active Directory authentication method."
+msgstr ""
+
+#. Options frame
+#: ../view/UserAuthenticationMethodElemView.py:194
+msgid "LDAP authentication"
+msgstr ""
+
+#: ../view/UserAuthenticationMethodElemView.py:205
+msgid "Please fill the data to setup the LDAP authentication method."
+msgstr ""
+
+#. URI
+#: ../view/UserAuthenticationMethodElemView.py:210
+msgid "LDAP server URI:"
+msgstr ""
+
+#. Groups base DN
+#: ../view/UserAuthenticationMethodElemView.py:224
+msgid "Groups base DN (optional):"
+msgstr ""
+
+#. Bind user DN
+#: ../view/UserAuthenticationMethodElemView.py:231
+msgid "Bind user DN (optional):"
+msgstr ""
+
+#. Bind user password
+#: ../view/UserAuthenticationMethodElemView.py:239
+msgid "Bind user password (optional):"
+msgstr ""
+
+#. Options frame
+#: ../view/UserAuthenticationMethodElemView.py:274
+msgid "Local users authentication"
+msgstr ""
+
+#: ../view/UserAuthenticationMethodElemView.py:285
+msgid ""
+"There is no necessary data to setup the local users authentication method."
 msgstr ""

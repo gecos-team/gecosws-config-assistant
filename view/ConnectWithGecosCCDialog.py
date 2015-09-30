@@ -119,7 +119,7 @@ class ConnectWithGecosCCDialog(Toplevel):
 
 
         # Gecos CC URL
-        gecosCCurlLabel = Label(gecosCCCredentialsFrame, text=_("Gecos Control Center URL:"))
+        gecosCCurlLabel = Label(gecosCCCredentialsFrame, text=_("GECOS Control Center URL:"))
         gecosCCurlLabel.grid(column=0, row=1, sticky=E+W, padx=padding_x, pady=padding_y)
         
         self.gecosCCurlEntry = Entry(gecosCCCredentialsFrame)

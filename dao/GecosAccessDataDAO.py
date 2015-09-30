@@ -33,6 +33,9 @@ import socket
 import fcntl
 import struct
 
+from firstboot_lib.firstbootconfig import get_data_file
+
+
 import gettext
 from gettext import gettext as _
 gettext.textdomain('gecosws-config-assistant')
@@ -74,8 +77,8 @@ class GecosAccessDataDAO(object):
         json_data = jsonUtil.loadJSONFromFile(self.data_file)
         if json_data is not None:
             
-            data.set_login(json_data['gcc_username'])
-            data.set_url(json_data['uri_gcc'])
+            data.set_login(json_data['gcc_username'].encode('utf-8'))
+            data.set_url(json_data['uri_gcc'].encode('utf-8'))
             
             # Password is not stored!
             data.set_password(None)
@@ -133,7 +136,7 @@ class GecosAccessDataDAO(object):
                     
         # Save data to data file
         template = Template()
-        template.source = 'templates/gcc.control'
+        template.source = get_data_file('templates/gcc.control')
         template.destination = self.data_file
         template.owner = 'root'
         template.group = 'root'

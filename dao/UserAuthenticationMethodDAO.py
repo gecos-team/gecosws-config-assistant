@@ -34,6 +34,9 @@ import traceback
 import subprocess
 import os
 
+from firstboot_lib.firstbootconfig import get_data_file
+
+
 import gettext
 from gettext import gettext as _
 gettext.textdomain('gecosws-config-assistant')
@@ -136,7 +139,7 @@ class UserAuthenticationMethodDAO(object):
         self.logger.debug('Save /etc/sssd/sssd.conf file')
         # Save /etc/samba/sssd.conf file
         template = Template()
-        template.source = 'templates/sssd.conf.ldap'
+        template.source = get_data_file('templates/sssd.conf.ldap')
         template.destination = self.main_data_file
         template.owner = 'root'
         template.group = 'root'
@@ -175,7 +178,7 @@ class UserAuthenticationMethodDAO(object):
         self.logger.debug('Save /usr/share/pam-configs/my_mkhomedir file')
         # Save /usr/share/pam-configs/my_mkhomedir file
         template = Template()
-        template.source = 'templates/my_mkhomedir'
+        template.source = get_data_file('templates/my_mkhomedir')
         template.destination = '/usr/share/pam-configs/my_mkhomedir'
         template.owner = 'root'
         template.group = 'root'
@@ -202,7 +205,7 @@ class UserAuthenticationMethodDAO(object):
         self.logger.debug('Save /etc/gca-sssd.control file')
         # Save /etc/gca-sssd.control file
         template = Template()
-        template.source = 'templates/gca-sssd.control'
+        template.source = get_data_file('templates/gca-sssd.control')
         template.destination = '/etc/gca-sssd.control'
         template.owner = 'root'
         template.group = 'root'
@@ -223,7 +226,7 @@ class UserAuthenticationMethodDAO(object):
         self.logger.debug('Save /etc/sssd/sssd.conf file')
         # Save /etc/samba/sssd.conf file
         template = Template()
-        template.source = 'templates/sssd.conf.local'
+        template.source = get_data_file('templates/sssd.conf.local')
         template.destination = self.main_data_file
         template.owner = 'root'
         template.group = 'root'
@@ -260,21 +263,23 @@ class UserAuthenticationMethodDAO(object):
         
         # Get domain from /etc/sssd/sssd.conf
         domain = None
-        with open(self.main_data_file) as fp:
-            for line in fp:
-                if line.strip().startswith('domains'):
-                    parts = line.split('=')
-                    domain = parts[1].strip()
-                    break        
+        if os.path.isfile(self.main_data_file):
+            with open(self.main_data_file) as fp:
+                for line in fp:
+                    if line.strip().startswith('domains'):
+                        parts = line.split('=')
+                        domain = parts[1].strip()
+                        break        
         
         # Get workgroup from /etc/samba/smb.conf
         workgroup = None
-        with open(self.samba_conf_file) as fp:
-            for line in fp:
-                if line.strip().startswith('workgroup'):
-                    parts = line.split('=')
-                    workgroup = parts[1].strip()
-                    break          
+        if os.path.isfile(self.samba_conf_file):
+            with open(self.samba_conf_file) as fp:
+                for line in fp:
+                    if line.strip().startswith('workgroup'):
+                        parts = line.split('=')
+                        workgroup = parts[1].strip()
+                        break          
         
         if domain is None:
             self.logger.error('Can not find Active Directory domain name in configuration files!')
@@ -314,7 +319,7 @@ class UserAuthenticationMethodDAO(object):
         self.logger.debug('Save /etc/samba/smb.conf file')
         # Save /etc/samba/smb.conf file
         template = Template()
-        template.source = 'templates/smb.conf'
+        template.source = get_data_file('templates/smb.conf')
         template.destination = self.samba_conf_file
         template.owner = 'root'
         template.group = 'root'
@@ -330,7 +335,7 @@ class UserAuthenticationMethodDAO(object):
         self.logger.debug('Save /etc/krb5.conf file')
         # Save /etc/krb5.conf file
         template = Template()
-        template.source = 'templates/krb5.conf'
+        template.source = get_data_file('templates/krb5.conf')
         template.destination = self.krb_conf_file
         template.owner = 'root'
         template.group = 'root'
@@ -359,7 +364,7 @@ class UserAuthenticationMethodDAO(object):
         self.logger.debug('Save /etc/sssd/sssd.conf file')
         # Save /etc/samba/sssd.conf file
         template = Template()
-        template.source = 'templates/sssd.conf.ad'
+        template.source = get_data_file('templates/sssd.conf.ad')
         template.destination = self.main_data_file
         template.owner = 'root'
         template.group = 'root'
@@ -385,7 +390,7 @@ class UserAuthenticationMethodDAO(object):
         self.logger.debug('Save /usr/share/pam-configs/my_mkhomedir file')
         # Save /usr/share/pam-configs/my_mkhomedir file
         template = Template()
-        template.source = 'templates/my_mkhomedir'
+        template.source = get_data_file('templates/my_mkhomedir')
         template.destination = '/usr/share/pam-configs/my_mkhomedir'
         template.owner = 'root'
         template.group = 'root'
@@ -412,7 +417,7 @@ class UserAuthenticationMethodDAO(object):
         self.logger.debug('Save /etc/gca-sssd.control file')
         # Save /etc/gca-sssd.control file
         template = Template()
-        template.source = 'templates/gca-sssd.control'
+        template.source = get_data_file('templates/gca-sssd.control')
         template.destination = '/etc/gca-sssd.control'
         template.owner = 'root'
         template.group = 'root'
@@ -456,7 +461,7 @@ class UserAuthenticationMethodDAO(object):
         self.logger.debug('Save /etc/sssd/sssd.conf file')
         # Save /etc/samba/sssd.conf file
         template = Template()
-        template.source = 'templates/sssd.conf.local'
+        template.source = get_data_file('templates/sssd.conf.local')
         template.destination = self.main_data_file
         template.owner = 'root'
         template.group = 'root'

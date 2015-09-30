@@ -37,7 +37,7 @@ class LocalUserDAOTest(unittest.TestCase):
     def runTest(self):
         dao = LocalUserDAO()
         
-        test_user_name = 'Test user'
+        test_user_name = u'Test user áéíóúüñ'
         test_user_login = 'tstuser'
         test_user_pass = 'tstuserpwd'
         
