@@ -196,8 +196,12 @@ class ConnectWithGecosCCController(object):
         
         return True
     
+    
     def _save_secure_file(self, filename, filecontent):
         try:
+            # Check if directory exists
+            Template().check_directory_strutcture(os.path.dirname(filename))
+            
             # Create empty file
             fd = open(filename, 'w')
             fd.truncate()

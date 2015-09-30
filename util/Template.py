@@ -50,12 +50,30 @@ class Template(object):
         self.mode = None
         self.variables = {}
         
+    def check_directory_strutcture(self, dirname):
+        if dirname is None:
+            return
+        
+        if os.path.isdir(dirname):
+            return
+        
+        # Check if base directory exists
+        base =  os.path.dirname(dirname)
+        self.check_directory_strutcture(base)
+        
+        # Create directory
+        os.mkdir(dirname, 0755)
+        
+        
+        
 
     def save(self):
         if self.source is None:
             raise ValueError('source is None')
         if self.destination is None:
             raise ValueError('destination is None')
+        
+        self.check_directory_strutcture(os.path.dirname(self.destination))
         
         try:
             contents = ''

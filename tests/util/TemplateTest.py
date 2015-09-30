@@ -45,7 +45,7 @@ class TemplateTest(unittest.TestCase):
     def runTest(self):
         template = Template()
         template.source = 'tests/test.tmpl'
-        template.destination = '/tmp/test.file'
+        template.destination = '/tmp/test1/test2/test3/test.file'
         template.owner = 'root'
         template.group = 'root'
         template.mode = 00644
@@ -98,4 +98,7 @@ class TemplateTest(unittest.TestCase):
         self.assertEqual(current_usr, template.owner)     
         self.assertEqual(current_grp, template.group)     
         
-
+        os.remove('/tmp/test1/test2/test3/test.file')
+        os.rmdir('/tmp/test1/test2/test3')
+        os.rmdir('/tmp/test1/test2')
+        os.rmdir('/tmp/test1')
