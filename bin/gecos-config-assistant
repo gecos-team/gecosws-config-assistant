@@ -52,7 +52,6 @@ if python_path:
     os.putenv('PYTHONPATH', "%s:%s" % (os.getenv('PYTHONPATH', ''), ':'.join(python_path))) # for subprocesses
 
 from firstboot_lib.firstbootconfig import get_prefix
-from util.PackageManager import PackageManager
 
 if get_prefix() == '/usr/local':
     gettext.bindtextdomain('gecosws-config-assistant', '/usr/local/share/locale')
@@ -86,26 +85,6 @@ if __name__ == '__main__':
     #    fix_psmouse()
     logging.basicConfig(filename='/tmp/gecos-config-assistant.log', level=logging.DEBUG)  
    
-    # Check if 'python-tk' package exists
-    pm = PackageManager()
-    if not pm.is_package_installed('python-tk'):
-        # Try to install the package
-        try:
-            pm.install_package('python-tk')
-        except Exception:
-            print 'Package installation failed:', 'python-tk'
-            print str(traceback.format_exc())
-
-    # Check if 'python-ldap' package exists
-    pm = PackageManager()
-    if not pm.is_package_installed('python-ldap'):
-        # Try to install the package
-        try:
-            pm.install_package('python-ldap')
-        except Exception:
-            print 'Package installation failed:', 'python-ldap'
-            print str(traceback.format_exc())            
-            
     from controller.MainMenuController import MainMenuController
     controller = MainMenuController()
     controller.show()
