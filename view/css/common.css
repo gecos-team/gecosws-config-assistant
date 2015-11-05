@@ -1,0 +1,6 @@
+GtkWindow {
+    background: url("../../data/media/bg-background.png");
+}
+.helpButton{
+    background: transparent;
+}
