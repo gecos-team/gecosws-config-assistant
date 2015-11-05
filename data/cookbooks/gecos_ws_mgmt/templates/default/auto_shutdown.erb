@@ -1,6 +1,0 @@
-# cron file to manage system shutdown
-
-<%= @first_warn_minute %> <%= @first_warn_hour %> * * * root gecosws-chef-snitch-client --set-message "El sistema se apagara en 30 minutos"
-<%= @last_warn_minute %> <%= @last_warn_hour %> * * * root gecosws-chef-snitch-client --set-message "El sistema se apagara en 5 minutos"
-<%= @minute %> <%= @hour %> * * * root /sbin/shutdown -P now
-
