@@ -4,3 +4,7 @@ GtkWindow {
 .helpButton{
     background: transparent;
 }
+.blueBg{
+    background-color: #5498A4;
+    color: white;
+}
