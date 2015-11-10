@@ -9,7 +9,11 @@ module GECOSReports
     def report
       gcc_control = {}
       
-      `gecos-snitch-client --set-active false`
+      if File.file?('/usr/bin/gecos-snitch-client')
+        `gecos-snitch-client --set-active false`
+      else
+        `gecosws-chef-snitch-client --set-active false`
+      end        
       
       if File.file?('/etc/gcc.control')
         File.open('/etc/gcc.control', 'r') do |f|
@@ -35,7 +39,7 @@ module GECOSReports
             resource = RestClient::Resource.new(gcc_control['uri_gcc'] + '/chef/status/')
             response = resource.put :node_id => gcc_control['gcc_nodename'], :gcc_username => gcc_control['gcc_username']
             if not response.code.between?(200,299)
-              Chef::Log.error('The GCC URI not response')
+              Chef::Log.error('Wrong response from GECOS Control Center')
             else
               response_json = JSON.load(response.to_str)
               if not response_json['ok']
@@ -43,7 +47,7 @@ module GECOSReports
               end
             end
           else
-            Chef::Log.error('there is no connectivity')
+            Chef::Log.error('GECOS Control Center connection error')
           end
         rescue Exception => e
           Chef::Log.error(e.message)
