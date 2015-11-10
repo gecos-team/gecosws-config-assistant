@@ -26,7 +26,7 @@ from controller.UserAuthenticationMethodController import UserAuthenticationMeth
 from controller.LocalUserController import LocalUserController
 from controller.SystemStatusController import SystemStatusController
 
-from view.MainMenuDialog import MainMenuDialog
+from view.MainMenuDialog_Glade import MainMenuDialog_Glade
 from view.CommonDialog import askyesno, showerror, showinfo
 from util.PackageManager import PackageManager 
 
@@ -57,7 +57,7 @@ class MainMenuController(object):
         self.logger = logging.getLogger('MainMenuController')
         
     def show(self):
-        self.view = MainMenuDialog(self)
+        self.view = MainMenuDialog_Glade(self)
         self.view.show()
 
 
