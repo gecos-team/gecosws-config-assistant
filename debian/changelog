@@ -1,3 +1,9 @@
+gecosws-config-assistant (1.0.0-1gecos1) trusty; urgency=medium
+
+  * Ready for general use in v2.1 to v2.3
+
+ -- Gecos Team <gecos@guadalinex.org>  Tue, 10 Nov 2015 13:41:00 +0100
+
 gecosws-config-assistant (0.9.5-3gecos1) trusty; urgency=medium
 
   * Fixed snitch executable name
