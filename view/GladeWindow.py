@@ -21,26 +21,30 @@ __author__ = "Francisco Fuentes Barrera <ffuentes@solutia-it.es>"
 __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
-from gi import Gtk, Gdk
+from gi.repository import Gtk, Gdk
 import time
-import view 
-
+from view import GLADE_PATH, CSS_PATH, CSS_COMMON 
+"""
+Abstract parent class for any Gtk window used in GECOS
+"""
 class GladeWindow(object):
-    def __init__(self, gladepath):
+    def __init__(self, mainController):
+        raise NotImplementedError( "This is an abstract class that cannot be instantiated" )
+        
+    def buildUI(self, gladepath):
         self.gladepath = gladepath
-        self.builder = Gtk.Builder(GLADE_PATH+gladepath)
-        self.builder.connect_signals({"closeApplication": Gtk.main_quit})
+        self.builder = Gtk.Builder()
+        self.builder.add_from_file(GLADE_PATH+self.gladepath)
+        self.builder.connect_signals({"onDeleteWindow": Gtk.main_quit})
         
         self.css_provider = Gtk.CssProvider()
         self.css_provider.load_from_path(CSS_PATH+CSS_COMMON)
         
         self.context = Gtk.StyleContext()
         self.context.add_provider_for_screen(
-            screen, css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
-        
-        showUI()
-        
-    def showUI(self):
+            Gdk.Screen.get_default(), self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
         self.window = self.builder.get_object("window1")
+    
+    def show(self):
         self.window.show_all()
         Gtk.main()

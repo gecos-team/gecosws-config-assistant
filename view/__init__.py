@@ -17,7 +17,7 @@
 # along with this package; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
-GLADE_PATH = "glade/"
-CSS_PATH = "css/"
+GLADE_PATH = "data/glade/"
+CSS_PATH = "data/css/"
 
 CSS_COMMON = "common.css"
