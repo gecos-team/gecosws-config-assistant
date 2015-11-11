@@ -57,7 +57,7 @@ class MainMenuController(object):
         self.logger = logging.getLogger('MainMenuController')
         
     def show(self):
-        self.view = MainMenuDialog_Glade(self)
+        self.view = MainMenuDialog(self)
         self.view.show()
 
 
