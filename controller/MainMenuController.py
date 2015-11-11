@@ -26,7 +26,7 @@ from controller.UserAuthenticationMethodController import UserAuthenticationMeth
 from controller.LocalUserController import LocalUserController
 from controller.SystemStatusController import SystemStatusController
 
-from view.MainMenuDialog_Glade import MainMenuDialog_Glade
+from view.MainMenuDialog import MainMenuDialog
 from view.CommonDialog import askyesno, showerror, showinfo
 from util.PackageManager import PackageManager 
 

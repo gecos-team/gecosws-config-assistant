@@ -50,6 +50,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="use_action_appearance">False</property>
+                        <signal name="clicked" handler="onLink" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -68,6 +69,7 @@
                         <property name="relief">none</property>
                         <property name="focus_on_click">False</property>
                         <property name="image_position">top</property>
+                        <signal name="clicked" handler="onHlp1" swapped="no"/>
 						<style><class name="helpButton"/></style>
                       </object>
                       <packing>
@@ -84,6 +86,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="use_action_appearance">False</property>
+                        <signal name="clicked" handler="onAuth" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -103,6 +106,7 @@
                         <property name="focus_on_click">False</property>
                         <property name="image_position">top</property>
 						<style><class name="helpButton"/></style>
+						<signal name="clicked" handler="onHlp2" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -175,6 +179,7 @@
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="use_action_appearance">False</property>
+                            <signal name="clicked" handler="onNetw" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">2</property>
@@ -409,6 +414,7 @@
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="use_action_appearance">False</property>
+                            <signal name="clicked" handler="onAuto" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">2</property>
@@ -443,6 +449,7 @@
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="use_action_appearance">False</property>
+                            <signal name="clicked" handler="onLink" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">2</property>
@@ -460,6 +467,7 @@
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="use_action_appearance">False</property>
+                            <signal name="clicked" handler="onAuth" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">2</property>

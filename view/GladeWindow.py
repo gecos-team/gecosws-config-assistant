@@ -49,6 +49,7 @@ class GladeWindow(object):
         self.frame = self.builder.get_object("frame2")
          
         self.addHandlers()
+        self.bindHandlers()
     
     def show(self):
         self.window.show_all()
@@ -72,12 +73,17 @@ class GladeWindow(object):
     
     def addHandlers(self):
         self.logger.info("Adding all handlers")
+        self.handlers = {}
         # handling common hooks
         self.addCloseHandler()
         
     def addCloseHandler(self):
         self.logger.info("Adding close handlers")
-        self.builder.connect_signals({"onDeleteWindow": Gtk.main_quit})
+        self.handlers['onDeleteWindow'] = Gtk.main_quit
+        
+    
+    def bindHandlers(self):
+        self.builder.connect_signals(self.handlers)
     
     def addTranslations(self):
         raise NotImplementedError( "This is an abstract method, is not implemented" )

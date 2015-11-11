@@ -35,15 +35,48 @@ class MainMenuDialog(GladeWindow):
         self.logger = logging.getLogger('MainMenuDialog')
         
         self.buildUI(self.gladePath)
-        
-    def addHandlers(self):
-        super(MainMenuDialog, self).addHandlers()
-        self.logger.info('Calling child specific handler')
-        # add new handlers here
     
     def addTranslations(self):
         super(MainMenuDialog, self).addTranslations()
     
+    def addHandlers(self):
+        super(MainMenuDialog, self).addHandlers()
+        self.logger.info('Calling child specific handler')
+        # add new handlers here
+        self.logger.debug("Adding link/unlink handler")
+        self.handlers["onLink"] = self.connectWithGECOSHandler
+        self.logger.debug("Adding auth management handler")
+        self.handlers["onAuth"] = self.authManagementHandler
+        self.logger.debug("Adding network management handler")
+        self.handlers["onNetw"] = self.netManagementHandler
+        self.logger.debug("Adding autoconf handler")
+        self.handlers["onAuto"] = self.autoconfManagementHandler
+        self.logger.debug("Adding help1 handler")
+        self.handlers["onHlp1"] = self.help1ManagementHandler
+        self.logger.debug("Adding help2 handler")
+        self.handlers["onHlp2"] = self.help2ManagementHandler
+    
+    # Here comes the handlers
+    def connectWithGECOSHandler(self, *args):
+        self.logger.info('This should display the gecos connection settings')
+        
+    def authManagementHandler(self, *args):
+        self.logger.info('This should display the auth settings')
+    
+    def netManagementHandler(self, *args):
+        self.logger.info('This should display the network settings')
+    
+    def autoconfManagementHandler(self, *args):
+        self.logger.info('This should call the autoconf method or whatever')
+    
+    def help1ManagementHandler(self, *args):
+        self.logger.info('This should show a brief help about GECOS linking')
+    
+    def help2ManagementHandler(self, *args):
+        self.logger.info('This should show a brief help about auth modes')
+    
+    
+    # old methods, just pasted for copypaste sake
     def showRequirementsCheckDialog(self):
         self.logger.debug("showRequirementsCheckDialog")
         self.controller.showRequirementsCheckDialog()
