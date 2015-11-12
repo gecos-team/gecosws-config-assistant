@@ -55,6 +55,14 @@ class MainMenuDialog(GladeWindow):
         self.handlers["onHlp1"] = self.help1ManagementHandler
         self.logger.debug("Adding help2 handler")
         self.handlers["onHlp2"] = self.help2ManagementHandler
+        self.logger.debug("Adding onSyst handler")
+        self.handlers["onSyst"] = self.statusManagementHandler
+        self.logger.debug("Adding onUsrs handler")
+        self.handlers["onUsrs"] = self.localUsersManagementHandler
+        self.logger.debug("Adding onMana handler")
+        self.handlers["onMana"] = self.softwareManagementHandler
+        self.logger.debug("Adding onUpdt handler")
+        self.handlers["onUpdt"] = self.updateManagementHandler
     
     # Here comes the handlers
     def connectWithGECOSHandler(self, *args):
@@ -75,6 +83,17 @@ class MainMenuDialog(GladeWindow):
     def help2ManagementHandler(self, *args):
         self.logger.info('This should show a brief help about auth modes')
     
+    def statusManagementHandler(self, *args):
+        self.logger.info('This should show a bit about the system status')
+    
+    def localUsersManagementHandler(self, *args): 
+        self.logger.info('Show local users management')
+    
+    def softwareManagementHandler(self, *args):
+        self.logger.info('Open the software manager')
+    
+    def updateManagementHandler(self, *args):
+        self.logger.info('Self update')
     
     # old methods, just pasted for copypaste sake
     def showRequirementsCheckDialog(self):

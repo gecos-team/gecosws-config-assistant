@@ -410,7 +410,7 @@
                           <object class="GtkButton" id="confbutton">
                             <property name="label" translatable="yes">Autoconfigurar</property>
                             <property name="visible">True</property>
-                            <property name="sensitive">False</property>
+                            
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="use_action_appearance">False</property>
@@ -504,6 +504,7 @@
                         <property name="receives_default">True</property>
                         <property name="use_action_appearance">False</property>
                         <property name="image_position">top</property>
+                        <signal name="clicked" handler="onSyst" swapped="no"/>
                         <child>
                           <object class="GtkHBox" id="hbox3">
                             <property name="visible">True</property>
@@ -547,6 +548,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="use_action_appearance">False</property>
+                        <signal name="clicked" handler="onUsrs" swapped="no"/>
                         <child>
                           <object class="GtkHBox" id="hbox4">
                             <property name="visible">True</property>
@@ -590,6 +592,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="use_action_appearance">False</property>
+                        <signal name="clicked" handler="onMana" swapped="no"/>
                         <child>
                           <object class="GtkHBox" id="hbox5">
                             <property name="visible">True</property>
@@ -633,6 +636,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="use_action_appearance">False</property>
+                        <signal name="clicked" handler="onUpdt" swapped="no"/>
                         <child>
                           <object class="GtkHBox" id="hbox6">
                             <property name="visible">True</property>
