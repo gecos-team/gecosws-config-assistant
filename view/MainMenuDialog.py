@@ -34,6 +34,12 @@ class MainMenuDialog(GladeWindow):
         self.gladePath = 'main.glade'
         self.logger = logging.getLogger('MainMenuDialog')
         
+        # gui values to store the initial state
+        # and to recover them after a screen change
+        self.guiValues = {}
+        self.trafficlightsKey = "trafficlights"
+        self.centerbuttonsKey = "centerbuttons"
+        
         self.buildUI(self.gladePath)
     
     def addTranslations(self):
@@ -66,34 +72,125 @@ class MainMenuDialog(GladeWindow):
     
     # Here comes the handlers
     def connectWithGECOSHandler(self, *args):
-        self.logger.info('This should display the gecos connection settings')
+        self.logger.debug('This should display the gecos connection settings')
         
     def authManagementHandler(self, *args):
-        self.logger.info('This should display the auth settings')
+        self.logger.debug('This should display the auth settings')
     
     def netManagementHandler(self, *args):
-        self.logger.info('This should display the network settings')
+        self.logger.debug('This should display the network settings')
+        self.showNetworkSettingsDialog()
     
     def autoconfManagementHandler(self, *args):
-        self.logger.info('This should call the autoconf method or whatever')
+        self.logger.debug('This should call the autoconf method or whatever')
     
     def help1ManagementHandler(self, *args):
-        self.logger.info('This should show a brief help about GECOS linking')
+        self.logger.debug('This should show a brief help about GECOS linking')
     
     def help2ManagementHandler(self, *args):
-        self.logger.info('This should show a brief help about auth modes')
+        self.logger.debug('This should show a brief help about auth modes')
     
     def statusManagementHandler(self, *args):
-        self.logger.info('This should show a bit about the system status')
+        self.logger.debug('This should show a bit about the system status')
     
     def localUsersManagementHandler(self, *args): 
-        self.logger.info('Show local users management')
+        self.logger.debug('Show local users management')
     
     def softwareManagementHandler(self, *args):
-        self.logger.info('Open the software manager')
+        self.logger.debug('Open the software manager')
     
     def updateManagementHandler(self, *args):
-        self.logger.info('Self update')
+        self.logger.debug('Self update')
+    
+    '''
+    change the image of the traffic signal
+    index: Between 1 and 5, if not it will raise and Exception
+    state: Between 1 and 3: 1 green, 2 yellow, 3 grey
+    '''
+    def trafficSignalChange(self, id, state):
+        datafolder = "/usr/local/share/gecosws-config-assistant/"
+        
+        lightgreenimg  = datafolder+"media/i-status-18-ok.png"
+        lightyellowimg = datafolder+"media/i-status-18-grey.png"
+        lightgreyimg   = datafolder+"media/i-status-18-off.png" 
+        
+        trafficwidget = self.builder.get_object(id)
+        lightimg = ""
+        
+        if   (state == 1):
+            lightimg = lightgreenimg
+        elif (state == 2):
+            lightimg = lightyellowimg
+        elif (state == 3):
+            lightimg = lightgreyimg
+            
+        trafficwidget.hide()
+        trafficwidget.set_from_file(lightimg)
+        trafficwidget.show()
+    
+    '''
+    change the state of one of the central buttons
+    index: Between 1 and 7, if not it will raise and Exception
+    '''
+    def setCenterButton(self, id, enabled):
+        button = self.builder.get_object(id)
+        button.set_sensitive(enabled)
+        
+    def initGUIValues(self):
+        # traffic lights
+        trafficlights = {}
+        trafficlights["trafficlight1"] = 2
+        trafficlights["trafficlight2"] = 3
+        trafficlights["trafficlight3"] = 3
+        trafficlights["trafficlight4"] = 3
+        trafficlights["trafficlight5"] = 3
+        
+        self.guiValues[self.trafficlightsKey] = trafficlights
+        
+        # center buttons
+        centerbuttons = {}
+        centerbuttons["netbutton"] = True
+        centerbuttons["confbutton"]= False
+        centerbuttons["syncbutton"]= False
+        centerbuttons["sysbutton"]=  False
+        centerbuttons["sysbutton"]=  False
+        centerbuttons["userbutton"]= False
+        centerbuttons["linkbutton"]= False
+        centerbuttons["authbutton"]= False
+        
+        self.guiValues[self.centerbuttonsKey] = centerbuttons
+    
+    def loadCurrentState(self):
+         # init streetlights 
+        for trafficlightKey in self.guiValues[self.trafficlightsKey].keys():
+            trafficlightValue = self.guiValues[self.trafficlightsKey][trafficlightKey]
+            self.trafficSignalChange(trafficlightKey, trafficlightValue)
+        
+        
+        # disable almost all
+        for centerbuttonKey in self.guiValues[self.centerbuttonsKey].keys():
+            centerbuttonValue = self.guiValues[self.centerbuttonsKey][centerbuttonKey]
+            self.setCenterButton(centerbuttonKey, centerbuttonValue)
+    
+    '''
+    Override of the show method, setting all to the initial state
+    '''
+    def show(self):
+        # set to initial state
+        self.initGUIValues()
+        self.loadCurrentState()
+        
+        # super method
+        super(MainMenuDialog, self).show()
+    
+    # New call-to-controller-methods
+    def showAutoconfDialog(self):
+        self.logger.debug("showAutoconfDialog")
+        self.controller.showAutoconfDialog()
+    
+    def showNetworkSettingsDialog(self):
+        self.logger.debug("showNetworkSettingsDialog")
+        self.controller.showNetworkSettingsDialog()    
     
     # old methods, just pasted for copypaste sake
     def showRequirementsCheckDialog(self):

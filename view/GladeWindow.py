@@ -59,15 +59,22 @@ class GladeWindow(object):
         return self.frame
     
     def putInCenterFrame(self, otherChildren):
+        self.logger.debug("Enter putInCenterFrame()")
         children = self.frame.get_children()
-        # delete previous children
+        self.logger.debug("destroy previous children")
+        # destroy previous children
         for child in children:
-            child.destroy()
+            self.frame.remove(child)
+            # child.destroy()
         
+        self.logger.debug("append the other children")
         # add other children
         for otherChild in otherChildren:
-            child.reparent(self.frame)
+            otherChild.get_parent().remove(otherChild)
+            self.frame.add(otherChild)
+            # child.reparent(self.frame)
         
+        self.logger.debug("show all the children")
         # show em
         self.frame.show_all()
     
@@ -98,3 +105,6 @@ class GladeWindow(object):
                     child.hide()
             except:
                 child.hide()
+    
+    def getCentralFrame(self):
+        return self.builder.get_object("frame2")

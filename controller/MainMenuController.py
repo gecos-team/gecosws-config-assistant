@@ -27,11 +27,14 @@ from controller.LocalUserController import LocalUserController
 from controller.SystemStatusController import SystemStatusController
 
 from view.MainMenuDialog import MainMenuDialog
+from view.AutoconfDialog import AutoconfDialog
+from view.NetworkSettingsDialog import NetworkSettingsDialog
+
 from view.CommonDialog import askyesno, showerror, showinfo
 from util.PackageManager import PackageManager 
 
 import logging
-import os
+import os, traceback
 
 import gettext
 from gettext import gettext as _
@@ -48,21 +51,57 @@ class MainMenuController(object):
         Constructor
         '''
         self.view = None
+        
+        # old dialogs 
         self.requirementsCheck = RequirementsCheckController()
         self.connectWithGecosCC = ConnectWithGecosCCController()
         self.userAuthenticationMethod = UserAuthenticationMethodController()
         self.localUserList = LocalUserController()
         self.systemStatus = SystemStatusController()
         
+        # new pars
+        self.initScreens()
+        
         self.logger = logging.getLogger('MainMenuController')
+    
+    def initScreens(self):
+        self.mainScreen = MainMenuDialog(self)
+        self.autoconfDialog = AutoconfDialog(self)
+        self.networkSettingsDialog = NetworkSettingsDialog(self)
         
     def show(self):
-        self.view = MainMenuDialog(self)
+        self.view = self.mainScreen
         self.view.show()
-
 
     def hide(self):
         self.root.destroy()
+    
+    # common screen switch method
+    def changeScreen(self, dialog):
+        centralFrame = dialog.getCentralFrame()
+        try:
+            self.view.putInCenterFrame(centralFrame.get_children())
+        except:
+            tb = traceback.format_exc()
+            self.logger.error(tb)
+            
+    # new show methods
+    def showAutoconfDialog(self):
+        # get autoconf widgets
+        self.changeScreen(self.autoconfDialog)
+    
+    def backToMainWindowDialog(self):
+        # restore main window
+        self.mainScreen = MainMenuDialog(self)
+        self.mainScreen.setToInitialState()
+        
+        self.changeScreen(self.mainScreen)
+    
+    def showNetworkSettingsDialog(self):
+        # get network settings widgets
+        self.networkSettingsDialog = NetworkSettingsDialog(self)
+        self.networkSettingsDialog.setToInitialState()
+        self.changeScreen(self.networkSettingsDialog)
     
     def showRequirementsCheckDialog(self):
         self.requirementsCheck.show(self.view)
