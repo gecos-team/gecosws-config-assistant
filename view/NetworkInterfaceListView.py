@@ -34,7 +34,6 @@ class NetworkInterfaceListView(Toplevel):
     Dialog class that shows the "network interfaces" list.
     '''
 
-
     def __init__(self, parent, mainController):
         '''
         Constructor

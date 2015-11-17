@@ -20,7 +20,7 @@ __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
 __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
-from Tkinter import N, S, W, E, Toplevel, END, Tk
+from Tkinter import N, S, W, E, END, Tk
 from ScrolledText import ScrolledText
 from ttk import Frame, Button, Style
 import logging

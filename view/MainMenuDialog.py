@@ -93,6 +93,7 @@ class MainMenuDialog(GladeWindow):
     
     def localUsersManagementHandler(self, *args): 
         self.logger.debug('Show local users management')
+        self.controller.showLocalUserListView()
     
     def softwareManagementHandler(self, *args):
         self.logger.debug('Open the software manager')

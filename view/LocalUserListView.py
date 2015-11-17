@@ -20,7 +20,7 @@ __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
 __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
-from Tkinter import N, S, W, E, Toplevel, NO
+from Tkinter import N, S, W, E, NO, Tk
 from ttk import Frame, Button, Style, Label, Treeview, Scrollbar
 import logging
 import json
@@ -29,18 +29,17 @@ import gettext
 from gettext import gettext as _
 gettext.textdomain('gecosws-config-assistant')
 
-class LocalUserListView(Toplevel):
+class LocalUserListView(Tk):
     '''
     Dialog class that shows the local users list.
     '''
 
 
-    def __init__(self, parent, mainController):
+    def __init__(self, mainController):
         '''
         Constructor
         '''
-        Toplevel.__init__(self, parent)
-        self.parent = parent
+        Tk.__init__(self, None, None, 'LocalUserListView', 1, 0, None)
         self.body = Frame(self, padding="20 20 20 20")   
         self.controller = mainController
         self.logger = logging.getLogger('LocalUserListView')
@@ -138,9 +137,8 @@ class LocalUserListView(Toplevel):
         
         self.refresh()
         
-        self.transient(self.parent)
         self.grab_set()
-        self.parent.wait_window(self)
+        self.mainloop()
 
     def refresh(self):
         self.treeview.delete(*self.treeview.get_children())
