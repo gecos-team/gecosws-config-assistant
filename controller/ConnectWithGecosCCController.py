@@ -25,13 +25,13 @@ import sys
 if 'check' in sys.argv:
     # Mock view classes for testing purposses
     print "==> Loading mocks..."
-    from view.ViewMocks import showerror, ConnectWithGecosCCDialog, ChefValidationCertificateDialog, GecosCCSetupProcessView
+    from view.ViewMocks import showerror_gtk, ConnectWithGecosCCDialog, ChefValidationCertificateDialog, GecosCCSetupProcessView
 else:
     # Use real view classes
     from view.ConnectWithGecosCCDialog import ConnectWithGecosCCDialog
     from view.ChefValidationCertificateDialog import ChefValidationCertificateDialog
     from view.GecosCCSetupProcessView import GecosCCSetupProcessView
-    from view.CommonDialog import showerror
+    from view.CommonDialog import showerror_gtk
 
 from util.GecosCC import GecosCC
 from util.Validation import Validation
@@ -92,16 +92,14 @@ class ConnectWithGecosCCController(object):
         if (gecosAccessData.get_url() is None or
             gecosAccessData.get_url().strip() == ''):
             self.logger.debug("Empty URL!")
-            showerror(_("Error in form data"), 
-                _("The URL field is empty!") + "\n" + _("Please fill all the mandatory fields."),
+            showerror_gtk(_("The URL field is empty!") + "\n" + _("Please fill all the mandatory fields."),
                  self.view)
             self.view.focusUrlField()            
             return False
 
         if not Validation().isUrl(gecosAccessData.get_url()):
             self.logger.debug("Malformed URL!")
-            showerror(_("Error in form data"), 
-                _("Malformed URL in URL field!") + "\n" + _("Please double-check it."),
+            showerror_gtk(_("Malformed URL in URL field!") + "\n" + _("Please double-check it."),
                  self.view)            
             self.view.focusUrlField()            
             return False
@@ -109,8 +107,7 @@ class ConnectWithGecosCCController(object):
         if (gecosAccessData.get_login() is None or
             gecosAccessData.get_login().strip() == ''):
             self.logger.debug("Empty login!")
-            showerror(_("Error in form data"), 
-                _("The Username field is empty!") + "\n" + _("Please fill all the mandatory fields."),
+            showerror_gtk(_("The Username field is empty!") + "\n" + _("Please fill all the mandatory fields."),
                  self.view)
             self.view.focusUsernameField()            
             return False
@@ -118,8 +115,7 @@ class ConnectWithGecosCCController(object):
         if (gecosAccessData.get_password() is None or
             gecosAccessData.get_password().strip() == ''):
             self.logger.debug("Empty password!")
-            showerror(_("Error in form data"), 
-                _("The Password field is empty!") + "\n" + _("Please fill all the mandatory fields."),
+            showerror_gtk(_("The Password field is empty!") + "\n" + _("Please fill all the mandatory fields."),
                  self.view)
             self.view.focusPasswordField()            
             return False
@@ -127,8 +123,7 @@ class ConnectWithGecosCCController(object):
         gecosCC = GecosCC()
         if not gecosCC.validate_credentials(gecosAccessData):
             self.logger.debug("Bad access data!")
-            showerror(_("Error in form data"), 
-                _("Can't connect to GECOS CC!") + "\n" +  _("Please double-check all the data and your network setup."),
+            showerror_gtk(_("Can't connect to GECOS CC!") + "\n" +  _("Please double-check all the data and your network setup."),
                  self.view)
             self.view.focusPasswordField()            
             return False
@@ -141,8 +136,7 @@ class ConnectWithGecosCCController(object):
         if (workstationData.get_name() is None or
             workstationData.get_name().strip() == ''):
             self.logger.debug("Empty Node name!")
-            showerror(_("Error in form data"), 
-                _("The GECOS workstation name field is empty!") + "\n" + _("Please fill all the mandatory fields."),
+            showerror_gtk(_("The GECOS workstation name field is empty!") + "\n" + _("Please fill all the mandatory fields."),
                  self.view)
             self.view.focusWorkstationNameField()            
             return False     
@@ -161,8 +155,7 @@ class ConnectWithGecosCCController(object):
             
             if is_in_computer_names:  
                 self.logger.debug("Existent node name!")
-                showerror(_("Error in form data"), 
-                    _("The GECOS workstation name already exist!") + "\n" + _("Please choose a different name."),
+                showerror_gtk(_("The GECOS workstation name already exist!") + "\n" + _("Please choose a different name."),
                      self.view)
                 self.view.focusWorkstationNameField()            
                 return False     
@@ -175,8 +168,7 @@ class ConnectWithGecosCCController(object):
             if (workstationData.get_ou() is None or
                 workstationData.get_ou().strip() == ''):
                 self.logger.debug("Empty OU name!")
-                showerror(_("Error in form data"), 
-                    _("You must select an OU!") + "\n" + _("Please fill all the mandatory fields."),
+                showerror_gtk(_("You must select an OU!") + "\n" + _("Please fill all the mandatory fields."),
                      self.view)
                 self.view.focusSeachFilterField()            
                 return False   
@@ -357,8 +349,7 @@ class ConnectWithGecosCCController(object):
         if not self._save_secure_file('/etc/chef/validation.pem', chef_validation):
             self.processView.setChefCertificateRetrievalStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Error saving validation certificate"), 
-                _("There was an error while saving validation certificate"),
+            showerror_gtk(_("There was an error while saving validation certificate"),
                  self.view)
             self._clean_connection_files_on_error()
             return False
@@ -403,8 +394,7 @@ class ConnectWithGecosCCController(object):
         if not template.save():
             self.processView.setLinkToChefStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Error linking to Chef"), 
-                _("Can't create/modify /etc/chef/client.rb file"),
+            showerror_gtk(_("Can't create/modify /etc/chef/client.rb file"),
                  self.view)
             self._clean_connection_files_on_error()
             return False            
@@ -416,8 +406,7 @@ class ConnectWithGecosCCController(object):
         if not self._execute_command('chef-client -j /usr/share/gecosws-config-assistant/base.json', env):
             self.processView.setLinkToChefStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Error unlinking from Chef"), 
-                _("Can't link to chef server"),
+            showerror_gtk(_("Can't link to chef server"),
                  self.view)
             self._clean_connection_files_on_error()
             return False 
@@ -439,8 +428,7 @@ class ConnectWithGecosCCController(object):
         if not template.save():
             self.processView.setLinkToChefStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Error linking to Chef"), 
-                _("Can't create/modify /etc/chef.control file"),
+            showerror_gtk(_("Can't create/modify /etc/chef.control file"),
                  self.view)
             self._clean_connection_files_on_error()
             return False    
@@ -459,8 +447,7 @@ class ConnectWithGecosCCController(object):
                 workstationData.get_node_name(), ou[0][0]):
             self.processView.setRegisterInGecosStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Error registering from GECOS CC"), 
-                _("Can't register the computer in GECOS CC"),
+            showerror_gtk(_("Can't register the computer in GECOS CC"),
                  self.view)
             self._clean_connection_files_on_error()
             return False          
@@ -469,8 +456,7 @@ class ConnectWithGecosCCController(object):
         if not self.accessDataDao.save(self.view.get_gecos_access_data()):
             self.processView.setRegisterInGecosStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Error Registering from GECOS CC"), 
-                _("Can't save /etc/gcc.control file"),
+            showerror_gtk(_("Can't save /etc/gcc.control file"),
                  self.view)
             self._clean_connection_files_on_error()
             return False    
@@ -542,8 +528,7 @@ class ConnectWithGecosCCController(object):
         if not self._save_secure_file('/etc/chef/validation.pem', chef_validation):
             self.processView.setChefCertificateRetrievalStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Error saving validation certificate"), 
-                _("There was an error while saving validation certificate"),
+            showerror_gtk(_("There was an error while saving validation certificate"),
                  self.view)
             self._clean_disconnection_files_on_error()
             return False
@@ -558,8 +543,7 @@ class ConnectWithGecosCCController(object):
                 workstationData.get_node_name()):
             self.processView.setRegisterInGecosStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Error unregistering from GECOS CC"), 
-                _("Can't unregister the computer from GECOS CC"),
+            showerror_gtk(_("Can't unregister the computer from GECOS CC"),
                  self.view)
             self._clean_disconnection_files_on_error()
             return False          
@@ -582,8 +566,7 @@ class ConnectWithGecosCCController(object):
         if not template.save():
             self.processView.setLinkToChefStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Error unlinking from Chef"), 
-                _("Can't create/modify /etc/chef/client.rb file"),
+            showerror_gtk(_("Can't create/modify /etc/chef/client.rb file"),
                  self.view)
             self._clean_disconnection_files_on_error()
             return False            
@@ -620,8 +603,7 @@ class ConnectWithGecosCCController(object):
         if not template.save():
             self.processView.setLinkToChefStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Error unlinking from Chef"), 
-                _("Can't create/modify /etc/chef/knife.rb file"),
+            showerror_gtk(_("Can't create/modify /etc/chef/knife.rb file"),
                  self.view)
             self._clean_disconnection_files_on_error()
             return False 
@@ -630,8 +612,7 @@ class ConnectWithGecosCCController(object):
         if not self._remove_file('/etc/chef.control'):
             self.processView.setLinkToChefStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Error unlinking from Chef"), 
-                _("Can't remove /etc/chef.control file"),
+            showerror_gtk(_("Can't remove /etc/chef.control file"),
                  self.view)
             self._clean_disconnection_files_on_error()
             return False 
@@ -640,8 +621,7 @@ class ConnectWithGecosCCController(object):
         if not self._remove_file('/etc/chef/client.pem'):
             self.processView.setLinkToChefStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Error unlinking from Chef"), 
-                _("Can't remove /etc/chef/client.pem file"),
+            showerror_gtk(_("Can't remove /etc/chef/client.pem file"),
                  self.view)
             self._clean_disconnection_files_on_error()
             return False 
@@ -651,8 +631,7 @@ class ConnectWithGecosCCController(object):
         if not self._execute_command('knife node delete "' + workstationData.get_node_name() + '" -c /etc/chef/knife.rb -y'):
             self.processView.setLinkToChefStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Error unlinking from Chef"), 
-                _("Can't delete Chef node"),
+            showerror_gtk(_("Can't delete Chef node"),
                  self.view)
             self._clean_disconnection_files_on_error()
             return False 
@@ -661,8 +640,7 @@ class ConnectWithGecosCCController(object):
         if not self._remove_file('/usr/bin/chef-client-wrapper'):
             self.processView.setLinkToChefStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Error unlinking from Chef"), 
-                _("Can't remove /usr/bin/chef-client-wrapper file"),
+            showerror_gtk(_("Can't remove /usr/bin/chef-client-wrapper file"),
                  self.view)
             self._clean_disconnection_files_on_error()
             return False         
@@ -670,8 +648,7 @@ class ConnectWithGecosCCController(object):
         self.logger.debug('- Deleting client ' + workstationData.get_node_name())
         if not self._execute_command('knife client delete "' + workstationData.get_node_name() + '" -c /etc/chef/knife.rb -y'):
             self.processView.setLinkToChefStatus(_('ERROR'))
-            showerror(_("Error unlinking from Chef"), 
-                _("Can't delete Chef node"),
+            showerror_gtk(_("Can't delete Chef node"),
                  self.view)
             self._clean_disconnection_files_on_error()
             return False 
@@ -686,8 +663,7 @@ class ConnectWithGecosCCController(object):
         if not self.accessDataDao.delete(self.view.get_gecos_access_data()):
             self.processView.setRegisterInGecosStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Error unregistering from GECOS CC"), 
-                _("Can't remove /etc/gcc.control file"),
+            showerror_gtk(_("Can't remove /etc/gcc.control file"),
                  self.view)
             self._clean_disconnection_files_on_error()
             return False    
@@ -717,8 +693,7 @@ class ConnectWithGecosCCController(object):
         result = gecosCC.search_ou_by_text(self.view.get_gecos_access_data(), searchText)
         if not isinstance(result, (list, tuple)):
             self.logger.debug("Can't get OUs from GECOS CC")
-            showerror(_("Error getting data from GECOS CC"), 
-                _("Can't get OUs from GECOS Control Center"),
+            showerror_gtk(_("Can't get OUs from GECOS Control Center"),
                  self.view)
             self.view.focusPasswordField()            
             return False        

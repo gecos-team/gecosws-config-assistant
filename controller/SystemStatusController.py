@@ -54,8 +54,8 @@ class SystemStatusController(object):
         self.logger = logging.getLogger('SystemStatusController')
 
 
-    def show(self, mainWindow):
-        self.view = SystemStatusElemView(mainWindow, self)
+    def show(self):
+        self.view = SystemStatusElemView(self)
         pm = PackageManager()
         
         

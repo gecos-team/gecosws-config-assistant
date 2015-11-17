@@ -30,7 +30,7 @@ from view.MainMenuDialog import MainMenuDialog
 from view.AutoconfDialog import AutoconfDialog
 from view.NetworkSettingsDialog import NetworkSettingsDialog
 
-from view.CommonDialog import askyesno, showerror, showinfo
+from view.CommonDialog import showerror_gtk, showinfo_gtk, askyesno_gtk
 from util.PackageManager import PackageManager 
 
 import logging
@@ -151,22 +151,22 @@ class MainMenuController(object):
         self.localUserList.showList(self.view)
 
     def updateConfigAsystant(self):
-        if askyesno(_("Update GECOS Config Assistant"), _("Are you sure you want to update the GECOS Config Assistant?"), self.view):
+        if askyesno_gtk( _("Are you sure you want to update the GECOS Config Assistant?"), self.mainScreen.getMainWindow()):
             pm = PackageManager()
             if not pm.update_cache():
-                showerror(_("Update Error"), _("An error occurred during the upgrade"), self.view)
+                showerror_gtk( _("An error occurred during the upgrade"), self.mainScreen.getMainWindow())
             else:
                 try:
                     if not pm.upgrade_package('gecosws-config-assistant'):
-                        showerror(_("Update Error"), _("CGA is already at the newest version!"), self.view)
+                        showerror_gtk( _("CGA is already at the newest version!"), self.mainScreen.getMainWindow())
                     else:
-                        showinfo(_("Update GECOS Config Assistant"), _("GECOS Config Assistant has been udpated. Please restart GCA"), self.view)
+                        showerror_gtk( _("GECOS Config Assistant has been udpated. Please restart GCA"), self.mainScreen.getMainWindow())
                 except:
-                    showerror(_("Update Error"), _("An error occurred during the upgrade"), self.view)
+                    showerror_gtk( _("An error occurred during the upgrade"), self.mainScreen.getMainWindow())
                     
         
 
     def showSystemStatus(self):
-        self.systemStatus.show(self.view)
+        self.systemStatus.show()
 
 

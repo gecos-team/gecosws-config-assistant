@@ -23,7 +23,7 @@ __license__ = "GPL-2"
 from dao.NTPServerDAO import NTPServerDAO
 
 from view.NTPServerElemView import NTPServerElemView
-from view.CommonDialog import showerror
+from view.CommonDialog import showerror_gtk
 
 import logging
 
@@ -66,13 +66,11 @@ class NTPServerController(object):
                 self.hide()
             else:
                 # Show error message
-                showerror(_("Error"), 
-                    _("Error saving NTP server data.") + "\n" + _("See log for more details."),
+                showerror_gtk(_("Error saving NTP server data.") + "\n" + _("See log for more details."),
                     self.view)
         except:
             # Show error message
-            showerror(_("Error"), 
-                _("Error saving NTP server data.") + "\n" + _("See log for more details."),
+            showerror_gtk(_("Error saving NTP server data.") + "\n" + _("See log for more details."),
                 self.view)
             
 

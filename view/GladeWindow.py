@@ -58,6 +58,9 @@ class GladeWindow(object):
         self.addHandlers()
         self.bindHandlers()
     
+    def getMainWindow(self):
+        return self.window
+    
     def initGUIValues(self):
         pass
     

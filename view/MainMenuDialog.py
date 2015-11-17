@@ -76,7 +76,7 @@ class MainMenuDialog(GladeWindow):
     
     def netManagementHandler(self, *args):
         self.logger.debug('This should display the network settings')
-        self.showNetworkSettingsDialog()
+        self.controller.showNetworkSettingsDialog()
     
     def autoconfManagementHandler(self, *args):
         self.logger.debug('This should call the autoconf method or whatever')
@@ -88,18 +88,20 @@ class MainMenuDialog(GladeWindow):
         self.logger.debug('This should show a brief help about auth modes')
     
     def statusManagementHandler(self, *args):
-        self.logger.debug('This should show a bit about the system status')
+        self.logger.debug('This should show the system status')
+        self.controller.showSystemStatus()
     
     def localUsersManagementHandler(self, *args): 
         self.logger.debug('Show local users management')
     
     def softwareManagementHandler(self, *args):
         self.logger.debug('Open the software manager')
-        self.showSoftwareManager()
+        self.controller.showSoftwareManager()
     
     def updateManagementHandler(self, *args):
-        self.logger.debug('Self update')
-    
+        self.logger.debug('Update config assistant')
+        self.controller.updateConfigAsystant()
+        
     '''
     change the image of the traffic signal
     index: Between 1 and 5, if not it will raise and Exception
@@ -186,14 +188,6 @@ class MainMenuDialog(GladeWindow):
         self.logger.debug("showAutoconfDialog")
         self.controller.showAutoconfDialog()
     
-    def showNetworkSettingsDialog(self):
-        self.logger.debug("showNetworkSettingsDialog")
-        self.controller.showNetworkSettingsDialog()
-        
-    def showSoftwareManager(self):
-        self.logger.debug("showSoftwareManager")
-        self.controller.showSoftwareManager()
-    
     # old methods, just pasted for copypaste sake
     def showRequirementsCheckDialog(self):
         self.logger.debug("showRequirementsCheckDialog")
@@ -210,11 +204,3 @@ class MainMenuDialog(GladeWindow):
     def showLocalUserListView(self):
         self.logger.debug("showLocalUserListView")
         self.controller.showLocalUserListView()
-        
-    def updateConfigAssistant(self):
-        self.logger.debug("updateConfigAssistant")
-        self.controller.updateConfigAsystant()
-        
-    def showSystemStatus(self):
-        self.logger.debug("showSystemStatus")
-        self.controller.showSystemStatus()
