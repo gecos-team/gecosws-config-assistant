@@ -32,6 +32,13 @@ class GladeWindow(object):
         raise NotImplementedError( "This is an abstract class that cannot be instantiated" )
         
     def buildUI(self, gladepath):
+        self.logger.debug("Building UI")
+        
+        # gui values to store the initial state
+        # and to recover them after a screen change
+        # each class should inform them
+        self.guiValues = {}
+        
         self.gladepath = gladepath
         self.builder = Gtk.Builder()
         self.builder.add_from_file(GLADE_PATH+self.gladepath)
@@ -46,48 +53,56 @@ class GladeWindow(object):
         # main window
         self.window = self.builder.get_object("window1")
         # center frame, here we'll do the transformations to keep all in the same window
-        self.frame = self.builder.get_object("frame2")
-         
+        self.frame = self.getCentralFrame()
+        
         self.addHandlers()
         self.bindHandlers()
+    
+    def initGUIValues(self):
+        pass
+    
+    def loadCurrentState(self, guiValues):
+        self.logger.debug("Load current state")
+        if(guiValues is not None):
+            self.guiValues = guiValues
+    
+    def getCurrentState(self):
+        return self.guiValues
     
     def show(self):
         self.window.show_all()
         Gtk.main()
     
-    def getCenterFrame(self):
-        return self.frame
-    
-    def putInCenterFrame(self, otherChildren):
+    def putInCenterFrame(self, newCentralFrame):
         self.logger.debug("Enter putInCenterFrame()")
-        children = self.frame.get_children()
+        children = self.getCentralFrame().get_children()
         self.logger.debug("destroy previous children")
         # destroy previous children
         for child in children:
-            self.frame.remove(child)
+            self.getCentralFrame().remove(child)
             # child.destroy()
         
         self.logger.debug("append the other children")
         # add other children
+        otherChildren = newCentralFrame.get_children()
         for otherChild in otherChildren:
-            otherChild.get_parent().remove(otherChild)
-            self.frame.add(otherChild)
+            newCentralFrame.remove(otherChild)
+            self.getCentralFrame().add(otherChild)
             # child.reparent(self.frame)
         
-        self.logger.debug("show all the children")
+        #self.logger.debug("show all the children")
         # show em
-        self.frame.show_all()
+        #self.getCentralFrame().show_all()
     
     def addHandlers(self):
-        self.logger.info("Adding all handlers")
+        self.logger.debug("Adding all handlers")
         self.handlers = {}
         # handling common hooks
         self.addCloseHandler()
         
     def addCloseHandler(self):
-        self.logger.info("Adding close handlers")
+        self.logger.debug("Adding close handlers")
         self.handlers['onDeleteWindow'] = Gtk.main_quit
-        
     
     def bindHandlers(self):
         self.builder.connect_signals(self.handlers)

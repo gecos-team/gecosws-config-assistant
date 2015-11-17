@@ -36,6 +36,9 @@ from util.PackageManager import PackageManager
 import logging
 import os, traceback
 
+from inspect import getmembers
+from pprint import pprint
+
 import gettext
 from gettext import gettext as _
 gettext.textdomain('gecosws-config-assistant')
@@ -44,7 +47,6 @@ class MainMenuController(object):
     '''
     Controller class to show the main menu window.
     '''
-
 
     def __init__(self):
         '''
@@ -60,17 +62,19 @@ class MainMenuController(object):
         self.systemStatus = SystemStatusController()
         
         # new pars
-        self.initScreens()
+        self.mainScreen = MainMenuDialog(self)
+        self.mainScreenGUIValues = {}
+        self.autoconfDialog = AutoconfDialog(self)
+        self.autoconfGUIValues = {}
+        self.networkSettingsDialog = NetworkSettingsDialog(self)
+        self.networkSettingsGUIValues = {}
         
         self.logger = logging.getLogger('MainMenuController')
-    
-    def initScreens(self):
-        self.mainScreen = MainMenuDialog(self)
-        self.autoconfDialog = AutoconfDialog(self)
-        self.networkSettingsDialog = NetworkSettingsDialog(self)
         
     def show(self):
         self.view = self.mainScreen
+        self.view.initGUIValues()
+        self.view.loadCurrentState(None)
         self.view.show()
 
     def hide(self):
@@ -80,28 +84,54 @@ class MainMenuController(object):
     def changeScreen(self, dialog):
         centralFrame = dialog.getCentralFrame()
         try:
-            self.view.putInCenterFrame(centralFrame.get_children())
+            self.view.putInCenterFrame(centralFrame)
         except:
             tb = traceback.format_exc()
             self.logger.error(tb)
+    
+    # navigate thru screens
+    def navigate(self, dialog):
+        # retrieve values from previous window
+        toSaveState = self.view.getCurrentState()
+        
+        if(type(self.view) is MainMenuDialog):
+            self.mainScreenGUIValues = toSaveState
+        elif(type(self.view) is AutoconfDialog):
+            self.autoconfGUIValues = toSaveState
+        elif(type(self.view) is NetworkSettingsDialog):
+            self.networkSettingsGUIValues = toSaveState
+        
+        # load previous state
+        currentState = {}
+        if(type(self.view) is MainMenuDialog):
+            currentState = self.mainScreenGUIValues
+        elif(type(self.view) is AutoconfDialog):
+            currentState = self.autoconfGUIValues
+        elif(type(self.view) is NetworkSettingsDialog):
+            currentState = self.networkSettingsGUIValues
+        
+        dialog.loadCurrentState(currentState)
+        
+        # change widgets
+        self.changeScreen(dialog)
+        # put a reference to the new window
+        self.view
             
     # new show methods
     def showAutoconfDialog(self):
-        # get autoconf widgets
-        self.changeScreen(self.autoconfDialog)
+        #instantiate
+        self.autoconfDialog = AutoconfDialog(self)
+        self.navigate(self.autoconfDialog)
     
     def backToMainWindowDialog(self):
         # restore main window
         self.mainScreen = MainMenuDialog(self)
-        self.mainScreen.setToInitialState()
-        
-        self.changeScreen(self.mainScreen)
+        self.navigate(self.mainScreen)
     
     def showNetworkSettingsDialog(self):
         # get network settings widgets
         self.networkSettingsDialog = NetworkSettingsDialog(self)
-        self.networkSettingsDialog.setToInitialState()
-        self.changeScreen(self.networkSettingsDialog)
+        self.navigate(self.networkSettingsDialog)
     
     def showRequirementsCheckDialog(self):
         self.requirementsCheck.show(self.view)

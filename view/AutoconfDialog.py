@@ -32,6 +32,9 @@ class AutoconfDialog(GladeWindow):
         self.gladePath = 'autoconf.glade'
         self.logger = logging.getLogger('AutoconfDialog')
         
+        self.entriesKey = "entries"
+        self.visiblesKey= "visibles"
+        
         self.buildUI(self.gladePath)
     
     def addTranslations(self):
@@ -79,7 +82,37 @@ class AutoconfDialog(GladeWindow):
         self.trafficSignalChange(2)
         self.builder.get_object('label11').set_text('PENDIENTE')
     
+    def initGUIValues(self):
+        # entries
+        entries = {}
+        entries["entry1"] = ''
+        entries["entry2"] = ''
+        entries["entry3"] = ''
+        self.guiValues[self.entriesKey] = entries
+        
+        # visibles
+        visibles = {}
+        visibles["label9"] = False
+        visibles["label7"] = False
+        visibles["entry4"] = False
+        visibles["entry5"] = False
+        visibles["button2"] = False
+        self.guiValues[self.visiblesKey] = visibles
+    
+    def loadCurrentState(self, guiValues):
+        super(AutoconfDialog, self).loadCurrentState(guiValues)
+        # init entries texts
+        for entryKey in self.guiValues[self.entriesKey].keys():
+            entryValue = self.guiValues[self.entriesKey][entryKey]
+            self.builder.get_object(visibleKey).set_visible(visibleValue)
+         
+        # init visibles
+        for visibleKey in self.guiValues[self.visiblesKey].keys():
+            visibleValue = self.guiValues[self.visiblesKey][visibleKey]
+            self.builder.get_object(visibleKey).set_visible(visibleValue)
+    
     def show(self):
-        self.setToInitialState()
+        self.initGUIValues()
+        self.loadCurrentState(self.guiValues)
         # super method
         super(AutoconfDialog, self).show()

@@ -49,8 +49,11 @@ class NetworkSettingsDialog(GladeWindow):
         self.logger.debug('Back to the main window')
         self.controller.backToMainWindowDialog()
     
-    def setToInitialState(self):
+    def initGUIValues(self):
         pass
+    
+    def loadCurrentState(self, guiValues):
+        super(NetworkSettingsDialog, self).loadCurrentState(guiValues)
     
     def show(self):
         self.setToInitialState()

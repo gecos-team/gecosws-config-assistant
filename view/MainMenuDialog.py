@@ -34,9 +34,6 @@ class MainMenuDialog(GladeWindow):
         self.gladePath = 'main.glade'
         self.logger = logging.getLogger('MainMenuDialog')
         
-        # gui values to store the initial state
-        # and to recover them after a screen change
-        self.guiValues = {}
         self.trafficlightsKey = "trafficlights"
         self.centerbuttonsKey = "centerbuttons"
         
@@ -98,6 +95,7 @@ class MainMenuDialog(GladeWindow):
     
     def softwareManagementHandler(self, *args):
         self.logger.debug('Open the software manager')
+        self.showSoftwareManager()
     
     def updateManagementHandler(self, *args):
         self.logger.debug('Self update')
@@ -160,7 +158,8 @@ class MainMenuDialog(GladeWindow):
         
         self.guiValues[self.centerbuttonsKey] = centerbuttons
     
-    def loadCurrentState(self):
+    def loadCurrentState(self, guiValues):
+        super(MainMenuDialog, self).loadCurrentState(guiValues)
          # init streetlights 
         for trafficlightKey in self.guiValues[self.trafficlightsKey].keys():
             trafficlightValue = self.guiValues[self.trafficlightsKey][trafficlightKey]
@@ -178,7 +177,6 @@ class MainMenuDialog(GladeWindow):
     def show(self):
         # set to initial state
         self.initGUIValues()
-        self.loadCurrentState()
         
         # super method
         super(MainMenuDialog, self).show()
@@ -190,7 +188,11 @@ class MainMenuDialog(GladeWindow):
     
     def showNetworkSettingsDialog(self):
         self.logger.debug("showNetworkSettingsDialog")
-        self.controller.showNetworkSettingsDialog()    
+        self.controller.showNetworkSettingsDialog()
+        
+    def showSoftwareManager(self):
+        self.logger.debug("showSoftwareManager")
+        self.controller.showSoftwareManager()
     
     # old methods, just pasted for copypaste sake
     def showRequirementsCheckDialog(self):
@@ -204,10 +206,6 @@ class MainMenuDialog(GladeWindow):
     def showUserAuthenticationMethod(self):
         self.logger.debug("showUserAuthenticationMethod")
         self.controller.showUserAuthenticationMethod()
-        
-    def showSoftwareManager(self):
-        self.logger.debug("showSoftwareManager")
-        self.controller.showSoftwareManager()
         
     def showLocalUserListView(self):
         self.logger.debug("showLocalUserListView")
