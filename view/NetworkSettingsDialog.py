@@ -22,6 +22,7 @@ __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 from GladeWindow import GladeWindow
+from gi.repository import Gtk, Gdk
 import logging
 """
 Network settings redone in Glade
@@ -33,6 +34,9 @@ class NetworkSettingsDialog(GladeWindow):
         self.logger = logging.getLogger('NetworkSettingsDialog')
         
         self.buildUI(self.gladePath)
+        
+        self.store = self.builder.get_object('liststore1')
+        self.view = self.builder.get_object('treeview1')
     
     def addTranslations(self):
         super(NetworkSettingsDialog, self).addTranslations()
@@ -50,12 +54,12 @@ class NetworkSettingsDialog(GladeWindow):
         self.controller.backToMainWindowDialog()
     
     def initGUIValues(self):
-        pass
+        self.guiValues = {}
     
     def loadCurrentState(self, guiValues):
         super(NetworkSettingsDialog, self).loadCurrentState(guiValues)
     
     def show(self):
-        self.setToInitialState()
+        self.initGUIValues()
         # super method
         super(NetworkSettingsDialog, self).show()

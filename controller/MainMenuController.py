@@ -16,7 +16,7 @@
 # along with this package; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
-__author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
+__author__ = "Abraham Macias Paredes <amacias@solutia-it.es> Francisco Fuentes Barrera <ffuentes@solutia-it.es>"
 __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
@@ -25,6 +25,9 @@ from controller.ConnectWithGecosCCController import ConnectWithGecosCCController
 from controller.UserAuthenticationMethodController import UserAuthenticationMethodController
 from controller.LocalUserController import LocalUserController
 from controller.SystemStatusController import SystemStatusController
+from controller.AutoSetupController import AutoSetupController
+from controller.NTPServerController import NTPServerController
+from controller.NetworkInterfaceController import NetworkInterfaceController
 
 from view.MainMenuDialog import MainMenuDialog
 from view.AutoconfDialog import AutoconfDialog
@@ -54,12 +57,16 @@ class MainMenuController(object):
         '''
         self.view = None
         
-        # old dialogs 
-        self.requirementsCheck = RequirementsCheckController()
+        # controllers
         self.connectWithGecosCC = ConnectWithGecosCCController()
         self.userAuthenticationMethod = UserAuthenticationMethodController()
         self.localUserList = LocalUserController()
         self.systemStatus = SystemStatusController()
+        self.networkInterface = NetworkInterfaceController()
+        self.ntpServer = NTPServerController()
+        self.autoSetup = AutoSetupController()
+        # almost deprecated
+        self.requirementsCheck = RequirementsCheckController()
         
         # new pars
         self.mainScreen = MainMenuDialog(self)
