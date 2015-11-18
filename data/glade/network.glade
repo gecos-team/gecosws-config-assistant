@@ -24,14 +24,23 @@
   </object>
   <object class="GtkListStore" id="liststore1">
     <columns>
-      <!-- column-name GObject1 -->
-      <column type="GObject"/>
-      <!-- column-name gchar1 -->
-      <column type="gchar"/>
+      <!-- column-name Interface -->
+      <column type="gchararray"/>
+      <!-- column-name IP -->
+      <column type="gchararray"/>
     </columns>
-  </object>
-  <object class="GtkTreeViewColumn" id="treeviewcolumn1">
-    <property name="title" translatable="yes">column</property>
+
+
+    <data>
+      <row>
+        <col id="0" translatable="yes">lo</col>
+        <col id="1" translatable="yes">127.0.0.1</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">eth0</col>
+        <col id="1" translatable="yes">192.168.1.99</col>
+      </row>
+    </data>
   </object>
   <object class="GtkWindow" id="window1">
     <property name="can_focus">False</property>
@@ -208,6 +217,8 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="model">liststore1</property>
+                                <property name="hadjustment">adjustment1</property>
+                                <property name="vadjustment">adjustment2</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -245,7 +256,7 @@
                                     <property name="receives_default">True</property>
                                     <property name="border_width">4</property>
                                     <property name="use_action_appearance">False</property>
-                                    <signal name="clicked" handler="onBack" swapped="no"/>
+									<signal name="clicked" handler="onBack" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="top_attach">1</property>
