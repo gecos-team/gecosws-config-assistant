@@ -22,7 +22,6 @@ __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 from gi.repository import Gtk, Gdk
-import time
 from view import GLADE_PATH, CSS_PATH, CSS_COMMON 
 """
 Abstract parent class for any Gtk window used in GECOS
@@ -75,27 +74,6 @@ class GladeWindow(object):
     def show(self):
         self.window.show_all()
         Gtk.main()
-    
-    def putInCenterFrame(self, newCentralFrame):
-        self.logger.debug("Enter putInCenterFrame()")
-        children = self.getCentralFrame().get_children()
-        self.logger.debug("destroy previous children")
-        # destroy previous children
-        for child in children:
-            self.getCentralFrame().remove(child)
-            # child.destroy()
-        
-        self.logger.debug("append the other children")
-        # add other children
-        otherChildren = newCentralFrame.get_children()
-        for otherChild in otherChildren:
-            newCentralFrame.remove(otherChild)
-            self.getCentralFrame().add(otherChild)
-            # child.reparent(self.frame)
-        
-        #self.logger.debug("show all the children")
-        # show em
-        #self.getCentralFrame().show_all()
     
     def addHandlers(self):
         self.logger.debug("Adding all handlers")

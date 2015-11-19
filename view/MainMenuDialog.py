@@ -54,18 +54,6 @@ class MainMenuDialog(GladeWindow):
         self.handlers["onNetw"] = self.netManagementHandler
         self.logger.debug("Adding autoconf handler")
         self.handlers["onAuto"] = self.autoconfManagementHandler
-        self.logger.debug("Adding help1 handler")
-        self.handlers["onHlp1"] = self.help1ManagementHandler
-        self.logger.debug("Adding help2 handler")
-        self.handlers["onHlp2"] = self.help2ManagementHandler
-        self.logger.debug("Adding onSyst handler")
-        self.handlers["onSyst"] = self.statusManagementHandler
-        self.logger.debug("Adding onUsrs handler")
-        self.handlers["onUsrs"] = self.localUsersManagementHandler
-        self.logger.debug("Adding onMana handler")
-        self.handlers["onMana"] = self.softwareManagementHandler
-        self.logger.debug("Adding onUpdt handler")
-        self.handlers["onUpdt"] = self.updateManagementHandler
     
     # Here comes the handlers
     def connectWithGECOSHandler(self, *args):
@@ -81,28 +69,6 @@ class MainMenuDialog(GladeWindow):
     def autoconfManagementHandler(self, *args):
         self.logger.debug('This should call the autoconf method or whatever')
     
-    def help1ManagementHandler(self, *args):
-        self.logger.debug('This should show a brief help about GECOS linking')
-    
-    def help2ManagementHandler(self, *args):
-        self.logger.debug('This should show a brief help about auth modes')
-    
-    def statusManagementHandler(self, *args):
-        self.logger.debug('This should show the system status')
-        self.controller.showSystemStatus()
-    
-    def localUsersManagementHandler(self, *args): 
-        self.logger.debug('Show local users management')
-        self.controller.showLocalUserListView()
-    
-    def softwareManagementHandler(self, *args):
-        self.logger.debug('Open the software manager')
-        self.controller.showSoftwareManager()
-    
-    def updateManagementHandler(self, *args):
-        self.logger.debug('Update config assistant')
-        self.controller.updateConfigAsystant()
-        
     '''
     change the image of the traffic signal
     index: Between 1 and 5, if not it will raise and Exception

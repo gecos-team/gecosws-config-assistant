@@ -29,6 +29,7 @@ from controller.AutoSetupController import AutoSetupController
 from controller.NTPServerController import NTPServerController
 from controller.NetworkInterfaceController import NetworkInterfaceController
 
+from view.MainWindow import MainWindow
 from view.MainMenuDialog import MainMenuDialog
 from view.AutoconfDialog import AutoconfDialog
 from view.NetworkSettingsDialog import NetworkSettingsDialog
@@ -55,7 +56,8 @@ class MainMenuController(object):
         '''
         Constructor
         '''
-        self.view = None
+        self.window = MainWindow(self)
+        self.currentView = None
         
         # controllers
         self.connectWithGecosCC = ConnectWithGecosCCController()
@@ -79,10 +81,15 @@ class MainMenuController(object):
         self.logger = logging.getLogger('MainMenuController')
         
     def show(self):
-        self.view = self.mainScreen
-        self.view.initGUIValues()
-        self.view.loadCurrentState(None)
-        self.view.show()
+        self.window.buildUI()
+        
+        self.currentView = self.mainScreen
+        self.currentView.initGUIValues()
+        self.currentView.loadCurrentState(None)
+        centralMainFrame = self.currentView.getCentralFrame()
+        
+        self.window.putInCenterFrame(centralMainFrame)
+        self.window.show()
 
     def hide(self):
         self.root.destroy()
@@ -91,7 +98,7 @@ class MainMenuController(object):
     def changeScreen(self, dialog):
         centralFrame = dialog.getCentralFrame()
         try:
-            self.view.putInCenterFrame(centralFrame)
+            self.window.putInCenterFrame(centralFrame)
         except:
             tb = traceback.format_exc()
             self.logger.error(tb)
@@ -99,22 +106,22 @@ class MainMenuController(object):
     # navigate thru screens
     def navigate(self, dialog):
         # retrieve values from previous window
-        toSaveState = self.view.getCurrentState()
+        toSaveState = self.currentView.getCurrentState()
         
-        if(type(self.view) is MainMenuDialog):
+        if(type(self.currentView) is MainMenuDialog):
             self.mainScreenGUIValues = toSaveState
-        elif(type(self.view) is AutoconfDialog):
+        elif(type(self.currentView) is AutoconfDialog):
             self.autoconfGUIValues = toSaveState
-        elif(type(self.view) is NetworkSettingsDialog):
+        elif(type(self.currentView) is NetworkSettingsDialog):
             self.networkSettingsGUIValues = toSaveState
         
         # load previous state
         currentState = {}
-        if(type(self.view) is MainMenuDialog):
+        if(type(self.currentView) is MainMenuDialog):
             currentState = self.mainScreenGUIValues
-        elif(type(self.view) is AutoconfDialog):
+        elif(type(self.currentView) is AutoconfDialog):
             currentState = self.autoconfGUIValues
-        elif(type(self.view) is NetworkSettingsDialog):
+        elif(type(self.currentView) is NetworkSettingsDialog):
             currentState = self.networkSettingsGUIValues
         
         dialog.loadCurrentState(currentState)
@@ -122,7 +129,7 @@ class MainMenuController(object):
         # change widgets
         self.changeScreen(dialog)
         # put a reference to the new window
-        self.view
+        self.currentView = dialog
             
     # new show methods
     def showAutoconfDialog(self):
@@ -141,13 +148,13 @@ class MainMenuController(object):
         self.navigate(self.networkSettingsDialog)
     
     def showRequirementsCheckDialog(self):
-        self.requirementsCheck.show(self.view)
+        self.requirementsCheck.show(self.currentView)
 
     def showConnectWithGecosCCDialog(self):
-        self.connectWithGecosCC.show(self.view)
+        self.connectWithGecosCC.show(self.currentView)
 
     def showUserAuthenticationMethod(self):
-        self.userAuthenticationMethod.show(self.view)
+        self.userAuthenticationMethod.show(self.currentView)
 
     def showSoftwareManager(self):
         self.logger.debug("showSoftwareManager")
@@ -155,7 +162,7 @@ class MainMenuController(object):
         os.spawnlp(os.P_NOWAIT, cmd, cmd)
 
     def showLocalUserListView(self):
-        self.localUserList.showList(self.view)
+        self.localUserList.showList(self.currentView)
 
     def updateConfigAsystant(self):
         if askyesno_gtk( _("Are you sure you want to update the GECOS Config Assistant?"), self.mainScreen.getMainWindow()):
