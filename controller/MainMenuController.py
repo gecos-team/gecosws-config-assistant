@@ -20,31 +20,26 @@ __author__ = "Abraham Macias Paredes <amacias@solutia-it.es> Francisco Fuentes B
 __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
-from controller.RequirementsCheckController import RequirementsCheckController
-from controller.ConnectWithGecosCCController import ConnectWithGecosCCController
-from controller.UserAuthenticationMethodController import UserAuthenticationMethodController
-from controller.LocalUserController import LocalUserController
-from controller.SystemStatusController import SystemStatusController
-from controller.AutoSetupController import AutoSetupController
-from controller.NTPServerController import NTPServerController
-from controller.NetworkInterfaceController import NetworkInterfaceController
-
-from view.MainWindow import MainWindow
-from view.MainMenuDialog import MainMenuDialog
-from view.AutoconfDialog import AutoconfDialog
-from view.NetworkSettingsDialog import NetworkSettingsDialog
-
-from view.CommonDialog import showerror_gtk, showinfo_gtk, askyesno_gtk
-from util.PackageManager import PackageManager 
-
+from gettext import gettext as _
+import gettext
+from inspect import getmembers
 import logging
 import os, traceback
-
-from inspect import getmembers
 from pprint import pprint
 
-import gettext
-from gettext import gettext as _
+from controller.AutoSetupController import AutoSetupController
+from controller.ConnectWithGecosCCController import ConnectWithGecosCCController
+from controller.LocalUserController import LocalUserController
+from controller.NTPServerController import NTPServerController
+from controller.NetworkInterfaceController import NetworkInterfaceController
+from controller.RequirementsCheckController import RequirementsCheckController
+from controller.SystemStatusController import SystemStatusController
+from controller.UserAuthenticationMethodController import UserAuthenticationMethodController
+from util.PackageManager import PackageManager 
+from view.AutoconfDialog import AutoconfDialog
+from view.CommonDialog import showerror_gtk, showinfo_gtk, askyesno_gtk
+from view.MainWindow import MainWindow
+
 gettext.textdomain('gecosws-config-assistant')
 
 class MainMenuController(object):
@@ -57,7 +52,6 @@ class MainMenuController(object):
         Constructor
         '''
         self.window = MainWindow(self)
-        self.currentView = None
         
         # controllers
         self.connectWithGecosCC = ConnectWithGecosCCController()
@@ -70,14 +64,6 @@ class MainMenuController(object):
         # almost deprecated
         self.requirementsCheck = RequirementsCheckController()
         
-        # new pars
-        self.mainScreen = MainMenuDialog(self)
-        self.mainScreenGUIValues = {}
-        self.autoconfDialog = AutoconfDialog(self)
-        self.autoconfGUIValues = {}
-        self.networkSettingsDialog = NetworkSettingsDialog(self)
-        self.networkSettingsGUIValues = {}
-        
         self.logger = logging.getLogger('MainMenuController')
         
     def show(self):
@@ -85,78 +71,33 @@ class MainMenuController(object):
         self.window.initGUIValues()
         self.window.loadCurrentState(None)
         
-        self.currentView = self.mainScreen
-        self.currentView.initGUIValues()
-        self.currentView.loadCurrentState(None)
-        centralMainFrame = self.currentView.getCentralFrame()
+        self.window.initFrame()
         
-        self.window.putInCenterFrame(centralMainFrame)
         self.window.show()
 
     def hide(self):
         self.root.destroy()
-    
-    # common screen switch method
-    def changeScreen(self, dialog):
-        centralFrame = dialog.getCentralFrame()
-        try:
-            self.window.putInCenterFrame(centralFrame)
-        except:
-            tb = traceback.format_exc()
-            self.logger.error(tb)
-    
-    # navigate thru screens
-    def navigate(self, dialog):
-        # retrieve values from previous window
-        toSaveState = self.currentView.getCurrentState()
-        
-        if(type(self.currentView) is MainMenuDialog):
-            self.mainScreenGUIValues = toSaveState
-        elif(type(self.currentView) is AutoconfDialog):
-            self.autoconfGUIValues = toSaveState
-        elif(type(self.currentView) is NetworkSettingsDialog):
-            self.networkSettingsGUIValues = toSaveState
-        
-        # load previous state
-        currentState = {}
-        if(type(self.currentView) is MainMenuDialog):
-            currentState = self.mainScreenGUIValues
-        elif(type(self.currentView) is AutoconfDialog):
-            currentState = self.autoconfGUIValues
-        elif(type(self.currentView) is NetworkSettingsDialog):
-            currentState = self.networkSettingsGUIValues
-        
-        dialog.loadCurrentState(currentState)
-        
-        # change widgets
-        self.changeScreen(dialog)
-        # put a reference to the new window
-        self.currentView = dialog
             
     # new show methods
     def showAutoconfDialog(self):
-        #instantiate
-        self.autoconfDialog = AutoconfDialog(self)
-        self.navigate(self.autoconfDialog)
+        self.window.gotoAutoconf()
     
     def backToMainWindowDialog(self):
         # restore main window
-        self.mainScreen = MainMenuDialog(self)
-        self.navigate(self.mainScreen)
+        self.window.gotoMainWindow()
     
     def showNetworkSettingsDialog(self):
         # get network settings widgets
-        self.networkSettingsDialog = NetworkSettingsDialog(self)
-        self.navigate(self.networkSettingsDialog)
+        self.window.gotoSettings()
     
     def showRequirementsCheckDialog(self):
-        self.requirementsCheck.show(self.currentView)
+        self.requirementsCheck.show(self.window.currentView)
 
     def showConnectWithGecosCCDialog(self):
-        self.connectWithGecosCC.show(self.currentView)
+        self.connectWithGecosCC.show(self.window.currentView)
 
     def showUserAuthenticationMethod(self):
-        self.userAuthenticationMethod.show(self.currentView)
+        self.userAuthenticationMethod.show(self.window.currentView)
 
     def showSoftwareManager(self):
         self.logger.debug("showSoftwareManager")
@@ -164,21 +105,21 @@ class MainMenuController(object):
         os.spawnlp(os.P_NOWAIT, cmd, cmd)
 
     def showLocalUserListView(self):
-        self.localUserList.showList(self.currentView)
+        self.localUserList.showList(self.window.currentView)
 
     def updateConfigAsystant(self):
-        if askyesno_gtk( _("Are you sure you want to update the GECOS Config Assistant?"), self.mainScreen.getMainWindow()):
+        if askyesno_gtk( _("Are you sure you want to update the GECOS Config Assistant?"), self.window.getMainWindow()):
             pm = PackageManager()
             if not pm.update_cache():
-                showerror_gtk( _("An error occurred during the upgrade"), self.mainScreen.getMainWindow())
+                showerror_gtk( _("An error occurred during the upgrade"), self.window.getMainWindow())
             else:
                 try:
                     if not pm.upgrade_package('gecosws-config-assistant'):
-                        showerror_gtk( _("CGA is already at the newest version!"), self.mainScreen.getMainWindow())
+                        showerror_gtk( _("CGA is already at the newest version!"), self.window.getMainWindow())
                     else:
-                        showerror_gtk( _("GECOS Config Assistant has been udpated. Please restart GCA"), self.mainScreen.getMainWindow())
+                        showerror_gtk( _("GECOS Config Assistant has been udpated. Please restart GCA"), self.window.getMainWindow())
                 except:
-                    showerror_gtk( _("An error occurred during the upgrade"), self.mainScreen.getMainWindow())
+                    showerror_gtk( _("An error occurred during the upgrade"), self.window.getMainWindow())
                     
         
 

@@ -22,13 +22,28 @@ __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 import logging
+
 from gi.repository import Gtk, Gdk
-from view import GLADE_PATH, CSS_PATH, CSS_COMMON 
+from view import GLADE_PATH, CSS_PATH, CSS_COMMON
+from view.AutoconfDialog import AutoconfDialog
+from view.MainMenuDialog import MainMenuDialog
+from view.NetworkSettingsDialog import NetworkSettingsDialog
+
 
 class MainWindow(object):
     def __init__(self, mainController):
         self.controller = mainController
         self.logger = logging.getLogger('MainWindow')
+        
+        self.currentView = None
+        
+        # new pars
+        self.mainScreen = MainMenuDialog(self.controller)
+        self.mainScreenGUIValues = {}
+        self.autoconfDialog = AutoconfDialog(self.controller)
+        self.autoconfGUIValues = {}
+        self.networkSettingsDialog = NetworkSettingsDialog(self.controller)
+        self.networkSettingsGUIValues = {}
     
     def buildUI(self):
         self.logger.debug("Building UI")
@@ -78,6 +93,62 @@ class MainWindow(object):
     def show(self):
         self.window.show_all()
         Gtk.main()
+        
+    def getMainWindow(self):
+        return self.window
+        
+    def initFrame(self):
+        self.currentView = self.mainScreen
+        self.currentView.initGUIValues()
+        self.currentView.loadCurrentState(None)
+        centralMainFrame = self.currentView.getCentralFrame()
+        self.putInCenterFrame(centralMainFrame)
+    
+    # common screen switch method
+    def changeScreen(self, dialog):
+        centralFrame = dialog.getCentralFrame()
+        try:
+            self.putInCenterFrame(centralFrame)
+        except:
+            tb = traceback.format_exc()
+            self.logger.error(tb)
+    
+    # navigate thru screens
+    def navigate(self, dialog):
+        # retrieve values from previous window
+        toSaveState = self.currentView.getCurrentState()
+        
+        if(type(self.currentView) is MainMenuDialog):
+            self.mainScreenGUIValues = toSaveState
+        elif(type(self.currentView) is AutoconfDialog):
+            self.autoconfGUIValues = toSaveState
+        elif(type(self.currentView) is NetworkSettingsDialog):
+            self.networkSettingsGUIValues = toSaveState
+        
+        # load previous state
+        currentState = {}
+        if(type(self.currentView) is MainMenuDialog):
+            currentState = self.mainScreenGUIValues
+        elif(type(self.currentView) is AutoconfDialog):
+            currentState = self.autoconfGUIValues
+        elif(type(self.currentView) is NetworkSettingsDialog):
+            currentState = self.networkSettingsGUIValues
+        
+        dialog.loadCurrentState(currentState)
+        
+        # change widgets
+        self.changeScreen(dialog)
+        # put a reference to the new window
+        self.currentView = dialog
+    
+    def gotoAutoconf(self):
+        self.navigate(AutoconfDialog(self.controller))
+    
+    def gotoMainWindow(self):
+        self.navigate(MainMenuDialog(self.controller))
+    
+    def gotoSettings(self):
+        self.navigate(NetworkSettingsDialog(self.controller))
     
     def getCentralFrame(self):
         return self.builder.get_object("frame2")
