@@ -82,6 +82,8 @@ class MainMenuController(object):
         
     def show(self):
         self.window.buildUI()
+        self.window.initGUIValues()
+        self.window.loadCurrentState(None)
         
         self.currentView = self.mainScreen
         self.currentView.initGUIValues()

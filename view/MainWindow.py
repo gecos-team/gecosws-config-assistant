@@ -33,7 +33,14 @@ class MainWindow(object):
     def buildUI(self):
         self.logger.debug("Building UI")
         
-        self.gladepath = 'main.glade'
+        self.gladepath = 'window.glade'
+        
+        # gui values to store the initial state
+        # and to recover them after a screen change
+        # each class should inform them
+        self.guiValues = {}
+        self.buttonsKey = "buttons"
+        
         self.builder = Gtk.Builder()
         self.builder.add_from_file(GLADE_PATH+self.gladepath)
         
@@ -51,6 +58,21 @@ class MainWindow(object):
         
         self.addHandlers()
         self.bindHandlers()
+        
+    def initGUIValues(self):
+        buttons = {}
+        buttons["linkbutton"]= False
+        buttons["authbutton"]= False
+        self.guiValues[self.buttonsKey] = buttons
+    
+    def loadCurrentState(self, guiValues):
+        if(guiValues is not None):
+            self.guiValues = guiValues
+            
+        for buttonKey in self.guiValues[self.buttonsKey].keys():
+            buttonValue = self.guiValues[self.buttonsKey][buttonKey]
+            button = self.builder.get_object(buttonKey)
+            button.set_sensitive(buttonValue)
     
     def show(self):
         self.window.show_all()
@@ -78,6 +100,10 @@ class MainWindow(object):
         self.logger.debug("Adding all handlers")
         self.handlers = {}
         # add new handlers here
+        self.logger.debug("Adding auth management handler")
+        self.handlers["onAuth"] = self.authManagementHandler
+        self.logger.debug("Adding link/unlink handler")
+        self.handlers["onLink"] = self.connectWithGECOSHandler
         self.logger.debug("Adding help1 handler")
         self.handlers["onHlp1"] = self.help1ManagementHandler
         self.logger.debug("Adding help2 handler")
@@ -94,7 +120,13 @@ class MainWindow(object):
         self.handlers['onDeleteWindow'] = Gtk.main_quit
     
     def bindHandlers(self):
-        self.builder.connect_signals(self.handlers)        
+        self.builder.connect_signals(self.handlers)
+    
+    def connectWithGECOSHandler(self, *args):
+        self.logger.debug('This should display the gecos connection settings')
+        
+    def authManagementHandler(self, *args):
+        self.logger.debug('This should display the auth settings')
     
     def help1ManagementHandler(self, *args):
         self.logger.debug('This should show a brief help about GECOS linking')

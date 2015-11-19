@@ -122,8 +122,6 @@ class MainMenuDialog(GladeWindow):
         centerbuttons["sysbutton"]=  False
         centerbuttons["sysbutton"]=  False
         centerbuttons["userbutton"]= False
-        centerbuttons["linkbutton"]= False
-        centerbuttons["authbutton"]= False
         
         self.guiValues[self.centerbuttonsKey] = centerbuttons
     
