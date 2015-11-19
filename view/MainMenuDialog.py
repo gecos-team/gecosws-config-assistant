@@ -54,6 +54,9 @@ class MainMenuDialog(GladeWindow):
         self.handlers["onNetw"] = self.netManagementHandler
         self.logger.debug("Adding autoconf handler")
         self.handlers["onAuto"] = self.autoconfManagementHandler
+        self.logger.debug("Adding NTP handler")
+        self.handlers["onnNTP"] = self.ntpManagementHandler
+        
     
     # Here comes the handlers
     def connectWithGECOSHandler(self, *args):
@@ -68,6 +71,9 @@ class MainMenuDialog(GladeWindow):
     
     def autoconfManagementHandler(self, *args):
         self.logger.debug('This should call the autoconf method or whatever')
+    
+    def ntpManagementHandler(self, *args):
+        self.logger.debug('This should call the NTP manager')
     
     '''
     change the image of the traffic signal
@@ -119,8 +125,8 @@ class MainMenuDialog(GladeWindow):
         centerbuttons["netbutton"] = True
         centerbuttons["confbutton"]= False
         centerbuttons["syncbutton"]= False
-        centerbuttons["sysbutton"]=  False
-        centerbuttons["sysbutton"]=  False
+        centerbuttons["sysbutton"] = False
+        centerbuttons["sysbutton"] = False
         centerbuttons["userbutton"]= False
         
         self.guiValues[self.centerbuttonsKey] = centerbuttons

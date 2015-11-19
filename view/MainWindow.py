@@ -63,6 +63,7 @@ class MainWindow(object):
         buttons = {}
         buttons["linkbutton"]= False
         buttons["authbutton"]= False
+        
         self.guiValues[self.buttonsKey] = buttons
     
     def loadCurrentState(self, guiValues):
