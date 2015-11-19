@@ -37,6 +37,18 @@ class NetworkSettingsDialog(GladeWindow):
         
         self.store = self.builder.get_object('liststore1')
         self.view = self.builder.get_object('treeview1')
+        
+        self.store.clear() 
+        
+        column = Gtk.TreeViewColumn('Interface', Gtk.CellRendererText(), text=0)   
+        column.set_clickable(True)   
+        column.set_resizable(True)   
+        self.view.append_column(column)
+         
+        column = Gtk.TreeViewColumn('IP', Gtk.CellRendererText(), text=1)
+        column.set_clickable(True)   
+        column.set_resizable(True)   
+        self.view.append_column(column)
     
     def addTranslations(self):
         super(NetworkSettingsDialog, self).addTranslations()
