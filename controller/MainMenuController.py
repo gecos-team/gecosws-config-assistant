@@ -132,6 +132,9 @@ class MainMenuController(object):
         # get network settings widgets
         self.window.gotoNetworkSettings()
     
+    def showNTPSettingsDialog(self):
+        self.window.gotoNTPSettings()
+    
     def showRequirementsCheckDialog(self):
         self.requirementsCheck.show(self.window.currentView)
 
@@ -169,3 +172,5 @@ class MainMenuController(object):
         self.systemStatus.show()
 
 
+    def getNTPController(self):
+        return self.requirementsCheck.ntpServer

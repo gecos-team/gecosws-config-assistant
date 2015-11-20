@@ -58,11 +58,10 @@ class NTPServerController(object):
         self.logger.debug('hide')
         self.view.cancel()
     
-    def save(self):
+    def save(self, viewData):
         self.logger.debug('save')
-        data = self.view.get_data()
         try:
-            if self.dao.save(data):
+            if self.dao.save(viewData):
                 self.hide()
             else:
                 # Show error message
@@ -74,7 +73,7 @@ class NTPServerController(object):
                 self.view)
             
 
-    def test(self):
+    def test(self, ntpDialog):
         self.logger.debug('test')
-        data = self.view.get_data()
+        data = ntpDialog.get_data()
         return data.syncrhonize()

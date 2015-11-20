@@ -73,6 +73,7 @@ class MainMenuDialog(GladeWindow):
     
     def ntpManagementHandler(self, *args):
         self.logger.debug('This should call the NTP manager')
+        self.controller.showNTPSettingsDialog()
     
     '''
     change the image of the traffic signal
@@ -111,9 +112,11 @@ class MainMenuDialog(GladeWindow):
     def initGUIValues(self, calculatedStatus):
         
         networkTrafficLightValue = 2
+        networkActivated = False
         
         try:
             networkTrafficLightValue = calculatedStatus[self.controller.networkStatusKey]
+            networkActivated = True
         finally:
             pass
         
@@ -121,8 +124,14 @@ class MainMenuDialog(GladeWindow):
         trafficlights = {}
         
         trafficlights["trafficlight1"] = networkTrafficLightValue
-        trafficlights["trafficlight2"] = 3
-        trafficlights["trafficlight3"] = 3
+        
+        if(networkActivated):
+            trafficlights["trafficlight2"] = 2
+            trafficlights["trafficlight3"] = 2
+        else:
+            trafficlights["trafficlight2"] = 3
+            trafficlights["trafficlight3"] = 3
+        
         trafficlights["trafficlight4"] = 3
         trafficlights["trafficlight5"] = 3
         
@@ -131,8 +140,14 @@ class MainMenuDialog(GladeWindow):
         # center buttons
         centerbuttons = {}
         centerbuttons["netbutton"] = True
-        centerbuttons["confbutton"]= False
-        centerbuttons["syncbutton"]= False
+        
+        if(networkActivated):
+            centerbuttons["confbutton"]= True
+            centerbuttons["syncbutton"]= True
+        else:
+            centerbuttons["confbutton"]= False
+            centerbuttons["syncbutton"]= False
+            
         centerbuttons["sysbutton"] = False
         centerbuttons["sysbutton"] = False
         centerbuttons["userbutton"]= False
@@ -157,7 +172,7 @@ class MainMenuDialog(GladeWindow):
     '''
     def show(self):
         # set to initial state
-        self.initGUIValues()
+        self.initGUIValues(None)
         
         # super method
         super(MainMenuDialog, self).show()

@@ -28,6 +28,7 @@ from view import GLADE_PATH, CSS_PATH, CSS_COMMON
 from view.AutoconfDialog import AutoconfDialog
 from view.MainMenuDialog import MainMenuDialog
 from view.NetworkSettingsDialog import NetworkSettingsDialog
+from view.NTPDialog import NTPDialog
 
 
 class MainWindow(object):
@@ -53,6 +54,8 @@ class MainWindow(object):
         self.autoconfGUIValues = {}
         self.networkSettingsDialog = NetworkSettingsDialog(self.controller)
         self.networkSettingsGUIValues = {}
+        self.ntpDialog = NTPDialog(self.controller)
+        self.ntpGUIValues = {}
     
     def buildUI(self):
         self.logger.debug("Building UI")
@@ -127,21 +130,29 @@ class MainWindow(object):
         # retrieve values from previous window
         toSaveState = self.currentView.getCurrentState()
         
+#         self.logger.error(toSaveState)
+        
         if(type(self.currentView) is MainMenuDialog):
             self.mainScreenGUIValues = toSaveState
         elif(type(self.currentView) is AutoconfDialog):
             self.autoconfGUIValues = toSaveState
         elif(type(self.currentView) is NetworkSettingsDialog):
             self.networkSettingsGUIValues = toSaveState
+        elif(type(self.currentView) is NTPDialog):
+            self.ntpGUIValues = toSaveState
         
         # load previous state
         currentState = {}
-        if(type(self.currentView) is MainMenuDialog):
+        if(type(dialog) is MainMenuDialog):
             currentState = self.mainScreenGUIValues
-        elif(type(self.currentView) is AutoconfDialog):
+        elif(type(dialog) is AutoconfDialog):
             currentState = self.autoconfGUIValues
-        elif(type(self.currentView) is NetworkSettingsDialog):
+        elif(type(dialog) is NetworkSettingsDialog):
             currentState = self.networkSettingsGUIValues
+        elif(type(dialog) is NTPDialog):
+            currentState = self.ntpGUIValues
+            
+#         self.logger.error(currentState)
         
         dialog.loadCurrentState(currentState)
         
@@ -160,6 +171,11 @@ class MainWindow(object):
         self.networkSettingsDialog = NetworkSettingsDialog(self.controller) 
         self.networkSettingsDialog.putNetworkInterfaces(self.controller.getNetworkInterfaces())
         self.navigate(self.networkSettingsDialog)
+    
+    def gotoNTPSettings(self):
+        self.ntpDialog = NTPDialog(self.controller) 
+        self.ntpDialog.initGUIValues(self.ntpGUIValues)
+        self.navigate(self.ntpDialog)
     
     def getCentralFrame(self):
         return self.builder.get_object("frame2")
