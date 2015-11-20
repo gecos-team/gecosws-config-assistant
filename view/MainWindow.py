@@ -31,6 +31,15 @@ from view.NetworkSettingsDialog import NetworkSettingsDialog
 
 
 class MainWindow(object):
+    
+    _singleton = None
+    
+    @classmethod
+    def getInstance(cls, mainController):
+        if not isinstance(cls._singleton,cls):
+            cls._singleton = cls(mainController)
+        return cls._singleton
+    
     def __init__(self, mainController):
         self.controller = mainController
         self.logger = logging.getLogger('MainWindow')
@@ -97,9 +106,9 @@ class MainWindow(object):
     def getMainWindow(self):
         return self.window
         
-    def initFrame(self):
+    def initFrame(self, calculatedStatus):
         self.currentView = self.mainScreen
-        self.currentView.initGUIValues()
+        self.currentView.initGUIValues(calculatedStatus)
         self.currentView.loadCurrentState(None)
         centralMainFrame = self.currentView.getCentralFrame()
         self.putInCenterFrame(centralMainFrame)
@@ -147,8 +156,10 @@ class MainWindow(object):
     def gotoMainWindow(self):
         self.navigate(MainMenuDialog(self.controller))
     
-    def gotoSettings(self):
-        self.navigate(NetworkSettingsDialog(self.controller))
+    def gotoNetworkSettings(self):
+        self.networkSettingsDialog = NetworkSettingsDialog(self.controller) 
+        self.networkSettingsDialog.putNetworkInterfaces(self.controller.getNetworkInterfaces())
+        self.navigate(self.networkSettingsDialog)
     
     def getCentralFrame(self):
         return self.builder.get_object("frame2")
@@ -221,3 +232,7 @@ class MainWindow(object):
     def updateManagementHandler(self, *args):
         self.logger.debug('Update config assistant')
         self.controller.updateConfigAsystant()
+    
+    def putNetworkInterfaces(self, interfaces):
+        self.logger.debug('Adding network interfaces to network frame')
+        self.networkSettingsDialog.putNetworkInterfaces(interfaces)

@@ -24,6 +24,7 @@ __license__ = "GPL-2"
 from GladeWindow import GladeWindow
 from gi.repository import Gtk, Gdk
 import logging
+import os
 """
 Network settings redone in Glade
 """
@@ -50,6 +51,11 @@ class NetworkSettingsDialog(GladeWindow):
         column.set_resizable(True)   
         self.view.append_column(column)
     
+    def putNetworkInterfaces(self, interfaces):
+        self.logger.debug('Putting network interfaces')
+        for interface in interfaces:
+            self.store.append([interface.get_name(), interface.get_ip_address()])
+    
     def addTranslations(self):
         super(NetworkSettingsDialog, self).addTranslations()
     
@@ -59,6 +65,8 @@ class NetworkSettingsDialog(GladeWindow):
         # add new handlers here
         self.logger.debug("Adding go back handler")
         self.handlers["onBack"] = self.backToMainWindowHandler
+        self.logger.debug("")
+        self.handlers["onSetp"] = self.setupNetworkConnection
     
     # Here comes the handlers
     def backToMainWindowHandler(self, *args):
@@ -75,3 +83,8 @@ class NetworkSettingsDialog(GladeWindow):
         self.initGUIValues()
         # super method
         super(NetworkSettingsDialog, self).show()
+    
+    def setupNetworkConnection(self, *args):
+        self.logger.debug("setupNetworkConnection")
+        cmd = 'nm-connection-editor'
+        os.spawnlp(os.P_NOWAIT, cmd, cmd)

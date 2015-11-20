@@ -46,38 +46,80 @@ class MainMenuController(object):
     '''
     Controller class to show the main menu window.
     '''
+    
+    _singleton = None
+    
+    @classmethod
+    def getInstance(cls):
+        if not isinstance(cls._singleton,cls):
+            cls._singleton = cls()
+        return cls._singleton
 
     def __init__(self):
         '''
         Constructor
         '''
-        self.window = MainWindow(self)
+        self.window = MainWindow.getInstance(self)
         
         # controllers
         self.connectWithGecosCC = ConnectWithGecosCCController()
         self.userAuthenticationMethod = UserAuthenticationMethodController()
         self.localUserList = LocalUserController()
         self.systemStatus = SystemStatusController()
-        self.networkInterface = NetworkInterfaceController()
-        self.ntpServer = NTPServerController()
-        self.autoSetup = AutoSetupController()
-        # almost deprecated
         self.requirementsCheck = RequirementsCheckController()
+        
+        #keys
+        self.networkStatusKey = "networkStatus"
         
         self.logger = logging.getLogger('MainMenuController')
         
     def show(self):
+        
+        calculatedStatus = self.calculateStatus()
+        
         self.window.buildUI()
         self.window.initGUIValues()
         self.window.loadCurrentState(None)
         
-        self.window.initFrame()
+        self.window.initFrame(calculatedStatus)
         
         self.window.show()
 
     def hide(self):
         self.root.destroy()
-            
+    
+    def calculateStatus(self):
+        ret = {}
+        keepChecking = self.checkNetwork()
+        if(keepChecking):
+            ret[self.networkStatusKey] = 1
+            keepChecking = self.checkAutoconf()
+            if(keepChecking):
+                keepChecking = self.checkNTP()
+                if(keepChecking):
+                    keepChecking = self.checkGECOS()
+        
+        return ret
+    
+    def checkNetwork(self):
+        self.logger.debug("Checking network status")
+        ret = self.requirementsCheck.getNetworkStatus()
+        return ret
+    
+    def getNetworkInterfaces(self):
+        return self.requirementsCheck.getNetworkInterfaces()
+    
+    def checkAutoconf(self):
+        self.logger.debug("Checking Autoconf")
+        return False
+    
+    def checkNTP(self):
+        self.logger.debug("Checking NTP")
+        return False
+    
+    def checkGECOS(self):
+        self.logger.debug("Checking GECOS")
+        return False
     # new show methods
     def showAutoconfDialog(self):
         self.window.gotoAutoconf()
@@ -88,7 +130,7 @@ class MainMenuController(object):
     
     def showNetworkSettingsDialog(self):
         # get network settings widgets
-        self.window.gotoSettings()
+        self.window.gotoNetworkSettings()
     
     def showRequirementsCheckDialog(self):
         self.requirementsCheck.show(self.window.currentView)

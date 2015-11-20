@@ -56,7 +56,6 @@ class MainMenuDialog(GladeWindow):
         self.handlers["onAuto"] = self.autoconfManagementHandler
         self.logger.debug("Adding NTP handler")
         self.handlers["onnNTP"] = self.ntpManagementHandler
-        
     
     # Here comes the handlers
     def connectWithGECOSHandler(self, *args):
@@ -109,10 +108,19 @@ class MainMenuDialog(GladeWindow):
         button = self.builder.get_object(id)
         button.set_sensitive(enabled)
         
-    def initGUIValues(self):
+    def initGUIValues(self, calculatedStatus):
+        
+        networkTrafficLightValue = 2
+        
+        try:
+            networkTrafficLightValue = calculatedStatus[self.controller.networkStatusKey]
+        finally:
+            pass
+        
         # traffic lights
         trafficlights = {}
-        trafficlights["trafficlight1"] = 2
+        
+        trafficlights["trafficlight1"] = networkTrafficLightValue
         trafficlights["trafficlight2"] = 3
         trafficlights["trafficlight3"] = 3
         trafficlights["trafficlight4"] = 3

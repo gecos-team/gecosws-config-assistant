@@ -35,6 +35,7 @@ import logging
 
 import gettext
 from gettext import gettext as _
+from view.MainWindow import MainWindow
 gettext.textdomain('gecosws-config-assistant')
 
 class RequirementsCheckController(object):
@@ -52,6 +53,25 @@ class RequirementsCheckController(object):
         self.networkInterface = NetworkInterfaceController()
         self.autoSetup = AutoSetupController()
         self.logger = logging.getLogger('RequirementsCheckController')
+        
+        self.window = MainWindow.getInstance(None)
+    
+    def getNetworkStatus(self):
+        self.logger.debug('Check network interfaces')
+        ret = False
+        networkInterfacesDao = NetworkInterfaceDAO()
+        interfaces = networkInterfacesDao.loadAll()
+        if interfaces is not None:
+            for ni in interfaces:
+                if ni.get_name() != 'lo':
+                    self.logger.debug('Network interfaces OK')
+                    ret = True
+        return ret
+    
+    def getNetworkInterfaces(self):
+        networkInterfacesDao = NetworkInterfaceDAO()
+        interfaces = networkInterfacesDao.loadAll()
+        return interfaces
 
     def _updateStatus(self):
         # Check if there is at least one connection interface 
