@@ -20,7 +20,7 @@ __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
 __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
-from Tkinter import N, S, W, E, Toplevel
+from Tkinter import N, S, W, E, Tk
 from ttk import Frame, Button, Style, Label
 import logging
 
@@ -29,18 +29,17 @@ import gettext
 from gettext import gettext as _
 gettext.textdomain('gecosws-config-assistant')
 
-class AutoSetupProcessView(Toplevel):
+class AutoSetupProcessView(Tk):
     '''
     Dialog class that shows the Auto setup Dialog.
     '''
 
 
-    def __init__(self, parent, mainController):
+    def __init__(self, mainController):
         '''
         Constructor
         '''
-        Toplevel.__init__(self, parent)
-        self.parent = parent
+        Tk.__init__(self, None, None, 'AutoSetupProcessView', 1, 0, None)
         self.body = Frame(self, padding="20 20 20 20")   
         self.controller = mainController
         self.logger = logging.getLogger('AutoSetupProcessView')
@@ -93,7 +92,6 @@ class AutoSetupProcessView(Toplevel):
 
     def show(self):
         self.logger.debug("Show")
-        self.transient(self.parent)
         self.grab_set()
         self.update()
         

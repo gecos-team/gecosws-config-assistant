@@ -152,13 +152,21 @@ class MainMenuDialog(GladeWindow):
         except:
             pass
         
+        gecosValue = 3
         gecosActivated = False
         
         try:
-            if(calculatedStatus[self.controller.gecosStatusKey] == 1):
-                gecosActivated = True
+            gecosValue = calculatedStatus[self.controller.gecosStatusKey]
         except:
             pass
+        
+        usersValue = 3
+        
+        try:
+            usersValue = calculatedStatus[self.controller.usersStatusKey]
+        except:
+            pass
+            
         
         # traffic lights
         trafficlights["trafficlight1"] = networkTrafficLightValue
@@ -175,8 +183,10 @@ class MainMenuDialog(GladeWindow):
         
         if(gecosActivated):
             trafficlights["trafficlight4"] = 1
+        else:
+            trafficlights["trafficlight4"] = gecosValue
         
-        trafficlights["trafficlight5"] = 3
+        trafficlights["trafficlight5"] = usersValue
         
         self.guiValues[self.trafficlightsKey] = trafficlights
         
@@ -186,6 +196,15 @@ class MainMenuDialog(GladeWindow):
         if(networkActivated):
             centerbuttons["confbutton"]= True
             centerbuttons["syncbutton"]= True
+        
+        if(gecosValue != 1):
+            centerbuttons["sysbutton"] = True
+        
+        if(gecosValue != 1):
+            centerbuttons["sysbutton"] = True
+        
+        if(usersValue != 1):
+            centerbuttons["userbutton"] = True
         
         self.guiValues[self.centerbuttonsKey] = centerbuttons
     

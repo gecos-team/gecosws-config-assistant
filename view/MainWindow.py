@@ -145,25 +145,24 @@ class MainWindow(object):
         currentState = {}
         if(type(dialog) is MainMenuDialog):
             currentState = self.mainScreenGUIValues
-        elif(type(dialog) is AutoconfDialog):
-            currentState = self.autoconfGUIValues
+#         elif(type(dialog) is AutoconfDialog):
+#             currentState = self.autoconfGUIValues
         elif(type(dialog) is NetworkSettingsDialog):
             currentState = self.networkSettingsGUIValues
         elif(type(dialog) is NTPDialog):
             currentState = self.ntpGUIValues
             
 #         self.logger.error(currentState)
-        
-        dialog.loadCurrentState(currentState)
+        if(type(dialog) is not AutoconfDialog):
+            dialog.loadCurrentState(currentState)
         
         # change widgets
         self.changeScreen(dialog)
         # put a reference to the new window
         self.currentView = dialog
     
-    def gotoAutoconf(self):
-        autoconf = AutoconfDialog(self.controller)
-        self.navigate(autoconf)
+    def gotoAutoconf(self, autoconfview):
+        self.navigate(autoconfview)
     
     def gotoMainWindow(self):
         self.navigate(MainMenuDialog(self.controller))

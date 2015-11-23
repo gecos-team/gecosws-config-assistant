@@ -25,6 +25,8 @@ from dao.NTPServerDAO import NTPServerDAO
 from dao.UserAuthenticationMethodDAO import UserAuthenticationMethodDAO
 from dao.WorkstationDataDAO import WorkstationDataDAO
 
+from view.AutoconfDialog import AutoconfDialog
+
 import sys
 import socket
 import base64
@@ -88,14 +90,13 @@ class AutoSetupController(object):
         
         self.auto_setup_success = False
 
-    def show(self, mainWindow):
+    def getView(self, mainController):
         self.logger.debug('show - BEGIN')
-        self.view = AutoSetupDialog(mainWindow, self)
-        
-        self.view.set_data(self.dao.load())
-        
-        self.view.show()   
+        self.view = AutoconfDialog(mainController)
+        self.view.set_data(self.dao.load())   
         self.logger.debug('show - END')
+        
+        return self.view
 
     def cancel(self):
         self.logger.debug("cancel")
@@ -113,14 +114,14 @@ class AutoSetupController(object):
             gecosAccessData.get_url().strip() == ''):
             self.logger.debug("Empty URL!")
             showerror_gtk(_("The URL field is empty!") + "\n" + _("Please fill all the mandatory fields."),
-                 self.view)
+                 None)
             self.view.focusUrlField()            
             return False
 
         if not Validation().isUrl(gecosAccessData.get_url()):
             self.logger.debug("Malformed URL!")
             showerror_gtk(_("Malformed URL in URL field!") + "\n" + _("Please double-check it."),
-                 self.view)            
+                 None)            
             self.view.focusUrlField()            
             return False
 
@@ -128,7 +129,7 @@ class AutoSetupController(object):
             gecosAccessData.get_login().strip() == ''):
             self.logger.debug("Empty login!")
             showerror_gtk(_("The Username field is empty!") + "\n" + _("Please fill all the mandatory fields."),
-                 self.view)
+                 None)
             self.view.focusUsernameField()            
             return False
 
@@ -136,7 +137,7 @@ class AutoSetupController(object):
             gecosAccessData.get_password().strip() == ''):
             self.logger.debug("Empty password!")
             showerror_gtk(_("The Password field is empty!") + "\n" + _("Please fill all the mandatory fields."),
-                 self.view)
+                 None)
             self.view.focusPasswordField()            
             return False
 
@@ -144,7 +145,7 @@ class AutoSetupController(object):
         if not gecosCC.validate_credentials(gecosAccessData):
             self.logger.debug("Bad access data!")
             showerror_gtk(_("Can't connect to GECOS CC!") + "\n" +  _("Please double-check all the data and your network setup."),
-                 self.view)
+                 None)
             self.view.focusPasswordField()            
             return False
         
@@ -560,7 +561,7 @@ class AutoSetupController(object):
 
 
         # Show process view
-        self.processView = AutoSetupProcessView(self.view, self)
+        self.processView = AutoSetupProcessView(self)
         self.processView.show()
 
         # Get auto setup JSON

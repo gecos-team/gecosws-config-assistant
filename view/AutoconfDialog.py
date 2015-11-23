@@ -32,6 +32,7 @@ class AutoconfDialog(GladeWindow):
         self.gladePath = 'autoconf.glade'
         self.logger = logging.getLogger('AutoconfDialog')
         
+        self.data = None
         self.entriesKey = "entries"
         self.visiblesKey= "visibles"
         self.labelsKey = "labels"
@@ -44,8 +45,36 @@ class AutoconfDialog(GladeWindow):
     
     def addHandlers(self):
         super(AutoconfDialog, self).addHandlers()
+        self.logger.debug("Adding back handler")
+        self.handlers["onBack"] = self.backtoMainWindow
+        self.logger.debug("Adding connect handler")
+        self.handlers["onConn"] = self.connectWithCurrentCreds
     
     # Here comes the handlers
+    def backtoMainWindow(self, *args):
+        self.logger.debug("Going back to the main window")
+        self.controller.backToMainWindowDialog()
+    
+    def connectWithCurrentCreds(self, *args):
+        self.logger.debug("This should connect and check if creds works")
+        if self.get_data() is None:
+            self.set_data(GecosAccessData())
+            
+        values = self.getURLUserPassValues()
+        self.get_data().set_url(values["URL"])
+        self.get_data().set_login(values["user"])
+        self.get_data().set_password(values["pass"])
+        
+        self.controller.requirementsCheck.autoSetup.setup()
+    
+    def getURLUserPassValues(self):
+        values = {}
+        values["URL"] = self.builder.get_object("entry1").get_text()
+        values["user"] = self.builder.get_object("entry2").get_text()
+        values["pass"] = self.builder.get_object("entry3").get_text()
+        
+        return values
+        
     def trafficSignalChange(self, state):
         datafolder = "/usr/local/share/gecosws-config-assistant/"
         
@@ -85,6 +114,7 @@ class AutoconfDialog(GladeWindow):
         self.builder.get_object('label11').set_text('PENDIENTE')
     
     def initGUIValues(self):
+        self.logger.debug("Initializing GUI values")
         # entries
         entries = {}
         entries["entry1"] = ''
@@ -117,11 +147,11 @@ class AutoconfDialog(GladeWindow):
     
     def loadCurrentState(self, guiValues):
         super(AutoconfDialog, self).loadCurrentState(guiValues)
-        self.initGUIValues()
-        
         # init entries texts
         for entryKey in self.guiValues[self.entriesKey].keys():
             entryValue = self.guiValues[self.entriesKey][entryKey]
+            self.logger.error("Entry key "+entryKey)
+            self.logger.error("Entry value "+entryValue)
             self.builder.get_object(entryKey).set_text(entryValue)
          
         # init visibles
@@ -143,3 +173,21 @@ class AutoconfDialog(GladeWindow):
         self.loadCurrentState(self.guiValues)
         # super method
         super(AutoconfDialog, self).show()
+    
+    def set_data(self, dao_data):
+        self.logger.debug("Setting data from DAO")
+        self.data = dao_data
+        self.handleData()
+    
+    def get_data(self):
+        return self.data
+    
+    def handleData(self):
+        self.initGUIValues()
+        entries = {}
+        entries["entry1"] = self.data.get_url() if self.data.get_url() is not None else ''
+        entries["entry2"] = self.data.get_login() if self.data.get_login() is not None else ''
+        entries["entry3"] = self.data.get_password() if self.data.get_password() is not None else ''
+        
+        self.guiValues[self.entriesKey] = entries
+        self.loadCurrentState(self.guiValues)

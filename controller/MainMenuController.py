@@ -75,6 +75,7 @@ class MainMenuController(object):
         self.ntpStatusKey = "ntpStatus"
         self.autoconfStatusKey = "autoconf"
         self.gecosStatusKey = "gecos"
+        self.usersStatusKey = "users"
     def show(self):
         
         calculatedStatus = self.calculateStatus()
@@ -97,15 +98,21 @@ class MainMenuController(object):
         ret[self.ntpStatusKey] = 3
         ret[self.autoconfStatusKey] = 3 
         ret[self.gecosStatusKey] = 3
+        ret[self.usersStatusKey] = 3
         
-        if(self.checkNetwork()):
+        checkNetwork = self.checkNetwork()
+        checkNTP = self.checkNTP()
+        
+        if(checkNetwork):
             ret[self.networkStatusKey] = 1
-        if(self.checkNTP()):
+        if(checkNTP):
             ret[self.ntpStatusKey] = 1
         if(self.checkAutoconf()):
-            ret[self.autoconfStatusKey] = 1            
-        if(self.checkGECOS()):
-            ret[self.gecosStatusKey] = 1
+            ret[self.autoconfStatusKey] = 1
+        
+        if(checkNetwork and checkNTP):
+            ret[self.gecosStatusKey] = 2
+            ret[self.usersStatusKey] = 2
         
         return ret
     
@@ -133,7 +140,8 @@ class MainMenuController(object):
     
     # new show methods
     def showAutoconfDialog(self):
-        self.window.gotoAutoconf()
+        view = self.requirementsCheck.autoSetup.getView(self)
+        self.window.gotoAutoconf(view)
     
     def backToMainWindowDialog(self):
         # restore main window

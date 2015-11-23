@@ -264,6 +264,7 @@
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">True</property>
                                         <property name="use_action_appearance">False</property>
+                                        <signal name="clicked" handler="onConn" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -288,6 +289,7 @@
                                     <child>
                                       <object class="GtkEntry" id="entry3">
                                         <property name="visible">True</property>
+										<property name="visibility">False</property>
                                         <property name="can_focus">True</property>
                                         <property name="invisible_char">●</property>
                                         <property name="primary_icon_activatable">False</property>
@@ -389,6 +391,7 @@
                                     <child>
                                       <object class="GtkEntry" id="entry5">
                                         <property name="visible">True</property>
+										<property name="visibility">False</property>
                                         <property name="can_focus">True</property>
                                         <property name="invisible_char">●</property>
                                         <property name="primary_icon_activatable">False</property>
@@ -540,6 +543,7 @@
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">True</property>
                                         <property name="use_action_appearance">False</property>
+                                        <signal name="clicked" handler="onBack" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="expand">True</property>
