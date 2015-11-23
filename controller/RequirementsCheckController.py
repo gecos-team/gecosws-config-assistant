@@ -68,6 +68,16 @@ class RequirementsCheckController(object):
                     ret = True
         return ret
     
+    def getNTPStatus(self):
+        self.logger.debug('Check NTP server')
+        ret = False
+        ntpServerDao = NTPServerDAO()
+        if ntpServerDao.load() is not None:
+            self.logger.debug('NTP Server OK')
+            ret = True
+        
+        return ret  
+    
     def getNetworkInterfaces(self):
         networkInterfacesDao = NetworkInterfaceDAO()
         interfaces = networkInterfacesDao.loadAll()

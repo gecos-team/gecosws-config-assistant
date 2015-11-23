@@ -72,7 +72,9 @@ class MainMenuController(object):
         
         #keys
         self.networkStatusKey = "networkStatus"
-        
+        self.ntpStatusKey = "ntpStatus"
+        self.autoconfStatusKey = "autoconf"
+        self.gecosStatusKey = "gecos"
     def show(self):
         
         calculatedStatus = self.calculateStatus()
@@ -90,20 +92,31 @@ class MainMenuController(object):
     
     def calculateStatus(self):
         ret = {}
-        keepChecking = self.checkNetwork()
-        if(keepChecking):
+        
+        ret[self.networkStatusKey] = 3
+        ret[self.ntpStatusKey] = 3
+        ret[self.autoconfStatusKey] = 3 
+        ret[self.gecosStatusKey] = 3
+        
+        if(self.checkNetwork()):
             ret[self.networkStatusKey] = 1
-            keepChecking = self.checkAutoconf()
-            if(keepChecking):
-                keepChecking = self.checkNTP()
-                if(keepChecking):
-                    keepChecking = self.checkGECOS()
+        if(self.checkNTP()):
+            ret[self.ntpStatusKey] = 1
+        if(self.checkAutoconf()):
+            ret[self.autoconfStatusKey] = 1            
+        if(self.checkGECOS()):
+            ret[self.gecosStatusKey] = 1
         
         return ret
     
     def checkNetwork(self):
         self.logger.debug("Checking network status")
         ret = self.requirementsCheck.getNetworkStatus()
+        return ret
+    
+    def checkNTP(self):
+        self.logger.debug("Checking NTP status")
+        ret = self.requirementsCheck.getNTPStatus()
         return ret
     
     def getNetworkInterfaces(self):

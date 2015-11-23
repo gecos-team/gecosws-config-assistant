@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
+from __builtin__ import True
 
 # This file is part of Guadalinex
 #
@@ -110,6 +111,20 @@ class MainMenuDialog(GladeWindow):
         button.set_sensitive(enabled)
         
     def initGUIValues(self, calculatedStatus):
+        trafficlights = {}
+        centerbuttons = {}
+        
+        centerbuttons["netbutton"] = True
+        centerbuttons["confbutton"]= False
+        centerbuttons["syncbutton"]= False    
+        centerbuttons["sysbutton"] = False
+        centerbuttons["userbutton"]= False
+        
+        trafficlights["trafficlight1"] = 3
+        trafficlights["trafficlight2"] = 3
+        trafficlights["trafficlight3"] = 3
+        trafficlights["trafficlight4"] = 3
+        trafficlights["trafficlight5"] = 3
         
         networkTrafficLightValue = 2
         networkActivated = False
@@ -117,40 +132,59 @@ class MainMenuDialog(GladeWindow):
         try:
             networkTrafficLightValue = calculatedStatus[self.controller.networkStatusKey]
             networkActivated = True
-        finally:
+        except:
+            pass
+        
+        ntpActivated = False
+        
+        try:
+            if(calculatedStatus[self.controller.ntpStatusKey] == 1):
+                ntpActivated = True
+        except:
+            pass
+        
+        autoconfActivated = False
+        
+        try:
+            if(calculatedStatus[self.controller.autoconfStatusKey] == 1):
+                autoconfActivated = True
+        except:
+            pass
+        
+        gecosActivated = False
+        
+        try:
+            if(calculatedStatus[self.controller.gecosStatusKey] == 1):
+                gecosActivated = True
+        except:
             pass
         
         # traffic lights
-        trafficlights = {}
-        
         trafficlights["trafficlight1"] = networkTrafficLightValue
         
         if(networkActivated):
             trafficlights["trafficlight2"] = 2
             trafficlights["trafficlight3"] = 2
-        else:
-            trafficlights["trafficlight2"] = 3
-            trafficlights["trafficlight3"] = 3
         
-        trafficlights["trafficlight4"] = 3
+        if(autoconfActivated):
+            trafficlights["trafficlight2"] = 1
+        
+        if(ntpActivated):
+            trafficlights["trafficlight3"] = 1
+        
+        if(gecosActivated):
+            trafficlights["trafficlight4"] = 1
+        
         trafficlights["trafficlight5"] = 3
         
         self.guiValues[self.trafficlightsKey] = trafficlights
         
         # center buttons
-        centerbuttons = {}
         centerbuttons["netbutton"] = True
         
         if(networkActivated):
             centerbuttons["confbutton"]= True
             centerbuttons["syncbutton"]= True
-        else:
-            centerbuttons["confbutton"]= False
-            centerbuttons["syncbutton"]= False
-            
-        centerbuttons["sysbutton"] = False
-        centerbuttons["sysbutton"] = False
-        centerbuttons["userbutton"]= False
         
         self.guiValues[self.centerbuttonsKey] = centerbuttons
     
