@@ -93,9 +93,12 @@ class MainWindow(object):
         
         self.guiValues[self.buttonsKey] = buttons
     
-    def loadCurrentState(self, guiValues):
+    def loadCurrentState(self, guiValues, calculatedButtons):
         if(guiValues is not None):
             self.guiValues = guiValues
+        
+        if(calculatedButtons is not None):
+            self.guiValues[self.buttonsKey] = calculatedButtons
             
         for buttonKey in self.guiValues[self.buttonsKey].keys():
             buttonValue = self.guiValues[self.buttonsKey][buttonKey]

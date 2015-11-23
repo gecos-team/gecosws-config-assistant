@@ -79,10 +79,11 @@ class MainMenuController(object):
     def show(self):
         
         calculatedStatus = self.calculateStatus()
+        calculatedButtons = self.calculateTopButtons(calculatedStatus)
         
         self.window.buildUI()
         self.window.initGUIValues()
-        self.window.loadCurrentState(None)
+        self.window.loadCurrentState(calculatedStatus, calculatedButtons)
         
         self.window.initFrame(calculatedStatus)
         
@@ -115,6 +116,21 @@ class MainMenuController(object):
             ret[self.usersStatusKey] = 2
         
         return ret
+    
+    def calculateTopButtons(self, calculatedStatus):
+        buttons = {}
+        
+        if(calculatedStatus[self.gecosStatusKey] != 3): 
+            buttons["linkbutton"]= True
+        else:
+            buttons["linkbutton"]= False
+            
+        if(calculatedStatus[self.autoconfStatusKey] != 3):
+            buttons["authbutton"]= True
+        else:
+            buttons["authbutton"]= False
+        
+        return buttons
     
     def checkNetwork(self):
         self.logger.debug("Checking network status")
