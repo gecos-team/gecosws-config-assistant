@@ -114,25 +114,23 @@ class MainMenuController(object):
         ret = self.requirementsCheck.getNetworkStatus()
         return ret
     
+    def getNetworkInterfaces(self):
+        return self.requirementsCheck.getNetworkInterfaces()
+    
     def checkNTP(self):
         self.logger.debug("Checking NTP status")
         ret = self.requirementsCheck.getNTPStatus()
         return ret
     
-    def getNetworkInterfaces(self):
-        return self.requirementsCheck.getNetworkInterfaces()
-    
     def checkAutoconf(self):
         self.logger.debug("Checking Autoconf")
-        return False
-    
-    def checkNTP(self):
-        self.logger.debug("Checking NTP")
-        return False
+        ret = self.requirementsCheck.getAutoconfStatus()
+        return ret
     
     def checkGECOS(self):
         self.logger.debug("Checking GECOS")
         return False
+    
     # new show methods
     def showAutoconfDialog(self):
         self.window.gotoAutoconf()

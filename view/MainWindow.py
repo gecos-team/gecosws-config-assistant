@@ -162,7 +162,8 @@ class MainWindow(object):
         self.currentView = dialog
     
     def gotoAutoconf(self):
-        self.navigate(AutoconfDialog(self.controller))
+        autoconf = AutoconfDialog(self.controller)
+        self.navigate(autoconf)
     
     def gotoMainWindow(self):
         self.navigate(MainMenuDialog(self.controller))

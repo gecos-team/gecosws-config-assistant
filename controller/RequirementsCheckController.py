@@ -68,6 +68,11 @@ class RequirementsCheckController(object):
                     ret = True
         return ret
     
+    def getNetworkInterfaces(self):
+        networkInterfacesDao = NetworkInterfaceDAO()
+        interfaces = networkInterfacesDao.loadAll()
+        return interfaces
+    
     def getNTPStatus(self):
         self.logger.debug('Check NTP server')
         ret = False
@@ -76,13 +81,19 @@ class RequirementsCheckController(object):
             self.logger.debug('NTP Server OK')
             ret = True
         
-        return ret  
+        return ret
     
-    def getNetworkInterfaces(self):
-        networkInterfacesDao = NetworkInterfaceDAO()
-        interfaces = networkInterfacesDao.loadAll()
-        return interfaces
-
+    def getAutoconfStatus(self):
+        self.logger.debug('Check auto setup status')
+        ret = False
+        userAuthMethodDao = UserAuthenticationMethodDAO()
+        if (userAuthMethodDao.load() is not None and
+            not isinstance(userAuthMethodDao.load(), LocalUsersAuthMethod)):
+            self.logger.debug('Auto setup already done?')
+            ret = True
+        
+        return ret
+    
     def _updateStatus(self):
         # Check if there is at least one connection interface 
         # (except 'lo' interface) 

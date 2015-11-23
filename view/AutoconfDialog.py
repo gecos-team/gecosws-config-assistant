@@ -34,6 +34,8 @@ class AutoconfDialog(GladeWindow):
         
         self.entriesKey = "entries"
         self.visiblesKey= "visibles"
+        self.labelsKey = "labels"
+        self.trafficLightsKey = "trafficLights"
         
         self.buildUI(self.gladePath)
     
@@ -92,24 +94,49 @@ class AutoconfDialog(GladeWindow):
         
         # visibles
         visibles = {}
+#         visibles["entry1"] = True
+#         visibles["entry2"] = True
+#         visibles["entry3"] = True
+        
         visibles["label9"] = False
         visibles["label7"] = False
+        visibles["label8"] = False
         visibles["entry4"] = False
         visibles["entry5"] = False
         visibles["button2"] = False
         self.guiValues[self.visiblesKey] = visibles
+        
+        labels = {}
+        labels["label11"] = "PENDIENTE"
+        self.guiValues[self.labelsKey] = labels
+        
+        trafficLights = {}
+        
+        trafficLights["image1"] = 2
+        self.guiValues[self.trafficLightsKey] = trafficLights
     
     def loadCurrentState(self, guiValues):
         super(AutoconfDialog, self).loadCurrentState(guiValues)
+        self.initGUIValues()
+        
         # init entries texts
         for entryKey in self.guiValues[self.entriesKey].keys():
             entryValue = self.guiValues[self.entriesKey][entryKey]
-            self.builder.get_object(visibleKey).set_visible(visibleValue)
+            self.builder.get_object(entryKey).set_text(entryValue)
          
         # init visibles
         for visibleKey in self.guiValues[self.visiblesKey].keys():
             visibleValue = self.guiValues[self.visiblesKey][visibleKey]
             self.builder.get_object(visibleKey).set_visible(visibleValue)
+            
+        # init label value
+        for labelKey in self.guiValues[self.labelsKey].keys():
+            label11Value = self.guiValues[self.labelsKey][labelKey]
+            self.builder.get_object(labelKey).set_text(label11Value)
+            
+        for trafficLightKey in self.guiValues[self.trafficLightsKey].keys():
+            trafficLightValue = self.guiValues[self.trafficLightsKey][trafficLightKey]
+            self.trafficSignalChange(trafficLightValue)
     
     def show(self):
         self.initGUIValues()

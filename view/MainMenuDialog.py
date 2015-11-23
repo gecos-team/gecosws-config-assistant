@@ -71,6 +71,7 @@ class MainMenuDialog(GladeWindow):
     
     def autoconfManagementHandler(self, *args):
         self.logger.debug('This should call the autoconf method or whatever')
+        self.controller.showAutoconfDialog()
     
     def ntpManagementHandler(self, *args):
         self.logger.debug('This should call the NTP manager')
