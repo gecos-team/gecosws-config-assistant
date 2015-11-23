@@ -24,7 +24,6 @@ __license__ = "GPL-2"
 from GladeWindow import GladeWindow
 from dto.NTPServer import NTPServer
 from view.CommonDialog import showerror_gtk, showinfo_gtk, askyesno_gtk
-# from view.MainWindow import MainWindow
 from gettext import gettext as _
 import gettext
 import logging
@@ -38,7 +37,6 @@ class NTPDialog(GladeWindow):
         
         self.data = None
         self.ntpServerKey = "ntpKey"
-#         self.mainWindow = MainWindow.getInstance(None)
 
         self.buildUI(self.gladePath)
         
@@ -73,13 +71,11 @@ class NTPDialog(GladeWindow):
         self.get_data().set_address(text)
         result = self.controller.getNTPController().test(self)
         
-#         if not result:
-#             showwarning_gtk(_("Can't synchronize time"), 
-#                 _("Can't connect with NTP server.\nPlease double-check the NTP server address"), 
-#                 self.mainWindow)
-#         else:
-#             showinfo_gtk(_("Success"), 
-#                 _("NTP server connection successful"), self.mainWindow)
+        if not result:
+            showwarning_gtk(_("Can't connect with NTP server.\nPlease double-check the NTP server address", None), 
+                None)
+        else:
+            showinfo_gtk(_("NTP server connection successful"), None)
             
         return result
     

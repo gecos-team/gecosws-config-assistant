@@ -35,7 +35,7 @@ import logging
 
 import gettext
 from gettext import gettext as _
-from view.MainWindow import MainWindow
+# from view.MainWindow import MainWindow
 gettext.textdomain('gecosws-config-assistant')
 
 class RequirementsCheckController(object):
@@ -54,7 +54,7 @@ class RequirementsCheckController(object):
         self.autoSetup = AutoSetupController()
         self.logger = logging.getLogger('RequirementsCheckController')
         
-        self.window = MainWindow.getInstance(None)
+        #self.window = MainWindow.getInstance(None)
     
     def getNetworkStatus(self):
         self.logger.debug('Check network interfaces')

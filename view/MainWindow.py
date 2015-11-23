@@ -33,13 +33,13 @@ from view.NTPDialog import NTPDialog
 
 class MainWindow(object):
     
-    _singleton = None
-    
-    @classmethod
-    def getInstance(cls, mainController):
-        if not isinstance(cls._singleton,cls):
-            cls._singleton = cls(mainController)
-        return cls._singleton
+#     _singleton = None
+#     
+#     @classmethod
+#     def getInstance(cls, mainController):
+#         if cls._singleton is None:
+#             cls._singleton = cls(mainController)
+#         return cls._singleton
     
     def __init__(self, mainController):
         self.controller = mainController

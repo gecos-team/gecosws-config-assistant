@@ -47,19 +47,21 @@ class MainMenuController(object):
     Controller class to show the main menu window.
     '''
     
-    _singleton = None
-    
-    @classmethod
-    def getInstance(cls):
-        if not isinstance(cls._singleton,cls):
-            cls._singleton = cls()
-        return cls._singleton
+#     _singleton = None
+#     
+#     @classmethod
+#     def getInstance(cls):
+#         if not isinstance(cls._singleton,cls):
+#             cls._singleton = cls()
+#         return cls._singleton
 
     def __init__(self):
         '''
         Constructor
         '''
-        self.window = MainWindow.getInstance(self)
+        self.logger = logging.getLogger('MainMenuController')
+        self.window = MainWindow(self)
+        self.logger.error(self.window)
         
         # controllers
         self.connectWithGecosCC = ConnectWithGecosCCController()
@@ -70,8 +72,6 @@ class MainMenuController(object):
         
         #keys
         self.networkStatusKey = "networkStatus"
-        
-        self.logger = logging.getLogger('MainMenuController')
         
     def show(self):
         
