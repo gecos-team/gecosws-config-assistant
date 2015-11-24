@@ -94,14 +94,14 @@ class ConnectWithGecosCCController(object):
             gecosAccessData.get_url().strip() == ''):
             self.logger.debug("Empty URL!")
             showerror_gtk(_("The URL field is empty!") + "\n" + _("Please fill all the mandatory fields."),
-                 self.view)
+                 None)
             self.view.focusUrlField()            
             return False
 
         if not Validation().isUrl(gecosAccessData.get_url()):
             self.logger.debug("Malformed URL!")
             showerror_gtk(_("Malformed URL in URL field!") + "\n" + _("Please double-check it."),
-                 self.view)            
+                 None)            
             self.view.focusUrlField()            
             return False
 
@@ -109,7 +109,7 @@ class ConnectWithGecosCCController(object):
             gecosAccessData.get_login().strip() == ''):
             self.logger.debug("Empty login!")
             showerror_gtk(_("The Username field is empty!") + "\n" + _("Please fill all the mandatory fields."),
-                 self.view)
+                 None)
             self.view.focusUsernameField()            
             return False
 
@@ -117,7 +117,7 @@ class ConnectWithGecosCCController(object):
             gecosAccessData.get_password().strip() == ''):
             self.logger.debug("Empty password!")
             showerror_gtk(_("The Password field is empty!") + "\n" + _("Please fill all the mandatory fields."),
-                 self.view)
+                 None)
             self.view.focusPasswordField()            
             return False
 
@@ -125,7 +125,7 @@ class ConnectWithGecosCCController(object):
         if not gecosCC.validate_credentials(gecosAccessData):
             self.logger.debug("Bad access data!")
             showerror_gtk(_("Can't connect to GECOS CC!") + "\n" +  _("Please double-check all the data and your network setup."),
-                 self.view)
+                 None)
             self.view.focusPasswordField()            
             return False
         
@@ -283,7 +283,7 @@ class ConnectWithGecosCCController(object):
     def connect(self):
         self.logger.debug("connect")
 
-        self.processView = GecosCCSetupProcessView(self.view, self)
+        self.processView = GecosCCSetupProcessView(self)
         self.processView.setLinkToChefLabel(_('Link to Chef'))
         self.processView.setRegisterInGecosLabel(_('Register in GECOS CC'))
         self.processView.show()
@@ -477,7 +477,7 @@ class ConnectWithGecosCCController(object):
     def disconnect(self):
         self.logger.debug("disconnect")
         
-        self.processView = GecosCCSetupProcessView(self.view, self)
+        self.processView = GecosCCSetupProcessView(self)
         self.processView.setLinkToChefLabel(_('Unlink from Chef'))
         self.processView.setRegisterInGecosLabel(_('Unregister from GECOS CC'))
         self.processView.show()
@@ -545,7 +545,7 @@ class ConnectWithGecosCCController(object):
             self.processView.setRegisterInGecosStatus(_('ERROR'))
             self.processView.enableAcceptButton()
             showerror_gtk(_("Can't unregister the computer from GECOS CC"),
-                 self.view)
+                 None)
             self._clean_disconnection_files_on_error()
             return False          
 
@@ -568,7 +568,7 @@ class ConnectWithGecosCCController(object):
             self.processView.setLinkToChefStatus(_('ERROR'))
             self.processView.enableAcceptButton()
             showerror_gtk(_("Can't create/modify /etc/chef/client.rb file"),
-                 self.view)
+                 None)
             self._clean_disconnection_files_on_error()
             return False            
         

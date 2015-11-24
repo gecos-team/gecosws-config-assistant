@@ -23,6 +23,7 @@ __copyright__ = "Copyright (C) 2015, Junta de Andaluc�a <devmaster@guadalinex.
 __license__ = "GPL-2"
 
 from GladeWindow import GladeWindow
+from gi.repository import Gtk, Gdk
 import logging
 import gettext
 from gettext import gettext as _
@@ -32,7 +33,8 @@ ConnectWithGecosCC redone in Glade
 class ConnectWithGecosDialog(GladeWindow):
     
     def __init__(self, mainController):
-        self.controller = mainController
+        self.mainController = mainController
+        self.controller = self.mainController.connectWithGecosCC
         self.gladePath = 'gecoscon.glade'
         self.logger = logging.getLogger('ConnectWithGecosDialog')
         
@@ -40,6 +42,15 @@ class ConnectWithGecosDialog(GladeWindow):
         self.workstation_data = None
         
         self.buildUI(self.gladePath)
+        
+        #combo stuff
+        self.lastComboValue = -1
+        self.store = self.getElementById('liststore1')
+        self.combo = self.getElementById('combobox1')
+        
+        renderer_text = Gtk.CellRendererText()
+        self.combo.pack_start(renderer_text, True)
+        self.combo.add_attribute(renderer_text, "text", 0)
         
         self.extractGUIElements()
     
@@ -70,6 +81,8 @@ class ConnectWithGecosDialog(GladeWindow):
         self.handlers["onAcpt"] = self.acceptHandler
         self.logger.debug("Adding disconnect handler")
         self.handlers["onDcon"] = self.disconnectHandler
+        self.logger.debug("Adding on change combobox handler")
+        self.handlers["onChng"] = self.onChangeComboBox
     
     def searchOUHandler(self, *args):
         self.logger.debug("This should search OUs and call patternSearch")
@@ -86,6 +99,14 @@ class ConnectWithGecosDialog(GladeWindow):
     def disconnectHandler(self, *args):
         self.logger.debug("This should disconnect from GECOS CC")
         self.disconnect()
+        
+    def onChangeComboBox(self, combo):
+        self.logger.debug("This should show up each time the combobox is changed")
+        tree_iter = combo.get_active_iter()
+        if tree_iter != None:
+            model = combo.get_model()
+            value = model[tree_iter][0]
+            self.lastComboValue = value
     
     def initGUIValues(self, calculatedStatus):
         pass
@@ -96,6 +117,7 @@ class ConnectWithGecosDialog(GladeWindow):
     
     def extractGUIElements(self):
         self.workstationNameEntry = self.getElementById("entry1") 
+        self.disconnectButton = self.getElementById("button2")
         self.connectButton = self.getElementById("button3")
         
         self.gecosCCurlEntry = self.getElementById("entry2")
@@ -116,7 +138,7 @@ class ConnectWithGecosDialog(GladeWindow):
 
         gecos_data = self.get_gecos_access_data()
         if gecos_data is not None:
-            self.connectButton.set_label(_("Disconnect from GECOS CC"))
+            self.disconnectButton.set_label(_("Disconnect from GECOS CC"))
             
             if (gecos_data.get_url() is not None
                 and gecos_data.get_url().strip() != ''):
@@ -135,11 +157,11 @@ class ConnectWithGecosDialog(GladeWindow):
             self.connectButton.set_label(_("Connect to GECOS CC"))
     
     def getOUComboValue(self):
-        self.selectOUVar
-        pass
+        return self.lastComboValue
     
-    def loadOUCombo(self):
-        pass
+    def loadOUCombo(self, values):
+        for value in values:
+            self.store.append([value])
 
     def connect(self):
         self.logger.debug("connect")
@@ -195,7 +217,7 @@ class ConnectWithGecosDialog(GladeWindow):
         
     def cancel(self):
         self.logger.debug("cancel")
-        self.destroy()
+        self.mainController.backToMainWindowDialog()
     
     '''
     Override of the show method, setting all to the initial state
