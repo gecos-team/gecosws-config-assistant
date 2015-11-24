@@ -174,7 +174,8 @@ class MainMenuController(object):
         self.requirementsCheck.show(self.window.currentView)
 
     def showConnectWithGecosCCDialog(self):
-        self.connectWithGecosCC.show(self.window.currentView)
+        view = self.connectWithGecosCC.getView(self)
+        self.window.gotoConnectoWithGECOS(view)
 
     def showUserAuthenticationMethod(self):
         self.userAuthenticationMethod.show(self.window.currentView)

@@ -28,7 +28,7 @@ if 'check' in sys.argv:
     from view.ViewMocks import showerror_gtk, ConnectWithGecosCCDialog, ChefValidationCertificateDialog, GecosCCSetupProcessView
 else:
     # Use real view classes
-    from view.ConnectWithGecosCCDialog import ConnectWithGecosCCDialog
+    from view.ConnectWithGecosDialog import ConnectWithGecosDialog
     from view.ChefValidationCertificateDialog import ChefValidationCertificateDialog
     from view.GecosCCSetupProcessView import GecosCCSetupProcessView
     from view.CommonDialog import showerror_gtk
@@ -72,15 +72,16 @@ class ConnectWithGecosCCController(object):
         self.workstationDataDao = WorkstationDataDAO()
         self.logger = logging.getLogger('ConnectWithGecosCCController')
 
-    def show(self, mainWindow):
+    def getView(self, mainController):
         self.logger.debug('show - BEGIN')
-        self.view = ConnectWithGecosCCDialog(mainWindow, self)
+        self.view = ConnectWithGecosDialog(mainController)
         
         self.view.set_gecos_access_data(self.accessDataDao.load())
         self.view.set_workstation_data(self.workstationDataDao.load())
         
-        self.view.show()   
         self.logger.debug('show - END')
+        
+        return self.view
 
     def hide(self):
         self.logger.debug("hide")

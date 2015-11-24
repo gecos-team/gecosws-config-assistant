@@ -180,6 +180,9 @@ class MainWindow(object):
         self.ntpDialog.initGUIValues(self.ntpGUIValues)
         self.navigate(self.ntpDialog)
     
+    def gotoConnectoWithGECOS(self, connectView):
+        self.navigate(connectView)
+    
     def getCentralFrame(self):
         return self.builder.get_object("frame2")
     

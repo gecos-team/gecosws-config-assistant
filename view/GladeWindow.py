@@ -104,3 +104,6 @@ class GladeWindow(object):
     
     def getCentralFrame(self):
         return self.builder.get_object("frame2")
+    
+    def getElementById(self, id):
+        return self.builder.get_object(id)
