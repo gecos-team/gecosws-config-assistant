@@ -229,6 +229,7 @@ class MainWindow(object):
     
     def connectWithGECOSHandler(self, *args):
         self.logger.debug('This should display the gecos connection settings')
+        self.controller.showConnectWithGecosCCDialog()
         
     def authManagementHandler(self, *args):
         self.logger.debug('This should display the auth settings')

@@ -30,7 +30,7 @@ else:
     # Use real view classes
     from view.ConnectWithGecosDialog import ConnectWithGecosDialog
     from view.ChefValidationCertificateDialog import ChefValidationCertificateDialog
-    from view.GecosCCSetupProcessView import GecosCCSetupProcessView
+    from view.GecosCCSetupProgressView import GecosCCSetupProgressView
     from view.CommonDialog import showerror_gtk
 
 from util.GecosCC import GecosCC
@@ -281,9 +281,9 @@ class ConnectWithGecosCCController(object):
         
     
     def connect(self):
-        self.logger.debug("connect")
+        self.logger.info("Connect to Gecos CC")
 
-        self.processView = GecosCCSetupProcessView(self)
+        self.processView = GecosCCSetupProgressView(self)
         self.processView.setLinkToChefLabel(_('Link to Chef'))
         self.processView.setRegisterInGecosLabel(_('Register in GECOS CC'))
         self.processView.show()
@@ -475,9 +475,9 @@ class ConnectWithGecosCCController(object):
 
         
     def disconnect(self):
-        self.logger.debug("disconnect")
+        self.logger.info("Disconnect from Gecos CC")
         
-        self.processView = GecosCCSetupProcessView(self)
+        self.processView = GecosCCSetupProgressView(self)
         self.processView.setLinkToChefLabel(_('Unlink from Chef'))
         self.processView.setRegisterInGecosLabel(_('Unregister from GECOS CC'))
         self.processView.show()

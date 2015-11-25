@@ -164,7 +164,7 @@ class ConnectWithGecosDialog(GladeWindow):
             self.store.append([value])
 
     def connect(self):
-        self.logger.debug("connect")
+        self.logger.debug("Connect to GECOS CC")
         
         if self.get_gecos_access_data() is None:
             self.set_gecos_access_data(GecosAccessData())
@@ -182,7 +182,7 @@ class ConnectWithGecosDialog(GladeWindow):
         self.controller.connect()
 
     def disconnect(self):
-        self.logger.debug("disconnect")
+        self.logger.debug("Disconnect from GECOS CC")
         
         if self.get_gecos_access_data() is None:
             self.get_gecos_access_data(GecosAccessData())
@@ -218,6 +218,26 @@ class ConnectWithGecosDialog(GladeWindow):
     def cancel(self):
         self.logger.debug("cancel")
         self.mainController.backToMainWindowDialog()
+        
+    def focusUrlField(self):
+        pass
+        #self.gecosCCurlEntry.do_focus(Gtk.DirectionType.TAB_FORWARD)
+
+    def focusUsernameField(self):
+        pass
+        #self.gecosCCuserEntry.do_focus(Gtk.DirectionType.TAB_FORWARD)
+
+    def focusPasswordField(self):
+        pass
+        #self.gecosCCpassEntry.do_focus(Gtk.DirectionType.TAB_FORWARD)
+        
+    def focusSeachFilterField(self):
+        pass
+        #self.searchFilterEntry.do_focus(Gtk.DirectionType.TAB_FORWARD)
+              
+    def focusWorkstationNameField(self):
+        pass
+        #self.workstationNameEntry.do_focus(Gtk.DirectionType.TAB_FORWARD)
     
     '''
     Override of the show method, setting all to the initial state
