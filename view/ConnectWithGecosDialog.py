@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 from __builtin__ import True
+from pprint import pprint
 
 # This file is part of Guadalinex
 #
@@ -44,7 +45,7 @@ class ConnectWithGecosDialog(GladeWindow):
         self.buildUI(self.gladePath)
         
         #combo stuff
-        self.lastComboValue = -1
+        self.lastComboValue = ''
         self.store = self.getElementById('liststore1')
         self.combo = self.getElementById('combobox1')
         
@@ -160,8 +161,9 @@ class ConnectWithGecosDialog(GladeWindow):
         return self.lastComboValue
     
     def loadOUCombo(self, values):
-        for value in values:
-            self.store.append([value])
+        if isinstance(values, (list, tuple)):
+            for value in values:
+                self.store.append([value[1]])
 
     def connect(self):
         self.logger.debug("Connect to GECOS CC")
@@ -210,10 +212,11 @@ class ConnectWithGecosDialog(GladeWindow):
         
         
         res = self.controller.patternSearch(self.searchFilterEntry.get_text())
-        if isinstance(res, (list, tuple)):
-            for r in res:
-                self.selectOUSelection['menu'].add_command(label=r[1], command=tk._setit(self.selectOUVar, r[1]))
-            self.selectOUVar.set(res[0][1])
+        self.loadOUCombo(res)
+#         if isinstance(res, (list, tuple)):
+#             for r in res:
+#                 self.selectOUSelection['menu'].add_command(label=r[1], command=tk._setit(self.selectOUVar, r[1]))
+#             self.selectOUVar.set(res[0][1])
         
     def cancel(self):
         self.logger.debug("cancel")

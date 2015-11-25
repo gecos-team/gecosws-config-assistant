@@ -170,7 +170,7 @@ class ConnectWithGecosCCController(object):
                 workstationData.get_ou().strip() == ''):
                 self.logger.debug("Empty OU name!")
                 showerror_gtk(_("You must select an OU!") + "\n" + _("Please fill all the mandatory fields."),
-                     self.view)
+                     None)
                 self.view.focusSeachFilterField()            
                 return False   
             else:
@@ -396,7 +396,7 @@ class ConnectWithGecosCCController(object):
             self.processView.setLinkToChefStatus(_('ERROR'))
             self.processView.enableAcceptButton()
             showerror_gtk(_("Can't create/modify /etc/chef/client.rb file"),
-                 self.view)
+                 None)
             self._clean_connection_files_on_error()
             return False            
         
