@@ -23,24 +23,28 @@ __license__ = "GPL-2"
 from gi.repository import Gtk
     
 def showwarning_gtk(message, parent_window):
+    parent_window = None
     dialog = Gtk.MessageDialog(parent_window, 0, Gtk.MessageType.WARNING,
             Gtk.ButtonsType.OK, message)
     response = dialog.run()
     dialog.destroy()
 
 def showinfo_gtk(message, parent_window):
+    parent_window = None
     dialog = Gtk.MessageDialog(parent_window, 0, Gtk.MessageType.INFO,
             Gtk.ButtonsType.OK, message)
     response = dialog.run()
     dialog.destroy()
 
 def showerror_gtk(message, parent_window):
+    parent_window = None
     dialog = Gtk.MessageDialog(parent_window, 0, Gtk.MessageType.ERROR,
             Gtk.ButtonsType.OK, message)
     response = dialog.run()
     dialog.destroy()
     
 def askyesno_gtk(message, parent_window):
+    parent_window = None
     dialog = Gtk.MessageDialog(parent_window, 0, Gtk.MessageType.QUESTION,
             Gtk.ButtonsType.YES_NO, message)
     response = dialog.run()

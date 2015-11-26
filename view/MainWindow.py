@@ -183,6 +183,9 @@ class MainWindow(object):
     def gotoConnectoWithGECOS(self, connectView):
         self.navigate(connectView)
     
+    def gotoUserAuth(self, userAuthView):
+        self.navigate(userAuthView)
+    
     def getCentralFrame(self):
         return self.builder.get_object("frame2")
     
@@ -233,6 +236,7 @@ class MainWindow(object):
         
     def authManagementHandler(self, *args):
         self.logger.debug('This should display the auth settings')
+        self.controller.showUserAuthenticationMethod()
     
     def help1ManagementHandler(self, *args):
         self.logger.debug('This should show a brief help about GECOS linking')

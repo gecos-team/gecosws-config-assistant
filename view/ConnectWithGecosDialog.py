@@ -28,6 +28,9 @@ from gi.repository import Gtk, Gdk
 import logging
 import gettext
 from gettext import gettext as _
+
+from dto.GecosAccessData import GecosAccessData
+from dto.WorkstationData import WorkstationData
 """
 ConnectWithGecosCC redone in Glade
 """

@@ -65,6 +65,7 @@ class MainMenuDialog(GladeWindow):
         
     def authManagementHandler(self, *args):
         self.logger.debug('This should display the auth settings')
+        self.controller.showUserAuthenticationMethod()
     
     def netManagementHandler(self, *args):
         self.logger.debug('This should display the network settings')

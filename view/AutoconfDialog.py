@@ -23,6 +23,7 @@ __license__ = "GPL-2"
 
 from GladeWindow import GladeWindow
 import logging
+from dto.GecosAccessData import GecosAccessData
 """
 Autoconf redone in Glade
 """
@@ -185,6 +186,9 @@ class AutoconfDialog(GladeWindow):
     def handleData(self):
         self.initGUIValues()
         entries = {}
+        if self.get_data() is None:
+            self.set_data(GecosAccessData())
+        
         entries["entry1"] = self.data.get_url() if self.data.get_url() is not None else ''
         entries["entry2"] = self.data.get_login() if self.data.get_login() is not None else ''
         entries["entry3"] = self.data.get_password() if self.data.get_password() is not None else ''

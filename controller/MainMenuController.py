@@ -178,7 +178,8 @@ class MainMenuController(object):
         self.window.gotoConnectoWithGECOS(view)
 
     def showUserAuthenticationMethod(self):
-        self.userAuthenticationMethod.show(self.window.currentView)
+        view = self.userAuthenticationMethod.getView(self)
+        self.window.gotoUserAuth(view)
 
     def showSoftwareManager(self):
         self.logger.debug("showSoftwareManager")

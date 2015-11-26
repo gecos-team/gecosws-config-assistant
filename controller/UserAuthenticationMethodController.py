@@ -31,6 +31,7 @@ else:
     from view.CommonDialog import askyesno_gtk, showerror_gtk
     from view.UserAuthenticationMethodElemView import UserAuthenticationMethodElemView
     from view.ADSetupDataElemView import ADSetupDataElemView
+    from view.UserAuthDialog import UserAuthDialog
 
 from util.Validation import Validation
 
@@ -68,16 +69,18 @@ class UserAuthenticationMethodController(object):
         self.dao = UserAuthenticationMethodDAO()
         self.logger = logging.getLogger('UserAuthenticationMethodController')
 
-    def show(self, mainWindow):
-        self.logger.debug('show - BEGIN')
-        self.view = UserAuthenticationMethodElemView(mainWindow, self)
+    def getView(self, mainController):
+        self.logger.debug('getView - BEGIN')
+#         self.view = UserAuthenticationMethodElemView(mainController, self)
+        self.view = UserAuthDialog(mainController)
         
         data = self.dao.load()
         self.logger.debug('data is of type %s'%(type(data).__name__))
         self.view.set_data(data)
         
-        self.view.show()   
-        self.logger.debug('show - END')
+        self.logger.debug('getView - END')
+        
+        return self.view
 
     def hide(self):
         self.logger.debug('hide')
