@@ -103,10 +103,10 @@ class UserAuthDialog(GladeWindow):
         self.logger.info('Calling child specific handler')
         self.logger.debug("Adding on change combobox handler")
         self.handlers["onChng"] = self.onChangeComboBox
-        self.logger.debug("Adding on accept handler")
-        self.handlers["onAcpt"] = self.accept
         self.logger.debug("Adding on config handler")
         self.handlers["onCnfg"] = self.setup
+        self.logger.debug("Adding on accept handler")
+        self.handlers["onAcpt"] = self.accept
     
     def initGUIValues(self, calculatedStatus):
         pass
@@ -336,21 +336,6 @@ class UserAuthDialog(GladeWindow):
     def _show_local_users_method(self):
         self.logger.debug("_show_local_users_method")
         self.setFormForInternal()
-         
-        # Options frame
-        self.optionsFrame['text'] = _('Local users authentication')
- 
-        # Delete previous content
-        for widget in self.optionsFrame.winfo_children():
-            widget.destroy()
-             
-        padding_x = 10
-        padding_y = 10
-                     
-        # Explanation
-        explanationLabel =  Label(self.optionsFrame, 
-            text=_("There is no necessary data to setup the local users authentication method."))
-        explanationLabel.grid(column=0, row=1, columnspan=2, sticky=E+W, padx=padding_x, pady=padding_y)
     
     def focusLdapUriField(self):
         pass               
