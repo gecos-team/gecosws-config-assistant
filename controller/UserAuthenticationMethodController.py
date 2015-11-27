@@ -71,12 +71,12 @@ class UserAuthenticationMethodController(object):
 
     def getView(self, mainController):
         self.logger.debug('getView - BEGIN')
-#         self.view = UserAuthenticationMethodElemView(mainController, self)
         self.view = UserAuthDialog(mainController)
         
         data = self.dao.load()
         self.logger.debug('data is of type %s'%(type(data).__name__))
         self.view.set_data(data)
+        self.view.updateCombo()
         
         self.logger.debug('getView - END')
         
