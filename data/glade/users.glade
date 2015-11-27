@@ -206,6 +206,7 @@
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="model">liststore1</property>
+                                        <signal name="changed" handler="onChng" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="expand">True</property>
@@ -423,6 +424,7 @@
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="use_action_appearance">False</property>
+                                <signal name="clicked" handler="onCnfg" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -437,6 +439,7 @@
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
                                 <property name="use_action_appearance">False</property>
+                                <signal name="click" handler="onAcpt" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">True</property>

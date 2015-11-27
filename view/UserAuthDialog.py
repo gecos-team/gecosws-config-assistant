@@ -27,6 +27,13 @@ from gi.repository import Gtk, Gdk
 import logging
 import gettext
 from gettext import gettext as _
+
+from dto.LocalUsersAuthMethod import LocalUsersAuthMethod
+from dto.LDAPAuthMethod import LDAPAuthMethod
+from dto.ADAuthMethod import ADAuthMethod
+from dto.LDAPSetupData import LDAPSetupData
+from dto.ADSetupData import ADSetupData
+
 """
 UserAuthenticationMethodElemView redone in Glade
 """
@@ -36,7 +43,8 @@ AD_USERS    = 2
 
 class UserAuthDialog(GladeWindow):
     def __init__(self, mainController):
-        self.controller = mainController
+        self.mainController = mainController
+        self.controller = mainController.userAuthenticationMethod
         self.gladePath = 'users.glade'
         self.logger = logging.getLogger('UserAuthDialog')
         
@@ -93,6 +101,12 @@ class UserAuthDialog(GladeWindow):
     def addHandlers(self):
         super(UserAuthDialog, self).addHandlers()
         self.logger.info('Calling child specific handler')
+        self.logger.debug("Adding on change combobox handler")
+        self.handlers["onChng"] = self.onChangeComboBox
+        self.logger.debug("Adding on accept handler")
+        self.handlers["onAcpt"] = self.accept
+        self.logger.debug("Adding on config handler")
+        self.handlers["onCnfg"] = self.setup
     
     def initGUIValues(self, calculatedStatus):
         pass
@@ -116,11 +130,12 @@ class UserAuthDialog(GladeWindow):
         if(index == LOCAL_USERS):
             self._show_local_users_method()
         elif(index == LDAP_USERS):
-            self._show_active_directory_method()
-        elif(index == AD_USERS):
             self._show_ldap_method()
+        elif(index == AD_USERS):
+            self._show_active_directory_method()
     
     def updateCombo(self):
+        self.logger.debug("Updating combo")
         name = self.get_data().get_name()
         
         value = -1
@@ -166,6 +181,27 @@ class UserAuthDialog(GladeWindow):
             model = combo.get_model()
             value = model[tree_iter][0]
             self.lastComboValue = value
+            index = -1
+            if(value == _('Internal')):
+                index = LOCAL_USERS
+            elif(value == _('LDAP')):
+                index = LDAP_USERS
+            elif(value == _('Active Directory')):
+                index = AD_USERS
+            if index != -1: self.selectComboValue(index)
+    
+    def ldapWidgetAlias(self):
+        self.ldapBaseEntry = self.entry2
+        self.ldapUriEntry = self.entry1
+        self.ldabBaseGroupEntry = self.entry3
+        self.ldabBindUserDNEntry = self.entry4
+        self.ldabBindUserPwdEntry = self.entry5
+    
+    def adWidgetAlias(self):
+        self.adDomainEntry = self.entry1
+        self.adWorkgroupEntry = self.entry2
+        self.adUserEntry = self.entry3
+        self.adPasswordEntry = self.entry4
     
     def setFormForLDAP(self):
         self.logger.debug("Setting form for LDAP")
@@ -334,9 +370,7 @@ class UserAuthDialog(GladeWindow):
     def focusAdPasswordField(self):
         pass
     
-    ############
-    
-    def setup(self):
+    def setup(self, *args):
         self.logger.debug("setup")
         self._populate_data()
         
@@ -345,7 +379,7 @@ class UserAuthDialog(GladeWindow):
                 showerror_gtk(_("An error happened while saving the users authentication method!") + "\n" + _("See log for more details."),
                      None)
     
-    def accept(self):
+    def accept(self, *args):
         self.logger.debug("Accept")
         self._populate_data()
         self.controller.accept()
@@ -354,29 +388,32 @@ class UserAuthDialog(GladeWindow):
         self.logger.debug("cancel")
         self.set_data(None)
         self.controller.backToMainWindowDialog()
-    
+            
     def _populate_data(self):
         self.logger.debug("_populate_data")
+        name = self.get_data().get_name()
         
-        if self.authTypeVar.get() == _('LDAP'):
+        if name == _('LDAP'):
             # Populate data from LDAP data
+            self.ldapWidgetAlias()
             self.set_data(LDAPAuthMethod())
             setupData = LDAPSetupData()
             setupData.set_base(self.ldapBaseEntry.get())
-            setupData.set_uri(self.ldapUriEntry.get())
-            setupData.set_base_group(self.ldabBaseGroupEntry.get())
-            setupData.set_bind_user_dn(self.ldabBindUserDNEntry.get())
-            setupData.set_bind_user_pwd(self.ldabBindUserPwdEntry.get())
+            setupData.set_uri(self.ldapUriEntry.get_text())
+            setupData.set_base_group(self.ldabBaseGroupEntry.get_text())
+            setupData.set_bind_user_dn(self.ldabBindUserDNEntry.get_text())
+            setupData.set_bind_user_pwd(self.ldabBindUserPwdEntry.get_text())
             
             self.get_data().set_data(setupData)
-        elif self.authTypeVar.get() == _('Active Directory'):
+        elif name == _('Active Directory'):
             # Populate data from AD data
+            self.adWidgetAlias()
             self.set_data(ADAuthMethod())
             setupData = ADSetupData()
-            setupData.set_domain(self.adDomainEntry.get())
-            setupData.set_workgroup(self.adWorkgroupEntry.get())
-            setupData.set_ad_administrator_user(self.adUserEntry.get())
-            setupData.set_ad_administrator_pass(self.adPasswordEntry.get())
+            setupData.set_domain(self.adDomainEntry.get_text())
+            setupData.set_workgroup(self.adWorkgroupEntry.get_text())
+            setupData.set_ad_administrator_user(self.adUserEntry.get_text())
+            setupData.set_ad_administrator_pass(self.adPasswordEntry.get_text())
             
             self.get_data().set_data(setupData)
             
