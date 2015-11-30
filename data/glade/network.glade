@@ -15,12 +15,12 @@
   <object class="GtkImage" id="helpimage1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">data/btn-help.png</property>
+    <property name="pixbuf">../media/btn-help.png</property>
   </object>
   <object class="GtkImage" id="helpimage2">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">data/btn-help.png</property>
+    <property name="pixbuf">../media/btn-help.png</property>
   </object>
   <object class="GtkListStore" id="liststore1">
     <columns>
@@ -144,7 +144,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="xalign">0.69999998807907104</property>
-                        <property name="pixbuf">data/logo-gecos.png</property>
+                        <property name="pixbuf">../media/logo-gecos.png</property>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -319,7 +319,7 @@
                               <object class="GtkImage" id="statusicon">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="pixbuf">data/btn-status.png</property>
+                                <property name="pixbuf">../media/btn-status.png</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -362,7 +362,7 @@
                               <object class="GtkImage" id="usersicon">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="pixbuf">data/btn-users.png</property>
+                                <property name="pixbuf">../media/btn-users.png</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -405,7 +405,7 @@
                               <object class="GtkImage" id="managericon">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="pixbuf">data/btn-manager.png</property>
+                                <property name="pixbuf">../media/btn-manager.png</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -448,7 +448,7 @@
                               <object class="GtkImage" id="updatewizicon">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="pixbuf">data/btn-update.png</property>
+                                <property name="pixbuf">../media/btn-update.png</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
