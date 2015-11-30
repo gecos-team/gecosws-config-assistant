@@ -372,7 +372,7 @@ class UserAuthDialog(GladeWindow):
     def cancel(self):
         self.logger.debug("cancel")
         self.set_data(None)
-        self.controller.backToMainWindowDialog()
+        self.mainController.backToMainWindowDialog()
             
     def _populate_data(self):
         self.logger.debug("_populate_data")

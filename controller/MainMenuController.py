@@ -39,6 +39,7 @@ from util.PackageManager import PackageManager
 from view.AutoconfDialog import AutoconfDialog
 from view.CommonDialog import showerror_gtk, showinfo_gtk, askyesno_gtk
 from view.MainWindow import MainWindow
+from view.UserAuthDialog import UserAuthDialog, LOCAL_USERS, LDAP_USERS, AD_USERS
 
 gettext.textdomain('gecosws-config-assistant')
 
@@ -132,6 +133,40 @@ class MainMenuController(object):
         
         return buttons
     
+    def getTexts(self):
+        self.logger.debug("Calculating texts")
+        text = {}
+        
+        if(self.checkNetwork()):
+            text[self.networkStatusKey]  = _("El sistema tiene conexión a Red (Datos de conexión)")
+        else:
+            text[self.networkStatusKey]  = _("El sistema NO tiene conexión a Red")
+        
+        text[self.autoconfStatusKey]     = _("Puede autoconfigurar el sistema con los valores predeterminados")
+            
+        if(self.checkNTP()):
+            text[self.ntpStatusKey]      = _("El sistema está sincronizado con un servidor NTP")
+        else:
+            text[self.ntpStatusKey]      = _("El sistema NO está sincronizado con un servidor NTP")
+        
+        if(self.checkGECOS()):
+            text[self.gecosStatusKey]    = _("El sistema está vinculado a GECOS")
+        else:
+            text[self.gecosStatusKey]    = _("El sistema NO está vinculado a GECOS")
+        
+        basetext = "Los usuarios se autentican por el método "
+        
+        status = self.userAuthenticationMethod.getStatus()
+        
+        if(status == LDAP_USERS):
+            text[self.usersStatusKey]    = _(basetext+"LDAP")
+        elif(status == AD_USERS):
+            text[self.usersStatusKey]    = _(basetext+"Active Directory")
+        else:
+            text[self.usersStatusKey]    = _(basetext+"INTERNO")
+        
+        return text
+    
     def checkNetwork(self):
         self.logger.debug("Checking network status")
         ret = self.requirementsCheck.getNetworkStatus()
@@ -152,7 +187,8 @@ class MainMenuController(object):
     
     def checkGECOS(self):
         self.logger.debug("Checking GECOS")
-        return False
+        ret = self.connectWithGecosCC.getStatus()
+        return ret
     
     # new show methods
     def showAutoconfDialog(self):

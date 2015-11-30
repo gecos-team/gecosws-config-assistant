@@ -212,6 +212,10 @@ class MainMenuDialog(GladeWindow):
     
     def loadCurrentState(self, guiValues):
         super(MainMenuDialog, self).loadCurrentState(guiValues)
+        
+        self.texts = self.controller.getTexts()
+        self.putTexts()
+        
          # init streetlights 
         for trafficlightKey in self.guiValues[self.trafficlightsKey].keys():
             trafficlightValue = self.guiValues[self.trafficlightsKey][trafficlightKey]
@@ -254,3 +258,16 @@ class MainMenuDialog(GladeWindow):
     def showLocalUserListView(self):
         self.logger.debug("showLocalUserListView")
         self.controller.showLocalUserListView()
+    
+    def putTexts(self):
+        networkText  = self.texts[self.controller.networkStatusKey ]
+        autoconfText = self.texts[self.controller.autoconfStatusKey]
+        ntpText      = self.texts[self.controller.ntpStatusKey     ]
+        gecosText    = self.texts[self.controller.gecosStatusKey   ]
+        userText     = self.texts[self.controller.usersStatusKey   ]
+        
+        self.getElementById("netlabel" ).set_text(networkText )
+        self.getElementById("conflabel").set_text(autoconfText)
+        self.getElementById("synclabel").set_text(ntpText     )
+        self.getElementById("syslabel" ).set_text(gecosText   )
+        self.getElementById("userlabel").set_text(userText    )

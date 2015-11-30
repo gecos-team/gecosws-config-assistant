@@ -82,6 +82,9 @@ class ConnectWithGecosCCController(object):
         self.logger.debug('show - END')
         
         return self.view
+    
+    def getStatus(self):
+        return self.accessDataDao.previousDataExists()
 
     def hide(self):
         self.logger.debug("hide")

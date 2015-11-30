@@ -31,7 +31,7 @@ else:
     from view.CommonDialog import askyesno_gtk, showerror_gtk
     from view.UserAuthenticationMethodElemView import UserAuthenticationMethodElemView
     from view.ADSetupDataElemView import ADSetupDataElemView
-    from view.UserAuthDialog import UserAuthDialog
+    from view.UserAuthDialog import UserAuthDialog, LOCAL_USERS, LDAP_USERS, AD_USERS
 
 from util.Validation import Validation
 
@@ -81,6 +81,19 @@ class UserAuthenticationMethodController(object):
         self.logger.debug('getView - END')
         
         return self.view
+    
+    def getStatus(self):
+        data = self.dao.load()
+        name = data.get_name()
+        
+        if(name == _('Internal')):
+            value = LOCAL_USERS
+        elif(name == _('LDAP')):
+            value = LDAP_USERS
+        elif(name == _('Active Directory')):
+            value = AD_USERS
+        
+        return value
 
     def hide(self):
         self.logger.debug('hide')
