@@ -46,8 +46,6 @@ class MainWindow(object):
         self.autoconfGUIValues = {}
         self.networkSettingsDialog = NetworkSettingsDialog(self.controller)
         self.networkSettingsGUIValues = {}
-        self.ntpDialog = NTPDialog(self.controller)
-        self.ntpGUIValues = {}
     
     def buildUI(self):
         self.logger.debug("Building UI")
@@ -71,7 +69,7 @@ class MainWindow(object):
             Gdk.Screen.get_default(), self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
         
         # main window
-        self.window = self.builder.get_object("window1")
+        self.window = self.getElementById("window1")
         # center frame, here we'll do the transformations to keep all in the same window
         self.frame = self.getCentralFrame()
         
@@ -94,7 +92,7 @@ class MainWindow(object):
             
         for buttonKey in self.guiValues[self.buttonsKey].keys():
             buttonValue = self.guiValues[self.buttonsKey][buttonKey]
-            button = self.builder.get_object(buttonKey)
+            button = self.getElementById(buttonKey)
             button.set_sensitive(buttonValue)
     
     def show(self):
@@ -125,7 +123,6 @@ class MainWindow(object):
         # retrieve values from previous window
         toSaveState = self.currentView.getCurrentState()
         
-#         self.logger.error(toSaveState)
         
         if(type(self.currentView) is MainMenuDialog):
             self.mainScreenGUIValues = toSaveState
@@ -133,21 +130,14 @@ class MainWindow(object):
             self.autoconfGUIValues = toSaveState
         elif(type(self.currentView) is NetworkSettingsDialog):
             self.networkSettingsGUIValues = toSaveState
-        elif(type(self.currentView) is NTPDialog):
-            self.ntpGUIValues = toSaveState
         
         # load previous state
         currentState = {}
         if(type(dialog) is MainMenuDialog):
             currentState = self.mainScreenGUIValues
-#         elif(type(dialog) is AutoconfDialog):
-#             currentState = self.autoconfGUIValues
         elif(type(dialog) is NetworkSettingsDialog):
             currentState = self.networkSettingsGUIValues
-        elif(type(dialog) is NTPDialog):
-            currentState = self.ntpGUIValues
             
-#         self.logger.error(currentState)
         if(type(dialog) is not AutoconfDialog):
             dialog.loadCurrentState(currentState)
         
@@ -167,10 +157,8 @@ class MainWindow(object):
         self.networkSettingsDialog.putNetworkInterfaces(self.controller.getNetworkInterfaces())
         self.navigate(self.networkSettingsDialog)
     
-    def gotoNTPSettings(self):
-        self.ntpDialog = NTPDialog(self.controller) 
-        self.ntpDialog.initGUIValues(self.ntpGUIValues)
-        self.navigate(self.ntpDialog)
+    def gotoNTPSettings(self, ntpView):
+        self.navigate(ntpView)
     
     def gotoConnectoWithGECOS(self, connectView):
         self.navigate(connectView)
@@ -179,7 +167,7 @@ class MainWindow(object):
         self.navigate(userAuthView)
     
     def getCentralFrame(self):
-        return self.builder.get_object("frame2")
+        return self.getElementById("frame2")
     
     def putInCenterFrame(self, newCentralFrame):
         self.logger.debug("Enter putInCenterFrame()")
@@ -255,3 +243,6 @@ class MainWindow(object):
     def putNetworkInterfaces(self, interfaces):
         self.logger.debug('Adding network interfaces to network frame')
         self.networkSettingsDialog.putNetworkInterfaces(interfaces)
+    
+    def getElementById(self, id):
+        return self.builder.get_object(id)

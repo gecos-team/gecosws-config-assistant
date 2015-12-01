@@ -92,7 +92,7 @@ class MainMenuDialog(GladeWindow):
         lightyellowimg = datafolder+"media/i-status-18-grey.png"
         lightgreyimg   = datafolder+"media/i-status-18-off.png" 
         
-        trafficwidget = self.builder.get_object(id)
+        trafficwidget = self.getElementById(id)
         lightimg = ""
         
         if   (state == 1):
@@ -111,7 +111,7 @@ class MainMenuDialog(GladeWindow):
     index: Between 1 and 7, if not it will raise and Exception
     '''
     def setCenterButton(self, id, enabled):
-        button = self.builder.get_object(id)
+        button = self.getElementById(id)
         button.set_sensitive(enabled)
         
     def initGUIValues(self, calculatedStatus):

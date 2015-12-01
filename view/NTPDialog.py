@@ -97,7 +97,7 @@ class NTPDialog(GladeWindow):
         self.controller.backToMainWindowDialog()
     
     def getNTPServerInput(self):
-        entry = self.builder.get_object("entry1")
+        entry = self.getElementById("entry1")
         text = entry.get_text()
         return text
     
@@ -112,8 +112,18 @@ class NTPDialog(GladeWindow):
             self.guiValues[self.ntpServerKey] = "hora.roa.es"
     
     def loadCurrentState(self, guiValues):
-        entry = self.builder.get_object("entry1")
-        entry.set_text(self.guiValues[self.ntpServerKey])
+        self.prepareFrame()
+    
+    def extractGUIElements(self):
+        self.ntpServerEntry = self.getElementById("entry1")
+    
+    def prepareFrame(self):
+        self.logger.debug("Prepare frame")
+        self.extractGUIElements()
+        
+        data = self.get_data()
+        if data is not None:
+            self.ntpServerEntry.set_text(data.get_address())
     
     def show(self):
         # set to initial state

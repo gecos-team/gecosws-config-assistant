@@ -36,8 +36,8 @@ class NetworkSettingsDialog(GladeWindow):
         
         self.buildUI(self.gladePath)
         
-        self.store = self.builder.get_object('liststore1')
-        self.view = self.builder.get_object('treeview1')
+        self.store = self.getElementById('liststore1')
+        self.view = self.getElementById('treeview1')
         
         self.store.clear() 
         

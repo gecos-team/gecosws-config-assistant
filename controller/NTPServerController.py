@@ -50,9 +50,11 @@ class NTPServerController(object):
         self.view = NTPDialog(mainController)
 
         self.view.set_data(self.dao.load())
+        self.view.prepareFrame()
         
-        self.view.show()   
         self.logger.debug('show - END')
+        
+        return self.view
 
     def hide(self):
         self.logger.debug('hide')

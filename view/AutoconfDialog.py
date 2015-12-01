@@ -70,9 +70,9 @@ class AutoconfDialog(GladeWindow):
     
     def getURLUserPassValues(self):
         values = {}
-        values["URL"] = self.builder.get_object("entry1").get_text()
-        values["user"] = self.builder.get_object("entry2").get_text()
-        values["pass"] = self.builder.get_object("entry3").get_text()
+        values["URL"] = self.getElementById("entry1").get_text()
+        values["user"] = self.getElementById("entry2").get_text()
+        values["pass"] = self.getElementById("entry3").get_text()
         
         return values
         
@@ -83,7 +83,7 @@ class AutoconfDialog(GladeWindow):
         lightyellowimg = datafolder+"media/i-status-22-grey.png"
         lightgreyimg   = datafolder+"media/i-status-22-off.png"
         
-        trafficwidget = self.builder.get_object("image1")
+        trafficwidget = self.getElementById("image1")
         lightimg = ""
         
         if   (state == 1):
@@ -99,20 +99,20 @@ class AutoconfDialog(GladeWindow):
     
     def setToInitialState(self):
         # clean
-        self.builder.get_object('entry1').set_text('')
-        self.builder.get_object('entry2').set_text('')
-        self.builder.get_object('entry3').set_text('')
+        self.getElementById('entry1').set_text('')
+        self.getElementById('entry2').set_text('')
+        self.getElementById('entry3').set_text('')
         
         # hide
-        self.builder.get_object('label9').set_visible(false)
-        self.builder.get_object('label7').set_visible(false)
-        self.builder.get_object('entry4').set_visible(false)
-        self.builder.get_object('entry5').set_visible(false)
-        self.builder.get_object('button2').set_visible(false)
+        self.getElementById('label9').set_visible(false)
+        self.getElementById('label7').set_visible(false)
+        self.getElementById('entry4').set_visible(false)
+        self.getElementById('entry5').set_visible(false)
+        self.getElementById('button2').set_visible(false)
         
         # change
         self.trafficSignalChange(2)
-        self.builder.get_object('label11').set_text('PENDIENTE')
+        self.getElementById('label11').set_text('PENDIENTE')
     
     def initGUIValues(self):
         self.logger.debug("Initializing GUI values")
@@ -153,17 +153,17 @@ class AutoconfDialog(GladeWindow):
             entryValue = self.guiValues[self.entriesKey][entryKey]
             self.logger.error("Entry key "+entryKey)
             self.logger.error("Entry value "+entryValue)
-            self.builder.get_object(entryKey).set_text(entryValue)
+            self.getElementById(entryKey).set_text(entryValue)
          
         # init visibles
         for visibleKey in self.guiValues[self.visiblesKey].keys():
             visibleValue = self.guiValues[self.visiblesKey][visibleKey]
-            self.builder.get_object(visibleKey).set_visible(visibleValue)
+            self.getElementById(visibleKey).set_visible(visibleValue)
             
         # init label value
         for labelKey in self.guiValues[self.labelsKey].keys():
             label11Value = self.guiValues[self.labelsKey][labelKey]
-            self.builder.get_object(labelKey).set_text(label11Value)
+            self.getElementById(labelKey).set_text(label11Value)
             
         for trafficLightKey in self.guiValues[self.trafficLightsKey].keys():
             trafficLightValue = self.guiValues[self.trafficLightsKey][trafficLightKey]

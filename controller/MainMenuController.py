@@ -238,9 +238,8 @@ class MainMenuController(object):
         self.window.gotoNetworkSettings()
     
     def showNTPSettingsDialog(self):
-        #view = self.requirementsCheck.ntpServer.getView(self)
-        #self.window.gotoNTPSettings(view)
-        self.window.gotoNTPSettings()
+        view = self.requirementsCheck.ntpServer.getView(self)
+        self.window.gotoNTPSettings(view)
     
     def showRequirementsCheckDialog(self):
         self.requirementsCheck.show(self.window.currentView)

@@ -50,7 +50,7 @@ class GladeWindow(object):
             Gdk.Screen.get_default(), self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
         
         # main window
-        self.window = self.builder.get_object("window1")
+        self.window = self.getElementById("window1")
         # center frame, here we'll do the transformations to keep all in the same window
         self.frame = self.getCentralFrame()
         
@@ -103,7 +103,7 @@ class GladeWindow(object):
                 child.hide()
     
     def getCentralFrame(self):
-        return self.builder.get_object("frame2")
+        return self.getElementById("frame2")
     
     def getElementById(self, id):
         return self.builder.get_object(id)
