@@ -34,6 +34,8 @@ class NetworkSettingsDialog(GladeWindow):
         self.gladePath = 'network.glade'
         self.logger = logging.getLogger('NetworkSettingsDialog')
         
+        self.data = None
+        
         self.buildUI(self.gladePath)
         
         self.store = self.getElementById('liststore1')
@@ -50,11 +52,21 @@ class NetworkSettingsDialog(GladeWindow):
         column.set_clickable(True)   
         column.set_resizable(True)   
         self.view.append_column(column)
+        
+    def get_data(self):
+        return self.__data
+
+
+    def set_data(self, value):
+        self.__data = value
     
     def putNetworkInterfaces(self, interfaces):
         self.logger.debug('Putting network interfaces')
         for interface in interfaces:
             self.store.append([interface.get_name(), interface.get_ip_address()])
+    
+    def prepareFrame(self):
+        self.putNetworkInterfaces(self.get_data())
     
     def addTranslations(self):
         super(NetworkSettingsDialog, self).addTranslations()

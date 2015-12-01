@@ -235,7 +235,8 @@ class MainMenuController(object):
     
     def showNetworkSettingsDialog(self):
         # get network settings widgets
-        self.window.gotoNetworkSettings()
+        view = self.requirementsCheck.networkInterface.getView(self)
+        self.window.gotoNetworkSettings(view)
     
     def showNTPSettingsDialog(self):
         view = self.requirementsCheck.ntpServer.getView(self)

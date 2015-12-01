@@ -152,10 +152,8 @@ class MainWindow(object):
     def gotoMainWindow(self):
         self.navigate(MainMenuDialog(self.controller))
     
-    def gotoNetworkSettings(self):
-        self.networkSettingsDialog = NetworkSettingsDialog(self.controller) 
-        self.networkSettingsDialog.putNetworkInterfaces(self.controller.getNetworkInterfaces())
-        self.navigate(self.networkSettingsDialog)
+    def gotoNetworkSettings(self, netView):
+        self.navigate(netView)
     
     def gotoNTPSettings(self, ntpView):
         self.navigate(ntpView)
@@ -239,10 +237,6 @@ class MainWindow(object):
     def updateManagementHandler(self, *args):
         self.logger.debug('Update config assistant')
         self.controller.updateConfigAsystant()
-    
-    def putNetworkInterfaces(self, interfaces):
-        self.logger.debug('Adding network interfaces to network frame')
-        self.networkSettingsDialog.putNetworkInterfaces(interfaces)
     
     def getElementById(self, id):
         return self.builder.get_object(id)
