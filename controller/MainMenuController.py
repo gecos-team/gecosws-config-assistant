@@ -107,14 +107,43 @@ class MainMenuController(object):
         
         if(checkNetwork):
             ret[self.networkStatusKey] = 1
-        if(checkNTP):
-            ret[self.ntpStatusKey] = 1
-        if(self.checkAutoconf()):
-            ret[self.autoconfStatusKey] = 1
+            if(checkNTP):
+                ret[self.ntpStatusKey] = 1
+            if(self.checkAutoconf()):
+                ret[self.autoconfStatusKey] = 1
+            
+            if(checkNetwork and checkNTP):
+                ret[self.gecosStatusKey] = 2
+                ret[self.usersStatusKey] = 2
+            
+            if(self.checkGECOS()):
+                ret[self.gecosStatusKey] = 1
+            
+            if(self.checkUsers()):
+                ret[self.usersStatusKey] = 1
         
-        if(checkNetwork and checkNTP):
-            ret[self.gecosStatusKey] = 2
-            ret[self.usersStatusKey] = 2
+        return ret
+    
+    def calculateMainButtons(self, calculatedStatus):
+        ret = {}
+        
+        ret["netbutton" ] = True
+        ret["confbutton"] = False
+        ret["syncbutton"] = False 
+        ret["sysbutton" ] = False
+        ret["userbutton"] = False
+        
+        if(calculatedStatus[self.ntpStatusKey] != 3):
+            ret["confbutton"] = True
+        
+        if(calculatedStatus[self.autoconfStatusKey] != 3):
+            ret["syncbutton"] = True
+        
+        if(calculatedStatus[self.gecosStatusKey] != 3):
+            ret["sysbutton" ] = True
+        
+        if(calculatedStatus[self.usersStatusKey] != 3):
+            ret["userbutton"] = True
         
         return ret
     
@@ -190,6 +219,11 @@ class MainMenuController(object):
         ret = self.connectWithGecosCC.getStatus()
         return ret
     
+    def checkUsers(self):
+        self.logger.debug("Checking Users")
+        ret = self.userAuthenticationMethod.areNotInternal()
+        return ret
+    
     # new show methods
     def showAutoconfDialog(self):
         view = self.requirementsCheck.autoSetup.getView(self)
@@ -204,6 +238,8 @@ class MainMenuController(object):
         self.window.gotoNetworkSettings()
     
     def showNTPSettingsDialog(self):
+        #view = self.requirementsCheck.ntpServer.getView(self)
+        #self.window.gotoNTPSettings(view)
         self.window.gotoNTPSettings()
     
     def showRequirementsCheckDialog(self):

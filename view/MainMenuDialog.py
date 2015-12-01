@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 from __builtin__ import True
+from symbol import pass_stmt
 
 # This file is part of Guadalinex
 #
@@ -193,20 +194,7 @@ class MainMenuDialog(GladeWindow):
         self.guiValues[self.trafficlightsKey] = trafficlights
         
         # center buttons
-        centerbuttons["netbutton"] = True
-        
-        if(networkActivated):
-            centerbuttons["confbutton"]= True
-            centerbuttons["syncbutton"]= True
-        
-        if(gecosValue != 1):
-            centerbuttons["sysbutton"] = True
-        
-        if(gecosValue != 1):
-            centerbuttons["sysbutton"] = True
-        
-        if(usersValue != 1):
-            centerbuttons["userbutton"] = True
+        centerbuttons = self.controller.calculateMainButtons(calculatedStatus)
         
         self.guiValues[self.centerbuttonsKey] = centerbuttons
     

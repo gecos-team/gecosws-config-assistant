@@ -22,7 +22,7 @@ __license__ = "GPL-2"
 
 from dao.NTPServerDAO import NTPServerDAO
 
-from view.NTPServerElemView import NTPServerElemView
+from view.NTPDialog import NTPDialog
 from view.CommonDialog import showerror_gtk
 
 import logging
@@ -45,9 +45,9 @@ class NTPServerController(object):
         self.dao = NTPServerDAO()
         self.logger = logging.getLogger('NTPServerController')
 
-    def show(self, mainWindow):
+    def getView(self, mainController):
         self.logger.debug('show - BEGIN')
-        self.view = NTPServerElemView(mainWindow, self)
+        self.view = NTPDialog(mainController)
 
         self.view.set_data(self.dao.load())
         

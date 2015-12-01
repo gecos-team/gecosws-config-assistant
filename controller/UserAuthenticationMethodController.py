@@ -94,6 +94,15 @@ class UserAuthenticationMethodController(object):
             value = AD_USERS
         
         return value
+    
+    def areNotInternal(self):
+        status = self.getStatus()
+        ret = False
+        
+        if(status != LOCAL_USERS):
+            ret = True
+        
+        return ret
 
     def hide(self):
         self.logger.debug('hide')
