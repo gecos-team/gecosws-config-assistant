@@ -45,7 +45,7 @@
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkButton" id="linkbutton">
-                        <property name="label" translatable="yes">Vincular/Desvincular</property>
+                        <property name="label" translatable="yes">Link/Unlink</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
@@ -78,7 +78,7 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="authbutton">
-                        <property name="label" translatable="yes">Modo autenticación</property>
+                        <property name="label" translatable="yes">Authentication type</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
@@ -157,7 +157,7 @@
                           <object class="GtkLabel" id="label1">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Se necesita la hora exacta para coordinar algunos servicios</property>
+                            <property name="label" translatable="yes">Precise time is needed to keep some services synchronized</property>
                           </object>
                           <packing>
                             <property name="expand">True</property>
@@ -169,7 +169,7 @@
                           <object class="GtkLabel" id="label2">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Por favor, proporcione la dirección de su servidor de hora NTP</property>
+                            <property name="label" translatable="yes">Please set your NTP server address:</property>
                           </object>
                           <packing>
                             <property name="expand">True</property>
@@ -185,7 +185,7 @@
                               <object class="GtkLabel" id="label3">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Servidor NTP:</property>
+                                <property name="label" translatable="yes">NTP Server:</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -222,7 +222,7 @@
                             <property name="can_focus">False</property>
                             <child>
                               <object class="GtkButton" id="button1">
-                                <property name="label" translatable="yes">Comprobar</property>
+                                <property name="label" translatable="yes">Check</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -237,7 +237,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="button2">
-                                <property name="label" translatable="yes">Aceptar</property>
+                                <property name="label" translatable="yes">Accept</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -303,7 +303,7 @@
                               <object class="GtkLabel" id="systemlabel">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Estado Sistema</property>
+                                <property name="label" translatable="yes">System Status</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -346,7 +346,7 @@
                               <object class="GtkLabel" id="userslabel">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Usuarios Locales</property>
+                                <property name="label" translatable="yes">Local Users</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -389,7 +389,7 @@
                               <object class="GtkLabel" id="managerlabel">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Gestor Software</property>
+                                <property name="label" translatable="yes">Software Manager</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>

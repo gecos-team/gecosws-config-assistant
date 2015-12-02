@@ -74,7 +74,7 @@
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkButton" id="linkbutton">
-                        <property name="label" translatable="yes">Vincular/Desvincular</property>
+                        <property name="label" translatable="yes">Link/Unlink</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
@@ -110,7 +110,7 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="authbutton">
-                        <property name="label" translatable="yes">Modo autenticación</property>
+                        <property name="label" translatable="yes">Authentication type</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
@@ -203,7 +203,7 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="netbutton">
-                            <property name="label" translatable="yes">Conexión a Red</property>
+                            <property name="label" translatable="yes">Network connection</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -226,7 +226,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="xalign">0</property>
-                                <property name="label" translatable="yes">El sistema tiene conexión a Red (Datos de conexión)</property>
+                                <property name="label" translatable="yes">The system has network connection (connection data)</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -256,7 +256,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="xalign">0</property>
-                                <property name="label" translatable="yes">Puede autoconfigurar el sistema con los valores predeterminados</property>
+                                <property name="label" translatable="yes">Autosetup can configure the system with predetermined values</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -290,7 +290,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="xalign">0</property>
-                                <property name="label" translatable="yes">El sistema no está sincronizado con un servidor NTP</property>
+                                <property name="label" translatable="yes">The system is NOT synchronized its time with a NTP server</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -324,7 +324,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="xalign">0</property>
-                                <property name="label" translatable="yes">El sistema NO está vinculado a GECOS</property>
+                                <property name="label" translatable="yes">The system is NOT linked to GECOS</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -358,7 +358,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="xalign">0</property>
-                                <property name="label" translatable="yes">Los usuarios se autentican por el método INTERNO</property>
+                                <property name="label" translatable="yes">Users are authenticated using the INTERNAL method</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -437,7 +437,7 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="confbutton">
-                            <property name="label" translatable="yes">Autoconfigurar</property>
+                            <property name="label" translatable="yes">Auto setup</property>
                             <property name="visible">True</property>
                             
                             <property name="can_focus">True</property>
@@ -456,7 +456,7 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="syncbutton">
-                            <property name="label" translatable="yes">Configurar</property>
+                            <property name="label" translatable="yes">Configure</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -474,7 +474,7 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="sysbutton">
-                            <property name="label" translatable="yes">Vincular</property>
+                            <property name="label" translatable="yes">Link</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -492,7 +492,7 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="userbutton">
-                            <property name="label" translatable="yes">Modificar</property>
+                            <property name="label" translatable="yes">Modify</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -555,7 +555,7 @@
                               <object class="GtkLabel" id="systemlabel">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Estado Sistema</property>
+                                <property name="label" translatable="yes">System Status</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -599,7 +599,7 @@
                               <object class="GtkLabel" id="userslabel">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Usuarios Locales</property>
+                                <property name="label" translatable="yes">Local Users</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -643,7 +643,7 @@
                               <object class="GtkLabel" id="managerlabel">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Gestor Software</property>
+                                <property name="label" translatable="yes">Software Manager</property>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
