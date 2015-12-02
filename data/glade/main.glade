@@ -510,12 +510,6 @@
                         </child>
                       </object>
                     </child>
-                    <child type="label">
-                      <object class="GtkFixed" id="fixed1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                      </object>
-                    </child>
                   </object>
                   <packing>
                     <property name="expand">True</property>

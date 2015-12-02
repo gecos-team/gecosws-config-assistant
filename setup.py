@@ -57,7 +57,7 @@ def update_config(values={}):
 
     oldvalues = {}
     try:
-        fin = file('firstboot_lib/firstbootconfig.py', 'r')
+        fin = file('gecosws_config_assistant/firstboot_lib/firstbootconfig.py', 'r')
         fout = file(fin.name + '.new', 'w')
 
         for line in fin:
@@ -72,7 +72,7 @@ def update_config(values={}):
         fin.close()
         os.rename(fout.name, fin.name)
     except (OSError, IOError), e:
-        print ("ERROR: Can't find firstboot_lib/firstbootconfig.py")
+        print ("ERROR: Can't find gecosws_config_assistant/firstboot_lib/firstbootconfig.py")
         sys.exit(1)
     return oldvalues
 
@@ -153,18 +153,18 @@ class Check(Command):
         logging.basicConfig(level=logging.DEBUG)
         
         
-        from tests.dto.NTPServerTest import NTPServerTest
-        from tests.dto.NetworkInterfaceTest import NetworkInterfaceTest
-        from tests.dto.WorkstationDataTest import WorkstationDataTest
-        from tests.dto.GecosAccessDataTest import GecosAccessDataTest
-        from tests.dto.LocalUserTest import LocalUserTest
-        from tests.dto.UserAuthenticationMethodTest import UserAuthenticationMethodTest
-        from tests.dto.LocalUsersAuthMethodTest import LocalUsersAuthMethodTest
-        from tests.dto.ADSetupDataTest import ADSetupDataTest
-        from tests.dto.LDAPSetupDataTest import LDAPSetupDataTest
-        from tests.dto.ADAuthMethodTest import ADAuthMethodTest
-        from tests.dto.LDAPAuthMethodTest import LDAPAuthMethodTest
-        from tests.dto.SystemStatusTest import SystemStatusTest
+        from gecosws_config_assistant.tests.dto.NTPServerTest import NTPServerTest
+        from gecosws_config_assistant.tests.dto.NetworkInterfaceTest import NetworkInterfaceTest
+        from gecosws_config_assistant.tests.dto.WorkstationDataTest import WorkstationDataTest
+        from gecosws_config_assistant.tests.dto.GecosAccessDataTest import GecosAccessDataTest
+        from gecosws_config_assistant.tests.dto.LocalUserTest import LocalUserTest
+        from gecosws_config_assistant.tests.dto.UserAuthenticationMethodTest import UserAuthenticationMethodTest
+        from gecosws_config_assistant.tests.dto.LocalUsersAuthMethodTest import LocalUsersAuthMethodTest
+        from gecosws_config_assistant.tests.dto.ADSetupDataTest import ADSetupDataTest
+        from gecosws_config_assistant.tests.dto.LDAPSetupDataTest import LDAPSetupDataTest
+        from gecosws_config_assistant.tests.dto.ADAuthMethodTest import ADAuthMethodTest
+        from gecosws_config_assistant.tests.dto.LDAPAuthMethodTest import LDAPAuthMethodTest
+        from gecosws_config_assistant.tests.dto.SystemStatusTest import SystemStatusTest
 
         suite = unittest.TestSuite()
         suite.addTest(NTPServerTest())
@@ -181,11 +181,11 @@ class Check(Command):
         suite.addTest(SystemStatusTest())
         
 
-        from tests.util.PackageManagerTest import PackageManagerTest
-        from tests.util.TemplateTest import TemplateTest
-        from tests.util.JSONUtilTest import JSONUtilTest
-        from tests.util.ValidationTest import ValidationTest
-        from tests.util.GecosCCTest import GecosCCTest
+        from gecosws_config_assistant.tests.util.PackageManagerTest import PackageManagerTest
+        from gecosws_config_assistant.tests.util.TemplateTest import TemplateTest
+        from gecosws_config_assistant.tests.util.JSONUtilTest import JSONUtilTest
+        from gecosws_config_assistant.tests.util.ValidationTest import ValidationTest
+        from gecosws_config_assistant.tests.util.GecosCCTest import GecosCCTest
         
         suite.addTest(PackageManagerTest())
         suite.addTest(TemplateTest())
@@ -193,12 +193,12 @@ class Check(Command):
         suite.addTest(ValidationTest())
         suite.addTest(GecosCCTest())
 
-        from tests.dao.NTPServerDAOTest import NTPServerDAOTest
-        from tests.dao.NetworkInterfaceDAOTest import NetworkInterfaceDAOTest
-        from tests.dao.WorkstationDataDAOTest import WorkstationDataDAOTest
-        from tests.dao.GecosAccessDataDAOTest import GecosAccessDataDAOTest
-        from tests.dao.LocalUserDAOTest import LocalUserDAOTest
-        from tests.dao.UserAuthenticationMethodDAOTest import UserAuthenticationMethodDAOTest
+        from gecosws_config_assistant.tests.dao.NTPServerDAOTest import NTPServerDAOTest
+        from gecosws_config_assistant.tests.dao.NetworkInterfaceDAOTest import NetworkInterfaceDAOTest
+        from gecosws_config_assistant.tests.dao.WorkstationDataDAOTest import WorkstationDataDAOTest
+        from gecosws_config_assistant.tests.dao.GecosAccessDataDAOTest import GecosAccessDataDAOTest
+        from gecosws_config_assistant.tests.dao.LocalUserDAOTest import LocalUserDAOTest
+        from gecosws_config_assistant.tests.dao.UserAuthenticationMethodDAOTest import UserAuthenticationMethodDAOTest
 
         suite.addTest(NTPServerDAOTest())
         suite.addTest(NetworkInterfaceDAOTest())
@@ -207,9 +207,9 @@ class Check(Command):
         suite.addTest(LocalUserDAOTest())
         #suite.addTest(UserAuthenticationMethodDAOTest())
 
-        from tests.controller.UserAuthenticationMethodControllerTest import UserAuthenticationMethodControllerTest
-        from tests.controller.AutoSetupControllerTest import AutoSetupControllerTest
-        from tests.controller.ConnectWithGecosCCControllerTest import ConnectWithGecosCCControllerTest
+        from gecosws_config_assistant.tests.controller.UserAuthenticationMethodControllerTest import UserAuthenticationMethodControllerTest
+        from gecosws_config_assistant.tests.controller.AutoSetupControllerTest import AutoSetupControllerTest
+        from gecosws_config_assistant.tests.controller.ConnectWithGecosCCControllerTest import ConnectWithGecosCCControllerTest
         
         #suite.addTest(UserAuthenticationMethodControllerTest())
         suite.addTest(AutoSetupControllerTest())
@@ -237,21 +237,16 @@ workstation to different services',
     keywords=['python', 'gnome', 'guadalinex', 'gecos'],
 
     packages=[
-        'dto',
-        'dao',
-        'controller',
-        'view',
-        'util',
-        'firstboot_lib',
+        'gecosws_config_assistant.view',
+        'gecosws_config_assistant.dao',
+        'gecosws_config_assistant.dto',
+        'gecosws_config_assistant.util',
+        'gecosws_config_assistant.controller',
+        'gecosws_config_assistant.firstboot_lib',
     ],
 
     package_dir={
-        'dto': 'dto',
-        'dao': 'dao',
-        'controller': 'controller',
-        'view': 'view',
-        'util': 'util',
-        'firstboot_lib': 'firstboot_lib',
+        'gecosws_config_assistant': 'gecosws_config_assistant',
         },
 
     scripts=[
