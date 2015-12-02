@@ -25,12 +25,13 @@ import sys
 if 'check' in sys.argv:
     # Mock view classes for testing purposses
     print "==> Loading mocks..."
-    from view.ViewMocks import askyesno, showerror, UserAuthenticationMethodElemView, ADSetupDataElemView
+    from view.ViewMocks import askyesno_gtk, showerror_gtl, UserAuthenticationMethodElemView, ADSetupDataElemView
 else:
     # Use real view classes
-    from view.CommonDialog import askyesno, showerror
+    from view.CommonDialog import askyesno_gtk, showerror_gtk
     from view.UserAuthenticationMethodElemView import UserAuthenticationMethodElemView
     from view.ADSetupDataElemView import ADSetupDataElemView
+    from view.UserAuthDialog import UserAuthDialog, LOCAL_USERS, LDAP_USERS, AD_USERS
 
 from util.Validation import Validation
 
@@ -68,16 +69,40 @@ class UserAuthenticationMethodController(object):
         self.dao = UserAuthenticationMethodDAO()
         self.logger = logging.getLogger('UserAuthenticationMethodController')
 
-    def show(self, mainWindow):
-        self.logger.debug('show - BEGIN')
-        self.view = UserAuthenticationMethodElemView(mainWindow, self)
+    def getView(self, mainController):
+        self.logger.debug('getView - BEGIN')
+        self.view = UserAuthDialog(mainController)
         
         data = self.dao.load()
         self.logger.debug('data is of type %s'%(type(data).__name__))
         self.view.set_data(data)
+        self.view.updateCombo()
         
-        self.view.show()   
-        self.logger.debug('show - END')
+        self.logger.debug('getView - END')
+        
+        return self.view
+    
+    def getStatus(self):
+        data = self.dao.load()
+        name = data.get_name()
+        
+        if(name == _('Internal')):
+            value = LOCAL_USERS
+        elif(name == _('LDAP')):
+            value = LDAP_USERS
+        elif(name == _('Active Directory')):
+            value = AD_USERS
+        
+        return value
+    
+    def areNotInternal(self):
+        status = self.getStatus()
+        ret = False
+        
+        if(status != LOCAL_USERS):
+            ret = True
+        
+        return ret
 
     def hide(self):
         self.logger.debug('hide')
@@ -135,7 +160,7 @@ class UserAuthenticationMethodController(object):
     def accept(self):
         self.logger.debug('accept - BEGIN')
         if self._data_has_changed():
-            if askyesno(_('Data changed'), _('The user authentication data has changed.\n'+
+            if askyesno_gtk(_('The user authentication data has changed.\n'+
                     'Do you want to setup the user authentication method using this new data?'), self.view):
                 # Test and save
                 if self.test():
@@ -200,16 +225,14 @@ class UserAuthenticationMethodController(object):
             if (newAuthData.get_uri() is None or
                 newAuthData.get_uri().strip() == ''):
                 self.logger.debug("Empty LDAP URI!")
-                showerror(_("Error in form data"), 
-                    _("The URI field is empty!") + "\n" + _("Please fill all the mandatory fields."),
+                showerror_gtk(_("The URI field is empty!") + "\n" + _("Please fill all the mandatory fields."),
                      self.view)
                 self.view.focusLdapUriField()            
                 return False            
             
             if not Validation().isLdapUri(newAuthData.get_uri()):
                 self.logger.debug("Malformed LDAP URI! %s"%(newAuthData.get_uri()))
-                showerror(_("Error in form data"), 
-                    _("Malformed LDAP URI!") + "\n" + _("Please check that the URI starts with 'ldap://' or 'ldaps://'."),
+                showerror_gtk(_("Malformed LDAP URI!") + "\n" + _("Please check that the URI starts with 'ldap://' or 'ldaps://'."),
                      self.view)
                 self.view.focusLdapUriField()            
                 return False            
@@ -217,16 +240,14 @@ class UserAuthenticationMethodController(object):
             if (newAuthData.get_base() is None or
                 newAuthData.get_base().strip() == ''):
                 self.logger.debug("Empty user base DN!")
-                showerror(_("Error in form data"), 
-                    _("The users base DN field is empty!") + "\n" + _("Please fill all the mandatory fields."),
+                showerror_gtk(_("The users base DN field is empty!") + "\n" + _("Please fill all the mandatory fields."),
                      self.view)
                 self.view.focusUserBaseDNField()            
                 return False    
             
             if not newAuthData.test():
                 self.logger.debug("Can't connect to LDAP!")
-                showerror(_("Error in form data"), 
-                    _("Can't connect to LDAP server!") + "\n" + _("Please check all the fields and your network connection."),
+                showerror_gtk(_("Can't connect to LDAP server!") + "\n" + _("Please check all the fields and your network connection."),
                      self.view)
                 self.view.focusLdapUriField()            
                 return False            
@@ -239,8 +260,7 @@ class UserAuthenticationMethodController(object):
             if (newAuthData.get_domain() is None or
                 newAuthData.get_domain().strip() == ''):
                 self.logger.debug("Empty AD domain field!")
-                showerror(_("Error in form data"), 
-                    _("The Domain field is empty!") + "\n" + _("Please fill all the mandatory fields."),
+                showerror_gtk(_("The Domain field is empty!") + "\n" + _("Please fill all the mandatory fields."),
                      self.view)
                 self.view.focusAdDomainField()            
                 return False            
@@ -254,8 +274,7 @@ class UserAuthenticationMethodController(object):
                 self.logger.error(str(traceback.format_exc()))
                 
             if ipaddress is None:
-                showerror(_("Error in form data"), 
-                    _("Can't resolv the Active Directory Domain name!") + "\n" 
+                showerror_gtk(_("Can't resolv the Active Directory Domain name!") + "\n" 
                     + _("Please check the Domain field and your DNS configuration."),
                      self.view)
                 self.view.focusAdDomainField() 
@@ -264,8 +283,7 @@ class UserAuthenticationMethodController(object):
             if (newAuthData.get_workgroup() is None or
                 newAuthData.get_workgroup().strip() == ''):
                 self.logger.debug("Empty AD workgroup field!")
-                showerror(_("Error in form data"), 
-                    _("The Workgroup field is empty!") + "\n" + _("Please fill all the mandatory fields."),
+                showerror_gtk(_("The Workgroup field is empty!") + "\n" + _("Please fill all the mandatory fields."),
                      self.view)
                 self.view.focusAdWorkgroupField()            
                 return False   
@@ -273,8 +291,7 @@ class UserAuthenticationMethodController(object):
             if (newAuthData.get_ad_administrator_user() is None or
                 newAuthData.get_ad_administrator_user().strip() == ''):
                 self.logger.debug("Empty AD administrator user field!")
-                showerror(_("Error in form data"), 
-                    _("The AD administrator user field is empty!") + "\n" 
+                showerror_gtk(_("The AD administrator user field is empty!") + "\n" 
                     + _("Please fill all the mandatory fields."),
                      self.view)
                 self.view.focusAdUserField()            
@@ -283,8 +300,7 @@ class UserAuthenticationMethodController(object):
             if (newAuthData.get_ad_administrator_pass() is None or
                 newAuthData.get_ad_administrator_pass().strip() == ''):
                 self.logger.debug("Empty AD administrator password field!")
-                showerror(_("Error in form data"), 
-                    _("The AD administrator password field is empty!") + "\n" 
+                showerro_gtk(_("The AD administrator password field is empty!") + "\n" 
                     + _("Please fill all the mandatory fields."),
                      self.view)
                 self.view.focusAdPasswordField()            
@@ -292,8 +308,7 @@ class UserAuthenticationMethodController(object):
         
             if not newAuthData.test():
                 self.logger.debug("Can't connect to Active Directory!")
-                showerror(_("Error in form data"), 
-                    _("Can't connect to Active Directory server!") + "\n" 
+                showerror_gtk(_("Can't connect to Active Directory server!") + "\n" 
                     + _("Please check all the fields and your network connection."),
                      self.view)
                 self.view.focusAdDomainField()             

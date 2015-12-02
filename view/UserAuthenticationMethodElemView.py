@@ -34,7 +34,7 @@ from dto.ADAuthMethod import ADAuthMethod
 from dto.LDAPSetupData import LDAPSetupData
 from dto.ADSetupData import ADSetupData
 
-from view.CommonDialog import showerror
+from view.CommonDialog import showerror_gtk
 
 class UserAuthenticationMethodElemView(Toplevel):
     '''
@@ -374,7 +374,7 @@ class UserAuthenticationMethodElemView(Toplevel):
         
         if self.controller.test():
             if not self.controller.save():
-                showerror(_("Error saving authentication method"), 
+                showerror_gtk(_("Error saving authentication method"), 
                     _("An error happened while saving the users authentication method!") + "\n" + _("See log for more details."),
                      self.view)
                  

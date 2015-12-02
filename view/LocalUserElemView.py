@@ -29,7 +29,7 @@ from gettext import gettext as _
 gettext.textdomain('gecosws-config-assistant')
 
 from dto.LocalUser import LocalUser
-from view.CommonDialog import showerror
+from view.CommonDialog import showerror_gtk
 
 class LocalUserElemView(Toplevel):
     '''
@@ -152,8 +152,7 @@ class LocalUserElemView(Toplevel):
         if password is not None and password.strip() != '':
             if confirm is None or confirm.strip() == '':
                 self.logger.debug("Empty password confirmation!")
-                showerror(_('Error in user data'), 
-                     _("The password confirmation field is empty!") + "\n" 
+                showerror_gtk(_("The password confirmation field is empty!") + "\n" 
                      + _("Please fill all the mandatory fields."),
                     self)
                 self.passwordConfirmationEntry.focus()  
@@ -161,8 +160,7 @@ class LocalUserElemView(Toplevel):
             
             if confirm != password:
                 self.logger.debug("Password confirmation different from password!")
-                showerror(_('Error in user data'), 
-                     _("The password confirmation is different from password") ,
+                showerror_gtk(_("The password confirmation is different from password") ,
                     self)
                 self.passwordConfirmationEntry.focus()  
                 return False

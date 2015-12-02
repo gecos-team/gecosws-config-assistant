@@ -23,7 +23,7 @@ __license__ = "GPL-2"
 
 from view.LocalUserListView import LocalUserListView
 from view.LocalUserElemView import LocalUserElemView
-from view.CommonDialog import showerror, askyesno
+from view.CommonDialog import showerror_gtk, askyesno_gtk
 
 import gettext
 from gettext import gettext as _
@@ -51,7 +51,7 @@ class LocalUserController(object):
 
     def showList(self, mainWindow):
         self.logger.debug('show - BEGIN')
-        self.listView = LocalUserListView(mainWindow, self)
+        self.listView = LocalUserListView(mainWindow)
         self.listView.set_data(self.dao.loadAll())
         
         self.listView.show()   
@@ -73,16 +73,14 @@ class LocalUserController(object):
         # Test login
         if obj.get_login() is None or obj.get_login().strip() == '':
             self.logger.debug("Empty login!")
-            showerror(_('Error in user data'), 
-                 _("The login field is empty!") + "\n" + _("Please fill all the mandatory fields."),
+            showerror_gtk(_("The login field is empty!") + "\n" + _("Please fill all the mandatory fields."),
                 self.elemView)
             self.elemView.focusLoginField() 
             return False
 
         if not Validation().isLogin(obj.get_login()):
             self.logger.debug("Bad login!")
-            showerror(_('Error in user data'), 
-                 _("The login field contains not allowed characters!"),
+            showerror_gtk(_("The login field contains not allowed characters!"),
                 self.elemView)
             self.elemView.focusLoginField() 
             return False
@@ -91,8 +89,7 @@ class LocalUserController(object):
         # Test name
         if obj.get_name() is None or obj.get_name().strip() == '':
             self.logger.debug("Empty name!")
-            showerror(_('Error in user data'), 
-                 _("The name field is empty!") + "\n" + _("Please fill all the mandatory fields."),
+            showerror_gtk(_("The name field is empty!") + "\n" + _("Please fill all the mandatory fields."),
                 self.elemView)
             self.elemView.focusNameField() 
             return False
@@ -101,8 +98,7 @@ class LocalUserController(object):
         if check_password:
             if obj.get_password() is None or obj.get_password().strip() == '':
                 self.logger.debug("Empty password!")
-                showerror(_('Error in user data'), 
-                     _("The password field is empty!") + "\n" + _("Please fill all the mandatory fields."),
+                showerror_gtk(_("The password field is empty!") + "\n" + _("Please fill all the mandatory fields."),
                     self.elemView)
                 self.elemView.focusPasswordField() 
                 return False
@@ -110,8 +106,7 @@ class LocalUserController(object):
         if obj.get_password() is not None or obj.get_password().strip() != '':
             if not Validation().isAscii(obj.get_password()):
                 self.logger.debug("Bad password!")
-                showerror(_('Error in user data'), 
-                     _("The password field contains not allowed characters."),
+                showerror_gtk(_("The password field contains not allowed characters."),
                     self.elemView)
                 self.elemView.focusPasswordField() 
                 return False
@@ -159,9 +154,8 @@ class LocalUserController(object):
     def deleteElement(self, obj):
         self.logger.debug('deleteElement - BEGIN')
         
-        if askyesno(_('Are you sure?'), 
-            _('Do you really want to delete this user? '+ obj.get_login()), 
-            self.listView):
+        if askyesno_gtk(_('Do you really want to delete this user? '+ obj.get_login())
+                        , self.listView) :
             self.dao.delete(obj)
             
         self.refreshList()

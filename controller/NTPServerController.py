@@ -22,8 +22,8 @@ __license__ = "GPL-2"
 
 from dao.NTPServerDAO import NTPServerDAO
 
-from view.NTPServerElemView import NTPServerElemView
-from view.CommonDialog import showerror
+from view.NTPDialog import NTPDialog
+from view.CommonDialog import showerror_gtk
 
 import logging
 
@@ -45,38 +45,37 @@ class NTPServerController(object):
         self.dao = NTPServerDAO()
         self.logger = logging.getLogger('NTPServerController')
 
-    def show(self, mainWindow):
+    def getView(self, mainController):
         self.logger.debug('show - BEGIN')
-        self.view = NTPServerElemView(mainWindow, self)
+        self.view = NTPDialog(mainController)
 
         self.view.set_data(self.dao.load())
+        self.view.prepareFrame()
         
-        self.view.show()   
         self.logger.debug('show - END')
+        
+        return self.view
 
     def hide(self):
         self.logger.debug('hide')
         self.view.cancel()
     
-    def save(self):
+    def save(self, viewData):
         self.logger.debug('save')
-        data = self.view.get_data()
         try:
-            if self.dao.save(data):
+            if self.dao.save(viewData):
                 self.hide()
             else:
                 # Show error message
-                showerror(_("Error"), 
-                    _("Error saving NTP server data.") + "\n" + _("See log for more details."),
+                showerror_gtk(_("Error saving NTP server data.") + "\n" + _("See log for more details."),
                     self.view)
         except:
             # Show error message
-            showerror(_("Error"), 
-                _("Error saving NTP server data.") + "\n" + _("See log for more details."),
+            showerror_gtk(_("Error saving NTP server data.") + "\n" + _("See log for more details."),
                 self.view)
             
 
-    def test(self):
+    def test(self, ntpDialog):
         self.logger.debug('test')
-        data = self.view.get_data()
+        data = ntpDialog.get_data()
         return data.syncrhonize()

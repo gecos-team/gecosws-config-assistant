@@ -30,6 +30,8 @@ gettext.textdomain('gecosws-config-assistant')
 
 from dto.NTPServer import NTPServer
 
+from view.CommonDialog import showwarning_gtk, showinfo_gtk
+
 import tkMessageBox
 
 class NTPServerElemView(Toplevel):
@@ -137,11 +139,11 @@ class NTPServerElemView(Toplevel):
         result = self.controller.test()
         
         if not result:
-            tkMessageBox.showwarning(_("Can't synchronize time"), 
+            showwarning_gtk(_("Can't synchronize time"), 
                 _("Can't connect with NTP server.\nPlease double-check the NTP server address"), 
                 parent=self)
         elif displaySuccess:
-            tkMessageBox.showinfo(_("Success"), 
+            showinfo_gtk(_("Success"), 
                 _("NTP server connection successful"), parent=self)
             
         return result

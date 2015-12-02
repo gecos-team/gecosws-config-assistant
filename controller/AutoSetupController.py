@@ -25,6 +25,8 @@ from dao.NTPServerDAO import NTPServerDAO
 from dao.UserAuthenticationMethodDAO import UserAuthenticationMethodDAO
 from dao.WorkstationDataDAO import WorkstationDataDAO
 
+from view.AutoconfDialog import AutoconfDialog
+
 import sys
 import socket
 import base64
@@ -33,14 +35,14 @@ import base64
 if 'check' in sys.argv:
     # Mock view classes for testing purposses
     print "==> Loading mocks..."
-    from view.ViewMocks import showerror, AutoSetupDialog, AutoSetupProcessView, ADSetupDataElemView, ConnectWithGecosCCDialog
+    from view.ViewMocks import showerror_gtk, AutoSetupDialog, AutoSetupProcessView, ADSetupDataElemView, ConnectWithGecosCCDialog
     from util.UtilMocks import GecosCC
 else:
     # Use real view classes
     from view.AutoSetupDialog import AutoSetupDialog
     from view.AutoSetupProcessView import AutoSetupProcessView
     from view.ADSetupDataElemView import ADSetupDataElemView
-    from view.CommonDialog import showerror
+    from view.CommonDialog import showerror_gtk
     from util.GecosCC import GecosCC
     from view.ConnectWithGecosCCDialog import ConnectWithGecosCCDialog 
 
@@ -88,14 +90,13 @@ class AutoSetupController(object):
         
         self.auto_setup_success = False
 
-    def show(self, mainWindow):
+    def getView(self, mainController):
         self.logger.debug('show - BEGIN')
-        self.view = AutoSetupDialog(mainWindow, self)
-        
-        self.view.set_data(self.dao.load())
-        
-        self.view.show()   
+        self.view = AutoconfDialog(mainController)
+        self.view.set_data(self.dao.load())   
         self.logger.debug('show - END')
+        
+        return self.view
 
     def cancel(self):
         self.logger.debug("cancel")
@@ -112,44 +113,39 @@ class AutoSetupController(object):
         if (gecosAccessData.get_url() is None or
             gecosAccessData.get_url().strip() == ''):
             self.logger.debug("Empty URL!")
-            showerror(_("Error in form data"), 
-                _("The URL field is empty!") + "\n" + _("Please fill all the mandatory fields."),
-                 self.view)
+            showerror_gtk(_("The URL field is empty!") + "\n" + _("Please fill all the mandatory fields."),
+                 None)
             self.view.focusUrlField()            
             return False
 
         if not Validation().isUrl(gecosAccessData.get_url()):
             self.logger.debug("Malformed URL!")
-            showerror(_("Error in form data"), 
-                _("Malformed URL in URL field!") + "\n" + _("Please double-check it."),
-                 self.view)            
+            showerror_gtk(_("Malformed URL in URL field!") + "\n" + _("Please double-check it."),
+                 None)            
             self.view.focusUrlField()            
             return False
 
         if (gecosAccessData.get_login() is None or
             gecosAccessData.get_login().strip() == ''):
             self.logger.debug("Empty login!")
-            showerror(_("Error in form data"), 
-                _("The Username field is empty!") + "\n" + _("Please fill all the mandatory fields."),
-                 self.view)
+            showerror_gtk(_("The Username field is empty!") + "\n" + _("Please fill all the mandatory fields."),
+                 None)
             self.view.focusUsernameField()            
             return False
 
         if (gecosAccessData.get_password() is None or
             gecosAccessData.get_password().strip() == ''):
             self.logger.debug("Empty password!")
-            showerror(_("Error in form data"), 
-                _("The Password field is empty!") + "\n" + _("Please fill all the mandatory fields."),
-                 self.view)
+            showerror_gtk(_("The Password field is empty!") + "\n" + _("Please fill all the mandatory fields."),
+                 None)
             self.view.focusPasswordField()            
             return False
 
         gecosCC = GecosCC()
         if not gecosCC.validate_credentials(gecosAccessData):
             self.logger.debug("Bad access data!")
-            showerror(_("Error in form data"), 
-                _("Can't connect to GECOS CC!") + "\n" +  _("Please double-check all the data and your network setup."),
-                 self.view)
+            showerror_gtk(_("Can't connect to GECOS CC!") + "\n" +  _("Please double-check all the data and your network setup."),
+                 None)
             self.view.focusPasswordField()            
             return False
         
@@ -160,8 +156,7 @@ class AutoSetupController(object):
         if conf["uri_ntp"] is None:
             self.processView.setNTPServerSetupStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Auto setup error"), 
-                _("NTP server URI value isn't in auto setup data!"),
+            showerror_gtk(_("NTP server URI value isn't in auto setup data!"),
                  self.processView)            
             return False
         
@@ -171,16 +166,14 @@ class AutoSetupController(object):
         if not ntpServer.syncrhonize():
             self.processView.setNTPServerSetupStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Auto setup error"), 
-                _("Can't synchronize with NTP server!"),
+            showerror_gtk(_("Can't synchronize with NTP server!"),
                  self.processView)            
             return False
             
         if not self.ntpServerDao.save(ntpServer):
             self.processView.setNTPServerSetupStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Auto setup error"), 
-                _("Error saving NTP server data!"),
+            showerror_gtk(_("Error saving NTP server data!"),
                  self.processView)            
             return False
         
@@ -193,24 +186,21 @@ class AutoSetupController(object):
         if not conf["auth"].has_key("auth_properties"):
             self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Auto setup error"), 
-                _("LDAP authentication method needs data!"),
+            showerror_gtk(_("LDAP authentication method needs data!"),
                  self.processView)              
             return False              
 
         if not conf["auth"]["auth_properties"].has_key("uri"):
             self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Auto setup error"), 
-                _("LDAP authentication method needs LDAP server URI!"),
+            showerror_gtk(_("LDAP authentication method needs LDAP server URI!"),
                  self.processView)              
             return                
 
         if not conf["auth"]["auth_properties"].has_key("base"):
             self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Auto setup error"), 
-                _("LDAP authentication method needs LDAP users base DN!"),
+            showerror_gtk(_("LDAP authentication method needs LDAP users base DN!"),
                  self.processView)              
             return False           
 
@@ -234,7 +224,7 @@ class AutoSetupController(object):
         if not ldapSetupData.test():
             self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Auto setup error"), 
+            showerror_gtk(_("Auto setup error"), 
                 _("Can't synchronize with LDAP server!"),
                  self.processView)            
             return False
@@ -244,8 +234,7 @@ class AutoSetupController(object):
         if not self.userAuthenticationMethodDao.save(method):
             self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Auto setup error"), 
-                _("Can't save LDAP server information!"),
+            showerror_gtk(_("Can't save LDAP server information!"),
                  self.processView)
             self.userAuthenticationMethodDao.delete(method)
             return False
@@ -287,16 +276,14 @@ class AutoSetupController(object):
         if not conf["auth"].has_key("auth_properties"):
             self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Auto setup error"), 
-                _("AD authentication method needs data!"),
+            showerror_gtk(_("AD authentication method needs data!"),
                  self.processView)              
             return False             
 
         if not conf["auth"]["auth_properties"].has_key("specific_conf"):
             self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Auto setup error"), 
-                _("AD authentication method needs 'specific_conf' parameter!"),
+            showerror_gtk(_("AD authentication method needs 'specific_conf' parameter!"),
                  self.processView)              
             return False              
 
@@ -305,8 +292,7 @@ class AutoSetupController(object):
             if not conf["auth"]["auth_properties"].has_key("ad_properties"):
                 self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
                 self.processView.enableAcceptButton()
-                showerror(_("Auto setup error"), 
-                    _("AD authentication method needs 'ad_properties' parameter!"),
+                showerror_gtk(_("AD authentication method needs 'ad_properties' parameter!"),
                      self.processView)              
                 return False
 
@@ -315,32 +301,28 @@ class AutoSetupController(object):
             if not ad_properties.has_key("krb5_conf"):
                 self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
                 self.processView.enableAcceptButton()
-                showerror(_("Auto setup error"), 
-                    _("AD authentication method needs krb5.conf file!"),
+                showerror_gtk(_("AD authentication method needs krb5.conf file!"),
                      self.processView)              
                 return False          
 
             if not ad_properties.has_key("sssd_conf"):
                 self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
                 self.processView.enableAcceptButton()
-                showerror(_("Auto setup error"), 
-                    _("AD authentication method needs sssd.conf file!"),
+                showerror_gtk(_("AD authentication method needs sssd.conf file!"),
                      self.processView)              
                 return False          
 
             if not ad_properties.has_key("smb_conf"):
                 self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
                 self.processView.enableAcceptButton()
-                showerror(_("Auto setup error"), 
-                    _("AD authentication method needs smb.conf file!"),
+                showerror_gtk(_("AD authentication method needs smb.conf file!"),
                      self.processView)              
                 return False          
 
             if not ad_properties.has_key("pam_conf"):
                 self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
                 self.processView.enableAcceptButton()
-                showerror(_("Auto setup error"), 
-                    _("AD authentication method needs pam.conf file!"),
+                showerror_gtk(_("AD authentication method needs pam.conf file!"),
                      self.processView)              
                 return False          
 
@@ -351,8 +333,7 @@ class AutoSetupController(object):
                     ad_properties["sssd_conf"]):
                 self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
                 self.processView.enableAcceptButton()
-                showerror(_("Auto setup error"), 
-                    _("Error saving sssd.conf file!"),
+                showerror_gtk(_("Error saving sssd.conf file!"),
                      self.processView)              
                 return False          
                 
@@ -361,8 +342,7 @@ class AutoSetupController(object):
                     ad_properties["smb_conf"]):
                 self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
                 self.processView.enableAcceptButton()
-                showerror(_("Auto setup error"), 
-                    _("Error saving smb.conf file!"),
+                showerror_gtk(_("Error saving smb.conf file!"),
                      self.processView)              
                 return False          
                 
@@ -371,8 +351,7 @@ class AutoSetupController(object):
                     ad_properties["krb5_conf"]):
                 self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
                 self.processView.enableAcceptButton()
-                showerror(_("Auto setup error"), 
-                    _("Error saving krb5.conf file!"),
+                showerror_gtk(_("Error saving krb5.conf file!"),
                      self.processView)              
                 return False          
                 
@@ -381,8 +360,7 @@ class AutoSetupController(object):
                     ad_properties["pam_conf"]):
                 self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
                 self.processView.enableAcceptButton()
-                showerror(_("Auto setup error"), 
-                    _("Error saving pam.conf file!"),
+                showerror_gtk(_("Error saving pam.conf file!"),
                      self.processView)              
                 return False          
             
@@ -417,8 +395,7 @@ class AutoSetupController(object):
                 self.logger.error(_('Error running command: ')+command)
                 self.processView.setUserAuthenticationSetupStatus(_('CANCELED'))
                 self.processView.enableAcceptButton()
-                showerror(_("Auto setup error"), 
-                    _("Error executing net ads join"),
+                showerror_gtk(_("Error executing net ads join"),
                      self.processView)              
                 return False
                   
@@ -435,8 +412,7 @@ class AutoSetupController(object):
                 self.logger.error(_('Error running command: ')+'service sssd restart')
                 self.processView.setUserAuthenticationSetupStatus(_('CANCELED'))
                 self.processView.enableAcceptButton()
-                showerror(_("Auto setup error"), 
-                    _("Error restarting sssd service"),
+                showerror_gtk(_("Error restarting sssd service"),
                      self.processView)              
                 return False        
             
@@ -454,8 +430,7 @@ class AutoSetupController(object):
                 self.logger.error('Error saving /usr/share/pam-configs/my_mkhomedir file')
                 self.processView.setUserAuthenticationSetupStatus(_('CANCELED'))
                 self.processView.enableAcceptButton()
-                showerror(_("Auto setup error"), 
-                    _("Error saving my_mkhomedir file"),
+                showerror_gtk(_("Error saving my_mkhomedir file"),
                      self.processView)              
                 return False        
             
@@ -471,8 +446,7 @@ class AutoSetupController(object):
                 self.logger.error(_('Error running command: ')+'pam-auth-update')
                 self.processView.setUserAuthenticationSetupStatus(_('CANCELED'))
                 self.processView.enableAcceptButton()
-                showerror(_("Auto setup error"), 
-                    _("Error executing pam-auth-update"),
+                showerror_gtk(_("Error executing pam-auth-update"),
                      self.processView)              
                 return False           
             
@@ -491,8 +465,7 @@ class AutoSetupController(object):
                 self.logger.error('Error saving /etc/gca-sssd.control file')
                 self.processView.setUserAuthenticationSetupStatus(_('CANCELED'))
                 self.processView.enableAcceptButton()
-                showerror(_("Auto setup error"), 
-                    _("Error saving /etc/gca-sssd.control file"),
+                showerror_gtk(_("Error saving /etc/gca-sssd.control file"),
                      self.processView)              
                 return False           
             
@@ -501,8 +474,7 @@ class AutoSetupController(object):
             if not conf["auth"]["auth_properties"].has_key("ad_properties"):
                 self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
                 self.processView.enableAcceptButton()
-                showerror(_("Auto setup error"), 
-                    _("AD authentication method needs 'ad_properties' parameter!"),
+                showerror_gtk(_("AD authentication method needs 'ad_properties' parameter!"),
                      self.processView)              
                 return False
 
@@ -511,16 +483,14 @@ class AutoSetupController(object):
             if not ad_properties.has_key("fqdn"):
                 self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
                 self.processView.enableAcceptButton()
-                showerror(_("Auto setup error"), 
-                    _("AD authentication method needs FQDN!"),
+                showerror_gtk(_("AD authentication method needs FQDN!"),
                      self.processView)              
                 return False          
 
             if not ad_properties.has_key("workgroup"):
                 self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
                 self.processView.enableAcceptButton()
-                showerror(_("Auto setup error"), 
-                    _("AD authentication method needs workgroup!"),
+                showerror_gtk(_("AD authentication method needs workgroup!"),
                      self.processView)              
                 return False          
 
@@ -536,8 +506,7 @@ class AutoSetupController(object):
             if ipaddress is None:
                 self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
                 self.processView.enableAcceptButton()
-                showerror(_("Auto setup error"), 
-                    _("Can't resolv FQDN!\nPlease check your DNS configuration."),
+                showerror_gtk(_("Can't resolv FQDN!\nPlease check your DNS configuration."),
                      self.processView)  
                 return False
 
@@ -564,8 +533,7 @@ class AutoSetupController(object):
             if not self.userAuthenticationMethodDao.save(method):
                 self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
                 self.processView.enableAcceptButton()
-                showerror(_("Auto setup error"), 
-                    _("Can't save AD server information!"),
+                showerror_gtk(_("Can't save AD server information!"),
                      self.processView)
                 self.userAuthenticationMethodDao.delete(method)
                 return False                
@@ -593,7 +561,7 @@ class AutoSetupController(object):
 
 
         # Show process view
-        self.processView = AutoSetupProcessView(self.view, self)
+        self.processView = AutoSetupProcessView(self)
         self.processView.show()
 
         # Get auto setup JSON
@@ -609,8 +577,7 @@ class AutoSetupController(object):
         if not conf:
             self.processView.setAutoSetupDataLoadStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Auto setup error"), 
-                _("Can't read auto setup configuration data from GECOS Control Center!"),
+            showerror_gtk(_("Can't read auto setup configuration data from GECOS Control Center!"),
                  self.processView)            
             return False
             
@@ -632,16 +599,14 @@ class AutoSetupController(object):
         if not conf.has_key("auth") or not conf["auth"].has_key("auth_type"):
             self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Auto setup error"), 
-                _("Authentication method values aren't in auto setup data!"),
+            showerror_gtk(_("Authentication method values aren't in auto setup data!"),
                  self.processView)              
             return False
         
         if conf["auth"]["auth_type"] != 'AD' and conf["auth"]["auth_type"] != 'LDAP':
             self.processView.setUserAuthenticationSetupStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror(_("Auto setup error"), 
-                _("Unknown user authentication method: "+conf["auth"]["auth_type"]),
+            showerror_gtk(_("Unknown user authentication method: "+conf["auth"]["auth_type"]),
                  self.processView)              
             return False
         

@@ -20,7 +20,7 @@ __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
 __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
-from Tkinter import N, S, W, E, Toplevel, END
+from Tkinter import N, S, W, E, END, Tk
 from ScrolledText import ScrolledText
 from ttk import Frame, Button, Style
 import logging
@@ -32,18 +32,17 @@ gettext.textdomain('gecosws-config-assistant')
 from dto.LDAPAuthMethod import LDAPAuthMethod
 from dto.ADAuthMethod import ADAuthMethod
 
-class SystemStatusElemView(Toplevel):
+class SystemStatusElemView(Tk):
     '''
     Dialog class that shows the system status.
     '''
 
 
-    def __init__(self, parent, mainController):
+    def __init__(self, mainController):
         '''
         Constructor
         '''
-        Toplevel.__init__(self, parent)
-        self.parent = parent
+        Tk.__init__(self, None, None, 'SystemStatusElemView', 1, 0, None)
         self.body = Frame(self, padding="20 20 20 20")   
         self.controller = mainController
         self.logger = logging.getLogger('SystemStatusElemView')
@@ -148,9 +147,8 @@ class SystemStatusElemView(Toplevel):
         else:
             self.statusText.insert(END, _('No status data!'))
         
-        self.transient(self.parent)
         self.grab_set()
-        self.parent.wait_window(self)
+        self.mainloop()
 
 
     def accept(self):
@@ -158,7 +156,3 @@ class SystemStatusElemView(Toplevel):
         self.destroy()
 
     data = property(get_data, set_data, None, None)
-
-
-
-        

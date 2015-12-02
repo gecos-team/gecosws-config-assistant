@@ -62,7 +62,13 @@ class GecosAccessDataDAO(object):
         
         self.logger = logging.getLogger('GecosAccessDataDAO')
         self.data_file = '/etc/gcc.control'
-           
+    
+    def previousDataExists(self):
+        ret = False
+        if(self.previous_saved_data != None):
+            ret = True
+        
+        return ret
 
     def load(self):
         self.logger.debug('load - BEGIN')

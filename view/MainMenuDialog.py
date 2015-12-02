@@ -1,4 +1,7 @@
+#!/usr/bin/env python
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
+from __builtin__ import True
+from symbol import pass_stmt
 
 # This file is part of Guadalinex
 #
@@ -16,97 +19,218 @@
 # along with this package; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
-__author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
+__author__ = "Francisco Fuentes Barrera <ffuentes@solutia-it.es>"
 __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
-from Tkinter import N, S, W, E, Tk
-from ttk import Frame, Button, Style
-import tkMessageBox
+from GladeWindow import GladeWindow
 import logging
 
-import gettext
-from gettext import gettext as _
-gettext.textdomain('gecosws-config-assistant')
-
-class MainMenuDialog(Tk):
-    '''
-    Dialog class that shows the main menu.
-    '''
-
-
+"""
+MainMenu redone in Glade
+"""
+class MainMenuDialog(GladeWindow):
+    
     def __init__(self, mainController):
-        '''
-        Constructor
-        '''
-        Tk.__init__(self, None, None, 'MainMenuDialog', 1, 0, None)
-        self.body = Frame(self, padding="20 20 20 20")    
         self.controller = mainController
+        self.gladePath = 'main.glade'
         self.logger = logging.getLogger('MainMenuDialog')
         
-        self.initUI()        
-
-    def initUI(self):
-      
-        self.title(_('GECOS config assistant'))
-        self.body.style = Style()
-        self.body.style.theme_use("default")        
-        self.body.pack()
+        self.trafficlightsKey = "trafficlights"
+        self.centerbuttonsKey = "centerbuttons"
         
-        self.body.grid(column=0, row=0, sticky=(N, W, E, S))
-        self.body.columnconfigure(0, weight=1)
-        self.body.rowconfigure(0, weight=1)        
+        self.buildUI(self.gladePath)
+    
+    def addTranslations(self):
+        super(MainMenuDialog, self).addTranslations()
+    
+    def addHandlers(self):
+        super(MainMenuDialog, self).addHandlers()
+        self.logger.info('Calling child specific handler')
+        # add new handlers here
+        self.logger.debug("Adding link/unlink handler")
+        self.handlers["onLink"] = self.connectWithGECOSHandler
+        self.logger.debug("Adding auth management handler")
+        self.handlers["onAuth"] = self.authManagementHandler
+        self.logger.debug("Adding network management handler")
+        self.handlers["onNetw"] = self.netManagementHandler
+        self.logger.debug("Adding autoconf handler")
+        self.handlers["onAuto"] = self.autoconfManagementHandler
+        self.logger.debug("Adding NTP handler")
+        self.handlers["onnNTP"] = self.ntpManagementHandler
+    
+    # Here comes the handlers
+    def connectWithGECOSHandler(self, *args):
+        self.logger.debug('This should display the gecos connection settings')
+        self.controller.showConnectWithGecosCCDialog()
         
-        padding_x = 10
-        padding_y = 10
+    def authManagementHandler(self, *args):
+        self.logger.debug('This should display the auth settings')
+        self.controller.showUserAuthenticationMethod()
+    
+    def netManagementHandler(self, *args):
+        self.logger.debug('This should display the network settings')
+        self.controller.showNetworkSettingsDialog()
+    
+    def autoconfManagementHandler(self, *args):
+        self.logger.debug('This should call the autoconf method or whatever')
+        self.controller.showAutoconfDialog()
+    
+    def ntpManagementHandler(self, *args):
+        self.logger.debug('This should call the NTP manager')
+        self.controller.showNTPSettingsDialog()
+    
+    '''
+    change the image of the traffic signal
+    index: Between 1 and 5, if not it will raise and Exception
+    state: Between 1 and 3: 1 green, 2 yellow, 3 grey
+    '''
+    def trafficSignalChange(self, id, state):
+        datafolder = "/usr/local/share/gecosws-config-assistant/"
         
-        requirementsCheckButton = Button(self.body, text=_("Check setup requirements"),
-            command=self.showRequirementsCheckDialog)
-        requirementsCheckButton.grid(column=1, row=1, columnspan=3, sticky=E+W, padx=padding_x, pady=padding_y)
-
-        connectWithGecosCCButton = Button(self.body, text=_("Connect / disconnect to GECOS Control Center"),
-            command=self.showConnectWithGecosCCDialog)
-        connectWithGecosCCButton.grid(column=1, row=2, columnspan=3, sticky=E+W, padx=padding_x, pady=padding_y)
-
-        userAuthenticationMethodButton = Button(self.body, text=_("Setup user authentication method"),
-            command=self.showUserAuthenticationMethod)
-        userAuthenticationMethodButton.grid(column=1, row=3, columnspan=3, sticky=E+W, padx=padding_x, pady=padding_y)
-
-        softwareManagerButton = Button(self.body, text=_("Software manager"),
-            command=self.showSoftwareManager)
-        softwareManagerButton.grid(column=1, row=4, columnspan=3, sticky=E+W, padx=padding_x, pady=padding_y)
-
-        localUserManagerButton = Button(self.body, text=_("Local user manager"),
-            command=self.showLocalUserListView)
-        localUserManagerButton.grid(column=1, row=5, columnspan=3, sticky=E+W, padx=padding_x, pady=padding_y)
-
-        updateAssistantButton = Button(self.body, text=_("Update this assistant"),
-            command=self.updateConfigAssistant)
-        updateAssistantButton.grid(column=1, row=6, columnspan=3, sticky=E+W, padx=padding_x, pady=padding_y)
-
+        lightgreenimg  = datafolder+"media/i-status-18-ok.png"
+        lightyellowimg = datafolder+"media/i-status-18-grey.png"
+        lightgreyimg   = datafolder+"media/i-status-18-off.png" 
         
-        statusButton = Button(self.body, text=_("View status"),
-            command=self.showSystemStatus)
-        statusButton.grid(column=1, row=7, sticky=W, padx=padding_x, pady=padding_y)
-
-        closeButton = Button(self.body, text=_("Close"),
-            command=self.close)
-        closeButton.grid(column=3, row=7, sticky=E, padx=padding_x, pady=padding_y)
+        trafficwidget = self.getElementById(id)
+        lightimg = ""
         
-        self.logger.debug('UI initiated')
+        if   (state == 1):
+            lightimg = lightgreenimg
+        elif (state == 2):
+            lightimg = lightyellowimg
+        elif (state == 3):
+            lightimg = lightgreyimg
+            
+        trafficwidget.hide()
+        trafficwidget.set_from_file(lightimg)
+        trafficwidget.show()
+    
+    '''
+    change the state of one of the central buttons
+    index: Between 1 and 7, if not it will raise and Exception
+    '''
+    def setCenterButton(self, id, enabled):
+        button = self.getElementById(id)
+        button.set_sensitive(enabled)
         
-
+    def initGUIValues(self, calculatedStatus):
+        trafficlights = {}
+        centerbuttons = {}
+        
+        centerbuttons["netbutton"] = True
+        centerbuttons["confbutton"]= False
+        centerbuttons["syncbutton"]= False    
+        centerbuttons["sysbutton"] = False
+        centerbuttons["userbutton"]= False
+        
+        trafficlights["trafficlight1"] = 3
+        trafficlights["trafficlight2"] = 3
+        trafficlights["trafficlight3"] = 3
+        trafficlights["trafficlight4"] = 3
+        trafficlights["trafficlight5"] = 3
+        
+        networkTrafficLightValue = 2
+        networkActivated = False
+        
+        try:
+            networkTrafficLightValue = calculatedStatus[self.controller.networkStatusKey]
+            networkActivated = True
+        except:
+            pass
+        
+        ntpActivated = False
+        
+        try:
+            if(calculatedStatus[self.controller.ntpStatusKey] == 1):
+                ntpActivated = True
+        except:
+            pass
+        
+        autoconfActivated = False
+        
+        try:
+            if(calculatedStatus[self.controller.autoconfStatusKey] == 1):
+                autoconfActivated = True
+        except:
+            pass
+        
+        gecosValue = 3
+        gecosActivated = False
+        
+        try:
+            gecosValue = calculatedStatus[self.controller.gecosStatusKey]
+        except:
+            pass
+        
+        usersValue = 3
+        
+        try:
+            usersValue = calculatedStatus[self.controller.usersStatusKey]
+        except:
+            pass
+            
+        
+        # traffic lights
+        trafficlights["trafficlight1"] = networkTrafficLightValue
+        
+        if(networkActivated):
+            trafficlights["trafficlight2"] = 2
+            trafficlights["trafficlight3"] = 2
+        
+        if(autoconfActivated):
+            trafficlights["trafficlight2"] = 1
+        
+        if(ntpActivated):
+            trafficlights["trafficlight3"] = 1
+        
+        if(gecosActivated):
+            trafficlights["trafficlight4"] = 1
+        else:
+            trafficlights["trafficlight4"] = gecosValue
+        
+        trafficlights["trafficlight5"] = usersValue
+        
+        self.guiValues[self.trafficlightsKey] = trafficlights
+        
+        # center buttons
+        centerbuttons = self.controller.calculateMainButtons(calculatedStatus)
+        
+        self.guiValues[self.centerbuttonsKey] = centerbuttons
+    
+    def loadCurrentState(self, guiValues):
+        super(MainMenuDialog, self).loadCurrentState(guiValues)
+        
+        self.texts = self.controller.getTexts()
+        self.putTexts()
+        
+         # init streetlights 
+        for trafficlightKey in self.guiValues[self.trafficlightsKey].keys():
+            trafficlightValue = self.guiValues[self.trafficlightsKey][trafficlightKey]
+            self.trafficSignalChange(trafficlightKey, trafficlightValue)
+        
+        
+        # disable almost all
+        for centerbuttonKey in self.guiValues[self.centerbuttonsKey].keys():
+            centerbuttonValue = self.guiValues[self.centerbuttonsKey][centerbuttonKey]
+            self.setCenterButton(centerbuttonKey, centerbuttonValue)
+    
+    '''
+    Override of the show method, setting all to the initial state
+    '''
     def show(self):
-        self.logger.debug("Show")
-        self.protocol("WM_DELETE_WINDOW", self.close)
-        self.mainloop()           
-
-    def close(self):
-        self.logger.debug("Close")
-        if tkMessageBox.askokcancel(_("Quit"), _("Do you want to quit?")):
-            self.body.quit()
-
-
+        # set to initial state
+        self.initGUIValues(None)
+        
+        # super method
+        super(MainMenuDialog, self).show()
+    
+    # New call-to-controller-methods
+    def showAutoconfDialog(self):
+        self.logger.debug("showAutoconfDialog")
+        self.controller.showAutoconfDialog()
+    
+    # old methods, just pasted for copypaste sake
     def showRequirementsCheckDialog(self):
         self.logger.debug("showRequirementsCheckDialog")
         self.controller.showRequirementsCheckDialog()
@@ -119,20 +243,19 @@ class MainMenuDialog(Tk):
         self.logger.debug("showUserAuthenticationMethod")
         self.controller.showUserAuthenticationMethod()
         
-    def showSoftwareManager(self):
-        self.logger.debug("showSoftwareManager")
-        self.controller.showSoftwareManager()
-        
     def showLocalUserListView(self):
         self.logger.debug("showLocalUserListView")
         self.controller.showLocalUserListView()
-        
-    def updateConfigAssistant(self):
-        self.logger.debug("updateConfigAssistant")
-        self.controller.updateConfigAsystant()
-        
-    def showSystemStatus(self):
-        self.logger.debug("showSystemStatus")
-        self.controller.showSystemStatus()
-        
     
+    def putTexts(self):
+        networkText  = self.texts[self.controller.networkStatusKey ]
+        autoconfText = self.texts[self.controller.autoconfStatusKey]
+        ntpText      = self.texts[self.controller.ntpStatusKey     ]
+        gecosText    = self.texts[self.controller.gecosStatusKey   ]
+        userText     = self.texts[self.controller.usersStatusKey   ]
+        
+        self.getElementById("netlabel" ).set_text(networkText )
+        self.getElementById("conflabel").set_text(autoconfText)
+        self.getElementById("synclabel").set_text(ntpText     )
+        self.getElementById("syslabel" ).set_text(gecosText   )
+        self.getElementById("userlabel").set_text(userText    )
