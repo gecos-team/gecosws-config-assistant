@@ -44,8 +44,6 @@ class MainWindow(object):
         self.mainScreenGUIValues = {}
         self.autoconfDialog = AutoconfDialog(self.controller)
         self.autoconfGUIValues = {}
-        self.networkSettingsDialog = NetworkSettingsDialog(self.controller)
-        self.networkSettingsGUIValues = {}
     
     def buildUI(self):
         self.logger.debug("Building UI")
@@ -128,15 +126,11 @@ class MainWindow(object):
             self.mainScreenGUIValues = toSaveState
         elif(type(self.currentView) is AutoconfDialog):
             self.autoconfGUIValues = toSaveState
-        elif(type(self.currentView) is NetworkSettingsDialog):
-            self.networkSettingsGUIValues = toSaveState
         
         # load previous state
         currentState = {}
         if(type(dialog) is MainMenuDialog):
             currentState = self.mainScreenGUIValues
-        elif(type(dialog) is NetworkSettingsDialog):
-            currentState = self.networkSettingsGUIValues
             
         if(type(dialog) is not AutoconfDialog):
             dialog.loadCurrentState(currentState)
