@@ -175,7 +175,7 @@
                           <object class="GtkLabel" id="label1">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Autoconfiguración</property>
+                            <property name="label" translatable="yes">Auto setup</property>
                           </object>
                           <packing>
                             <property name="expand">True</property>
