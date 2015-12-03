@@ -22,14 +22,11 @@ __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 import logging
+import traceback
 
 from gi.repository import Gtk, Gdk
 from gecosws_config_assistant.view import GLADE_PATH, CSS_PATH, CSS_COMMON
-from gecosws_config_assistant.view.AutoconfDialog import AutoconfDialog
-from gecosws_config_assistant.view.MainMenuDialog import MainMenuDialog
-from gecosws_config_assistant.view.NetworkSettingsDialog import NetworkSettingsDialog
-from gecosws_config_assistant.view.NTPDialog import NTPDialog
-
+from gecosws_config_assistant.firstboot_lib.firstbootconfig import get_data_file
 
 class MainWindow(object):
     
@@ -39,24 +36,17 @@ class MainWindow(object):
         
         self.currentView = None
         
-        # new pars
-        self.mainScreen = MainMenuDialog(self.controller)
-        self.mainScreenGUIValues = {}
-        self.autoconfDialog = AutoconfDialog(self.controller)
-        self.autoconfGUIValues = {}
+        self.trafficlightsKey = "trafficlights"
+        self.centerbuttonsKey = "centerbuttons"
+        self.buttonsKey = "buttons"        
     
     def buildUI(self):
         self.logger.debug("Building UI")
         
         self.gladepath = 'window.glade'
         
-        # gui values to store the initial state
-        # and to recover them after a screen change
-        # each class should inform them
-        self.guiValues = {}
-        self.buttonsKey = "buttons"
-        
         self.builder = Gtk.Builder()
+        self.builder.set_translation_domain('gecosws-config-assistant')
         self.builder.add_from_file(GLADE_PATH+self.gladepath)
         
         self.css_provider = Gtk.CssProvider()
@@ -74,24 +64,6 @@ class MainWindow(object):
         self.addHandlers()
         self.bindHandlers()
         
-    def initGUIValues(self):
-        buttons = {}
-        buttons["linkbutton"]= False
-        buttons["authbutton"]= False
-        
-        self.guiValues[self.buttonsKey] = buttons
-    
-    def loadCurrentState(self, guiValues, calculatedButtons):
-        if(guiValues is not None):
-            self.guiValues = guiValues
-        
-        if(calculatedButtons is not None):
-            self.guiValues[self.buttonsKey] = calculatedButtons
-            
-        for buttonKey in self.guiValues[self.buttonsKey].keys():
-            buttonValue = self.guiValues[self.buttonsKey][buttonKey]
-            button = self.getElementById(buttonKey)
-            button.set_sensitive(buttonValue)
     
     def show(self):
         self.window.show_all()
@@ -100,13 +72,6 @@ class MainWindow(object):
     def getMainWindow(self):
         return self.window
         
-    def initFrame(self, calculatedStatus):
-        self.currentView = self.mainScreen
-        self.currentView.initGUIValues(calculatedStatus)
-        self.currentView.loadCurrentState(None)
-        centralMainFrame = self.currentView.getCentralFrame()
-        self.putInCenterFrame(centralMainFrame, 600, 250)
-    
     # common screen switch method
     def changeScreen(self, dialog):
         centralFrame = dialog.getCentralFrame()
@@ -120,39 +85,10 @@ class MainWindow(object):
     
     # navigate thru screens
     def navigate(self, dialog):
-        # retrieve values from previous window
-        toSaveState = self.currentView.getCurrentState()
-        
-        
-        if(type(self.currentView) is MainMenuDialog):
-            self.mainScreenGUIValues = toSaveState
-        elif(type(self.currentView) is AutoconfDialog):
-            self.autoconfGUIValues = toSaveState
-        
-        # load previous state
-        currentState = {}
-        if(type(dialog) is MainMenuDialog):
-            currentState = self.mainScreenGUIValues
-            
-        if(type(dialog) is not AutoconfDialog):
-            dialog.loadCurrentState(currentState)
-        
         # change widgets
         self.changeScreen(dialog)
         # put a reference to the new window
         self.currentView = dialog
-    
-    def gotoAutoconf(self, autoconfview):
-        self.navigate(autoconfview)
-    
-    def gotoMainWindow(self):
-        self.navigate(MainMenuDialog(self.controller))
-    
-    def gotoNetworkSettings(self, netView):
-        self.navigate(netView)
-    
-    def gotoNTPSettings(self, ntpView):
-        self.navigate(ntpView)
     
     def gotoConnectoWithGECOS(self, connectView):
         self.navigate(connectView)
@@ -205,6 +141,9 @@ class MainWindow(object):
         self.logger.debug("Adding close handlers")
         self.handlers['onDeleteWindow'] = Gtk.main_quit
     
+    def get_common_handlers(self):
+        return self.handlers
+    
     def bindHandlers(self):
         self.builder.connect_signals(self.handlers)
     
@@ -238,5 +177,169 @@ class MainWindow(object):
         self.logger.debug('Update config assistant')
         self.controller.updateConfigAsystant()
     
-    def getElementById(self, id):
-        return self.builder.get_object(id)
+    def getElementById(self, id_):
+        elem = self.builder.get_object(id_)
+        if elem is None and self.currentView is not None:
+            elem = self.currentView.builder.get_object(id_)
+        
+        if elem is None:
+            self.logger.warn("Can't find %s element"%(id_))
+            
+        return elem
+    
+    '''
+    change the image of the traffic signal
+    index: Between 1 and 5, if not it will raise and Exception
+    state: Between 1 and 3: 1 green, 2 yellow, 3 grey
+    '''
+    def trafficSignalChange(self, id_, state):
+        lightgreenimg  = get_data_file("media/i-status-18-ok.png")
+        lightyellowimg = get_data_file("media/i-status-18-grey.png")
+        lightgreyimg   = get_data_file("media/i-status-18-off.png")
+        
+        trafficwidget = self.getElementById(id_)
+        lightimg = ""
+        
+        if   (state == 1):
+            lightimg = lightgreenimg
+        elif (state == 2):
+            lightimg = lightyellowimg
+        elif (state == 3):
+            lightimg = lightgreyimg
+            
+        trafficwidget.hide()
+        trafficwidget.set_from_file(lightimg)
+        trafficwidget.show()    
+    
+    def setStatus(self, calculatedStatus, calculatedButtons):
+        trafficlights = {}
+        centerbuttons = {}
+        
+        centerbuttons["netbutton"] = True
+        centerbuttons["confbutton"]= False
+        centerbuttons["syncbutton"]= False    
+        centerbuttons["sysbutton"] = False
+        centerbuttons["userbutton"]= False
+        
+        trafficlights["trafficlight1"] = 3
+        trafficlights["trafficlight2"] = 3
+        trafficlights["trafficlight3"] = 3
+        trafficlights["trafficlight4"] = 3
+        trafficlights["trafficlight5"] = 3
+        
+        networkTrafficLightValue = 2
+        networkActivated = False
+        
+        try:
+            networkTrafficLightValue = calculatedStatus[self.controller.networkStatusKey]
+            networkActivated = True
+        except:
+            pass
+        
+        ntpActivated = False
+        
+        try:
+            if(calculatedStatus[self.controller.ntpStatusKey] == 1):
+                ntpActivated = True
+        except:
+            pass
+        
+        autoconfActivated = False
+        
+        try:
+            if(calculatedStatus[self.controller.autoconfStatusKey] == 1):
+                autoconfActivated = True
+        except:
+            pass
+        
+        gecosValue = 3
+        gecosActivated = False
+        
+        try:
+            gecosValue = calculatedStatus[self.controller.gecosStatusKey]
+        except:
+            pass
+        
+        usersValue = 3
+        
+        try:
+            usersValue = calculatedStatus[self.controller.usersStatusKey]
+        except:
+            pass
+            
+        
+        # traffic lights
+        trafficlights["trafficlight1"] = networkTrafficLightValue
+        
+        if(networkActivated):
+            trafficlights["trafficlight2"] = 2
+            trafficlights["trafficlight3"] = 2
+        
+        if(autoconfActivated):
+            trafficlights["trafficlight2"] = 1
+        
+        if(ntpActivated):
+            trafficlights["trafficlight3"] = 1
+        
+        if(gecosActivated):
+            trafficlights["trafficlight4"] = 1
+        else:
+            trafficlights["trafficlight4"] = gecosValue
+        
+        trafficlights["trafficlight5"] = usersValue
+        
+        guiValues = {}
+        guiValues[self.trafficlightsKey] = trafficlights
+        
+        # center buttons
+        centerbuttons = self.controller.calculateMainButtons(calculatedStatus)
+        
+        guiValues[self.centerbuttonsKey] = centerbuttons    
+        
+        guiValues[self.buttonsKey] = calculatedButtons
+
+        self.loadCurrentState(guiValues)
+            
+        for buttonKey in guiValues[self.buttonsKey].keys():
+            buttonValue = guiValues[self.buttonsKey][buttonKey]
+            button = self.getElementById(buttonKey)
+            button.set_sensitive(buttonValue)        
+        
+    
+    def loadCurrentState(self, guiValues):
+        
+        self.texts = self.controller.getTexts()
+        self.putTexts()
+        
+        # init streetlights 
+        for trafficlightKey in guiValues[self.trafficlightsKey].keys():
+            trafficlightValue = guiValues[self.trafficlightsKey][trafficlightKey]
+            self.trafficSignalChange(trafficlightKey, trafficlightValue)
+        
+        
+        # disable almost all
+        for centerbuttonKey in guiValues[self.centerbuttonsKey].keys():
+            centerbuttonValue = guiValues[self.centerbuttonsKey][centerbuttonKey]
+            self.setCenterButton(centerbuttonKey, centerbuttonValue)
+    
+    def putTexts(self):
+        networkText  = self.texts[self.controller.networkStatusKey ]
+        autoconfText = self.texts[self.controller.autoconfStatusKey]
+        ntpText      = self.texts[self.controller.ntpStatusKey     ]
+        gecosText    = self.texts[self.controller.gecosStatusKey   ]
+        userText     = self.texts[self.controller.usersStatusKey   ]
+        
+        self.getElementById("netlabel" ).set_text(networkText )
+        self.getElementById("conflabel").set_text(autoconfText)
+        self.getElementById("synclabel").set_text(ntpText     )
+        self.getElementById("syslabel" ).set_text(gecosText   )
+        self.getElementById("userlabel").set_text(userText    )
+    
+    '''
+    change the state of one of the central buttons
+    index: Between 1 and 7, if not it will raise and Exception
+    '''
+    def setCenterButton(self, id_, enabled):
+        button = self.getElementById(id_)
+        button.set_sensitive(enabled)
+            

@@ -41,6 +41,7 @@ class NTPServer(object):
         if self.address is None or self.address.strip() == '':
             return False
         else:
+            self.logger.debug('ntpdate-debian -u %s'%(self.address))
             p = subprocess.Popen('ntpdate-debian -u %s'%(self.address), shell=True, 
                                  stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             for line in p.stdout.readlines():

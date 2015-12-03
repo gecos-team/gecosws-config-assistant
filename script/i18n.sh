@@ -15,9 +15,15 @@ pofile="${podir}/${lang}.po"
 pofilemerged="${podir}/${lang}.merged.po"
 mofile="${podir}/${appname}.mo"
 
+gladepotfilesin="${podir}/POTFILES_glade.in"
+gladepotfile="${podir}/${appname}_glade.pot"
+gladepofile="${podir}/${lang}_glade.po"
+
+
 find .. -type f -name "*.py" > $potfilesin
 
 xgettext --language=Python --keyword=_ --output=$potfile -f $potfilesin
+xgettext --sort-output --keyword=translatable --output=$gladepotfile -f $gladepotfilesin
 
 if [ ! -f $pofile ]; then
 
@@ -29,5 +35,18 @@ else
     mv $pofilemerged $pofile
 
 fi
+
+
+if [ ! -f $gladepofile ]; then
+
+    msginit --input=$gladepotfile --locale=es_ES --output-file $gladepofile
+
+else
+
+    msgmerge $gladepotfile $potfile > $pofilemerged
+    mv $pofilemerged $gladepofile
+
+fi
+
 
 sed -i s@^../@@g $potfilesin

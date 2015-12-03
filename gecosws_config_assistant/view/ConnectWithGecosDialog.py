@@ -70,9 +70,6 @@ class ConnectWithGecosDialog(GladeWindow):
     def set_workstation_data(self, value):
         self.__workstation_data = value
     
-    def addTranslations(self):
-        super(ConnectWithGecosDialog, self).addTranslations()
-    
     def addHandlers(self):
         super(ConnectWithGecosDialog, self).addHandlers()
         self.logger.info('Calling child specific handler')

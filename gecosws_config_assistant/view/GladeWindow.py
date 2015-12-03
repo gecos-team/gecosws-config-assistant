@@ -33,13 +33,9 @@ class GladeWindow(object):
     def buildUI(self, gladepath):
         self.logger.debug("Building UI")
         
-        # gui values to store the initial state
-        # and to recover them after a screen change
-        # each class should inform them
-        self.guiValues = {}
-        
         self.gladepath = gladepath
         self.builder = Gtk.Builder()
+        self.builder.set_translation_domain('gecosws-config-assistant')
         self.builder.add_from_file(GLADE_PATH+self.gladepath)
         
         self.css_provider = Gtk.CssProvider()
@@ -60,17 +56,6 @@ class GladeWindow(object):
     def getMainWindow(self):
         return self.window
     
-    def initGUIValues(self):
-        pass
-    
-    def loadCurrentState(self, guiValues):
-        self.logger.debug("Load current state")
-        if(guiValues is not None):
-            self.guiValues = guiValues
-    
-    def getCurrentState(self):
-        return self.guiValues
-    
     def show(self):
         self.window.show_all()
         Gtk.main()
@@ -86,10 +71,8 @@ class GladeWindow(object):
         self.handlers['onDeleteWindow'] = Gtk.main_quit
     
     def bindHandlers(self):
+        self.logger.debug("Binding handlers")
         self.builder.connect_signals(self.handlers)
-    
-    def addTranslations(self):
-        raise NotImplementedError( "This is an abstract method, is not implemented" )
     
     def getCentralFrame(self):
         return self.getElementById("frame2")

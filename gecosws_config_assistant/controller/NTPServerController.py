@@ -21,8 +21,7 @@ __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 from gecosws_config_assistant.dao.NTPServerDAO import NTPServerDAO
-
-from gecosws_config_assistant.view.NTPDialog import NTPDialog
+from gecosws_config_assistant.view.NTPServerElemView import NTPServerElemView
 from gecosws_config_assistant.view.CommonDialog import showerror_gtk
 
 import logging
@@ -37,33 +36,34 @@ class NTPServerController(object):
     '''
 
 
-    def __init__(self):
+    def __init__(self, mainController):
         '''
         Constructor
         '''
         self.view = None # TODO!
+        self.mainWindowController = mainController
         self.dao = NTPServerDAO()
         self.logger = logging.getLogger('NTPServerController')
 
-    def getView(self, mainController):
+
+    def show(self, mainWindow):
         self.logger.debug('show - BEGIN')
-        self.view = NTPDialog(mainController)
+        self.view = NTPServerElemView(mainWindow, self)
 
         self.view.set_data(self.dao.load())
-        self.view.prepareFrame()
         
+        self.view.show()   
         self.logger.debug('show - END')
-        
-        return self.view
 
     def hide(self):
         self.logger.debug('hide')
-        self.view.cancel()
+        self.mainWindowController.showRequirementsCheckDialog()
     
-    def save(self, viewData):
+    def save(self):
         self.logger.debug('save')
+        data = self.view.get_data()
         try:
-            if self.dao.save(viewData):
+            if self.dao.save(data):
                 self.hide()
             else:
                 # Show error message
@@ -75,7 +75,7 @@ class NTPServerController(object):
                 self.view)
             
 
-    def test(self, ntpDialog):
+    def test(self):
         self.logger.debug('test')
-        data = ntpDialog.get_data()
+        data = self.view.get_data()
         return data.syncrhonize()

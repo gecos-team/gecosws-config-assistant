@@ -36,7 +36,6 @@ from gecosws_config_assistant.controller.RequirementsCheckController import Requ
 from gecosws_config_assistant.controller.SystemStatusController import SystemStatusController
 from gecosws_config_assistant.controller.UserAuthenticationMethodController import UserAuthenticationMethodController
 from gecosws_config_assistant.util.PackageManager import PackageManager 
-from gecosws_config_assistant.view.AutoconfDialog import AutoconfDialog
 from gecosws_config_assistant.view.CommonDialog import showerror_gtk, showinfo_gtk, askyesno_gtk
 from gecosws_config_assistant.view.MainWindow import MainWindow
 from gecosws_config_assistant.view.UserAuthDialog import UserAuthDialog, LOCAL_USERS, LDAP_USERS, AD_USERS
@@ -69,7 +68,7 @@ class MainMenuController(object):
         self.userAuthenticationMethod = UserAuthenticationMethodController()
         self.localUserList = LocalUserController()
         self.systemStatus = SystemStatusController()
-        self.requirementsCheck = RequirementsCheckController()
+        self.requirementsCheck = RequirementsCheckController(self)
         
         #keys
         self.networkStatusKey = "networkStatus"
@@ -77,16 +76,11 @@ class MainMenuController(object):
         self.autoconfStatusKey = "autoconf"
         self.gecosStatusKey = "gecos"
         self.usersStatusKey = "users"
+        
     def show(self):
-        
-        calculatedStatus = self.calculateStatus()
-        calculatedButtons = self.calculateTopButtons(calculatedStatus)
-        
         self.window.buildUI()
-        self.window.initGUIValues()
-        self.window.loadCurrentState(calculatedStatus, calculatedButtons)
         
-        self.window.initFrame(calculatedStatus)
+        self.showRequirementsCheckDialog()
         
         self.window.show()
 
@@ -105,20 +99,35 @@ class MainMenuController(object):
         checkNetwork = self.checkNetwork()
         checkNTP = self.checkNTP()
         
+        self.logger.debug('calculateStatus - network is: %s'%(checkNetwork));
+        self.logger.debug('calculateStatus - NTP is: %s'%(checkNTP));
+        
         if(checkNetwork):
+            # Network is green
             ret[self.networkStatusKey] = 1
+            
+            
             if(checkNTP):
+                # NTP is green
                 ret[self.ntpStatusKey] = 1
+
+            self.logger.debug('calculateStatus - autoconf is: %s'%(self.checkAutoconf()));
             if(self.checkAutoconf()):
+                # Auto configuration is green
                 ret[self.autoconfStatusKey] = 1
+            else:
+                # Auto configuration is yellow
+                ret[self.autoconfStatusKey] = 2
             
             if(checkNetwork and checkNTP):
                 ret[self.gecosStatusKey] = 2
                 ret[self.usersStatusKey] = 2
             
+            self.logger.debug('calculateStatus - GECOS is: %s'%(self.checkGECOS()));
             if(self.checkGECOS()):
                 ret[self.gecosStatusKey] = 1
             
+            self.logger.debug('calculateStatus - Authentication is: %s'%(self.checkUsers()));
             if(self.checkUsers()):
                 ret[self.usersStatusKey] = 1
         
@@ -133,10 +142,10 @@ class MainMenuController(object):
         ret["sysbutton" ] = False
         ret["userbutton"] = False
         
-        if(calculatedStatus[self.ntpStatusKey] != 3):
+        if(calculatedStatus[self.autoconfStatusKey] != 3):
             ret["confbutton"] = True
         
-        if(calculatedStatus[self.autoconfStatusKey] != 3):
+        if(calculatedStatus[self.ntpStatusKey] != 3):
             ret["syncbutton"] = True
         
         if(calculatedStatus[self.gecosStatusKey] != 3):
@@ -167,32 +176,35 @@ class MainMenuController(object):
         text = {}
         
         if(self.checkNetwork()):
-            text[self.networkStatusKey]  = _("El sistema tiene conexión a Red (Datos de conexión)")
+            text[self.networkStatusKey]  = _("The system has a network connection configured")
         else:
-            text[self.networkStatusKey]  = _("El sistema NO tiene conexión a Red")
+            text[self.networkStatusKey]  = _("The system has NO network connection")
         
-        text[self.autoconfStatusKey]     = _("Puede autoconfigurar el sistema con los valores predeterminados")
+        if self.checkAutoconf():
+            text[self.autoconfStatusKey]     = _("The system has loaded setup data values from GECOS server")
+        else:
+            text[self.autoconfStatusKey]     = _("The system may load setup data values from GECOS server")
             
         if(self.checkNTP()):
-            text[self.ntpStatusKey]      = _("El sistema está sincronizado con un servidor NTP")
+            text[self.ntpStatusKey]      = _("The system is synchronized with a NTP server")
         else:
-            text[self.ntpStatusKey]      = _("El sistema NO está sincronizado con un servidor NTP")
+            text[self.ntpStatusKey]      = _("The system is NOT synchronized with a NTP server")
         
         if(self.checkGECOS()):
-            text[self.gecosStatusKey]    = _("El sistema está vinculado a GECOS")
+            text[self.gecosStatusKey]    = _("The system is linked to a GECOS server")
         else:
-            text[self.gecosStatusKey]    = _("El sistema NO está vinculado a GECOS")
+            text[self.gecosStatusKey]    = _("The system is NOT linked to a GECOS server")
         
-        basetext = "Los usuarios se autentican por el método "
+        basetext = "Users authenticate by %s method"
         
         status = self.userAuthenticationMethod.getStatus()
         
         if(status == LDAP_USERS):
-            text[self.usersStatusKey]    = _(basetext+"LDAP")
+            text[self.usersStatusKey]    = _(basetext)%( _("LDAP") )
         elif(status == AD_USERS):
-            text[self.usersStatusKey]    = _(basetext+"Active Directory")
+            text[self.usersStatusKey]    = _(basetext)%( _("Active Directory"))
         else:
-            text[self.usersStatusKey]    = _(basetext+"INTERNO")
+            text[self.usersStatusKey]    =  _(basetext)%( _("Internal"))
         
         return text
     
@@ -225,25 +237,23 @@ class MainMenuController(object):
         return ret
     
     # new show methods
-    def showAutoconfDialog(self):
-        view = self.requirementsCheck.autoSetup.getView(self)
-        self.window.gotoAutoconf(view)
-    
     def backToMainWindowDialog(self):
         # restore main window
         self.window.gotoMainWindow()
-    
-    def showNetworkSettingsDialog(self):
-        # get network settings widgets
-        view = self.requirementsCheck.networkInterface.getView(self)
-        self.window.gotoNetworkSettings(view)
     
     def showNTPSettingsDialog(self):
         view = self.requirementsCheck.ntpServer.getView(self)
         self.window.gotoNTPSettings(view)
     
     def showRequirementsCheckDialog(self):
-        self.requirementsCheck.show(self.window.currentView)
+        self.requirementsCheck.show(self.window)
+        
+        # Check status
+        calculatedStatus = self.calculateStatus()
+        calculatedButtons = self.calculateTopButtons(calculatedStatus)
+        
+        self.window.setStatus(calculatedStatus, calculatedButtons)
+        
 
     def showConnectWithGecosCCDialog(self):
         view = self.connectWithGecosCC.getView(self)

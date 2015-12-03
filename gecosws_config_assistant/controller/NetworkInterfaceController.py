@@ -21,7 +21,7 @@ __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 from gecosws_config_assistant.dao.NetworkInterfaceDAO import NetworkInterfaceDAO
-from gecosws_config_assistant.view.NetworkSettingsDialog import NetworkSettingsDialog
+from gecosws_config_assistant.view.NetworkInterfaceListView import NetworkInterfaceListView
 
 import logging
 
@@ -31,29 +31,27 @@ class NetworkInterfaceController(object):
     '''
 
 
-    def __init__(self):
+    def __init__(self, mainController):
         '''
         Constructor
         '''
         self.view = None # TODO!
+        self.mainWindowController = mainController 
         self.dao = NetworkInterfaceDAO()
         self.logger = logging.getLogger('NetworkInterfaceController')
 
-    def getView(self, mainController):
-        self.view = NetworkSettingsDialog(mainController)
+    def show(self, mainWindow):
+        self.view = NetworkInterfaceListView(mainWindow, self)
         self.view.set_data(self.dao.loadAll())
-        self.view.prepareFrame()
-        
-        return self.view
+        self.view.show()   
+
 
     def hide(self):
-        # TODO!
-        pass
+        self.logger.debug("hide")
+        self.mainWindowController.showRequirementsCheckDialog()
     
     def save(self):
-        # TODO!
         pass
 
     def test(self):
-        # TODO!
         pass

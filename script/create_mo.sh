@@ -9,6 +9,7 @@ fi
 
 podir="../po"
 pofile="${podir}/${lang}.po"
+gladepofile="${podir}/${lang}_glade.po"
 mofile="${podir}/${appname}.mo"
 
-msgfmt $pofile --output-file $mofile
+msgfmt $pofile $gladepofile --output-file $mofile

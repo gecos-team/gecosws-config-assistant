@@ -141,47 +141,6 @@ class AutoSetupDialog(ViewMock):
     data = property(get_data, set_data, None, None)
 
 
-class AutoSetupProcessView(ViewMock):
-    '''
-    Dialog class that shows the Auto setup Dialog.
-    '''
-
-
-    def __init__(self, parent, mainController):
-        '''
-        Constructor
-        '''
-        self.parent = parent
-        self.controller = mainController
-        self.logger = logging.getLogger('AutoSetupProcessView')
-        
-        
-
-    def show(self):
-        self.logger.debug("Show")
-
-
-    def accept(self):
-        self.logger.debug("accept")
-  
-    def hide(self):
-        self.logger.debug("hide")
-                
-    def setAutoSetupDataLoadStatus(self, status):
-        self.logger.debug("setAutoSetupDataLoadStatus")
-
-    def setNTPServerSetupStatus(self, status):
-        self.logger.debug("setNTPServerSetupStatus")
-
-    def setUserAuthenticationSetupStatus(self, status):
-        self.logger.debug("setUserAuthenticationSetupStatus")
-
-    def setGecosCCConnectionSetupStatus(self, status):
-        self.logger.debug("setGecosCCConnectionSetupStatus")
-        
-    def enableAcceptButton(self):
-        self.logger.debug("enableAcceptButton")
-    
         
 class UserAuthenticationMethodElemView(ViewMock):
     '''

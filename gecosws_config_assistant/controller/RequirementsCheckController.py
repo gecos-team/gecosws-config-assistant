@@ -35,7 +35,6 @@ import logging
 
 import gettext
 from gettext import gettext as _
-# from view.MainWindow import MainWindow
 gettext.textdomain('gecosws-config-assistant')
 
 class RequirementsCheckController(object):
@@ -44,14 +43,15 @@ class RequirementsCheckController(object):
     '''
 
 
-    def __init__(self):
+    def __init__(self, mainController):
         '''
         Constructor
         '''
-        self.view = None 
-        self.ntpServer = NTPServerController()
-        self.networkInterface = NetworkInterfaceController()
-        self.autoSetup = AutoSetupController()
+        self.view = None
+        self.mainWindowController = mainController 
+        self.ntpServer = NTPServerController(self.mainWindowController)
+        self.networkInterface = NetworkInterfaceController(self.mainWindowController)
+        self.autoSetup = AutoSetupController(self.mainWindowController)
         self.logger = logging.getLogger('RequirementsCheckController')
         
         #self.window = MainWindow.getInstance(None)
@@ -85,50 +85,13 @@ class RequirementsCheckController(object):
     
     def getAutoconfStatus(self):
         self.logger.debug('Check auto setup status')
-        ret = False
-        userAuthMethodDao = UserAuthenticationMethodDAO()
-        if (userAuthMethodDao.load() is not None and
-            not isinstance(userAuthMethodDao.load(), LocalUsersAuthMethod)):
-            self.logger.debug('Auto setup already done?')
-            ret = True
-        
+        ret = self.autoSetup.get_conf()
         return ret
     
-    def _updateStatus(self):
-        # Check if there is at least one connection interface 
-        # (except 'lo' interface) 
-        self.logger.debug('Check network interfaces')
-        networkInterfacesDao = NetworkInterfaceDAO()
-        interfaces = networkInterfacesDao.loadAll()
-        if interfaces is not None:
-            for ni in interfaces:
-                if ni.get_name() != 'lo':
-                    self.view.setNetworkInterfacesStatus(_('OK'))
-                    self.logger.debug('Network interfaces OK')
-
-        # Check NTP server        
-        self.logger.debug('Check NTP server')
-        ntpServerDao = NTPServerDAO()
-        if ntpServerDao.load() is not None:
-            self.view.setNTPServerStatusLabel(_('OK'))
-            self.logger.debug('NTP Server OK')        
-
-        # Auto Setup status        
-        self.logger.debug('Check auto setup status')
-        userAuthMethodDao = UserAuthenticationMethodDAO()
-        if (userAuthMethodDao.load() is not None and
-            not isinstance(userAuthMethodDao.load(), LocalUsersAuthMethod)):
-            self.view.setAutoSetupStatus(_('OK'))
-            self.logger.debug('Auto setup already done?')        
-
-
     def show(self, mainWindow):
         self.logger.debug('show - BEGIN')
         self.view = RequirementsCheckDialog(mainWindow, self)
 
-        self._updateStatus()
-        
-        
         self.view.show()   
         self.logger.debug('show - END')
 
@@ -136,14 +99,11 @@ class RequirementsCheckController(object):
         self.view.quit()
     
     def showNetworkInterfaces(self):
-        self.networkInterface.show(self.view)
-        self._updateStatus()
+        self.networkInterface.show(self.view.parent)
 
     def showAutoSetup(self):
-        self.autoSetup.show(self.view)
-        self._updateStatus()
+        self.autoSetup.show(self.view.parent)
 
     def showNTPServer(self):
-        self.ntpServer.show(self.view)
-        self._updateStatus()
+        self.ntpServer.show(self.view.parent)
 

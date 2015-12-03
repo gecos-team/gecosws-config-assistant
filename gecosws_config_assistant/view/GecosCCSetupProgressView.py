@@ -75,9 +75,6 @@ class GecosCCSetupProgressView(GladeWindow):
     def hide(self, *args):
         self.dialog.destroy()
     
-    def addTranslations(self):
-        super(GecosCCSetupProgressView, self).addTranslations()
-    
     def show(self):
         # super method
         self.logger.debug("Show this view")

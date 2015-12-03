@@ -20,8 +20,7 @@ __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
 __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
-from Tkinter import N, S, W, E, Toplevel, END
-from ttk import Frame, Button, Style, Label, Entry
+from GladeWindow import GladeWindow
 import logging
 
 import gettext
@@ -30,7 +29,7 @@ gettext.textdomain('gecosws-config-assistant')
 
 from gecosws_config_assistant.dto.GecosAccessData import GecosAccessData
 
-class AutoSetupDialog(Toplevel):
+class AutoSetupDialog(GladeWindow):
     '''
     Dialog class that shows the Auto setup Dialog.
     '''
@@ -40,11 +39,10 @@ class AutoSetupDialog(Toplevel):
         '''
         Constructor
         '''
-        Toplevel.__init__(self, parent)
         self.parent = parent
-        self.body = Frame(self, padding="20 20 20 20")   
         self.controller = mainController
         self.logger = logging.getLogger('AutoSetupDialog')
+        self.gladepath = 'autoconf.glade'
         
         self.data = None
         
@@ -60,68 +58,19 @@ class AutoSetupDialog(Toplevel):
 
 
     def initUI(self):
-      
-        self.title(_('Auto setup'))
-        self.body.style = Style()
-        self.body.style.theme_use("default")        
-        self.body.pack()
-        
-        self.body.grid(column=0, row=0, sticky=(N, W, E, S))
-        self.body.columnconfigure(0, weight=1)
-        self.body.rowconfigure(0, weight=1)        
-        
-        padding_x = 10
-        padding_y = 10
-
-        # Explanation
-        explanationLabel1 =  Label(self.body, text=_("Some of the setup parameters can be filled automatically"))
-        explanationLabel1.grid(column=0, row=1, columnspan=3, sticky=E+W, padx=padding_x, pady=padding_y)
-
-        explanationLabel2 =  Label(self.body, text=_("if you have a setup file in your GECOS server."))
-        explanationLabel2.grid(column=0, row=2, columnspan=3, sticky=E+W, padx=padding_x, pady=padding_y)
-
-
-        # Gecos CC URL
-        gecosCCurlLabel = Label(self.body, text=_("GECOS Control Center URL:"))
-        gecosCCurlLabel.grid(column=0, row=3, sticky=E+W, padx=padding_x, pady=padding_y)
-        
-        self.gecosCCurlEntry = Entry(self.body)
-        self.gecosCCurlEntry.grid(column=1, row=3, columnspan=2, sticky=E+W, padx=padding_x, pady=padding_y)
-
-        self.gecosCCurlEntry.delete(0, END)
-        self.gecosCCurlEntry.insert(0, "http://your.gecos.server.url")
-
-        # Gecos CC user
-        gecosCCuserLabel = Label(self.body, text=_("User:"))
-        gecosCCuserLabel.grid(column=0, row=4, sticky=E+W, padx=padding_x, pady=padding_y)
-        
-        self.gecosCCuserEntry = Entry(self.body)
-        self.gecosCCuserEntry.grid(column=1, row=4, columnspan=2, sticky=E+W, padx=padding_x, pady=padding_y)
-
-        self.gecosCCuserEntry.delete(0, END)
-        self.gecosCCuserEntry.insert(0, "<gecos_administrator_username>")
-
-        # Gecos CC password
-        gecosCCpassLabel = Label(self.body, text=_("Password:"))
-        gecosCCpassLabel.grid(column=0, row=5, sticky=E+W, padx=padding_x, pady=padding_y)
-        
-        self.gecosCCpassEntry = Entry(self.body, show="*")
-        self.gecosCCpassEntry.grid(column=1, row=5, columnspan=2, sticky=E+W, padx=padding_x, pady=padding_y)
-
-        self.gecosCCpassEntry.delete(0, END)
-        
-         
-        # Setup Gecos CC
-        testButton = Button(self.body, text=_("Setup"),
-            command=self.setup)
-        testButton.grid(column=0, row=7, sticky=E, padx=padding_x, pady=padding_y)
-
-        # Cancel button
-        acceptButton = Button(self.body, text=_("Cancel"),
-            command=self.cancel)
-        acceptButton.grid(column=2, row=7, sticky=E, padx=padding_x, pady=padding_y)
+        self.buildUI(self.gladepath)
         
         self.logger.debug('UI initiated')
+        
+    def addHandlers(self):
+        self.logger.debug("Adding all handlers")
+        self.handlers = self.parent.get_common_handlers()
+
+        # add new handlers here
+        self.logger.debug("Adding back handler")
+        self.handlers["onBack"] = self.cancel
+        self.logger.debug("Adding connect handler")
+        self.handlers["onConn"] = self.setup    
         
 
     def show(self):
@@ -131,46 +80,44 @@ class AutoSetupDialog(Toplevel):
         if data is not None:
             if (data.get_url() is not None
                 and data.get_url().strip() != ''):
-                self.gecosCCurlEntry.delete(0, END)
-                self.gecosCCurlEntry.insert(0, data.get_url())
+                self.getElementById('url_entry').set_text(data.get_url())
 
             if (data.get_login() is not None
                 and data.get_login().strip() != ''):
-                self.gecosCCuserEntry.delete(0, END)
-                self.gecosCCuserEntry.insert(0, data.get_login())
+                self.getElementById('login_entry').set_text(data.get_login())
             
             if (data.get_password() is not None
                 and data.get_password().strip() != ''):
-                self.gecosCCpassEntry.delete(0, END)
-                self.gecosCCpassEntry.insert(0, data.get_password())
+                self.getElementById('password_entry').set_text(data.get_password())
         
-        self.transient(self.parent)
-        self.grab_set()
-        self.parent.wait_window(self)
+        self.parent.navigate(self)
 
-    def setup(self):
+    def setup(self, *args):
         self.logger.debug("setup")
         if self.get_data() is None:
             self.set_data(GecosAccessData())
-        self.get_data().set_url(self.gecosCCurlEntry.get())
-        self.get_data().set_login(self.gecosCCuserEntry.get())
-        self.get_data().set_password(self.gecosCCpassEntry.get())
+        self.get_data().set_url(self.getElementById('url_entry').get_text())
+        self.get_data().set_login(self.getElementById('login_entry').get_text())
+        self.get_data().set_password(self.getElementById('password_entry').get_text())
         
         self.controller.setup()
 
 
-    def cancel(self):
+    def cancel(self, *args):
         self.logger.debug("cancel")
-        self.destroy()
+        self.controller.cancel()
                 
     def focusUrlField(self):
-        self.gecosCCurlEntry.focus()                
+        self.getElementById('url_entry').grab_focus()
 
     def focusUsernameField(self):
-        self.gecosCCuserEntry.focus()                
+        self.getElementById('login_entry').grab_focus()
 
     def focusPasswordField(self):
-        self.gecosCCpassEntry.focus()                
+        self.getElementById('password_entry').grab_focus()
+                
+    def setAutoSetupDataLoadStatus(self, text):
+        self.getElementById('status').set_text(text)
                 
     data = property(get_data, set_data, None, None)
 
