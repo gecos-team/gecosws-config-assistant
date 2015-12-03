@@ -80,7 +80,7 @@ msgstr "Conectar con el CC GECOS"
 
 #: ../data/glade/gecoscon.glade:527
 msgid "Disconnect from CC GECOS"
-msgstr "Disconectar del CC GECOS"
+msgstr "Desconectar del CC GECOS"
 
 #: ../data/glade/autoconf.glade:17 ../data/glade/gecoscon.glade:23
 #: ../data/glade/main.glade:27 ../data/glade/network.glade:35

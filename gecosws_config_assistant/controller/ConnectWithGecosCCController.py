@@ -28,7 +28,7 @@ if 'check' in sys.argv:
     from gecosws_config_assistant.view.ViewMocks import showerror_gtk, ConnectWithGecosCCDialog, ChefValidationCertificateDialog, GecosCCSetupProcessView
 else:
     # Use real view classes
-    from gecosws_config_assistant.view.ConnectWithGecosDialog import ConnectWithGecosDialog
+    from gecosws_config_assistant.view.ConnectWithGecosCCDialog import ConnectWithGecosCCDialog
     from gecosws_config_assistant.view.ChefValidationCertificateDialog import ChefValidationCertificateDialog
     from gecosws_config_assistant.view.GecosCCSetupProgressView import GecosCCSetupProgressView
     from gecosws_config_assistant.view.CommonDialog import showerror_gtk
@@ -63,32 +63,40 @@ class ConnectWithGecosCCController(object):
     '''
 
 
-    def __init__(self):
+    def __init__(self, mainController):
         '''
         Constructor
         '''
-        self.view = None # TODO!
+        self.view = None
+        self.mainController = mainController 
         self.accessDataDao = GecosAccessDataDAO()
         self.workstationDataDao = WorkstationDataDAO()
         self.logger = logging.getLogger('ConnectWithGecosCCController')
 
-    def getView(self, mainController):
+    def show(self, mainWindow):
         self.logger.debug('show - BEGIN')
-        self.view = ConnectWithGecosDialog(mainController)
+        self.view = ConnectWithGecosCCDialog(mainWindow, self)
+
+        gecosData = None
+        if self.mainController.requirementsCheck.autoSetup.view is not None:
+            gecosData = self.mainController.requirementsCheck.autoSetup.view.get_data()
+            
+        if gecosData is None:        
+            gecosData = self.accessDataDao.load()
         
-        self.view.set_gecos_access_data(self.accessDataDao.load())
+        self.view.set_gecos_access_data(gecosData)
         self.view.set_workstation_data(self.workstationDataDao.load())
         
+        self.view.show()   
         self.logger.debug('show - END')
-        
-        return self.view
     
     def getStatus(self):
-        return self.accessDataDao.previousDataExists()
+        return ((self.accessDataDao.load() is not None) 
+                and (self.workstationDataDao.load() is not None))
 
     def hide(self):
         self.logger.debug("hide")
-        self.view.cancel()
+        self.mainController.showRequirementsCheckDialog()
     
     def _check_gecosConnectionParameters(self, gecosAccessData):
         self.logger.debug("_check_gecosConnectionParameters")
@@ -286,11 +294,10 @@ class ConnectWithGecosCCController(object):
     def connect(self):
         self.logger.info("Connect to Gecos CC")
 
-        self.processView = GecosCCSetupProgressView(self)
+        self.processView = GecosCCSetupProgressView(self, self.mainController.window)
         self.processView.setLinkToChefLabel(_('Link to Chef'))
         self.processView.setRegisterInGecosLabel(_('Register in GECOS CC'))
         self.processView.show()
-
         
         # Check parameters
         self.logger.debug("Check parameters")
@@ -480,7 +487,7 @@ class ConnectWithGecosCCController(object):
     def disconnect(self):
         self.logger.info("Disconnect from Gecos CC")
         
-        self.processView = GecosCCSetupProgressView(self)
+        self.processView = GecosCCSetupProgressView(self, self.mainController.window)
         self.processView.setLinkToChefLabel(_('Unlink from Chef'))
         self.processView.setRegisterInGecosLabel(_('Unregister from GECOS CC'))
         self.processView.show()

@@ -25,7 +25,7 @@ import sys
 if 'check' in sys.argv:
     # Mock view classes for testing purposses
     print "==> Loading mocks..."
-    from gecosws_config_assistant.view.ViewMocks import askyesno_gtk, showerror_gtl, UserAuthenticationMethodElemView, ADSetupDataElemView
+    from gecosws_config_assistant.view.ViewMocks import askyesno_gtk, showerror_gtk, UserAuthenticationMethodElemView, ADSetupDataElemView
 else:
     # Use real view classes
     from gecosws_config_assistant.view.CommonDialog import askyesno_gtk, showerror_gtk
@@ -61,11 +61,12 @@ class UserAuthenticationMethodController(object):
     '''
 
 
-    def __init__(self):
+    def __init__(self, mainController):
         '''
         Constructor
         '''
         self.view = None 
+        self.mainController = mainController
         self.dao = UserAuthenticationMethodDAO()
         self.logger = logging.getLogger('UserAuthenticationMethodController')
 
@@ -74,6 +75,14 @@ class UserAuthenticationMethodController(object):
         self.view = UserAuthDialog(mainController)
         
         data = self.dao.load()
+        if self.mainController.requirementsCheck.autoSetup.view is not None:
+            conf = self.mainController.requirementsCheck.autoSetup.get_conf()
+            if conf is not None:
+                new_data = self.get_auth_data_from_conf(conf)
+                if new_data is not False:
+                    data = new_data
+                 
+        
         self.logger.debug('data is of type %s'%(type(data).__name__))
         self.view.set_data(data)
         self.view.updateCombo()
@@ -81,6 +90,133 @@ class UserAuthenticationMethodController(object):
         self.logger.debug('getView - END')
         
         return self.view
+    
+    def get_auth_data_from_conf(self, conf):
+        if conf is None:
+            return False
+        
+        if not conf.has_key("auth") or not conf["auth"].has_key("auth_type"):
+            self.logger.error("Authentication method values aren't in auto setup data!")
+            return False
+        
+        if conf["auth"]["auth_type"] != 'AD' and conf["auth"]["auth_type"] != 'LDAP':
+            self.logger.error("Unknown user authentication method: "+conf["auth"]["auth_type"])
+            return False
+        
+        # --> LDAP authentication method
+        if conf["auth"]["auth_type"] == 'LDAP':
+            return self._setup_ldap_authentication_method(conf)
+            
+
+        # --> Active Directory authentication method
+        if conf["auth"]["auth_type"] == 'AD':
+            return self._setup_ad_authentication_method(conf)
+        
+        return False
+        
+    def _setup_ad_authentication_method(self, conf):
+        self.logger.debug("_setup_ad_authentication_method")
+        adSetupData = ADSetupData()
+
+        if not conf["auth"].has_key("auth_properties"):
+            self.logger.error("AD authentication method needs data!")
+            return False             
+
+        if not conf["auth"]["auth_properties"].has_key("specific_conf"):
+            self.logger.error("AD authentication method needs 'specific_conf' parameter!")
+            return False              
+
+        specific_conf = conf["auth"]["auth_properties"]["specific_conf"]
+        if specific_conf:
+            if not conf["auth"]["auth_properties"].has_key("ad_properties"):
+                self.logger.error("AD authentication method needs 'ad_properties' parameter!")
+                return False
+
+            ad_properties = conf["auth"]["auth_properties"]["ad_properties"]
+            
+            if not ad_properties.has_key("krb5_conf"):
+                self.logger.error("AD authentication method needs krb5.conf file!")
+                return False          
+
+            if not ad_properties.has_key("sssd_conf"):
+                self.logger.error("AD authentication method needs sssd.conf file!")
+                return False          
+
+            if not ad_properties.has_key("smb_conf"):
+                self.logger.error("AD authentication method needs smb.conf file!")
+                return False          
+
+            if not ad_properties.has_key("pam_conf"):
+                self.logger.error("AD authentication method needs pam.conf file!")
+                return False          
+
+            
+            # TODO: Add files to ADSetupData
+            
+        else:              
+            if not conf["auth"]["auth_properties"].has_key("ad_properties"):
+                self.logger.error("AD authentication method needs 'ad_properties' parameter!")
+                return False
+
+            ad_properties = conf["auth"]["auth_properties"]["ad_properties"]
+            
+            if not ad_properties.has_key("fqdn"):
+                self.logger.error("AD authentication method needs FQDN!")
+                return False          
+
+            if not ad_properties.has_key("workgroup"):
+                self.logger.error("AD authentication method needs workgroup!")
+                return False          
+
+            adSetupData.set_workgroup(ad_properties["workgroup"])
+            adSetupData.set_domain(ad_properties["fqdn"])
+            
+        method = ADAuthMethod()
+        method.set_data(adSetupData)        
+        
+        return method
+        
+        
+    def _setup_ldap_authentication_method(self, conf):
+        self.logger.debug("_setup_ldap_authentication_method")
+        
+        ldapSetupData = LDAPSetupData()
+        if not conf["auth"].has_key("auth_properties"):
+            self.logger.error("LDAP authentication method needs data!")
+            return False              
+
+        if not conf["auth"]["auth_properties"].has_key("uri"):
+            self.logger.error("LDAP authentication method needs LDAP server URI!")
+            return False
+
+        if not conf["auth"]["auth_properties"].has_key("base"):
+            self.logger.error("LDAP authentication method needs LDAP users base DN!")
+            return False           
+
+        # If default parameters, skip user authentication
+        if conf["auth"]["auth_properties"]["uri"] == 'URL_LDAP':
+            self.logger.info('Default LDAP URI detected. Skip user authentication setup!')
+            return True
+        
+        
+        ldapSetupData.set_uri(conf["auth"]["auth_properties"]["uri"])
+        ldapSetupData.set_base(conf["auth"]["auth_properties"]["base"])
+        if conf["auth"]["auth_properties"].has_key("basegroup"):
+            ldapSetupData.set_base_group(conf["auth"]["auth_properties"]["basegroup"])
+
+        if conf["auth"]["auth_properties"].has_key("binddn"):
+            ldapSetupData.set_bind_user_dn(conf["auth"]["auth_properties"]["binddn"])
+
+        if conf["auth"]["auth_properties"].has_key("bindpwd"):
+            ldapSetupData.set_bind_user_pwd(conf["auth"]["auth_properties"]["bindpwd"])
+
+        method = LDAPAuthMethod()
+        method.set_data(ldapSetupData)
+        
+        return method        
+        
+    
+    
     
     def getStatus(self):
         data = self.dao.load()
@@ -300,7 +436,7 @@ class UserAuthenticationMethodController(object):
             if (newAuthData.get_ad_administrator_pass() is None or
                 newAuthData.get_ad_administrator_pass().strip() == ''):
                 self.logger.debug("Empty AD administrator password field!")
-                showerro_gtk(_("The AD administrator password field is empty!") + "\n" 
+                showerror_gtk(_("The AD administrator password field is empty!") + "\n" 
                     + _("Please fill all the mandatory fields."),
                      self.view)
                 self.view.focusAdPasswordField()            

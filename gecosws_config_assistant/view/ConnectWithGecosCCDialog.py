@@ -20,9 +20,8 @@ __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
 __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
-from Tkinter import N, S, W, E, Toplevel, END, StringVar
-from ttk import Frame, Button, Style, Label, Entry, LabelFrame, OptionMenu
-import Tkinter as tk
+from GladeWindow import GladeWindow
+from gi.repository import Gtk, Gdk
 import logging
 
 import gettext
@@ -32,7 +31,7 @@ gettext.textdomain('gecosws-config-assistant')
 from gecosws_config_assistant.dto.GecosAccessData import GecosAccessData
 from gecosws_config_assistant.dto.WorkstationData import WorkstationData
 
-class ConnectWithGecosCCDialog(Toplevel):
+class ConnectWithGecosCCDialog(GladeWindow):
     '''
     Dialog class that shows the Auto setup Dialog.
     '''
@@ -42,11 +41,10 @@ class ConnectWithGecosCCDialog(Toplevel):
         '''
         Constructor
         '''
-        Toplevel.__init__(self, parent)
         self.parent = parent
-        self.body = Frame(self, padding="20 20 20 20")   
         self.controller = mainController
         self.logger = logging.getLogger('ConnectWithGecosCCDialog')
+        self.gladepath = 'gecoscon.glade'
         
         self.gecos_access_data = None
         self.workstation_data = None
@@ -69,130 +67,47 @@ class ConnectWithGecosCCDialog(Toplevel):
         self.__workstation_data = value
 
 
-
-
     def initUI(self):
-      
-        self.title(_('Connect with GECOS Control Center'))
-        self.body.style = Style()
-        self.body.style.theme_use("default")        
-        self.body.pack()
+        self.buildUI(self.gladepath)
         
-        self.body.grid(column=0, row=0, sticky=(N, W, E, S))
-        self.body.columnconfigure(0, weight=1)
-        self.body.rowconfigure(0, weight=1)        
+        #combo stuff
+        self.lastComboValue = ''
+        self.store = self.getElementById('liststore1')
+        self.combo = self.getElementById('combobox1')
         
-        padding_x = 10
-        padding_y = 10
+        renderer_text = Gtk.CellRendererText()
+        self.combo.pack_start(renderer_text, True)
+        self.combo.add_attribute(renderer_text, "text", 0)
         
-        
-        # Workstation name frame
-        workstationFrame = LabelFrame(self.body)
-        workstationFrame.grid(column=0, row=1, columnspan=3, sticky="nswe", padx=padding_x, pady=padding_y)        
-        workstationFrame['text'] = _('Workstation name')
-        
-
-        # Explanation
-        explanationLabel1 =  Label(workstationFrame, 
-            text=_("Workstation name must be unique. Spaces and symbols may be used."))
-        explanationLabel1.grid(column=0, row=1, columnspan=3, sticky=E+W, padx=padding_x, pady=padding_y)
-
-        explanationLabel2 =  Label(workstationFrame, 
-            text=_("This description apperars in the GECOS control center reports."))
-        explanationLabel2.grid(column=0, row=2, columnspan=3, sticky=E+W, padx=padding_x, pady=padding_y)
-
-        # Workstation name field
-        workstationNameLabel = Label(workstationFrame, text=_("Workstation name:"))
-        workstationNameLabel.grid(column=0, row=3, sticky=E+W, padx=padding_x, pady=padding_y)
-        
-        self.workstationNameEntry = Entry(workstationFrame)
-        self.workstationNameEntry.grid(column=1, row=3, columnspan=2, sticky=E+W, padx=padding_x, pady=padding_y)
-
-        self.workstationNameEntry.delete(0, END)
-
-
-
-        # GECOS CC connection credentials
-        gecosCCCredentialsFrame = LabelFrame(self.body)
-        gecosCCCredentialsFrame.grid(column=0, row=2, columnspan=3, sticky="nswe", padx=padding_x, pady=padding_y)        
-        gecosCCCredentialsFrame['text'] = _('GECOS Control Center Connection parameters')
-
-
-        # Gecos CC URL
-        gecosCCurlLabel = Label(gecosCCCredentialsFrame, text=_("GECOS Control Center URL:"))
-        gecosCCurlLabel.grid(column=0, row=1, sticky=E+W, padx=padding_x, pady=padding_y)
-        
-        self.gecosCCurlEntry = Entry(gecosCCCredentialsFrame)
-        self.gecosCCurlEntry.grid(column=1, row=1, columnspan=2, sticky=E+W, padx=padding_x, pady=padding_y)
-
-        self.gecosCCurlEntry.delete(0, END)
-        self.gecosCCurlEntry.insert(0, "http://your.gecos.server.url")
-
-        # Gecos CC user
-        gecosCCuserLabel = Label(gecosCCCredentialsFrame, text=_("User:"))
-        gecosCCuserLabel.grid(column=0, row=2, sticky=E+W, padx=padding_x, pady=padding_y)
-        
-        self.gecosCCuserEntry = Entry(gecosCCCredentialsFrame)
-        self.gecosCCuserEntry.grid(column=1, row=2, columnspan=2, sticky=E+W, padx=padding_x, pady=padding_y)
-
-        self.gecosCCuserEntry.delete(0, END)
-        self.gecosCCuserEntry.insert(0, "<gecos_administrator_username>")
-
-        # Gecos CC password
-        gecosCCpassLabel = Label(gecosCCCredentialsFrame, text=_("Password:"))
-        gecosCCpassLabel.grid(column=0, row=3, sticky=E+W, padx=padding_x, pady=padding_y)
-        
-        self.gecosCCpassEntry = Entry(gecosCCCredentialsFrame, show="*")
-        self.gecosCCpassEntry.grid(column=1, row=3, columnspan=2, sticky=E+W, padx=padding_x, pady=padding_y)
-
-        self.gecosCCpassEntry.delete(0, END)
-        
-        
-
-        # OU selecction
-        ouSelectionFrame = LabelFrame(self.body)
-        ouSelectionFrame.grid(column=0, row=3, columnspan=3, sticky="nswe", padx=padding_x, pady=padding_y)        
-        ouSelectionFrame['text'] = _('Select OU to connect to GECOS Control Center')
-
-
-        # Search filter
-        searchFilterLabel = Label(ouSelectionFrame, text=_("Search filter:"))
-        searchFilterLabel.grid(column=0, row=1, sticky=E+W, padx=padding_x, pady=padding_y)
-        
-        self.searchFilterEntry = Entry(ouSelectionFrame)
-        self.searchFilterEntry.grid(column=1, row=1, sticky=E+W, padx=padding_x, pady=padding_y)
-
-        self.searchFilterEntry.delete(0, END)
-
-        self.searchButton = Button(ouSelectionFrame, text=_("Search"),
-            command=self.patternSearch)
-        self.searchButton.grid(column=3, row=1, sticky=E, padx=padding_x, pady=padding_y)
-
-        # Select OU
-        selectOULabel = Label(ouSelectionFrame, text=_("Select OU:"))
-        selectOULabel.grid(column=0, row=2, sticky=E+W, padx=padding_x, pady=padding_y)
-
-        self.selectOUVar = StringVar(self.body)
-        
-        self.selectOUSelection = OptionMenu(ouSelectionFrame, self.selectOUVar)
-        self.selectOUSelection.grid(column=1, row=2, columnspan=2, sticky=E+W, padx=padding_x, pady=padding_y)
-
-
-
-        
-         
-        # Connect/disconnect to Gecos CC
-        self.connectButton = Button(self.body, text=_("Connect to GECOS CC"),
-            command=self.connect)
-        self.connectButton.grid(column=0, row=7, sticky=E, padx=padding_x, pady=padding_y)
-
-        # Cancel button
-        acceptButton = Button(self.body, text=_("Accept"),
-            command=self.cancel)
-        acceptButton.grid(column=2, row=7, sticky=E, padx=padding_x, pady=padding_y)
-        
+        self.extractGUIElements()        
         self.logger.debug('UI initiated')
         
+    def extractGUIElements(self):
+        self.disconnectButton = self.getElementById("button2")
+        self.connectButton = self.getElementById("button3")
+        
+        self.workstationNameEntry = self.getElementById('workstation_entry')
+        self.gecosCCurlEntry = self.getElementById('url_entry')
+        self.gecosCCuserEntry = self.getElementById('login_entry')
+        self.gecosCCpassEntry = self.getElementById('password_entry')
+        
+        self.selectOUVar = self.getElementById("combobox1")
+        self.searchFilterEntry = self.getElementById("entry5")        
+        
+    def addHandlers(self):
+        self.handlers = self.parent.get_common_handlers()
+        
+        # add new handlers here
+        self.logger.debug("Adding search handler")
+        self.handlers["onSrch"] = self.patternSearch
+        self.logger.debug("Adding connection handler")
+        self.handlers["onConn"] = self.connect
+        self.logger.debug("Adding accept handler")
+        self.handlers["onAcpt"] = self.cancel
+        self.logger.debug("Adding disconnect handler")
+        self.handlers["onDcon"] = self.disconnect
+        self.logger.debug("Adding on change combobox handler")
+        self.handlers["onChng"] = self.onChangeComboBox      
 
     def show(self):
         self.logger.debug("Show")
@@ -201,109 +116,108 @@ class ConnectWithGecosCCDialog(Toplevel):
         if workstation_data is not None:
             if (workstation_data.get_name() is not None
                 and workstation_data.get_name().strip() != ''):
-                self.workstationNameEntry.delete(0, END)
-                self.workstationNameEntry.insert(0, workstation_data.get_name())
+                self.workstationNameEntry.set_text(workstation_data.get_name())
 
         gecos_data = self.get_gecos_access_data()
         if gecos_data is not None:
-            self.connectButton['text'] = _("Disconnect from GECOS CC")
-            self.connectButton['command'] = self.disconnect
-            
             if (gecos_data.get_url() is not None
                 and gecos_data.get_url().strip() != ''):
-                self.gecosCCurlEntry.delete(0, END)
-                self.gecosCCurlEntry.insert(0, gecos_data.get_url())
+                self.gecosCCurlEntry.set_text(gecos_data.get_url())
 
             if (gecos_data.get_login() is not None
                 and gecos_data.get_login().strip() != ''):
-                self.gecosCCuserEntry.delete(0, END)
-                self.gecosCCuserEntry.insert(0, gecos_data.get_login())
+                self.gecosCCuserEntry.set_text(gecos_data.get_login())
             
             if (gecos_data.get_password() is not None
                 and gecos_data.get_password().strip() != ''):
-                self.gecosCCpassEntry.delete(0, END)
-                self.gecosCCpassEntry.insert(0, gecos_data.get_password())
-            
-        else:
-            self.connectButton['text'] = _("Connect to GECOS CC")
-            self.connectButton['command'] = self.connect
-            
-
+                self.gecosCCpassEntry.set_text(gecos_data.get_password())
         
-        self.transient(self.parent)
-        self.grab_set()
-        self.parent.wait_window(self)
+        self.parent.navigate(self)
 
-    def connect(self):
+    def connect(self, *args):
         self.logger.debug("connect")
         
         if self.get_gecos_access_data() is None:
             self.set_gecos_access_data(GecosAccessData())
-        self.get_gecos_access_data().set_url(self.gecosCCurlEntry.get())
-        self.get_gecos_access_data().set_login(self.gecosCCuserEntry.get())
-        self.get_gecos_access_data().set_password(self.gecosCCpassEntry.get())
+        self.get_gecos_access_data().set_url(self.gecosCCurlEntry.get_text())
+        self.get_gecos_access_data().set_login(self.gecosCCuserEntry.get_text())
+        self.get_gecos_access_data().set_password(self.gecosCCpassEntry.get_text())
         
         self.get_workstation_data()
         if self.get_workstation_data() is None:
             self.set_workstation_data(WorkstationData())
-        self.get_workstation_data().set_name(self.workstationNameEntry.get())
-        self.get_workstation_data().set_ou(self.selectOUVar.get())
+        self.get_workstation_data().set_name(self.workstationNameEntry.get_text())
+        self.get_workstation_data().set_ou(self.getOUComboValue())
   
         
         self.controller.connect()
 
-    def disconnect(self):
+    def disconnect(self, *args):
         self.logger.debug("disconnect")
         
         if self.get_gecos_access_data() is None:
-            self.get_gecos_access_data(GecosAccessData())
-        self.get_gecos_access_data().set_url(self.gecosCCurlEntry.get())
-        self.get_gecos_access_data().set_login(self.gecosCCuserEntry.get())
-        self.get_gecos_access_data().set_password(self.gecosCCpassEntry.get())
+            self.set_gecos_access_data(GecosAccessData())
+        self.get_gecos_access_data().set_url(self.gecosCCurlEntry.get_text())
+        self.get_gecos_access_data().set_login(self.gecosCCuserEntry.get_text())
+        self.get_gecos_access_data().set_password(self.gecosCCpassEntry.get_text())
         
         self.get_workstation_data()
         if self.get_workstation_data() is None:
             self.set_workstation_data(WorkstationData())
-        self.get_workstation_data().set_name(self.workstationNameEntry.get())
-        self.get_workstation_data().set_ou(self.selectOUVar.get())
+        self.get_workstation_data().set_name(self.workstationNameEntry.get_text())
+        self.get_workstation_data().set_ou(self.getOUComboValue())
 
         
         self.controller.disconnect()
+        
+    def onChangeComboBox(self, combo):
+        self.logger.debug("This should show up each time the combobox is changed")
+        tree_iter = combo.get_active_iter()
+        if tree_iter != None:
+            model = combo.get_model()
+            value = model[tree_iter][0]
+            self.lastComboValue = value
+        
+        
+    def getOUComboValue(self):
+        return self.lastComboValue
+    
+    def loadOUCombo(self, values):
+        if isinstance(values, (list, tuple)):
+            for value in values:
+                self.store.append([value[1]])        
 
-    def patternSearch(self):
+    def patternSearch(self, *args):
         self.logger.debug("patternSearch")
         
         if self.get_gecos_access_data() is None:
             self.set_gecos_access_data(GecosAccessData())
-        self.get_gecos_access_data().set_url(self.gecosCCurlEntry.get())
-        self.get_gecos_access_data().set_login(self.gecosCCuserEntry.get())
-        self.get_gecos_access_data().set_password(self.gecosCCpassEntry.get())
+        self.get_gecos_access_data().set_url(self.gecosCCurlEntry.get_text())
+        self.get_gecos_access_data().set_login(self.gecosCCuserEntry.get_text())
+        self.get_gecos_access_data().set_password(self.gecosCCpassEntry.get_text())
         
        
-        res = self.controller.patternSearch(self.searchFilterEntry.get())
-        if isinstance(res, (list, tuple)):
-            for r in res:
-                self.selectOUSelection['menu'].add_command(label=r[1], command=tk._setit(self.selectOUVar, r[1]))
-            self.selectOUVar.set(res[0][1])
+        res = self.controller.patternSearch(self.searchFilterEntry.get_text())
+        self.loadOUCombo(res)
         
-    def cancel(self):
+    def cancel(self, *args):
         self.logger.debug("cancel")
-        self.destroy()
+        self.controller.hide()
                 
     def focusUrlField(self):
-        self.gecosCCurlEntry.focus()                
+        self.gecosCCurlEntry.grab_focus()                
 
     def focusUsernameField(self):
-        self.gecosCCuserEntry.focus()                
+        self.gecosCCuserEntry.grab_focus()                
 
     def focusPasswordField(self):
-        self.gecosCCpassEntry.focus()   
+        self.gecosCCpassEntry.grab_focus()   
         
     def focusSeachFilterField(self):
-        self.searchFilterEntry.focus()   
+        self.searchFilterEntry.grab_focus()   
               
     def focusWorkstationNameField(self):
-        self.workstationNameEntry.focus()   
+        self.workstationNameEntry.grab_focus()   
                  
     gecos_access_data = property(get_gecos_access_data, set_gecos_access_data, None, None)
     workstation_data = property(get_workstation_data, set_workstation_data, None, None)

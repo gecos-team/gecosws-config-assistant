@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.16.1 -->
 <interface>
-  <requires lib="gtk+" version="2.24"/>
-  <!-- interface-naming-policy project-wide -->
+  <requires lib="gtk+" version="3.0"/>
   <object class="GtkImage" id="helpimage1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -13,7 +13,7 @@
     <property name="pixbuf">../media/btn-help.png</property>
   </object>
   <object class="GtkListStore" id="liststore1">
-  	<columns>
+    <columns>
       <!-- column-name OU -->
       <column type="gchararray"/>
     </columns>
@@ -52,10 +52,10 @@
                     <child>
                       <object class="GtkButton" id="linkbutton">
                         <property name="label" translatable="yes">Link/Unlink</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -66,10 +66,10 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="helplinkbutton">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="image">helpimage1</property>
                         <property name="relief">none</property>
                         <property name="focus_on_click">False</property>
@@ -85,10 +85,10 @@
                     <child>
                       <object class="GtkButton" id="authbutton">
                         <property name="label" translatable="yes">Authentication type</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -99,10 +99,10 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="authhelpbutton">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="image">helpimage2</property>
                         <property name="relief">none</property>
                         <property name="focus_on_click">False</property>
@@ -193,29 +193,13 @@
                                             <property name="position">0</property>
                                           </packing>
                                         </child>
-                                        <!--<child>
-                                          <object class="GtkLabel" id="label5">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="xalign">0.0099999997764825821</property>
-                                            <property name="label" translatable="yes">Nombre de la estación de trabajo</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">True</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>-->
                                         <child>
-                                          <object class="GtkEntry" id="entry1">
+                                          <object class="GtkEntry" id="workstation_entry">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="invisible_char">●</property>
-                                            <property name="invisible_char_set">True</property>
                                             <property name="primary_icon_activatable">False</property>
                                             <property name="secondary_icon_activatable">False</property>
-                                            <property name="primary_icon_sensitive">True</property>
-                                            <property name="secondary_icon_sensitive">True</property>
                                           </object>
                                           <packing>
                                             <property name="expand">True</property>
@@ -278,8 +262,8 @@
                                             <property name="can_focus">False</property>
                                             <property name="xalign">0.0099999997764825821</property>
                                             <property name="label" translatable="yes">URL</property>
-                                            <property name="max_width_chars">7</property>
                                             <property name="wrap">True</property>
+                                            <property name="max_width_chars">7</property>
                                           </object>
                                         </child>
                                         <child>
@@ -307,16 +291,13 @@
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkEntry" id="entry2">
+                                          <object class="GtkEntry" id="url_entry">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="invisible_char">●</property>
-                                            <property name="invisible_char_set">True</property>
+                                            <property name="width_chars">10</property>
                                             <property name="primary_icon_activatable">False</property>
                                             <property name="secondary_icon_activatable">False</property>
-                                            <property name="primary_icon_sensitive">True</property>
-                                            <property name="secondary_icon_sensitive">True</property>
-                                            <property name="width_chars">10</property>
                                           </object>
                                           <packing>
                                             <property name="left_attach">1</property>
@@ -324,16 +305,13 @@
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkEntry" id="entry3">
+                                          <object class="GtkEntry" id="login_entry">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="invisible_char">●</property>
-                                            <property name="invisible_char_set">True</property>
+                                            <property name="width_chars">10</property>
                                             <property name="primary_icon_activatable">False</property>
                                             <property name="secondary_icon_activatable">False</property>
-                                            <property name="primary_icon_sensitive">True</property>
-                                            <property name="secondary_icon_sensitive">True</property>
-                                            <property name="width_chars">10</property>
                                           </object>
                                           <packing>
                                             <property name="left_attach">1</property>
@@ -343,17 +321,14 @@
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkEntry" id="entry4">
+                                          <object class="GtkEntry" id="password_entry">
                                             <property name="visible">True</property>
-                                            <property name="visibility">False</property>
                                             <property name="can_focus">True</property>
+                                            <property name="visibility">False</property>
                                             <property name="invisible_char">●</property>
-                                            <property name="invisible_char_set">True</property>
+                                            <property name="width_chars">10</property>
                                             <property name="primary_icon_activatable">False</property>
                                             <property name="secondary_icon_activatable">False</property>
-                                            <property name="primary_icon_sensitive">True</property>
-                                            <property name="secondary_icon_sensitive">True</property>
-                                            <property name="width_chars">10</property>
                                           </object>
                                           <packing>
                                             <property name="left_attach">1</property>
@@ -416,7 +391,6 @@
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
                                             <property name="xalign">0.0099999997764825821</property>
-                                            <property name="label" translatable="yes"></property>
                                           </object>
                                         </child>
                                         <child>
@@ -436,12 +410,9 @@
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="invisible_char">●</property>
-                                            <property name="invisible_char_set">True</property>
+                                            <property name="width_chars">10</property>
                                             <property name="primary_icon_activatable">False</property>
                                             <property name="secondary_icon_activatable">False</property>
-                                            <property name="primary_icon_sensitive">True</property>
-                                            <property name="secondary_icon_sensitive">True</property>
-                                            <property name="width_chars">10</property>
                                           </object>
                                           <packing>
                                             <property name="left_attach">1</property>
@@ -451,11 +422,11 @@
                                         <child>
                                           <object class="GtkButton" id="button1">
                                             <property name="label" translatable="yes">Search</property>
+                                            <property name="use_action_appearance">False</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">True</property>
-                                            <property name="use_action_appearance">False</property>
-											<signal name="clicked" handler="onSrch" swapped="no"/>
+                                            <signal name="clicked" handler="onSrch" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="left_attach">2</property>
@@ -525,11 +496,11 @@
                             <child>
                               <object class="GtkButton" id="button2">
                                 <property name="label" translatable="yes">Disconnect from CC GECOS</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_action_appearance">False</property>
-								<signal name="clicked" handler="onDcon" swapped="no"/>
+                                <signal name="clicked" handler="onDcon" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -540,11 +511,11 @@
                             <child>
                               <object class="GtkButton" id="button3">
                                 <property name="label" translatable="yes">Connect to CC GECOS</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_action_appearance">False</property>
-								<signal name="clicked" handler="onConn" swapped="no"/>
+                                <signal name="clicked" handler="onConn" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -555,11 +526,11 @@
                             <child>
                               <object class="GtkButton" id="button4">
                                 <property name="label" translatable="yes">Accept</property>
+                                <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <property name="use_action_appearance">False</property>
-								<signal name="clicked" handler="onAcpt" swapped="no"/>
+                                <signal name="clicked" handler="onAcpt" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -595,10 +566,10 @@
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkButton" id="systembutton">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="image_position">top</property>
                         <child>
                           <object class="GtkHBox" id="hbox3">
@@ -639,10 +610,10 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="usersbutton">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <child>
                           <object class="GtkHBox" id="hbox4">
                             <property name="visible">True</property>
@@ -682,10 +653,10 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="managerbutton">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <child>
                           <object class="GtkHBox" id="hbox5">
                             <property name="visible">True</property>
@@ -725,10 +696,10 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="updatewizbutton">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <child>
                           <object class="GtkHBox" id="hbox6">
                             <property name="visible">True</property>
@@ -780,10 +751,10 @@
                     <child>
                       <object class="GtkButton" id="button9">
                         <property name="label" translatable="yes">Close</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <signal name="clicked" handler="onDeleteWindow" swapped="no"/>
                       </object>
                       <packing>

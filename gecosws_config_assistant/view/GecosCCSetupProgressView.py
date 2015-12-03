@@ -25,6 +25,7 @@ __license__ = "GPL-2"
 from GladeWindow import GladeWindow
 import logging
 from gi.repository import Gtk
+from time import sleep
 
 import gettext
 from gettext import gettext as _
@@ -32,8 +33,9 @@ gettext.textdomain('gecosws-config-assistant')
 
 class GecosCCSetupProgressView(GladeWindow):
     
-    def __init__(self, mainController):
+    def __init__(self, mainController, mainWindow):
         self.controller = mainController
+        self.mainWindow = mainWindow
         self.gladePath = 'progress.glade'
         self.logger = logging.getLogger('GecosCCSetupProgressView')
         
@@ -78,14 +80,18 @@ class GecosCCSetupProgressView(GladeWindow):
     def show(self):
         # super method
         self.logger.debug("Show this view")
+        self.window.set_modal(True)
+        self.window.set_transient_for(self.mainWindow.window)
+        #self.window.present()
         self.window.show_all()
-        #super(GecosCCSetupProgressView, self).show()
+        while Gtk.events_pending():
+            Gtk.main_iteration()
     
     def elementChangeText(self, element, text):
         self.logger.debug("Changing "+str(element)+" to text "+text)
-        #element.hide()
         element.set_text(text)
-        #element.show()
+        while Gtk.events_pending():
+            Gtk.main_iteration()
         
     def setCheckGecosCredentialsStatus(self, status):
         self.logger.debug("Setting gecos cred status")

@@ -383,7 +383,7 @@ class UserAuthDialog(GladeWindow):
             self.ldapWidgetAlias()
             self.set_data(LDAPAuthMethod())
             setupData = LDAPSetupData()
-            setupData.set_base(self.ldapBaseEntry.get())
+            setupData.set_base(self.ldapBaseEntry.get_text())
             setupData.set_uri(self.ldapUriEntry.get_text())
             setupData.set_base_group(self.ldabBaseGroupEntry.get_text())
             setupData.set_bind_user_dn(self.ldabBindUserDNEntry.get_text())

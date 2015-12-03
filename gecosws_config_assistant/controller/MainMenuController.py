@@ -64,8 +64,8 @@ class MainMenuController(object):
         self.logger.error(self.window)
         
         # controllers
-        self.connectWithGecosCC = ConnectWithGecosCCController()
-        self.userAuthenticationMethod = UserAuthenticationMethodController()
+        self.connectWithGecosCC = ConnectWithGecosCCController(self)
+        self.userAuthenticationMethod = UserAuthenticationMethodController(self)
         self.localUserList = LocalUserController()
         self.systemStatus = SystemStatusController()
         self.requirementsCheck = RequirementsCheckController(self)
@@ -195,7 +195,7 @@ class MainMenuController(object):
         else:
             text[self.gecosStatusKey]    = _("The system is NOT linked to a GECOS server")
         
-        basetext = "Users authenticate by %s method"
+        basetext = _("Users authenticate by %s method")
         
         status = self.userAuthenticationMethod.getStatus()
         
@@ -239,11 +239,7 @@ class MainMenuController(object):
     # new show methods
     def backToMainWindowDialog(self):
         # restore main window
-        self.window.gotoMainWindow()
-    
-    def showNTPSettingsDialog(self):
-        view = self.requirementsCheck.ntpServer.getView(self)
-        self.window.gotoNTPSettings(view)
+        self.showRequirementsCheckDialog()
     
     def showRequirementsCheckDialog(self):
         self.requirementsCheck.show(self.window)
@@ -256,8 +252,7 @@ class MainMenuController(object):
         
 
     def showConnectWithGecosCCDialog(self):
-        view = self.connectWithGecosCC.getView(self)
-        self.window.gotoConnectoWithGECOS(view)
+        self.connectWithGecosCC.show(self.window)
 
     def showUserAuthenticationMethod(self):
         view = self.userAuthenticationMethod.getView(self)
