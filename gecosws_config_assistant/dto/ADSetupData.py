@@ -39,7 +39,54 @@ class ADSetupData(object):
         self.ad_administrator_user = None
         self.ad_administrator_pass = None
         
+        self.specific = False
+        
+        self.krb5_conf = None
+        self.sssd_conf = None
+        self.smb_conf = None
+        self.pam_conf = None
+        
         self.logger = logging.getLogger('ADSetupData')
+
+    def get_specific(self):
+        return self.__specific
+
+
+    def get_krb_5_conf(self):
+        return self.__krb5_conf
+
+
+    def get_sssd_conf(self):
+        return self.__sssd_conf
+
+
+    def get_smb_conf(self):
+        return self.__smb_conf
+
+
+    def get_pam_conf(self):
+        return self.__pam_conf
+
+
+    def set_specific(self, value):
+        self.__specific = value
+
+
+    def set_krb_5_conf(self, value):
+        self.__krb5_conf = value
+
+
+    def set_sssd_conf(self, value):
+        self.__sssd_conf = value
+
+
+    def set_smb_conf(self, value):
+        self.__smb_conf = value
+
+
+    def set_pam_conf(self, value):
+        self.__pam_conf = value
+
 
     def get_ad_administrator_user(self):
         return self.__ad_administrator_user
@@ -73,6 +120,8 @@ class ADSetupData(object):
         self.__workgroup = value
 
 
+
+
     def test(self):
         # Test AD connection
         result = False
@@ -93,6 +142,25 @@ class ADSetupData(object):
             self.logger.debug('Empty administrator pass!')
             return False
 
+        if self.get_specific():
+            if self.get_krb_5_conf() is None or self.get_krb_5_conf().strip() == '':
+                self.logger.debug('Empty krb5.conf!')
+                return False
+
+            if self.get_sssd_conf() is None or self.get_sssd_conf().strip() == '':
+                self.logger.debug('Empty sssd.conf!')
+                return False
+
+            if self.get_smb_conf() is None or self.get_smb_conf().strip() == '':
+                self.logger.debug('Empty smb.conf!')
+                return False
+
+            if self.get_pam_conf() is None or self.get_pam_conf().strip() == '':
+                self.logger.debug('Empty pam.conf!')
+                return False
+
+            
+            return True
 
         
         try:
@@ -119,6 +187,12 @@ class ADSetupData(object):
     workgroup = property(get_workgroup, set_workgroup, None, None)
     ad_administrator_user = property(get_ad_administrator_user, set_ad_administrator_user, None, None)
     ad_administrator_pass = property(get_ad_administrator_pass, set_ad_administrator_pass, None, None)
+    
+    specific = property(get_specific, set_specific, None, None)
+    krb5_conf = property(get_krb_5_conf, set_krb_5_conf, None, None)
+    sssd_conf = property(get_sssd_conf, set_sssd_conf, None, None)
+    smb_conf = property(get_smb_conf, set_smb_conf, None, None)
+    pam_conf = property(get_pam_conf, set_pam_conf, None, None)
 
 
 

@@ -111,5 +111,6 @@ class NetworkInterfaceListView(GladeWindow):
     data = property(get_data, set_data, None, None)
 
 
-
+    def getHeight(self):
+        return 250    
         

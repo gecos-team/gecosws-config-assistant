@@ -205,17 +205,8 @@ class Check(Command):
         suite.addTest(WorkstationDataDAOTest())
         suite.addTest(GecosAccessDataDAOTest())
         suite.addTest(LocalUserDAOTest())
-        #suite.addTest(UserAuthenticationMethodDAOTest())
+        suite.addTest(UserAuthenticationMethodDAOTest())
 
-        from gecosws_config_assistant.tests.controller.UserAuthenticationMethodControllerTest import UserAuthenticationMethodControllerTest
-        from gecosws_config_assistant.tests.controller.AutoSetupControllerTest import AutoSetupControllerTest
-        from gecosws_config_assistant.tests.controller.ConnectWithGecosCCControllerTest import ConnectWithGecosCCControllerTest
-        
-        #suite.addTest(UserAuthenticationMethodControllerTest())
-        suite.addTest(AutoSetupControllerTest())
-        #suite.addTest(ConnectWithGecosCCControllerTest())
-        
-        
         
         return unittest.TextTestRunner(verbosity=2).run(suite)    
         

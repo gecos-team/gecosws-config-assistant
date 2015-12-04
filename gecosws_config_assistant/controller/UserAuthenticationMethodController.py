@@ -72,6 +72,7 @@ class UserAuthenticationMethodController(object):
 
     def getView(self, mainController):
         self.logger.debug('getView - BEGIN')
+        self.mainWindow = mainController.window
         self.view = UserAuthDialog(mainController)
         
         data = self.dao.load()
@@ -151,7 +152,14 @@ class UserAuthenticationMethodController(object):
                 return False          
 
             
-            # TODO: Add files to ADSetupData
+            # Add files to ADSetupData
+            adSetupData.set_specific(True)
+            adSetupData.set_krb_5_conf(ad_properties["krb5_conf"])
+            adSetupData.set_sssd_conf(ad_properties["sssd_conf"])
+            adSetupData.set_smb_conf(ad_properties["smb_conf"])
+            adSetupData.set_pam_conf(ad_properties["pam_conf"])
+            
+            
             
         else:              
             if not conf["auth"]["auth_properties"].has_key("ad_properties"):
@@ -324,7 +332,7 @@ class UserAuthenticationMethodController(object):
                 # to local users authentication method
                 
                 # Ask the user for Active Directory administrator user and password
-                askForActiveDirectoryCredentialsView = ADSetupDataElemView(self.view, self)
+                askForActiveDirectoryCredentialsView = ADSetupDataElemView(self.mainWindow, self)
                 askForActiveDirectoryCredentialsView.set_data(oldData.get_data())
                 askForActiveDirectoryCredentialsView.show()
     
@@ -401,20 +409,23 @@ class UserAuthenticationMethodController(object):
                 self.view.focusAdDomainField()            
                 return False            
 
-            # Check fqdn
-            ipaddress = None
-            try:
-                ipaddress = socket.gethostbyname(newAuthData.get_domain())
-            except:
-                self.logger.error("Can't resolv domain name: %s"%(newAuthData.get_domain()))
-                self.logger.error(str(traceback.format_exc()))
-                
-            if ipaddress is None:
-                showerror_gtk(_("Can't resolv the Active Directory Domain name!") + "\n" 
-                    + _("Please check the Domain field and your DNS configuration."),
-                     self.view)
-                self.view.focusAdDomainField() 
-                return False
+            self.logger.debug('Specific: %s'%(newAuthData.get_specific()))
+
+            if not newAuthData.get_specific():
+                # Check fqdn
+                ipaddress = None
+                try:
+                    ipaddress = socket.gethostbyname(newAuthData.get_domain())
+                except:
+                    self.logger.error("Can't resolv domain name: %s"%(newAuthData.get_domain()))
+                    self.logger.error(str(traceback.format_exc()))
+                    
+                if ipaddress is None:
+                    showerror_gtk(_("Can't resolv the Active Directory Domain name!") + "\n" 
+                        + _("Please check the Domain field and your DNS configuration."),
+                         self.view)
+                    self.view.focusAdDomainField() 
+                    return False
 
             if (newAuthData.get_workgroup() is None or
                 newAuthData.get_workgroup().strip() == ''):

@@ -12,4 +12,7 @@ pofile="${podir}/${lang}.po"
 gladepofile="${podir}/${lang}_glade.po"
 mofile="${podir}/${appname}.mo"
 
-msgfmt $pofile $gladepofile --output-file $mofile
+cp $pofile /tmp/tmp.po
+tail -n+20 $gladepofile >> /tmp/tmp.po
+
+msgfmt /tmp/tmp.po --output-file $mofile

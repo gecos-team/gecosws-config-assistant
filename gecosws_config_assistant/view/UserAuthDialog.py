@@ -267,6 +267,39 @@ class UserAuthDialog(GladeWindow):
         self.entry3.set_visibility(True)
         self.entry4.set_visibility(False)
         self.entry5.set_visibility(True)
+
+    def setFormForSpecificAD(self):
+        self.logger.debug("Setting form for specific Active Directory setup")
+        
+        self.biglabel.set_text(_("Specific configuration data was loaded from GECOS server\n (sssd.conf, krb5.conf, smb.conf and pam.conf)"))
+        
+        
+        # text
+        self.label1.set_text(_("Domain:"))
+        self.label2.set_text(_("Workgroup:"))
+        self.label3.set_text(_("User:"))
+        self.label4.set_text(_("Password:"))
+        
+        # show or hide
+        self.label1.set_visible(False)
+        self.label2.set_visible(False)
+        self.label3.set_visible(True)
+        self.label4.set_visible(True)
+        self.label5.set_visible(False)
+        
+        self.entry1.set_visible(False)
+        self.entry2.set_visible(False)
+        self.entry3.set_visible(True)
+        self.entry4.set_visible(True)
+        self.entry5.set_visible(False)
+        
+        # visibility
+        self.entry1.set_visibility(True)
+        self.entry2.set_visibility(True)
+        self.entry3.set_visibility(True)
+        self.entry4.set_visibility(False)
+        self.entry5.set_visibility(True)
+
     
     def setFormForInternal(self):
         self.logger.debug("Setting form for Internal")
@@ -300,18 +333,27 @@ class UserAuthDialog(GladeWindow):
         # Fill data values
         if self.get_data() is not None and isinstance(self.get_data(), ADAuthMethod):
             data = self.get_data().get_data()
-            if data.get_domain() is not None and data.get_domain().strip()!='':
-                self.entry1.set_text(data.get_domain())
- 
-            if data.get_workgroup() is not None and data.get_workgroup().strip()!='':
-                self.entry2.set_text(data.get_workgroup())
- 
-            if data.get_ad_administrator_user() is not None and data.get_ad_administrator_user().strip()!='':
-                self.entry3.set_text(data.get_ad_administrator_user())
- 
-            if data.get_ad_administrator_pass() is not None and data.get_ad_administrator_pass().strip()!='':
-                self.entry4.set_text(data.get_ad_administrator_pass())
-                self.entry4.set_visibility(False)
+            
+            if data.get_specific():
+                # Specific setup
+                self.setFormForSpecificAD()
+                self.entry1.set_text('SPECIFIC')
+                self.entry2.set_text('SPECIFIC')
+                
+            else:
+                # Normal setup
+                if data.get_domain() is not None and data.get_domain().strip()!='':
+                    self.entry1.set_text(data.get_domain())
+     
+                if data.get_workgroup() is not None and data.get_workgroup().strip()!='':
+                    self.entry2.set_text(data.get_workgroup())
+     
+                if data.get_ad_administrator_user() is not None and data.get_ad_administrator_user().strip()!='':
+                    self.entry3.set_text(data.get_ad_administrator_user())
+     
+                if data.get_ad_administrator_pass() is not None and data.get_ad_administrator_pass().strip()!='':
+                    self.entry4.set_text(data.get_ad_administrator_pass())
+                    self.entry4.set_visibility(False)
                 
     def _show_ldap_method(self):
         self.logger.debug("_show_ldap_method")
@@ -396,8 +438,16 @@ class UserAuthDialog(GladeWindow):
         elif index == AD_USERS:
             # Populate data from AD data
             self.adWidgetAlias()
-            self.set_data(ADAuthMethod())
-            setupData = ADSetupData()
+            if (self.get_data() is not None 
+                and isinstance(self.get_data(), ADAuthMethod) 
+                and self.get_data().get_data().get_specific()):
+                # Specific AD setup
+                setupData = self.get_data().get_data()
+            else:
+                # Normal AD Setup
+                self.set_data(ADAuthMethod())
+                setupData = ADSetupData()
+                
             setupData.set_domain(self.adDomainEntry.get_text())
             setupData.set_workgroup(self.adWorkgroupEntry.get_text())
             setupData.set_ad_administrator_user(self.adUserEntry.get_text())

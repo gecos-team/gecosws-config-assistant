@@ -44,7 +44,7 @@ class TemplateTest(unittest.TestCase):
 
     def runTest(self):
         template = Template()
-        template.source = 'tests/test.tmpl'
+        template.source = 'gecosws_config_assistant/tests/test.tmpl'
         template.destination = '/tmp/test1/test2/test3/test.file'
         template.owner = 'root'
         template.group = 'root'

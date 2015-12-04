@@ -28,6 +28,10 @@ from gi.repository import Gtk, Gdk
 from gecosws_config_assistant.view import GLADE_PATH, CSS_PATH, CSS_COMMON
 from gecosws_config_assistant.firstboot_lib.firstbootconfig import get_data_file
 
+from gettext import gettext as _
+import gettext
+gettext.textdomain('gecosws-config-assistant')
+
 class MainWindow(object):
     
     def __init__(self, mainController):
@@ -157,9 +161,23 @@ class MainWindow(object):
     
     def help1ManagementHandler(self, *args):
         self.logger.debug('This should show a brief help about GECOS linking')
-    
+        dialog = Gtk.MessageDialog(self.window, 0, Gtk.MessageType.INFO,
+            Gtk.ButtonsType.OK, _("Link with GECOS server"))
+        dialog.format_secondary_text(
+            _("You must link your workstation with a GECOS server to be \n"+
+            "able to manage this workstation in a centralized way"))
+        dialog.run()    
+        dialog.destroy() 
+
     def help2ManagementHandler(self, *args):
-        self.logger.debug('This should show a brief help about auth modes')
+        self.logger.debug('This should show a brief help about authentication methods')
+        dialog = Gtk.MessageDialog(self.window, 0, Gtk.MessageType.INFO,
+            Gtk.ButtonsType.OK, _("Setup user authentication method"))
+        dialog.format_secondary_text(
+            _("You must setup the user authentication method to either: internal users, LDAP or Active Directory"))
+        dialog.run()     
+        dialog.destroy()
+
         
     def statusManagementHandler(self, *args):
         self.logger.debug('This should show the system status')

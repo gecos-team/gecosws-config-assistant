@@ -33,6 +33,7 @@ import logging
 import traceback
 import subprocess
 import os
+import base64
 
 from gecosws_config_assistant.firstboot_lib.firstbootconfig import get_data_file
 
@@ -297,11 +298,162 @@ class UserAuthenticationMethodDAO(object):
         
         return method
 
-
     def _save_active_directory(self, method):
         self.logger.debug('Saving active directory user authentication method')
         data = method.get_data()
         
+        if data.get_specific():
+            return self._save_active_directory_specific(method)
+            
+        else:
+            return self._save_active_directory_normal(method)
+
+    def _save_base64_file(self, filename, data):
+        self.logger.debug("_save_base64_file BEGIN")
+
+        if filename is None:
+            self.logger.error("Filename is None")
+            return False
+        
+        if data is None:
+            self.logger.error("Data is None")
+            return False
+        
+        try:
+            fd = open(filename, 'w');
+            fd.write(base64.decodestring(data))
+            fd.close()
+
+            
+            return True
+        except:
+            self.logger.error("Error saving %s file"%(filename))
+            self.logger.error(str(traceback.format_exc()))
+            
+        return False
+
+    def _save_active_directory_specific(self, method):
+        self.logger.debug('Saving specific active directory user authentication method')
+        data = method.get_data()
+            
+        # Check data values
+        if data.get_ad_administrator_user() is None or data.get_ad_administrator_user().strip() == '':
+            raise ValueError('Active directory administrator user is empty!')
+        
+        if data.get_ad_administrator_pass() is None or data.get_ad_administrator_pass().strip() == '':
+            raise ValueError('Active directory administrator password is empty!')
+                
+        if data.get_krb_5_conf() is None or data.get_krb_5_conf().strip() == '':
+            raise ValueError('krb5.conf file is empty!')
+        
+        if data.get_sssd_conf() is None or data.get_sssd_conf().strip() == '':
+            raise ValueError('sssd.conf file is empty!')
+
+        if data.get_smb_conf() is None or data.get_smb_conf().strip() == '':
+            raise ValueError('smb.conf file is empty!')
+
+        if data.get_pam_conf() is None or data.get_pam_conf().strip() == '':
+            raise ValueError('pam.conf file is empty!')
+
+        # Save files
+        if not self._save_base64_file(
+            self.main_data_file, data.get_sssd_conf()):
+            self.logger.error("Error saving sssd.conf file!")
+            return False          
+            
+        if not self._save_base64_file(
+            self.samba_conf_file, data.get_smb_conf()):
+            self.logger.error("Error saving smb.conf file!")
+            return False          
+            
+        if not self._save_base64_file(
+            self.krb_conf_file, data.get_krb_5_conf()):
+            self.logger.error("Error saving krb5.conf file!")              
+            return False          
+            
+        if not self._save_base64_file(
+                '/etc/pam.conf', data.get_pam_conf()):
+            self.logger.error("Error saving pam.conf file!")              
+            return False          
+            
+
+            
+        # Run "net ads join" command
+        command = 'net ads join -U {0}%{1}'.format(
+                data.get_ad_administrator_user(), 
+                data.get_ad_administrator_pass())
+        self.logger.debug('running: %s'%(command))
+        p = subprocess.Popen(command, shell=True, 
+                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        for line in p.stdout.readlines():
+            self.logger.debug(line)
+                
+        retval = p.wait()
+        if retval != 0:
+            self.logger.error(_('Error running command: ')+command)
+            return False
+              
+              
+        # Restart SSSD service
+        self.logger.debug('Restart SSSD service')
+        p = subprocess.Popen('service sssd restart', shell=True, 
+                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        for line in p.stdout.readlines():
+            self.logger.debug(line)
+                
+        retval = p.wait()
+        if retval != 0:
+            self.logger.error(_('Error running command: ')+'service sssd restart')
+            return False        
+        
+        self.logger.debug('Save /usr/share/pam-configs/my_mkhomedir file')
+        # Save /usr/share/pam-configs/my_mkhomedir file
+        template = Template()
+        template.source = get_data_file('templates/my_mkhomedir')
+        template.destination = '/usr/share/pam-configs/my_mkhomedir'
+        template.owner = 'root'
+        template.group = 'root'
+        template.mode = 00644
+        template.variables = { }
+        
+        if not template.save():
+            self.logger.error('Error saving /usr/share/pam-configs/my_mkhomedir file')
+            return False        
+        
+        # Execute command pam-auth-update
+        self.logger.debug('Execute command pam-auth-update')
+        p = subprocess.Popen('pam-auth-update --package', shell=True, 
+                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        for line in p.stdout.readlines():
+            self.logger.debug(line)
+                
+        retval = p.wait()
+        if retval != 0:
+            self.logger.error(_('Error running command: ')+'pam-auth-update')
+            return False           
+        
+        
+        self.logger.debug('Save /etc/gca-sssd.control file')
+        # Save /etc/gca-sssd.control file
+        template = Template()
+        template.source = get_data_file('templates/gca-sssd.control')
+        template.destination = '/etc/gca-sssd.control'
+        template.owner = 'root'
+        template.group = 'root'
+        template.mode = 00644
+        template.variables = { 'auth_type':  'ad' }
+        
+        if not template.save():
+            self.logger.error('Error saving /etc/gca-sssd.control file')
+            return False           
+
+        return True
+
+
+    def _save_active_directory_normal(self, method):
+        self.logger.debug('Saving active directory user authentication method')
+        data = method.get_data()
+            
         # Check data values
         if data.get_ad_administrator_user() is None or data.get_ad_administrator_user().strip() == '':
             raise ValueError('Active directory administrator user is empty!')

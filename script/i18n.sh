@@ -43,7 +43,7 @@ if [ ! -f $gladepofile ]; then
 
 else
 
-    msgmerge $gladepotfile $potfile > $pofilemerged
+    msgmerge $gladepofile $gladepotfile > $pofilemerged
     mv $pofilemerged $gladepofile
 
 fi

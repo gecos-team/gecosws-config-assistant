@@ -142,6 +142,39 @@ class UserAuthenticationMethodDAOTest(unittest.TestCase):
         self.assertTrue(isinstance(currentMethod, LocalUsersAuthMethod))
 
 
+        print 'Set the authentication method to Active Directory (Specific setup)'
+        adData.set_domain('SPECIFIC')
+        adData.set_workgroup('SPECIFIC')
+        adData.set_ad_administrator_user('Administrador')
+        adData.set_ad_administrator_pass('Evaos.2014')
+
+        adData.set_specific(True)
+        adData.set_krb_5_conf('W2xpYmRlZmF1bHRzXQogZGVmYXVsdF9yZWFsbSA9IEVWQU9TLkxPQ0FMCiBkbnNfbG9va3VwX3JlYWxtID0gdHJ1ZQogZG5zX2xvb2t1cF9rZGMgPSB0cnVlCiB0aWNrZXRfbGlmZXRpbWUgPSAyNGgKIHJlbmV3X2xpZmV0aW1lID0gN2QKIHJkbnMgPSBmYWxzZQogZm9yd2FyZGFibGUgPSB5ZXMKIGRlZmF1bHRfdGdzX2VuY3R5cGVzID0gcmM0LWhtYWMKIGRlZmF1bHRfdGt0X2VuY3R5cGVzID0gcmM0LWhtYWMKIHBlcm1pdHRlZF9lbmN0eXBlcyA9IHJjNC1obWFjCgpbcmVhbG1zXQojIERlZmluaXIgc29sbyBzaSBlbCBETlMgbm8gZnVuY2lvbmEgYmllbgojRVZBT1MuTE9DQUwgPSB7CiMga2RjID0gc3J2MS5ldmFvcy5sb2NhbAojIGFkbWluX3NlcnZlciA9IHNydjEuZXZhb3MubG9jYWwKI30KCltkb21haW5fcmVhbG1dCiMgRGVmaW5pciBzb2xvIHNpIGVsIEROUyBubyBmdW5jaW9uYSBiaWVuCiMgLmV2YW9zLmxvY2FsID0gRVZBT1MuTE9DQUwKIyBldmFvcy5sb2NhbCA9IEVWQU9TLkxPQ0FMCg==')
+        adData.set_sssd_conf('W3Nzc2RdCmNvbmZpZ19maWxlX3ZlcnNpb24gPSAyCmRvbWFpbnMgPSBldmFvcy5sb2NhbApzZXJ2aWNlcyA9IG5zcywgcGFtLCBwYWMKZGVidWdfbGV2ZWwgPSAwCgpbbnNzXQoKW3BhbV0gCltkb21haW4vZXZhb3MubG9jYWxdCiMgTGEgZW51bWVyYWNpb24gbm8gZXN0YSByZWNvbWVuZGFkYSBlbiBlbnRvcm5vcyBjb24gbXVjaG9zIHVzdWFyaW9zCmNhY2hlX2NyZWRlbnRpYWxzPXRydWUKZW51bWVyYXRlID0gZmFsc2UKCmlkX3Byb3ZpZGVyID0gYWQKYXV0aF9wcm92aWRlciA9IGFkCmNocGFzc19wcm92aWRlciA9IGFkCmFjY2Vzc19wcm92aWRlciA9IGFkCgpvdmVycmlkZV9ob21lZGlyID0gL2hvbWUvJXU=')
+        adData.set_smb_conf('W2dsb2JhbF0KICAgd29ya2dyb3VwID0gZXZhb3MKICAgY2xpZW50IHNpZ25pbmcgPSB5ZXMKICAgY2xpZW50IHVzZSBzcG5lZ28gPSB5ZXMKICAga2VyYmVyb3MgbWV0aG9kID0gc2VjcmV0cyBhbmQga2V5dGFiCiAgIGxvZyBmaWxlID0gL3Zhci9sb2cvc2FtYmEvJW0ubG9nCiAgIHJlYWxtID0gRVZBT1MuTE9DQUwKICAgc2VjdXJpdHkgPSBhZHMK')
+        adData.set_pam_conf('IyAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0jCiMgL2V0Yy9wYW0uY29uZgkJCQkJCQkJICAgICAjCiMgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIwojCiMgTk9URQojIC0tLS0KIwojIE5PVEU6IE1vc3QgcHJvZ3JhbSB1c2UgYSBmaWxlIHVuZGVyIHRoZSAvZXRjL3BhbS5kLyBkaXJlY3RvcnkgdG8gc2V0dXAgdGhlaXIKIyBQQU0gc2VydmljZSBtb2R1bGVzLiBUaGlzIGZpbGUgaXMgdXNlZCBvbmx5IGlmIHRoYXQgZGlyZWN0b3J5IGRvZXMgbm90IGV4aXN0LgojIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSMKCiMgRm9ybWF0OgojIHNlcnYuCW1vZHVsZQkgICBjdHJsCSAgICAgIG1vZHVsZSBbcGF0aF0JLi4uW2FyZ3MuLl0JCSAgICAgIwojIG5hbWUJdHlwZQkgICBmbGFnCQkJCQkJCSAgICAgIwoK')
+        
+        adMethod.set_data(adData)  
+        
+        self.assertTrue(authMethodDao.save(adMethod))
+        
+        # Check if the changes has been done properly
+        currentMethod = authMethodDao.load()
+        self.assertEqual(currentMethod.get_name(), adMethod.get_name())
+        self.assertEqual(currentMethod.get_data().get_domain(), 'evaos.local')
+        self.assertEqual(currentMethod.get_data().get_workgroup(), 'evaos')
+
+        print 'Check a active directory test user login'
+        self.assertTrue(self.check_pam_login('amacias', 'Evaos.2014'))   
+        
+             
+        print 'Set the authentication method back to local users'
+        self.assertTrue(authMethodDao.delete(adMethod))
+
+        currentMethod = authMethodDao.load()
+        self.assertTrue(isinstance(currentMethod, LocalUsersAuthMethod))
+
+
         print 'Set the authentication method to LDAP'
         self.assertTrue(authMethodDao.save(ldapMethod))
         

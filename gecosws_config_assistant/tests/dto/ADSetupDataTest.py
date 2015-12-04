@@ -49,8 +49,28 @@ class ADSetupDataTest(unittest.TestCase):
         self.assertEqual(obj.get_ad_administrator_pass(), 'test_pass')
         self.assertEqual(obj.ad_administrator_pass, 'test_pass')
 
+        obj.set_specific(True)
+        self.assertEqual(obj.get_specific(), True)
+        self.assertEqual(obj.specific, True)
+
+        obj.set_krb_5_conf('BASE64CONTENT')
+        self.assertEqual(obj.get_krb_5_conf(), 'BASE64CONTENT')
+        self.assertEqual(obj.krb5_conf, 'BASE64CONTENT')
+
+        obj.set_sssd_conf('BASE64CONTENT')
+        self.assertEqual(obj.get_sssd_conf(), 'BASE64CONTENT')
+        self.assertEqual(obj.sssd_conf, 'BASE64CONTENT')
+
+        obj.set_smb_conf('BASE64CONTENT')
+        self.assertEqual(obj.get_smb_conf(), 'BASE64CONTENT')
+        self.assertEqual(obj.smb_conf, 'BASE64CONTENT')
+
+        obj.set_pam_conf('BASE64CONTENT')
+        self.assertEqual(obj.get_pam_conf(), 'BASE64CONTENT')
+        self.assertEqual(obj.pam_conf, 'BASE64CONTENT')
 
         # Test connection with wrong password
+        obj.set_specific(False)
         obj.set_domain('evaos.local')
         obj.set_workgroup('evaos')
         obj.set_ad_administrator_user('Administrador')

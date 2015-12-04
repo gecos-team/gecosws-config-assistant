@@ -89,8 +89,15 @@ class ADSetupDataElemView(GladeWindow):
         
         self.window.set_modal(True)
         self.window.set_transient_for(self.parent.window)
-
         self.window.show_all()
+        
+        x, y = self.parent.window.get_position()
+        w, h = self.parent.window.get_size()
+        sw, sh = self.window.get_size()
+        self.logger.debug('x=%s y=%s w=%s h=%s sw=%s sh=%s'%(x, y, w, h, sw, sh))
+        self.window.move(x + w/2 - sw/2, y + h/2 - sh/2)
+        
+        
         #while Gtk.events_pending():
         #    Gtk.main_iteration()
         Gtk.main()
