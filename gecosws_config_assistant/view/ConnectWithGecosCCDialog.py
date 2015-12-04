@@ -111,6 +111,7 @@ class ConnectWithGecosCCDialog(GladeWindow):
 
     def show(self):
         self.logger.debug("Show")
+        self.extractGUIElements()
         
         workstation_data = self.get_workstation_data()
         if workstation_data is not None:

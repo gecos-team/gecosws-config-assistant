@@ -17,7 +17,10 @@
 # along with this package; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
-GLADE_PATH = "data/glade/"
-CSS_PATH = "data/css/"
+import os
+from gecosws_config_assistant.firstboot_lib.firstbootconfig import get_data_path
+
+GLADE_PATH = os.path.join(get_data_path(), "glade/")
+CSS_PATH = os.path.join(get_data_path(), "css/")
 
 CSS_COMMON = "common.css"
