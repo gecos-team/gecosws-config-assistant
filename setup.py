@@ -228,6 +228,7 @@ workstation to different services',
     keywords=['python', 'gnome', 'guadalinex', 'gecos'],
 
     packages=[
+        'gecosws_config_assistant',
         'gecosws_config_assistant.view',
         'gecosws_config_assistant.dao',
         'gecosws_config_assistant.dto',
