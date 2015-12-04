@@ -25,7 +25,6 @@ __license__ = "GPL-2"
 from GladeWindow import GladeWindow
 import logging
 from gi.repository import Gtk
-from time import sleep
 
 import gettext
 from gettext import gettext as _

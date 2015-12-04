@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-03 17:54+0100\n"
+"POT-Creation-Date: 2015-12-04 09:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -170,12 +170,12 @@ msgstr ""
 #: .././gecosws_config_assistant/view/GecosCCSetupProcessView.py:153
 #: .././gecosws_config_assistant/view/GecosCCSetupProcessView.py:163
 #: .././gecosws_config_assistant/view/GecosCCSetupProcessView.py:168
-#: .././gecosws_config_assistant/view/GecosCCSetupProgressView.py:99
-#: .././gecosws_config_assistant/view/GecosCCSetupProgressView.py:104
-#: .././gecosws_config_assistant/view/GecosCCSetupProgressView.py:109
-#: .././gecosws_config_assistant/view/GecosCCSetupProgressView.py:118
-#: .././gecosws_config_assistant/view/GecosCCSetupProgressView.py:127
-#: .././gecosws_config_assistant/view/GecosCCSetupProgressView.py:132
+#: .././gecosws_config_assistant/view/GecosCCSetupProgressView.py:98
+#: .././gecosws_config_assistant/view/GecosCCSetupProgressView.py:103
+#: .././gecosws_config_assistant/view/GecosCCSetupProgressView.py:108
+#: .././gecosws_config_assistant/view/GecosCCSetupProgressView.py:117
+#: .././gecosws_config_assistant/view/GecosCCSetupProgressView.py:126
+#: .././gecosws_config_assistant/view/GecosCCSetupProgressView.py:131
 msgid "ERROR"
 msgstr ""
 
@@ -331,10 +331,9 @@ msgstr ""
 #: .././gecosws_config_assistant/controller/UserAuthenticationMethodController.py:227
 #: .././gecosws_config_assistant/dto/LDAPAuthMethod.py:43
 #: .././gecosws_config_assistant/tests/dto/LDAPAuthMethodTest.py:40
-#: .././gecosws_config_assistant/view/UserAuthDialog.py:64
-#: .././gecosws_config_assistant/view/UserAuthDialog.py:145
-#: .././gecosws_config_assistant/view/UserAuthDialog.py:187
-#: .././gecosws_config_assistant/view/UserAuthDialog.py:381
+#: .././gecosws_config_assistant/view/UserAuthDialog.py:66
+#: .././gecosws_config_assistant/view/UserAuthDialog.py:147
+#: .././gecosws_config_assistant/view/UserAuthDialog.py:189
 #: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:101
 #: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:296
 #: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:314
@@ -346,10 +345,9 @@ msgstr ""
 #: .././gecosws_config_assistant/controller/UserAuthenticationMethodController.py:229
 #: .././gecosws_config_assistant/dto/ADAuthMethod.py:44
 #: .././gecosws_config_assistant/tests/dto/ADAuthMethodTest.py:40
-#: .././gecosws_config_assistant/view/UserAuthDialog.py:64
-#: .././gecosws_config_assistant/view/UserAuthDialog.py:147
-#: .././gecosws_config_assistant/view/UserAuthDialog.py:189
-#: .././gecosws_config_assistant/view/UserAuthDialog.py:393
+#: .././gecosws_config_assistant/view/UserAuthDialog.py:66
+#: .././gecosws_config_assistant/view/UserAuthDialog.py:149
+#: .././gecosws_config_assistant/view/UserAuthDialog.py:191
 #: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:101
 #: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:298
 #: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:311
@@ -361,9 +359,9 @@ msgstr ""
 #: .././gecosws_config_assistant/controller/UserAuthenticationMethodController.py:225
 #: .././gecosws_config_assistant/dto/LocalUsersAuthMethod.py:43
 #: .././gecosws_config_assistant/tests/dto/LocalUsersAuthMethodTest.py:39
-#: .././gecosws_config_assistant/view/UserAuthDialog.py:64
-#: .././gecosws_config_assistant/view/UserAuthDialog.py:143
-#: .././gecosws_config_assistant/view/UserAuthDialog.py:185
+#: .././gecosws_config_assistant/view/UserAuthDialog.py:66
+#: .././gecosws_config_assistant/view/UserAuthDialog.py:145
+#: .././gecosws_config_assistant/view/UserAuthDialog.py:187
 #: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:99
 #: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:101
 #: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:317
@@ -396,7 +394,7 @@ msgstr ""
 
 #: .././gecosws_config_assistant/controller/NTPServerController.py:70
 #: .././gecosws_config_assistant/controller/NTPServerController.py:74
-#: .././gecosws_config_assistant/view/UserAuthDialog.py:364
+#: .././gecosws_config_assistant/view/UserAuthDialog.py:366
 #: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:378
 msgid "See log for more details."
 msgstr ""
@@ -596,75 +594,7 @@ msgstr ""
 msgid "Error saving template:"
 msgstr ""
 
-#: .././gecosws_config_assistant/view/ADSetupDataElemView.py:66
-msgid "Active Directory credentials needed"
-msgstr ""
-
-#. Explanation
-#: .././gecosws_config_assistant/view/ADSetupDataElemView.py:79
-msgid "To setup or remove the Active Directory authentication method you"
-msgstr ""
-
-#: .././gecosws_config_assistant/view/ADSetupDataElemView.py:82
-msgid "have to specify an AD administrator user and password:"
-msgstr ""
-
-#. Domain
-#. text
-#. Domain
-#: .././gecosws_config_assistant/view/ADSetupDataElemView.py:87
-#: .././gecosws_config_assistant/view/SystemStatusElemView.py:137
-#: .././gecosws_config_assistant/view/UserAuthDialog.py:244
-#: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:140
-msgid "Domain:"
-msgstr ""
-
-#. Workgroup
-#: .././gecosws_config_assistant/view/ADSetupDataElemView.py:94
-#: .././gecosws_config_assistant/view/SystemStatusElemView.py:138
-#: .././gecosws_config_assistant/view/UserAuthDialog.py:245
-#: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:147
-msgid "Workgroup:"
-msgstr ""
-
-#. User
-#: .././gecosws_config_assistant/view/ADSetupDataElemView.py:101
-#: .././gecosws_config_assistant/view/UserAuthDialog.py:246
-#: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:154
-msgid "User:"
-msgstr ""
-
-#. Password
 #: .././gecosws_config_assistant/view/ADSetupDataElemView.py:111
-#: .././gecosws_config_assistant/view/LocalUserElemView.py:98
-#: .././gecosws_config_assistant/view/UserAuthDialog.py:247
-#: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:163
-msgid "Password:"
-msgstr ""
-
-#. Cancel button
-#: .././gecosws_config_assistant/view/ADSetupDataElemView.py:122
-#: .././gecosws_config_assistant/view/ChefValidationCertificateDialog.py:91
-#: .././gecosws_config_assistant/view/LocalUserElemView.py:116
-msgid "Cancel"
-msgstr ""
-
-#. Accept button
-#: .././gecosws_config_assistant/view/ADSetupDataElemView.py:127
-#: .././gecosws_config_assistant/view/ChefValidationCertificateDialog.py:96
-#: .././gecosws_config_assistant/view/GecosCCSetupProcessView.py:109
-#: .././gecosws_config_assistant/view/LocalUserElemView.py:121
-#: .././gecosws_config_assistant/view/LocalUserListView.py:128
-#: .././gecosws_config_assistant/view/SystemStatusElemView.py:83
-#: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:114
-msgid "Accept"
-msgstr ""
-
-#: .././gecosws_config_assistant/view/ADSetupDataElemView.py:164
-msgid "Active Directory connection error"
-msgstr ""
-
-#: .././gecosws_config_assistant/view/ADSetupDataElemView.py:165
 msgid ""
 "Can't connect to Active Directory.\n"
 "Please double-check all the fields"
@@ -684,6 +614,22 @@ msgstr ""
 #. Certificate URL
 #: .././gecosws_config_assistant/view/ChefValidationCertificateDialog.py:83
 msgid "Certificate URL:"
+msgstr ""
+
+#. Cancel button
+#: .././gecosws_config_assistant/view/ChefValidationCertificateDialog.py:91
+#: .././gecosws_config_assistant/view/LocalUserElemView.py:116
+msgid "Cancel"
+msgstr ""
+
+#. Accept button
+#: .././gecosws_config_assistant/view/ChefValidationCertificateDialog.py:96
+#: .././gecosws_config_assistant/view/GecosCCSetupProcessView.py:109
+#: .././gecosws_config_assistant/view/LocalUserElemView.py:121
+#: .././gecosws_config_assistant/view/LocalUserListView.py:128
+#: .././gecosws_config_assistant/view/SystemStatusElemView.py:83
+#: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:114
+msgid "Accept"
 msgstr ""
 
 #: .././gecosws_config_assistant/view/ChefValidationCertificateDialog.py:121
@@ -746,6 +692,13 @@ msgstr ""
 #: .././gecosws_config_assistant/view/LocalUserElemView.py:88
 #: .././gecosws_config_assistant/view/SystemStatusElemView.py:121
 msgid "Login:"
+msgstr ""
+
+#. Password
+#: .././gecosws_config_assistant/view/LocalUserElemView.py:98
+#: .././gecosws_config_assistant/view/UserAuthDialog.py:249
+#: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:163
+msgid "Password:"
 msgstr ""
 
 #. Password confirmation
@@ -862,13 +815,28 @@ msgstr ""
 msgid "Method:"
 msgstr ""
 
+#. text
+#. Domain
+#: .././gecosws_config_assistant/view/SystemStatusElemView.py:137
+#: .././gecosws_config_assistant/view/UserAuthDialog.py:246
+#: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:140
+msgid "Domain:"
+msgstr ""
+
+#. Workgroup
+#: .././gecosws_config_assistant/view/SystemStatusElemView.py:138
+#: .././gecosws_config_assistant/view/UserAuthDialog.py:247
+#: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:147
+msgid "Workgroup:"
+msgstr ""
+
 #: .././gecosws_config_assistant/view/SystemStatusElemView.py:141
 msgid "Server URI:"
 msgstr ""
 
 #. Users base DN
 #: .././gecosws_config_assistant/view/SystemStatusElemView.py:142
-#: .././gecosws_config_assistant/view/UserAuthDialog.py:213
+#: .././gecosws_config_assistant/view/UserAuthDialog.py:215
 #: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:219
 msgid "Users base DN:"
 msgstr ""
@@ -881,49 +849,55 @@ msgstr ""
 msgid "No status data!"
 msgstr ""
 
-#: .././gecosws_config_assistant/view/UserAuthDialog.py:209
+#: .././gecosws_config_assistant/view/UserAuthDialog.py:211
 #: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:207
 msgid "Please fill the data to setup the LDAP authentication method."
 msgstr ""
 
 #. text
 #. URI
-#: .././gecosws_config_assistant/view/UserAuthDialog.py:212
+#: .././gecosws_config_assistant/view/UserAuthDialog.py:214
 #: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:212
 msgid "LDAP server URI:"
 msgstr ""
 
 #. Groups base DN
-#: .././gecosws_config_assistant/view/UserAuthDialog.py:214
+#: .././gecosws_config_assistant/view/UserAuthDialog.py:216
 #: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:226
 msgid "Groups base DN (optional):"
 msgstr ""
 
 #. Bind user DN
-#: .././gecosws_config_assistant/view/UserAuthDialog.py:215
+#: .././gecosws_config_assistant/view/UserAuthDialog.py:217
 #: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:233
 msgid "Bind user DN (optional):"
 msgstr ""
 
 #. Bind user password
-#: .././gecosws_config_assistant/view/UserAuthDialog.py:216
+#: .././gecosws_config_assistant/view/UserAuthDialog.py:218
 #: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:241
 msgid "Bind user password (optional):"
 msgstr ""
 
-#: .././gecosws_config_assistant/view/UserAuthDialog.py:241
+#: .././gecosws_config_assistant/view/UserAuthDialog.py:243
 #: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:136
 msgid ""
 "Please fill the data to setup the Active Directory authentication method."
 msgstr ""
 
-#: .././gecosws_config_assistant/view/UserAuthDialog.py:272
+#. User
+#: .././gecosws_config_assistant/view/UserAuthDialog.py:248
+#: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:154
+msgid "User:"
+msgstr ""
+
+#: .././gecosws_config_assistant/view/UserAuthDialog.py:274
 #: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:287
 msgid ""
 "There is no necessary data to setup the local users authentication method."
 msgstr ""
 
-#: .././gecosws_config_assistant/view/UserAuthDialog.py:364
+#: .././gecosws_config_assistant/view/UserAuthDialog.py:366
 #: .././gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:378
 msgid "An error happened while saving the users authentication method!"
 msgstr ""

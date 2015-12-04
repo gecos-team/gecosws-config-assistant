@@ -34,6 +34,8 @@ from gecosws_config_assistant.dto.ADAuthMethod import ADAuthMethod
 from gecosws_config_assistant.dto.LDAPSetupData import LDAPSetupData
 from gecosws_config_assistant.dto.ADSetupData import ADSetupData
 
+from gecosws_config_assistant.view.CommonDialog import showerror_gtk
+
 """
 UserAuthenticationMethodElemView redone in Glade
 """
@@ -338,22 +340,22 @@ class UserAuthDialog(GladeWindow):
         self.setFormForInternal()
     
     def focusLdapUriField(self):
-        pass               
+        self.entry1.grab_focus()               
 
     def focusUserBaseDNField(self):
-        pass               
+        self.entry2.grab_focus()
 
     def focusAdDomainField(self):
-        pass               
+        self.entry1.grab_focus()                
 
     def focusAdWorkgroupField(self):
-        pass         
+        self.entry2.grab_focus()         
 
     def focusAdUserField(self):
-        pass 
+        self.entry3.grab_focus()  
 
     def focusAdPasswordField(self):
-        pass
+        self.entry4.grab_focus()
     
     def setup(self, *args):
         self.logger.debug("setup")
@@ -375,10 +377,11 @@ class UserAuthDialog(GladeWindow):
         self.mainController.backToMainWindowDialog()
             
     def _populate_data(self):
-        self.logger.debug("_populate_data")
-        name = self.get_data().get_name()
+        index = self.combo.get_active()
+
+        self.logger.debug("_populate_data: %s"%(index))        
         
-        if name == _('LDAP'):
+        if index == LDAP_USERS:
             # Populate data from LDAP data
             self.ldapWidgetAlias()
             self.set_data(LDAPAuthMethod())
@@ -390,7 +393,7 @@ class UserAuthDialog(GladeWindow):
             setupData.set_bind_user_pwd(self.ldabBindUserPwdEntry.get_text())
             
             self.get_data().set_data(setupData)
-        elif name == _('Active Directory'):
+        elif index == AD_USERS:
             # Populate data from AD data
             self.adWidgetAlias()
             self.set_data(ADAuthMethod())
