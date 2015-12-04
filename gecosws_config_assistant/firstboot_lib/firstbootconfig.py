@@ -66,6 +66,9 @@ def get_data_file(*path_segments):
 def get_prefix():
     return __firstboot_prefix__
 
+def get_data_directory():
+    return __firstboot_data_directory__
+
 def get_data_path():
     """Retrieve firstboot data path
 

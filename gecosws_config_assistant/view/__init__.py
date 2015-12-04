@@ -18,9 +18,9 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 import os
-from gecosws_config_assistant.firstboot_lib.firstbootconfig import get_data_path
+from gecosws_config_assistant.firstboot_lib.firstbootconfig import get_data_directory
 
-GLADE_PATH = os.path.join(get_data_path(), "glade/")
-CSS_PATH = os.path.join(get_data_path(), "css/")
+GLADE_PATH = os.path.join(get_data_directory(), "glade/")
+CSS_PATH = os.path.join(get_data_directory(), "css/")
 
 CSS_COMMON = "common.css"
