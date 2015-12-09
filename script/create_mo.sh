@@ -9,7 +9,7 @@ fi
 
 podir="../po"
 pofile="${podir}/${lang}.po"
-gladepofile="${podir}/${lang}_glade.po"
+gladepofile="${podir}/glade-${lang}.po"
 mofile="${podir}/${appname}.mo"
 
 cp $pofile /tmp/tmp.po

@@ -15,8 +15,8 @@ pofile="${podir}/${lang}.po"
 pofilemerged="${podir}/${lang}.merged.po"
 mofile="${podir}/${appname}.mo"
 
-gladepotfilesin="${podir}/POTFILES_glade.in"
-gladepotfile="${podir}/${appname}_glade.pot"
+gladepotfilesin="${podir}/POTFILES-glade.in"
+gladepotfile="${podir}/${appname}-glade.pot"
 gladepofile="${podir}/glade_${lang}.po"
 
 
