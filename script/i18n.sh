@@ -17,7 +17,7 @@ mofile="${podir}/${appname}.mo"
 
 gladepotfilesin="${podir}/POTFILES_glade.in"
 gladepotfile="${podir}/${appname}_glade.pot"
-gladepofile="${podir}/${lang}_glade.po"
+gladepofile="${podir}/glade_${lang}.po"
 
 
 find .. -type f -name "*.py" > $potfilesin

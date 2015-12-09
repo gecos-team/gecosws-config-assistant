@@ -93,7 +93,7 @@ class UserAuthenticationMethodController(object):
         return self.view
     
     def get_auth_data_from_conf(self, conf):
-        if conf is None:
+        if conf is None or conf is False or not isinstance(conf, dict):
             return False
         
         if not conf.has_key("auth") or not conf["auth"].has_key("auth_type"):
