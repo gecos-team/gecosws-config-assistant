@@ -9,10 +9,8 @@ fi
 
 podir="../po"
 pofile="${podir}/${lang}.po"
-gladepofile="${podir}/glade-${lang}.po"
 mofile="${podir}/${appname}.mo"
 
 cp $pofile /tmp/tmp.po
-tail -n+20 $gladepofile >> /tmp/tmp.po
 
 msgfmt /tmp/tmp.po --output-file $mofile
