@@ -1,0 +1,32 @@
+[sssd]
+config_file_version = 2
+domains = ldap_gecos_conf
+services = nss, pam, pac
+debug_level = 0
+
+[nss]
+
+[pam] 
+[domain/ldap_gecos_conf]
+# La enumeracion no esta recomendada en entornos con muchos usuarios
+enumerate = false
+cache_credentials = true
+
+id_provider = ldap
+auth_provider = ldap
+
+# The client demands unsecure connection :(
+ldap_auth_disable_tls_never_use_in_production = True
+ldap_uri = ${ldap_uri}
+ldap_search_base = ${ldap_search_base}
+
+#{IF bind_dn} 
+ldap_default_bind_dn = ${bind_dn}
+ldap_default_authtok_type = password
+ldap_default_authtok = ${bind_password}
+#{ENDIF} 
+
+#{IF base_group} 
+ldap_group_search_base = ${base_group}
+#{ENDIF} 
+override_homedir = /home/#u

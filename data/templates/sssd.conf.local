@@ -1,0 +1,9 @@
+[sssd]
+config_file_version = 2
+domains = DEFAULT
+services = nss, pam, pac
+debug_level = 0
+
+[nss]
+
+[pam] 
