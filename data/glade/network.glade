@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.16.1 -->
 <interface>
-  <requires lib="gtk+" version="2.24"/>
-  <!-- interface-naming-policy project-wide -->
+  <requires lib="gtk+" version="3.0"/>
   <object class="GtkAdjustment" id="adjustment1">
     <property name="upper">100</property>
     <property name="step_increment">1</property>
@@ -64,10 +64,10 @@
                     <child>
                       <object class="GtkButton" id="linkbutton">
                         <property name="label" translatable="yes">Link/Unlink</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -78,10 +78,10 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="helplinkbutton">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="image">helpimage1</property>
                         <property name="relief">none</property>
                         <property name="focus_on_click">False</property>
@@ -97,10 +97,10 @@
                     <child>
                       <object class="GtkButton" id="authbutton">
                         <property name="label" translatable="yes">Authentication type</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -111,10 +111,10 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="authhelpbutton">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="receives_default">False</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="image">helpimage2</property>
                         <property name="relief">none</property>
                         <property name="focus_on_click">False</property>
@@ -175,7 +175,10 @@
                           <object class="GtkLabel" id="label1">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label" translatable="yes">Auto setup</property>
+                            <property name="label" translatable="yes">Network Setup</property>
+                            <style>
+                              <class name="blueBg"/>
+                            </style>
                           </object>
                           <packing>
                             <property name="expand">True</property>
@@ -204,9 +207,12 @@
                               <object class="GtkTreeView" id="treeview1">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="model">liststore1</property>
                                 <property name="hadjustment">adjustment1</property>
                                 <property name="vadjustment">adjustment2</property>
+                                <property name="model">liststore1</property>
+                                <child internal-child="selection">
+                                  <object class="GtkTreeSelection" id="treeview-selection1"/>
+                                </child>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -239,12 +245,12 @@
                                 <child>
                                   <object class="GtkButton" id="button1">
                                     <property name="label" translatable="yes">Go Back</property>
+                                    <property name="use_action_appearance">False</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
                                     <property name="border_width">4</property>
-                                    <property name="use_action_appearance">False</property>
-									<signal name="clicked" handler="onBack" swapped="no"/>
+                                    <signal name="clicked" handler="onBack" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="top_attach">1</property>
@@ -256,12 +262,12 @@
                                 <child>
                                   <object class="GtkButton" id="button2">
                                     <property name="label" translatable="yes">Configure network connection</property>
+                                    <property name="use_action_appearance">False</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
                                     <property name="border_width">4</property>
-                                    <property name="use_action_appearance">False</property>
-									<signal name="clicked" handler="onSetp" swapped="no"/>
+                                    <signal name="clicked" handler="onSetp" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
@@ -287,12 +293,6 @@
                         </child>
                       </object>
                     </child>
-                    <child type="label">
-                      <object class="GtkFixed" id="fixed1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                      </object>
-                    </child>
                   </object>
                   <packing>
                     <property name="expand">True</property>
@@ -306,10 +306,10 @@
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkButton" id="systembutton">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <property name="image_position">top</property>
                         <child>
                           <object class="GtkHBox" id="hbox3">
@@ -350,10 +350,10 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="usersbutton">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <child>
                           <object class="GtkHBox" id="hbox4">
                             <property name="visible">True</property>
@@ -393,10 +393,10 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="managerbutton">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <child>
                           <object class="GtkHBox" id="hbox5">
                             <property name="visible">True</property>
@@ -436,10 +436,10 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="updatewizbutton">
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <child>
                           <object class="GtkHBox" id="hbox6">
                             <property name="visible">True</property>
@@ -491,10 +491,10 @@
                     <child>
                       <object class="GtkButton" id="button9">
                         <property name="label" translatable="yes">Close</property>
+                        <property name="use_action_appearance">False</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="use_action_appearance">False</property>
                         <signal name="clicked" handler="onDeleteWindow" swapped="no"/>
                       </object>
                       <packing>

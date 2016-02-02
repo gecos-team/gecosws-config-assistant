@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.16.1 -->
 <interface>
-  <requires lib="gtk+" version="2.24"/>
-  <!-- interface-naming-policy project-wide -->
+  <requires lib="gtk+" version="3.0"/>
   <object class="GtkWindow" id="window1">
     <property name="width_request">150</property>
     <property name="height_request">300</property>
@@ -16,16 +16,20 @@
           <object class="GtkLabel" id="label1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="margin_left">20</property>
             <property name="xalign">0.20000000298023224</property>
-            <property name="label" translatable="yes">Check GECOS credentials</property>
+            <property name="label" translatable="yes">Check GECOS credentials </property>
           </object>
         </child>
         <child>
           <object class="GtkLabel" id="label2">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="margin_left">20</property>
             <property name="xalign">0.20000000298023224</property>
-            <property name="label" translatable="yes">Check workstation data</property>
+            <property name="label" translatable="yes">Check workstation data </property>
           </object>
           <packing>
             <property name="top_attach">1</property>
@@ -36,8 +40,10 @@
           <object class="GtkLabel" id="label3">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="margin_left">20</property>
             <property name="xalign">0.15999999642372131</property>
-            <property name="label" translatable="yes">Get chef certificate</property>
+            <property name="label" translatable="yes">Get chef certificate </property>
           </object>
           <packing>
             <property name="top_attach">2</property>
@@ -48,8 +54,10 @@
           <object class="GtkLabel" id="label4">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="margin_left">20</property>
             <property name="xalign">0.11999999731779099</property>
-            <property name="label" translatable="yes">Link to chef</property>
+            <property name="label" translatable="yes">Link to chef </property>
           </object>
           <packing>
             <property name="top_attach">3</property>
@@ -60,8 +68,10 @@
           <object class="GtkLabel" id="label5">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="margin_left">20</property>
             <property name="xalign">0.18000000715255737</property>
-            <property name="label" translatable="yes">Register in GECOS CC</property>
+            <property name="label" translatable="yes">Register in GECOS CC </property>
           </object>
           <packing>
             <property name="top_attach">4</property>
@@ -72,6 +82,8 @@
           <object class="GtkLabel" id="label6">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="margin_left">20</property>
             <property name="xalign">0.17000000178813934</property>
             <property name="label" translatable="yes">Clean up setup data</property>
           </object>
@@ -84,7 +96,7 @@
           <object class="GtkLabel" id="label7">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">PENDING</property>
+            <property name="label" translatable="yes">PENDING </property>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -95,7 +107,7 @@
           <object class="GtkLabel" id="label8">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">PENDING</property>
+            <property name="label" translatable="yes">PENDING </property>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -108,7 +120,7 @@
           <object class="GtkLabel" id="label9">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">PENDING</property>
+            <property name="label" translatable="yes">PENDING </property>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -121,7 +133,7 @@
           <object class="GtkLabel" id="label10">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">PENDING</property>
+            <property name="label" translatable="yes">PENDING </property>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -134,7 +146,7 @@
           <object class="GtkLabel" id="label11">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">PENDING</property>
+            <property name="label" translatable="yes">PENDING </property>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -147,7 +159,7 @@
           <object class="GtkLabel" id="label12">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">PENDING</property>
+            <property name="label" translatable="yes">PENDING </property>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -158,12 +170,12 @@
         </child>
         <child>
           <object class="GtkButton" id="button1">
-            <property name="label" translatable="yes">Accept</property>
+            <property name="label" translatable="yes">Accept </property>
+            <property name="use_action_appearance">False</property>
             <property name="width_request">100</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="use_action_appearance">False</property>
             <signal name="clicked" handler="onAcpt" swapped="no"/>
           </object>
           <packing>

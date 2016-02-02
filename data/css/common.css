@@ -1,5 +1,5 @@
 GtkWindow {
-    background: url("../../data/media/bg-background.png");
+    background: url("/usr/share/gecosws-config-assistant/media/bg-background.png");
 }
 .helpButton{
     background: transparent;
