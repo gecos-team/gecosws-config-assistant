@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-09 08:37+0100\n"
+"POT-Creation-Date: 2016-02-03 17:24+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,12 +22,12 @@ msgid " "
 msgstr ""
 
 #: ../data/glade/main.glade:405 ../data/glade/requirements.glade:36
-#: ../data/glade/window.glade:36
+#: ../data/glade/window.glade:25
 msgid "127.0.0.1"
 msgstr ""
 
 #: ../data/glade/main.glade:409 ../data/glade/requirements.glade:40
-#: ../data/glade/window.glade:40
+#: ../data/glade/window.glade:29
 msgid "192.168.1.99"
 msgstr ""
 
@@ -56,7 +56,6 @@ msgstr ""
 #: ../data/glade/main.glade:94 ../data/glade/network.glade:99
 #: ../data/glade/ntp.glade:81 ../data/glade/requirements.glade:113
 #: ../data/glade/users.glade:87 ../data/glade/users.glade:215
-#: ../data/glade/window.glade:113
 msgid "Authentication type"
 msgstr ""
 
@@ -103,7 +102,7 @@ msgstr ""
 #: ../data/glade/autoconf.glade:573 ../data/glade/gecoscon.glade:771
 #: ../data/glade/main.glade:368 ../data/glade/network.glade:493
 #: ../data/glade/ntp.glade:470 ../data/glade/requirements.glade:714
-#: ../data/glade/users.glade:664 ../data/glade/window.glade:388
+#: ../data/glade/users.glade:664 ../data/glade/window.glade:363
 msgid "Close"
 msgstr ""
 
@@ -126,7 +125,7 @@ msgstr ""
 #: ../data/glade/autoconf.glade:17 ../data/glade/gecoscon.glade:23
 #: ../data/glade/main.glade:27 ../data/glade/network.glade:35
 #: ../data/glade/ntp.glade:17 ../data/glade/requirements.glade:46
-#: ../data/glade/users.glade:23 ../data/glade/window.glade:46
+#: ../data/glade/users.glade:23 ../data/glade/window.glade:35
 msgid "GECOS Config Assistant"
 msgstr ""
 
@@ -167,14 +166,14 @@ msgstr ""
 #: ../data/glade/autoconf.glade:48 ../data/glade/gecoscon.glade:54
 #: ../data/glade/main.glade:57 ../data/glade/network.glade:66
 #: ../data/glade/ntp.glade:48 ../data/glade/requirements.glade:77
-#: ../data/glade/users.glade:54 ../data/glade/window.glade:77
+#: ../data/glade/users.glade:54
 msgid "Link/Unlink"
 msgstr ""
 
 #: ../data/glade/autoconf.glade:457 ../data/glade/gecoscon.glade:655
 #: ../data/glade/main.glade:252 ../data/glade/network.glade:377
 #: ../data/glade/ntp.glade:354 ../data/glade/requirements.glade:596
-#: ../data/glade/users.glade:548 ../data/glade/window.glade:270
+#: ../data/glade/users.glade:548 ../data/glade/window.glade:245
 msgid "Local Users"
 msgstr ""
 
@@ -235,14 +234,14 @@ msgstr ""
 #: ../data/glade/autoconf.glade:500 ../data/glade/gecoscon.glade:698
 #: ../data/glade/main.glade:295 ../data/glade/network.glade:420
 #: ../data/glade/ntp.glade:397 ../data/glade/requirements.glade:640
-#: ../data/glade/users.glade:591 ../data/glade/window.glade:314
+#: ../data/glade/users.glade:591 ../data/glade/window.glade:289
 msgid "Software Manager"
 msgstr ""
 
 #: ../data/glade/autoconf.glade:414 ../data/glade/gecoscon.glade:612
 #: ../data/glade/main.glade:209 ../data/glade/network.glade:334
 #: ../data/glade/ntp.glade:311 ../data/glade/requirements.glade:552
-#: ../data/glade/users.glade:505 ../data/glade/window.glade:226
+#: ../data/glade/users.glade:505 ../data/glade/window.glade:201
 msgid "System Status"
 msgstr ""
 
@@ -276,7 +275,7 @@ msgstr ""
 #: ../data/glade/autoconf.glade:543 ../data/glade/gecoscon.glade:741
 #: ../data/glade/main.glade:338 ../data/glade/network.glade:463
 #: ../data/glade/ntp.glade:440 ../data/glade/requirements.glade:684
-#: ../data/glade/users.glade:634 ../data/glade/window.glade:358
+#: ../data/glade/users.glade:634 ../data/glade/window.glade:333
 msgid "Update assistant"
 msgstr ""
 
@@ -289,11 +288,11 @@ msgid "Users are authenticated using the INTERNAL method"
 msgstr ""
 
 #: ../data/glade/main.glade:408 ../data/glade/requirements.glade:39
-#: ../data/glade/window.glade:39
+#: ../data/glade/window.glade:28
 msgid "eth0"
 msgstr ""
 
 #: ../data/glade/main.glade:404 ../data/glade/requirements.glade:35
-#: ../data/glade/window.glade:35
+#: ../data/glade/window.glade:24
 msgid "lo"
 msgstr ""

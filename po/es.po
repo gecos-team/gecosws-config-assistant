@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-09 08:37+0100\n"
+"POT-Creation-Date: 2016-02-03 17:24+0100\n"
 "PO-Revision-Date: 2015-09-29 17:13+0200\n"
 "Last-Translator: root <amp_21004@yahoo.es>\n"
 "Language-Team: Spanish\n"
@@ -22,18 +22,18 @@ msgid " "
 msgstr ""
 
 #: ../data/glade/main.glade:405 ../data/glade/requirements.glade:36
-#: ../data/glade/window.glade:36
+#: ../data/glade/window.glade:25
 msgid "127.0.0.1"
 msgstr ""
 
 #: ../data/glade/main.glade:409 ../data/glade/requirements.glade:40
-#: ../data/glade/window.glade:40
+#: ../data/glade/window.glade:29
 msgid "192.168.1.99"
 msgstr ""
 
 #: ../data/glade/gecoscon.glade:366
 msgid "<b>Connection with GECOS</b>"
-msgstr "<b>Conexión con GECOS</b>"
+msgstr "<b>Credenciales del Centro de Control</b>"
 
 #: ../data/glade/gecoscon.glade:491
 msgid "<b>OU selection</b>"
@@ -56,7 +56,6 @@ msgstr "Configurar el Método de Autenticación"
 #: ../data/glade/main.glade:94 ../data/glade/network.glade:99
 #: ../data/glade/ntp.glade:81 ../data/glade/requirements.glade:113
 #: ../data/glade/users.glade:87 ../data/glade/users.glade:215
-#: ../data/glade/window.glade:113
 msgid "Authentication type"
 msgstr "Tipo de autenticación"
 
@@ -74,7 +73,7 @@ msgstr "DN Base:"
 
 #: ../data/glade/requirements.glade:259
 msgid "Basic setup values got from GECOS server"
-msgstr "Valores de configuración obtenidos del servidor"
+msgstr "Valores de configuración obtenidos del Centro de Control"
 
 #: ../data/glade/users.glade:386
 msgid "Bind DN:"
@@ -103,7 +102,7 @@ msgstr "Limpiar los datos de configuración"
 #: ../data/glade/autoconf.glade:573 ../data/glade/gecoscon.glade:771
 #: ../data/glade/main.glade:368 ../data/glade/network.glade:493
 #: ../data/glade/ntp.glade:470 ../data/glade/requirements.glade:714
-#: ../data/glade/users.glade:664 ../data/glade/window.glade:388
+#: ../data/glade/users.glade:664 ../data/glade/window.glade:363
 msgid "Close"
 msgstr "Cerrar"
 
@@ -126,17 +125,17 @@ msgstr "Desconectar del CC GECOS"
 #: ../data/glade/autoconf.glade:17 ../data/glade/gecoscon.glade:23
 #: ../data/glade/main.glade:27 ../data/glade/network.glade:35
 #: ../data/glade/ntp.glade:17 ../data/glade/requirements.glade:46
-#: ../data/glade/users.glade:23 ../data/glade/window.glade:46
+#: ../data/glade/users.glade:23 ../data/glade/window.glade:35
 msgid "GECOS Config Assistant"
 msgstr "Asistente de configuración GECOS"
 
 #: ../data/glade/autoconf.glade:207
 msgid "GECOS URL"
-msgstr "URL de GECOS"
+msgstr "URL del Centro de Control"
 
 #: ../data/glade/gecoscon.glade:168
 msgid "GECOS server setup"
-msgstr "Configuración del servidor GECOS"
+msgstr "Configuración de la vinculación al Centro de Control"
 
 #: ../data/glade/progress.glade:46
 msgid "Get chef certificate "
@@ -155,8 +154,8 @@ msgid ""
 "It must be unique, it can use white spaces or symbols. It would be the "
 "description on the reports."
 msgstr ""
-"Debe ser único. Pueden usarse espacios o símbolos. Será usado como "
-"descripción en los informes."
+"Debe ser único. Pueden usarse espacios o símbolos. Se usará para "
+"identificarlo en el Centro de Control."
 
 #: ../data/glade/requirements.glade:477
 msgid "Link"
@@ -169,14 +168,14 @@ msgstr "Vincular a Chef "
 #: ../data/glade/autoconf.glade:48 ../data/glade/gecoscon.glade:54
 #: ../data/glade/main.glade:57 ../data/glade/network.glade:66
 #: ../data/glade/ntp.glade:48 ../data/glade/requirements.glade:77
-#: ../data/glade/users.glade:54 ../data/glade/window.glade:77
+#: ../data/glade/users.glade:54
 msgid "Link/Unlink"
 msgstr "Vincular/Desvincular"
 
 #: ../data/glade/autoconf.glade:457 ../data/glade/gecoscon.glade:655
 #: ../data/glade/main.glade:252 ../data/glade/network.glade:377
 #: ../data/glade/ntp.glade:354 ../data/glade/requirements.glade:596
-#: ../data/glade/users.glade:548 ../data/glade/window.glade:270
+#: ../data/glade/users.glade:548 ../data/glade/window.glade:245
 msgid "Local Users"
 msgstr "Usuarios locales"
 
@@ -227,7 +226,7 @@ msgid ""
 "Precise time is needed to keep some services synchronized.\n"
 "Please set your NTP server address:"
 msgstr ""
-"Se necesita una hora precisa parra mantener algunos servicios "
+"Se necesita una hora precisa para mantener algunos servicios "
 "sincronizados.\n"
 "Por favor configure su servidor NTP:"
 
@@ -242,14 +241,14 @@ msgstr "Buscar"
 #: ../data/glade/autoconf.glade:500 ../data/glade/gecoscon.glade:698
 #: ../data/glade/main.glade:295 ../data/glade/network.glade:420
 #: ../data/glade/ntp.glade:397 ../data/glade/requirements.glade:640
-#: ../data/glade/users.glade:591 ../data/glade/window.glade:314
+#: ../data/glade/users.glade:591 ../data/glade/window.glade:289
 msgid "Software Manager"
 msgstr "Gestor de Software"
 
 #: ../data/glade/autoconf.glade:414 ../data/glade/gecoscon.glade:612
 #: ../data/glade/main.glade:209 ../data/glade/network.glade:334
 #: ../data/glade/ntp.glade:311 ../data/glade/requirements.glade:552
-#: ../data/glade/users.glade:505 ../data/glade/window.glade:226
+#: ../data/glade/users.glade:505 ../data/glade/window.glade:201
 msgid "System Status"
 msgstr "Estado del Sistema"
 
@@ -286,7 +285,7 @@ msgstr ""
 #: ../data/glade/autoconf.glade:543 ../data/glade/gecoscon.glade:741
 #: ../data/glade/main.glade:338 ../data/glade/network.glade:463
 #: ../data/glade/ntp.glade:440 ../data/glade/requirements.glade:684
-#: ../data/glade/users.glade:634 ../data/glade/window.glade:358
+#: ../data/glade/users.glade:634 ../data/glade/window.glade:333
 msgid "Update assistant"
 msgstr "Actualizar asistente"
 
@@ -299,12 +298,12 @@ msgid "Users are authenticated using the INTERNAL method"
 msgstr "Los usuarios se autentican usando el método INTERNO"
 
 #: ../data/glade/main.glade:408 ../data/glade/requirements.glade:39
-#: ../data/glade/window.glade:39
+#: ../data/glade/window.glade:28
 msgid "eth0"
 msgstr ""
 
 #: ../data/glade/main.glade:404 ../data/glade/requirements.glade:35
-#: ../data/glade/window.glade:35
+#: ../data/glade/window.glade:24
 msgid "lo"
 msgstr ""
 
@@ -421,12 +420,12 @@ msgstr "Datos desde el CC GECOS obtenidos con éxito"
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:151
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:151
 msgid "The GECOS workstation name field is empty!"
-msgstr "¡El campo nombre de la estación de trabajo GECOS está vacío!"
+msgstr "¡El campo nombre de la puesto de trabajo GECOS está vacío!"
 
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:170
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:170
 msgid "The GECOS workstation name already exist!"
-msgstr "¡El nombre de la estación de trabajo ya existe en GECOS!"
+msgstr "¡El nombre de la puesto de trabajo ya existe en GECOS!"
 
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:170
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:170
@@ -727,14 +726,15 @@ msgstr "El sistema NO está conectado a una red"
 #: ../gecosws_config_assistant/controller/MainMenuController.py:184
 msgid "The system has loaded setup data values from GECOS server"
 msgstr ""
-"El sistema a obtenido los parámetros básicos de configuración de un servidor "
-"GECOS"
+"El sistema ha obtenido los parámetros básicos de configuración de un Centro "
+"de control GECOS"
 
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/MainMenuController.py:186
 #: ../gecosws_config_assistant/controller/MainMenuController.py:186
 msgid "The system may load setup data values from GECOS server"
 msgstr ""
-"El sistema debe obtener parámetros de configuración de un servidor GECOS"
+"El sistema debe obtener parámetros de configuración de un Centro de control "
+"GECOS"
 
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/MainMenuController.py:189
 #: ../gecosws_config_assistant/controller/MainMenuController.py:189
@@ -749,12 +749,12 @@ msgstr "El sistema NO dispone de sincronización con un servidor NTP"
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/MainMenuController.py:194
 #: ../gecosws_config_assistant/controller/MainMenuController.py:194
 msgid "The system is linked to a GECOS server"
-msgstr "El sistema está vinculado a un servidor GECOS "
+msgstr "El sistema está vinculado a un Centro de Contol GECOS "
 
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/MainMenuController.py:196
 #: ../gecosws_config_assistant/controller/MainMenuController.py:196
 msgid "The system is NOT linked to a GECOS server"
-msgstr "El sistema NO está vinculado a un servidor GECOS"
+msgstr "El sistema NO está vinculado a un Centro de Control GECOS"
 
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/MainMenuController.py:198
 #: ../gecosws_config_assistant/controller/MainMenuController.py:198
@@ -1231,7 +1231,7 @@ msgstr "PENDIENTE"
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProcessView.py:71
 #: ../gecosws_config_assistant/view/GecosCCSetupProcessView.py:71
 msgid "Check workstation data"
-msgstr "Revise los datos de la estación de trabajo"
+msgstr "Revise los datos de la puesto de trabajo"
 
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProcessView.py:78
 #: ../gecosws_config_assistant/view/GecosCCSetupProcessView.py:78
@@ -1307,7 +1307,7 @@ msgstr "Gestionar usuarios locales"
 #: ../gecosws_config_assistant/view/LocalUserListView.py:75
 msgid "You can create, update or delete local users in this workstation."
 msgstr ""
-"Puede crear, modificar o borrar usuarios locales a esta estación de trabajo"
+"Puede crear, modificar o borrar usuarios locales a esta puesto de trabajo"
 
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserListView.py:78
 #: ../gecosws_config_assistant/view/LocalUserListView.py:78
@@ -1353,7 +1353,7 @@ msgstr "Borrar"
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/MainWindow.py:165
 #: ../gecosws_config_assistant/view/MainWindow.py:165
 msgid "Link with GECOS server"
-msgstr "Vincular al servidor GECOS"
+msgstr "Vincular al Centro de Contol GECOS"
 
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/MainWindow.py:167
 #: ../gecosws_config_assistant/view/MainWindow.py:167
@@ -1361,7 +1361,7 @@ msgid ""
 "You must link your workstation with a GECOS server to be \n"
 "able to manage this workstation in a centralized way"
 msgstr ""
-"Debe vincular este PC a un servidor GECOS para \n"
+"Debe vincular este PC a un Centro de Control GECOS para \n"
 "poder gestionarlo de una manera centralizada"
 
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/MainWindow.py:175
@@ -1412,7 +1412,7 @@ msgstr "VERSIÓN DESCONOCIDA"
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemView.py:103
 #: ../gecosws_config_assistant/view/SystemStatusElemView.py:103
 msgid "Workstation name: "
-msgstr "Nombre de la estación de trabajo: "
+msgstr "Nombre de la puesto de trabajo: "
 
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemView.py:108
 #: ../gecosws_config_assistant/view/SystemStatusElemView.py:108
@@ -1523,7 +1523,7 @@ msgstr "DN base de grupos (opcional):"
 #: ../gecosws_config_assistant/view/UserAuthDialog.py:217
 #: ../gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:233
 msgid "Bind user DN (optional):"
-msgstr "DN de usuaro para enlazar (opcional):"
+msgstr "DN de usuario para enlazar (opcional):"
 
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:218
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:241
@@ -1557,7 +1557,7 @@ msgid ""
 "Specific configuration data was loaded from GECOS server\n"
 " (sssd.conf, krb5.conf, smb.conf and pam.conf)"
 msgstr ""
-"Se han cargado datos de configuración específica del servidor GECOS\n"
+"Se han cargado datos de configuración específica del Centro de Contol GECOS\n"
 " (sssd.conf, krb5.conf, smb.conf y pam.conf)"
 
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:307
@@ -1586,7 +1586,7 @@ msgstr "Método de autenticación de usuarios"
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:85
 #: ../gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:85
 msgid "The users of this workstation may authenticate by using"
-msgstr "Los usuarios de esta estación de trabajo pueden autenticarse usando"
+msgstr "Los usuarios de esta puesto de trabajo pueden autenticarse usando"
 
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:88
 #: ../gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:88
