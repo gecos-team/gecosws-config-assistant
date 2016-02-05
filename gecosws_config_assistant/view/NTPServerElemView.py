@@ -74,6 +74,8 @@ class NTPServerElemView(GladeWindow):
         self.handlers["onChek"] = self.test
         self.logger.debug("Adding OK handler")
         self.handlers["onOOKK"] = self.accept
+        self.logger.debug("Adding back handler")
+        self.handlers["onBack"] = self.goBack
 
     def show(self):
         self.logger.debug("Show")
@@ -83,6 +85,10 @@ class NTPServerElemView(GladeWindow):
             self.getElementById('ntp_server_entry').set_text(data.get_address())
         
         self.parent.navigate(self)
+        
+    def goBack(self, *args):
+        self.logger.debug("Go back")
+        self.controller.mainWindowController.backToMainWindowDialog()
 
     def accept(self, *args):
         self.logger.debug("Accept")
