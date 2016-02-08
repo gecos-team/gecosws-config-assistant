@@ -83,7 +83,6 @@ class ConnectWithGecosCCDialog(GladeWindow):
         self.logger.debug('UI initiated')
         
     def extractGUIElements(self):
-        self.disconnectButton = self.getElementById("button2")
         self.connectButton = self.getElementById("button3")
         
         self.workstationNameEntry = self.getElementById('workstation_entry')
@@ -112,18 +111,27 @@ class ConnectWithGecosCCDialog(GladeWindow):
     def show(self):
         self.logger.debug("Show")
         self.extractGUIElements()
-        
         workstation_data = self.get_workstation_data()
+        gecos_data = self.get_gecos_access_data()
+        
         if workstation_data is not None:
+            self.logger.debug('Workstation data is not note')
+            
             if (workstation_data.get_name() is not None
                 and workstation_data.get_name().strip() != ''):
                 self.workstationNameEntry.set_text(workstation_data.get_name())
-
-        gecos_data = self.get_gecos_access_data()
+            
+            if(gecos_data is not None and 
+               gecos_data.get_password() is not None and
+               gecos_data.get_password().strip() != ''):
+                
+                self.logger.debug('Password found. Let\'s load our combo')
+                res = self.controller.patternSearch("")
+                self.loadOUCombo(res)
+                
+                # next step would be get the workstation's OU
+        
         if gecos_data is not None:
-#             if (gecos_data.get_url() is not None
-#                 and gecos_data.get_url().strip() != ''):
-#                 self.gecosCCurlEntry.set_text(gecos_data.get_url())
 
             if (gecos_data.get_login() is not None
                 and gecos_data.get_login().strip() != ''):
@@ -132,6 +140,16 @@ class ConnectWithGecosCCDialog(GladeWindow):
             if (gecos_data.get_password() is not None
                 and gecos_data.get_password().strip() != ''):
                 self.gecosCCpassEntry.set_text(gecos_data.get_password())
+        
+        # set button text connect/disconnect
+        gecosStatus = self.controller.getStatus()
+        buttonText = ''
+        if(gecosStatus):
+            buttonText = _('Disconnect from CC GECOS')
+        else:
+            buttonText = _('Connect to CC GECOS')
+        
+        self.connectButton.set_label(buttonText);
         
         self.parent.navigate(self)
 
@@ -189,7 +207,7 @@ class ConnectWithGecosCCDialog(GladeWindow):
             self.controller.disconnect()
         else:
             # disable button
-            self.disconnectButton.set_sensitive(False)
+            self.connectButton.set_sensitive(False)
         
     def onChangeComboBox(self, combo):
         self.logger.debug("This should show up each time the combobox is changed")
@@ -213,7 +231,6 @@ class ConnectWithGecosCCDialog(GladeWindow):
         
         if self.get_gecos_access_data() is None:
             self.set_gecos_access_data(GecosAccessData())
-#         self.get_gecos_access_data().set_url(self.gecosCCurlEntry.get_text())
         dataUrl = ''
         gecos_data = self.get_gecos_access_data()
         if (gecos_data.get_url() is not None
