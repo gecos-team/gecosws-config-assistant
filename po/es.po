@@ -89,11 +89,11 @@ msgstr "Comprobar"
 
 #: ../data/glade/progress.glade:22
 msgid "Check GECOS credentials "
-msgstr ""
+msgstr "Comprobar credenciales GECOS"
 
 #: ../data/glade/progress.glade:32
 msgid "Check workstation data "
-msgstr ""
+msgstr "Comprobar datos del puesto de trabajo"
 
 #: ../data/glade/progress.glade:88
 msgid "Clean up setup data"
@@ -139,7 +139,7 @@ msgstr "Configuración de la vinculación al Centro de Control"
 
 #: ../data/glade/progress.glade:46
 msgid "Get chef certificate "
-msgstr ""
+msgstr "Obtener certificado de chef"
 
 #: ../data/glade/autoconf.glade:299 ../data/glade/requirements.glade:440
 msgid "Get data"
@@ -215,7 +215,7 @@ msgstr ""
 #: ../data/glade/progress.glade:123 ../data/glade/progress.glade:136
 #: ../data/glade/progress.glade:149 ../data/glade/progress.glade:162
 msgid "PENDING "
-msgstr ""
+msgstr "PENDIENTE "
 
 #: ../data/glade/autoconf.glade:235 ../data/glade/gecoscon.glade:304
 msgid "Password"
@@ -232,7 +232,7 @@ msgstr ""
 
 #: ../data/glade/progress.glade:74
 msgid "Register in GECOS CC "
-msgstr ""
+msgstr "Registrar en CC GECOS"
 
 #: ../data/glade/gecoscon.glade:442
 msgid "Search"
