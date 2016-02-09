@@ -99,14 +99,18 @@ class ConnectWithGecosCCDialog(GladeWindow):
         # add new handlers here
         self.logger.debug("Adding search handler")
         self.handlers["onSrch"] = self.patternSearch
-        self.logger.debug("Adding connection handler")
-        self.handlers["onConn"] = self.connect
         self.logger.debug("Adding accept handler")
         self.handlers["onAcpt"] = self.cancel
-        self.logger.debug("Adding disconnect handler")
-        self.handlers["onDcon"] = self.disconnect
         self.logger.debug("Adding on change combobox handler")
-        self.handlers["onChng"] = self.onChangeComboBox      
+        self.handlers["onChng"] = self.onChangeComboBox    
+        
+        
+        gecosStatus = self.controller.getStatus()
+        self.logger.debug("Adding connect/disconnect handler")
+        if(gecosStatus):
+            self.handlers["onConn"] = self.disconnect
+        else:
+            self.handlers["onConn"] = self.connect
 
     def show(self):
         self.logger.debug("Show")
@@ -144,6 +148,8 @@ class ConnectWithGecosCCDialog(GladeWindow):
         # set button text connect/disconnect
         gecosStatus = self.controller.getStatus()
         buttonText = ''
+        self.logger.debug('Modifying the function of the connect/disconnect button')
+        
         if(gecosStatus):
             buttonText = _('Disconnect from CC GECOS')
         else:

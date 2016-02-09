@@ -149,6 +149,7 @@ class MainWindow(object):
         return self.handlers
     
     def bindHandlers(self):
+        self.logger.debug('Binding handlers')
         self.builder.connect_signals(self.handlers)
     
     def connectWithGECOSHandler(self, *args):
