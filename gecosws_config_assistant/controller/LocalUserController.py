@@ -52,6 +52,7 @@ class LocalUserController(object):
     def showList(self, mainWindow):
         self.logger.debug('show - BEGIN')
         self.listView = LocalUserListView(mainWindow)
+        self.listView.setLocalUserController(self)
         self.listView.set_data(self.dao.loadAll())
         
         self.listView.show()   

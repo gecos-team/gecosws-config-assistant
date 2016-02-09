@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-09 12:26+0100\n"
+"POT-Creation-Date: 2016-02-09 16:58+0100\n"
 "PO-Revision-Date: 2015-09-29 17:13+0200\n"
 "Last-Translator: root <amp_21004@yahoo.es>\n"
 "Language-Team: Spanish\n"
@@ -22,12 +22,12 @@ msgid " "
 msgstr ""
 
 #: ../data/glade/main.glade:405 ../data/glade/requirements.glade:36
-#: ../data/glade/window.glade:25
+#: ../data/glade/window.glade:24
 msgid "127.0.0.1"
 msgstr ""
 
 #: ../data/glade/main.glade:409 ../data/glade/requirements.glade:40
-#: ../data/glade/window.glade:29
+#: ../data/glade/window.glade:28
 msgid "192.168.1.99"
 msgstr ""
 
@@ -44,7 +44,7 @@ msgid "<b>Workstation name</b>"
 msgstr "<b>Nombre de la estación</b>"
 
 #: ../data/glade/ntp.glade:244 ../data/glade/progress.glade:180
-#: ../data/glade/users.glade:442
+#: ../data/glade/users.glade:427
 msgid "Accept "
 msgstr "Aceptar "
 
@@ -102,11 +102,11 @@ msgstr "Limpiar los datos de configuración"
 #: ../data/glade/autoconf.glade:573 ../data/glade/gecoscon.glade:760
 #: ../data/glade/main.glade:368 ../data/glade/network.glade:493
 #: ../data/glade/ntp.glade:487 ../data/glade/requirements.glade:714
-#: ../data/glade/users.glade:664 ../data/glade/window.glade:363
+#: ../data/glade/users.glade:664 ../data/glade/window.glade:344
 msgid "Close"
 msgstr "Cerrar"
 
-#: ../data/glade/requirements.glade:459 ../data/glade/users.glade:427
+#: ../data/glade/requirements.glade:459
 msgid "Configure"
 msgstr "Configurar"
 
@@ -121,7 +121,7 @@ msgstr "Conectar al CC GECOS"
 #: ../data/glade/autoconf.glade:17 ../data/glade/gecoscon.glade:23
 #: ../data/glade/main.glade:27 ../data/glade/network.glade:35
 #: ../data/glade/ntp.glade:16 ../data/glade/requirements.glade:46
-#: ../data/glade/users.glade:23 ../data/glade/window.glade:35
+#: ../data/glade/users.glade:23 ../data/glade/window.glade:34
 msgid "GECOS Config Assistant"
 msgstr "Asistente de configuración GECOS"
 
@@ -142,6 +142,7 @@ msgid "Get data"
 msgstr "Obtener datos"
 
 #: ../data/glade/autoconf.glade:334 ../data/glade/network.glade:247
+#: ../data/glade/users.glade:442
 msgid "Go Back"
 msgstr "Volver"
 
@@ -175,7 +176,7 @@ msgstr "Vincular/Desvincular"
 #: ../data/glade/autoconf.glade:457 ../data/glade/gecoscon.glade:644
 #: ../data/glade/main.glade:252 ../data/glade/network.glade:377
 #: ../data/glade/ntp.glade:373 ../data/glade/requirements.glade:596
-#: ../data/glade/users.glade:548 ../data/glade/window.glade:245
+#: ../data/glade/users.glade:548 ../data/glade/window.glade:228
 msgid "Local Users"
 msgstr "Usuarios locales"
 
@@ -241,14 +242,14 @@ msgstr "Buscar"
 #: ../data/glade/autoconf.glade:500 ../data/glade/gecoscon.glade:687
 #: ../data/glade/main.glade:295 ../data/glade/network.glade:420
 #: ../data/glade/ntp.glade:415 ../data/glade/requirements.glade:640
-#: ../data/glade/users.glade:591 ../data/glade/window.glade:289
+#: ../data/glade/users.glade:591 ../data/glade/window.glade:271
 msgid "Software Manager"
 msgstr "Gestor de Software"
 
 #: ../data/glade/autoconf.glade:414 ../data/glade/gecoscon.glade:601
 #: ../data/glade/main.glade:209 ../data/glade/network.glade:334
 #: ../data/glade/ntp.glade:331 ../data/glade/requirements.glade:552
-#: ../data/glade/users.glade:505 ../data/glade/window.glade:201
+#: ../data/glade/users.glade:505 ../data/glade/window.glade:185
 msgid "System Status"
 msgstr "Estado del Sistema"
 
@@ -281,7 +282,7 @@ msgstr ""
 #: ../data/glade/autoconf.glade:543 ../data/glade/gecoscon.glade:730
 #: ../data/glade/main.glade:338 ../data/glade/network.glade:463
 #: ../data/glade/ntp.glade:457 ../data/glade/requirements.glade:684
-#: ../data/glade/users.glade:634 ../data/glade/window.glade:333
+#: ../data/glade/users.glade:634 ../data/glade/window.glade:314
 msgid "Update assistant"
 msgstr "Actualizar asistente"
 
@@ -294,12 +295,12 @@ msgid "Users are authenticated using the INTERNAL method"
 msgstr "Los usuarios se autentican usando el método INTERNO"
 
 #: ../data/glade/main.glade:408 ../data/glade/requirements.glade:39
-#: ../data/glade/window.glade:28
+#: ../data/glade/window.glade:27
 msgid "eth0"
 msgstr ""
 
 #: ../data/glade/main.glade:404 ../data/glade/requirements.glade:35
-#: ../data/glade/window.glade:24
+#: ../data/glade/window.glade:23
 msgid "lo"
 msgstr ""
 

@@ -245,8 +245,8 @@ class UserAuthDialog(GladeWindow):
         # text
         self.label1.set_text(_("Domain:"))
         self.label2.set_text(_("Workgroup:"))
-        self.label3.set_text(_("User:"))
-        self.label4.set_text(_("Password:"))
+        self.label3.set_text(_("(Active Directory) User:"))
+        self.label4.set_text(_("(Active Directory) Password:"))
         
         # show or hide
         self.label1.set_visible(True)
