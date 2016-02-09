@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-03 17:24+0100\n"
+"POT-Creation-Date: 2016-02-09 12:26+0100\n"
 "PO-Revision-Date: 2015-09-29 17:13+0200\n"
 "Last-Translator: root <amp_21004@yahoo.es>\n"
 "Language-Team: Spanish\n"
@@ -31,20 +31,20 @@ msgstr ""
 msgid "192.168.1.99"
 msgstr ""
 
-#: ../data/glade/gecoscon.glade:366
+#: ../data/glade/gecoscon.glade:359
 msgid "<b>Connection with GECOS</b>"
 msgstr "<b>Conexión con GECOS</b>"
 
-#: ../data/glade/gecoscon.glade:491
+#: ../data/glade/gecoscon.glade:486
 msgid "<b>OU selection</b>"
 msgstr "<b>Selección de OU</b>"
 
-#: ../data/glade/gecoscon.glade:236
+#: ../data/glade/gecoscon.glade:233
 msgid "<b>Workstation name</b>"
 msgstr "<b>Nombre de la estación</b>"
 
-#: ../data/glade/gecoscon.glade:549 ../data/glade/ntp.glade:247
-#: ../data/glade/progress.glade:173 ../data/glade/users.glade:442
+#: ../data/glade/ntp.glade:244 ../data/glade/progress.glade:180
+#: ../data/glade/users.glade:442
 msgid "Accept "
 msgstr "Aceptar "
 
@@ -54,7 +54,7 @@ msgstr "Configurar el Método de Autenticación"
 
 #: ../data/glade/autoconf.glade:84 ../data/glade/gecoscon.glade:87
 #: ../data/glade/main.glade:94 ../data/glade/network.glade:99
-#: ../data/glade/ntp.glade:81 ../data/glade/requirements.glade:113
+#: ../data/glade/ntp.glade:78 ../data/glade/requirements.glade:113
 #: ../data/glade/users.glade:87 ../data/glade/users.glade:215
 msgid "Authentication type"
 msgstr "Tipo de autenticación"
@@ -83,25 +83,25 @@ msgstr "DN para enlace:"
 msgid "Bind password:"
 msgstr "Contraseña para enlace:"
 
-#: ../data/glade/ntp.glade:212
+#: ../data/glade/ntp.glade:206
 msgid "Check"
 msgstr "Comprobar"
 
-#: ../data/glade/progress.glade:22
+#: ../data/glade/progress.glade:21
 msgid "Check GECOS credentials "
 msgstr "Comprobar credenciales de GECOS "
 
-#: ../data/glade/progress.glade:32
+#: ../data/glade/progress.glade:34
 msgid "Check workstation data "
 msgstr "Comprobar datos del puesto de trabajo"
 
-#: ../data/glade/progress.glade:88
+#: ../data/glade/progress.glade:94
 msgid "Clean up setup data"
 msgstr "Limpiar los datos de configuración"
 
-#: ../data/glade/autoconf.glade:573 ../data/glade/gecoscon.glade:771
+#: ../data/glade/autoconf.glade:573 ../data/glade/gecoscon.glade:760
 #: ../data/glade/main.glade:368 ../data/glade/network.glade:493
-#: ../data/glade/ntp.glade:470 ../data/glade/requirements.glade:714
+#: ../data/glade/ntp.glade:487 ../data/glade/requirements.glade:714
 #: ../data/glade/users.glade:664 ../data/glade/window.glade:363
 msgid "Close"
 msgstr "Cerrar"
@@ -110,21 +110,17 @@ msgstr "Cerrar"
 msgid "Configure"
 msgstr "Configurar"
 
-#: ../data/glade/network.glade:264
+#: ../data/glade/network.glade:266
 msgid "Configure network connection"
 msgstr "Configurar la conexión de red"
 
-#: ../data/glade/gecoscon.glade:534
+#: ../data/glade/gecoscon.glade:523
 msgid "Connect to CC GECOS"
 msgstr "Conectar al CC GECOS"
 
-#: ../data/glade/gecoscon.glade:519
-msgid "Disconnect from CC GECOS"
-msgstr "Desconectar del CC GECOS"
-
 #: ../data/glade/autoconf.glade:17 ../data/glade/gecoscon.glade:23
 #: ../data/glade/main.glade:27 ../data/glade/network.glade:35
-#: ../data/glade/ntp.glade:17 ../data/glade/requirements.glade:46
+#: ../data/glade/ntp.glade:16 ../data/glade/requirements.glade:46
 #: ../data/glade/users.glade:23 ../data/glade/window.glade:35
 msgid "GECOS Config Assistant"
 msgstr "Asistente de configuración GECOS"
@@ -133,11 +129,11 @@ msgstr "Asistente de configuración GECOS"
 msgid "GECOS URL"
 msgstr "URL de GECOS"
 
-#: ../data/glade/gecoscon.glade:168
+#: ../data/glade/gecoscon.glade:167
 msgid "GECOS server setup"
 msgstr "Configuración del servidor GECOS"
 
-#: ../data/glade/progress.glade:46
+#: ../data/glade/progress.glade:49
 msgid "Get chef certificate "
 msgstr "Obtener certificado de chef"
 
@@ -149,7 +145,11 @@ msgstr "Obtener datos"
 msgid "Go Back"
 msgstr "Volver"
 
-#: ../data/glade/gecoscon.glade:204
+#: ../data/glade/gecoscon.glade:538 ../data/glade/ntp.glade:260
+msgid "Go back"
+msgstr ""
+
+#: ../data/glade/gecoscon.glade:199
 msgid ""
 "It must be unique, it can use white spaces or symbols. It would be the "
 "description on the reports."
@@ -161,20 +161,20 @@ msgstr ""
 msgid "Link"
 msgstr "Vincular"
 
-#: ../data/glade/progress.glade:60
+#: ../data/glade/progress.glade:64
 msgid "Link to chef "
 msgstr "Vincular a Chef "
 
 #: ../data/glade/autoconf.glade:48 ../data/glade/gecoscon.glade:54
 #: ../data/glade/main.glade:57 ../data/glade/network.glade:66
-#: ../data/glade/ntp.glade:48 ../data/glade/requirements.glade:77
+#: ../data/glade/ntp.glade:47 ../data/glade/requirements.glade:77
 #: ../data/glade/users.glade:54
 msgid "Link/Unlink"
 msgstr "Vincular/Desvincular"
 
-#: ../data/glade/autoconf.glade:457 ../data/glade/gecoscon.glade:655
+#: ../data/glade/autoconf.glade:457 ../data/glade/gecoscon.glade:644
 #: ../data/glade/main.glade:252 ../data/glade/network.glade:377
-#: ../data/glade/ntp.glade:354 ../data/glade/requirements.glade:596
+#: ../data/glade/ntp.glade:373 ../data/glade/requirements.glade:596
 #: ../data/glade/users.glade:548 ../data/glade/window.glade:245
 msgid "Local Users"
 msgstr "Usuarios locales"
@@ -183,11 +183,11 @@ msgstr "Usuarios locales"
 msgid "Modify"
 msgstr "Modificar"
 
-#: ../data/glade/ntp.glade:162
+#: ../data/glade/ntp.glade:156
 msgid "NTP Server configuration"
 msgstr "Configuración del servidor NTP"
 
-#: ../data/glade/ntp.glade:201
+#: ../data/glade/ntp.glade:195
 msgid "NTP Server:"
 msgstr "Servidor NTP:"
 
@@ -207,21 +207,21 @@ msgstr ""
 "Los datos de conexión con el Centro de Control GECOS son necesarios para la "
 "autoconfiguración"
 
-#: ../data/glade/gecoscon.glade:419
+#: ../data/glade/gecoscon.glade:412
 msgid "OU"
 msgstr ""
 
-#: ../data/glade/progress.glade:99 ../data/glade/progress.glade:110
-#: ../data/glade/progress.glade:123 ../data/glade/progress.glade:136
-#: ../data/glade/progress.glade:149 ../data/glade/progress.glade:162
+#: ../data/glade/progress.glade:106 ../data/glade/progress.glade:117
+#: ../data/glade/progress.glade:130 ../data/glade/progress.glade:143
+#: ../data/glade/progress.glade:156 ../data/glade/progress.glade:169
 msgid "PENDING "
 msgstr "PENDIENTE "
 
-#: ../data/glade/autoconf.glade:235 ../data/glade/gecoscon.glade:304
+#: ../data/glade/autoconf.glade:235 ../data/glade/gecoscon.glade:291
 msgid "Password"
 msgstr "Contraseña"
 
-#: ../data/glade/ntp.glade:178
+#: ../data/glade/ntp.glade:172
 msgid ""
 "Precise time is needed to keep some services synchronized.\n"
 "Please set your NTP server address:"
@@ -230,24 +230,24 @@ msgstr ""
 "sincronizados.\n"
 "Por favor configure su servidor NTP:"
 
-#: ../data/glade/progress.glade:74
+#: ../data/glade/progress.glade:79
 msgid "Register in GECOS CC "
 msgstr "Registrar en CC GECOS"
 
-#: ../data/glade/gecoscon.glade:442
+#: ../data/glade/gecoscon.glade:437
 msgid "Search"
 msgstr "Buscar"
 
-#: ../data/glade/autoconf.glade:500 ../data/glade/gecoscon.glade:698
+#: ../data/glade/autoconf.glade:500 ../data/glade/gecoscon.glade:687
 #: ../data/glade/main.glade:295 ../data/glade/network.glade:420
-#: ../data/glade/ntp.glade:397 ../data/glade/requirements.glade:640
+#: ../data/glade/ntp.glade:415 ../data/glade/requirements.glade:640
 #: ../data/glade/users.glade:591 ../data/glade/window.glade:289
 msgid "Software Manager"
 msgstr "Gestor de Software"
 
-#: ../data/glade/autoconf.glade:414 ../data/glade/gecoscon.glade:612
+#: ../data/glade/autoconf.glade:414 ../data/glade/gecoscon.glade:601
 #: ../data/glade/main.glade:209 ../data/glade/network.glade:334
-#: ../data/glade/ntp.glade:311 ../data/glade/requirements.glade:552
+#: ../data/glade/ntp.glade:331 ../data/glade/requirements.glade:552
 #: ../data/glade/users.glade:505 ../data/glade/window.glade:201
 msgid "System Status"
 msgstr "Estado del Sistema"
@@ -278,18 +278,14 @@ msgstr ""
 msgid "URI:"
 msgstr ""
 
-#: ../data/glade/gecoscon.glade:282
-msgid "URL"
-msgstr ""
-
-#: ../data/glade/autoconf.glade:543 ../data/glade/gecoscon.glade:741
+#: ../data/glade/autoconf.glade:543 ../data/glade/gecoscon.glade:730
 #: ../data/glade/main.glade:338 ../data/glade/network.glade:463
-#: ../data/glade/ntp.glade:440 ../data/glade/requirements.glade:684
+#: ../data/glade/ntp.glade:457 ../data/glade/requirements.glade:684
 #: ../data/glade/users.glade:634 ../data/glade/window.glade:333
 msgid "Update assistant"
 msgstr "Actualizar asistente"
 
-#: ../data/glade/autoconf.glade:221 ../data/glade/gecoscon.glade:292
+#: ../data/glade/autoconf.glade:221 ../data/glade/gecoscon.glade:279
 msgid "User"
 msgstr "Usuario"
 
@@ -306,3 +302,6 @@ msgstr ""
 #: ../data/glade/window.glade:24
 msgid "lo"
 msgstr ""
+
+#~ msgid "Disconnect from CC GECOS"
+#~ msgstr "Desconectar del CC GECOS"
