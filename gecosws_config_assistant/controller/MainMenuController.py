@@ -66,7 +66,7 @@ class MainMenuController(object):
         # controllers
         self.connectWithGecosCC = ConnectWithGecosCCController(self)
         self.userAuthenticationMethod = UserAuthenticationMethodController(self)
-        self.localUserList = LocalUserController()
+        self.localUserList = LocalUserController(self)
         self.systemStatus = SystemStatusController()
         self.requirementsCheck = RequirementsCheckController(self)
         
@@ -264,7 +264,7 @@ class MainMenuController(object):
         os.spawnlp(os.P_NOWAIT, cmd, cmd)
 
     def showLocalUserListView(self):
-        self.localUserList.showList(self.window.currentView)
+        self.localUserList.showList(self.window)
 
     def updateConfigAsystant(self):
         if askyesno_gtk( _("Are you sure you want to update the GECOS Config Assistant?"), self.window.getMainWindow()):
