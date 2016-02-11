@@ -67,7 +67,7 @@ class MainMenuController(object):
         self.connectWithGecosCC = ConnectWithGecosCCController(self)
         self.userAuthenticationMethod = UserAuthenticationMethodController(self)
         self.localUserList = LocalUserController(self)
-        self.systemStatus = SystemStatusController()
+        self.systemStatus = SystemStatusController(self)
         self.requirementsCheck = RequirementsCheckController(self)
         
         #keys
