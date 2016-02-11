@@ -20,6 +20,8 @@ __author__ = "Francisco Fuentes Barrera <ffuentes@solutia-it.es>"
 __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
+import pprint
+
 from GladeWindow import GladeWindow
 from gi.repository import Gtk, Gdk
 import logging
@@ -44,6 +46,8 @@ class LocalUserListDialog(GladeWindow):
         self.gladepath = 'localusers.glade'
         
         self.data = None
+        
+        self.selection_index = -1
         
         self.initUI()      
 
@@ -73,6 +77,10 @@ class LocalUserListDialog(GladeWindow):
         column.set_clickable(True)   
         column.set_resizable(True)   
         self.view.append_column(column)
+        
+        # add selection handler
+        select = self.view.get_selection()
+        select.connect("changed", self.on_selection_changed)
         
         self.logger.debug('UI initiated')
     
@@ -126,6 +134,12 @@ class LocalUserListDialog(GladeWindow):
         self.handlers["onDelt"] = self.delete
         self.logger.debug("Adding go back handler")
         self.handlers["onBack"] = self.goBack
+    
+    def on_selection_changed(self, selection):
+        model, treeiter = selection.get_selected()
+        if (treeiter != None):
+            self.my_model = model
+            self.selection_index = treeiter
 
     def refresh(self):
         self.store.clear()
@@ -146,9 +160,13 @@ class LocalUserListDialog(GladeWindow):
         self.localUserController = localUserController
 
     def _get_selected_user(self):
-        model, treeiter = selection.get_selected()
-        if treeiter != None:
-            self.logger.info("You selected", model[treeiter][0])
+        if(self.selection_index != -1 and self.my_model[self.selection_index] != None):
+            login = self.my_model[self.selection_index][0]
+            data = self.get_data()
+            if data is not None:
+                for user in data:
+                    if user.get_login() == login:
+                        return user
 
     def _get_selected_user_old(self):
         if (self.treeview.selection() is not None

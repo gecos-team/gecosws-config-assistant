@@ -128,12 +128,12 @@ class LocalUserController(object):
         self.elemView.set_data(None)
         self.elemView.show()  
 
+    def createNewElement(self):
         localUser = self.elemView.get_data()
         if localUser is not None:
+            self.logger.debug("Saving new user")
             self.dao.save(localUser)
         self.refreshList()
-
-
 
     def hideElementView(self):
         self.logger.debug('hideElementView - BEGIN')
