@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-09 16:58+0100\n"
+"POT-Creation-Date: 2016-02-11 17:46+0100\n"
 "PO-Revision-Date: 2015-09-29 17:13+0200\n"
 "Last-Translator: root <amp_21004@yahoo.es>\n"
 "Language-Team: Spanish\n"
@@ -43,10 +43,20 @@ msgstr "<b>Selección de OU</b>"
 msgid "<b>Workstation name</b>"
 msgstr "<b>Nombre de la estación</b>"
 
+#: ../data/glade/adsetupdata.glade:126 ../data/glade/localuserpopup.glade:204
+#, fuzzy
+msgid "Accept"
+msgstr "Aceptar "
+
 #: ../data/glade/ntp.glade:244 ../data/glade/progress.glade:180
 #: ../data/glade/users.glade:427
 msgid "Accept "
 msgstr "Aceptar "
+
+#: ../data/glade/localuserpopup.glade:6
+#, fuzzy
+msgid "Add local user"
+msgstr "Usuarios locales"
 
 #: ../data/glade/users.glade:167
 msgid "Authentication Method Setup"
@@ -83,6 +93,10 @@ msgstr "DN para enlace:"
 msgid "Bind password:"
 msgstr "Contraseña para enlace:"
 
+#: ../data/glade/adsetupdata.glade:144 ../data/glade/localuserpopup.glade:185
+msgid "Cancel"
+msgstr ""
+
 #: ../data/glade/ntp.glade:206
 msgid "Check"
 msgstr "Comprobar"
@@ -114,9 +128,22 @@ msgstr "Configurar"
 msgid "Configure network connection"
 msgstr "Configurar la conexión de red"
 
+#: ../data/glade/localuserpopup.glade:83
+#, fuzzy
+msgid "Confirm:"
+msgstr "Configurar"
+
 #: ../data/glade/gecoscon.glade:523
 msgid "Connect to CC GECOS"
 msgstr "Conectar al CC GECOS"
+
+#: ../data/glade/localusers.glade:156
+msgid "Delete"
+msgstr ""
+
+#: ../data/glade/adsetupdata.glade:70
+msgid "Domain:"
+msgstr ""
 
 #: ../data/glade/autoconf.glade:17 ../data/glade/gecoscon.glade:23
 #: ../data/glade/main.glade:27 ../data/glade/network.glade:35
@@ -141,13 +168,20 @@ msgstr "Obtener certificado de chef"
 msgid "Get data"
 msgstr "Obtener datos"
 
-#: ../data/glade/autoconf.glade:334 ../data/glade/network.glade:247
+#: ../data/glade/autoconf.glade:334 ../data/glade/localusers.glade:173
+#: ../data/glade/network.glade:247 ../data/glade/systemstatus.glade:63
 #: ../data/glade/users.glade:442
 msgid "Go Back"
 msgstr "Volver"
 
 #: ../data/glade/gecoscon.glade:538 ../data/glade/ntp.glade:260
 msgid "Go back"
+msgstr "Volver"
+
+#: ../data/glade/localusers.glade:59
+msgid ""
+"It isn't necessary to create here the users that are authenticated by "
+"external services (LDAP, AD, ...)"
 msgstr ""
 
 #: ../data/glade/gecoscon.glade:199
@@ -180,6 +214,15 @@ msgstr "Vincular/Desvincular"
 msgid "Local Users"
 msgstr "Usuarios locales"
 
+#: ../data/glade/localuserpopup.glade:45
+msgid "Login:"
+msgstr ""
+
+#: ../data/glade/localusers.glade:24
+#, fuzzy
+msgid "Manage local users"
+msgstr "Usuarios locales"
+
 #: ../data/glade/requirements.glade:495
 msgid "Modify"
 msgstr "Modificar"
@@ -191,6 +234,10 @@ msgstr "Configuración del servidor NTP"
 #: ../data/glade/ntp.glade:195
 msgid "NTP Server:"
 msgstr "Servidor NTP:"
+
+#: ../data/glade/localuserpopup.glade:26
+msgid "Name:"
+msgstr ""
 
 #: ../data/glade/network.glade:178
 msgid "Network Setup"
@@ -208,6 +255,10 @@ msgstr ""
 "Los datos de conexión con el Centro de Control GECOS son necesarios para la "
 "autoconfiguración"
 
+#: ../data/glade/localusers.glade:122
+msgid "New"
+msgstr ""
+
 #: ../data/glade/gecoscon.glade:412
 msgid "OU"
 msgstr ""
@@ -221,6 +272,15 @@ msgstr "PENDIENTE "
 #: ../data/glade/autoconf.glade:235 ../data/glade/gecoscon.glade:291
 msgid "Password"
 msgstr "Contraseña"
+
+#: ../data/glade/adsetupdata.glade:115 ../data/glade/localuserpopup.glade:64
+#, fuzzy
+msgid "Password:"
+msgstr "Contraseña"
+
+#: ../data/glade/localusers.glade:82
+msgid "Please check default OEM users and change their passwords when needed:"
+msgstr ""
 
 #: ../data/glade/ntp.glade:172
 msgid ""
@@ -253,6 +313,11 @@ msgstr "Gestor de Software"
 msgid "System Status"
 msgstr "Estado del Sistema"
 
+#: ../data/glade/systemstatus.glade:11
+#, fuzzy
+msgid "System status"
+msgstr "Estado del Sistema"
+
 #: ../data/glade/requirements.glade:229
 msgid "The system has network connection (connection data)"
 msgstr "El sistema dispone de conexión a red (datos de conexión)"
@@ -275,8 +340,18 @@ msgstr ""
 "externocomo LDAP o Microsoft Active Directory. También, pueden autenticarse "
 "usando usuarios locales de este S. O."
 
+#: ../data/glade/adsetupdata.glade:167
+msgid ""
+"To disconnect from Active Directory you need \n"
+"to enter the Administrator user and password:"
+msgstr ""
+
 #: ../data/glade/users.glade:351
 msgid "URI:"
+msgstr ""
+
+#: ../data/glade/localusers.glade:139
+msgid "Update"
 msgstr ""
 
 #: ../data/glade/autoconf.glade:543 ../data/glade/gecoscon.glade:730
@@ -290,9 +365,22 @@ msgstr "Actualizar asistente"
 msgid "User"
 msgstr "Usuario"
 
+#: ../data/glade/adsetupdata.glade:100
+#, fuzzy
+msgid "User:"
+msgstr "Usuario"
+
 #: ../data/glade/requirements.glade:361
 msgid "Users are authenticated using the INTERNAL method"
 msgstr "Los usuarios se autentican usando el método INTERNO"
+
+#: ../data/glade/adsetupdata.glade:85
+msgid "Workgroup:"
+msgstr ""
+
+#: ../data/glade/localusers.glade:43
+msgid "You can create, update or delete local users in this workstation."
+msgstr ""
 
 #: ../data/glade/main.glade:408 ../data/glade/requirements.glade:39
 #: ../data/glade/window.glade:27
