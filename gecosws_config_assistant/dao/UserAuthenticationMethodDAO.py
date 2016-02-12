@@ -37,6 +37,7 @@ import base64
 
 from gecosws_config_assistant.firstboot_lib.firstbootconfig import get_data_file
 
+from pprint import pprint
 
 import gettext
 from gettext import gettext as _
@@ -260,6 +261,7 @@ class UserAuthenticationMethodDAO(object):
           
 
     def _load_active_directory(self):
+        self.logger.debug('Loading active directory data')
         data = ADSetupData()
         
         # Get domain from /etc/sssd/sssd.conf
@@ -295,6 +297,9 @@ class UserAuthenticationMethodDAO(object):
         
         method = ADAuthMethod()
         method.set_data(data)
+        
+        self.logger.debug('Returning AD data')
+        pprint(method)
         
         return method
 
