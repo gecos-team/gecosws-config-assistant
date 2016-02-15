@@ -424,7 +424,7 @@
                             <property name="can_focus">False</property>
                             <child>
                               <object class="GtkButton" id="button1">
-                                <property name="label" translatable="yes">Configure</property>
+                                <property name="label" translatable="yes">Accept </property>
                                 <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
@@ -439,7 +439,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="button2">
-                                <property name="label" translatable="yes">Accept </property>
+                                <property name="label" translatable="yes">Go Back</property>
                                 <property name="use_action_appearance">False</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>

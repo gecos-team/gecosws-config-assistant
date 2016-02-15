@@ -253,6 +253,8 @@
                                     <signal name="clicked" handler="onBack" swapped="no"/>
                                   </object>
                                   <packing>
+									<property name="left_attach">1</property>
+                                    <property name="right_attach">2</property>
                                     <property name="top_attach">1</property>
                                     <property name="bottom_attach">2</property>
                                     <property name="x_options">GTK_FILL</property>
@@ -270,8 +272,6 @@
                                     <signal name="clicked" handler="onSetp" swapped="no"/>
                                   </object>
                                   <packing>
-                                    <property name="left_attach">1</property>
-                                    <property name="right_attach">2</property>
                                     <property name="top_attach">1</property>
                                     <property name="bottom_attach">2</property>
                                     <property name="y_options"/>

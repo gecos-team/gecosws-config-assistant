@@ -125,7 +125,7 @@ class LocalUserListView(Tk):
 
 
         # Accept button
-        closeButton = Button(self.body, text=_("Accept"),
+        closeButton = Button(self.body, text=_("Go Back"),
             command=self.accept)
         closeButton.grid(column=5, row=7, sticky=E, padx=padding_x, pady=padding_y)
         
@@ -157,7 +157,10 @@ class LocalUserListView(Tk):
 
     def new(self):
         self.logger.debug("New")
-        self.controller.newElement()
+        self.localUserController.newElement()
+    
+    def setLocalUserController(self, localUserController):
+        self.localUserController = localUserController
 
     def _get_selected_user(self):
         if (self.treeview.selection() is not None
@@ -185,7 +188,7 @@ class LocalUserListView(Tk):
             self.logger.error("Strange error: User is None!")
             return
         
-        self.controller.updateElement(user)
+        self.localUserController.updateElement(user)
 
     def delete(self):
         self.logger.debug("New")
@@ -194,7 +197,7 @@ class LocalUserListView(Tk):
             self.logger.error("Strange error: User is None!")
             return
         
-        self.controller.deleteElement(user)
+        self.localUserController.deleteElement(user)
         
         
     data = property(get_data, set_data, None, None)

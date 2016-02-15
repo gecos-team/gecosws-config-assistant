@@ -59,6 +59,7 @@ class GecosCCSetupProgressView(GladeWindow):
         self.cleanStatusLabel             = self.getElementById("label12")
         
         self.acceptButton                 = self.getElementById("button1")
+        self.progressBar                  = self.getElementById("progressbar1")
         self.error_status                 = ""
     
     def addHandlers(self):
@@ -140,3 +141,7 @@ class GecosCCSetupProgressView(GladeWindow):
     def enableAcceptButton(self):
         self.logger.debug("Enable accept button")
         self.acceptButton.set_sensitive(True)
+    
+    def addProgressFraction(self, fraction):
+        currentFraction = self.progressBar.get_fraction()
+        self.progressBar.set_fraction(fraction + currentFraction)

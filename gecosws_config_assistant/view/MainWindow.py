@@ -149,6 +149,7 @@ class MainWindow(object):
         return self.handlers
     
     def bindHandlers(self):
+        self.logger.debug('Binding handlers')
         self.builder.connect_signals(self.handlers)
     
     def connectWithGECOSHandler(self, *args):
@@ -329,16 +330,24 @@ class MainWindow(object):
         self.texts = self.controller.getTexts()
         self.putTexts()
         
+        unlink = False
+        
         # init streetlights 
         for trafficlightKey in guiValues[self.trafficlightsKey].keys():
             trafficlightValue = guiValues[self.trafficlightsKey][trafficlightKey]
             self.trafficSignalChange(trafficlightKey, trafficlightValue)
-        
+            
+            # change to unlink when appropiate
+            if(trafficlightKey == 'trafficlight4' and trafficlightValue == 1 ):
+                unlink = True
         
         # disable almost all
         for centerbuttonKey in guiValues[self.centerbuttonsKey].keys():
             centerbuttonValue = guiValues[self.centerbuttonsKey][centerbuttonKey]
-            self.setCenterButton(centerbuttonKey, centerbuttonValue)
+            self.setCenterButton(centerbuttonKey, centerbuttonValue, "")
+        
+        if(unlink):
+            self.setCenterButton("sysbutton", True, _("Unlink")) 
     
     def putTexts(self):
         networkText  = self.texts[self.controller.networkStatusKey ]
@@ -355,9 +364,11 @@ class MainWindow(object):
     
     '''
     change the state of one of the central buttons
-    index: Between 1 and 7, if not it will raise and Exception
+    id_: Between 1 and 7, if not it will raise and Exception
     '''
-    def setCenterButton(self, id_, enabled):
+    def setCenterButton(self, id_, enabled, text):
         button = self.getElementById(id_)
         button.set_sensitive(enabled)
+        if(text != ""):
+            button.set_label(text);
             

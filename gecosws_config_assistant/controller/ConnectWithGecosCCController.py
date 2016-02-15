@@ -322,13 +322,18 @@ class ConnectWithGecosCCController(object):
             return False
         
         self.processView.setCheckGecosCredentialsStatus(_('DONE'))
+        self.processView.addProgressFraction(0.16)
+        
         self.processView.setCheckWorkstationDataStatus(_('IN PROCESS'))
+        
         if not self._check_workstation_data(self.view.get_workstation_data(), True):
             self.processView.setCheckWorkstationDataStatus(_('ERROR'))
             self.processView.enableAcceptButton()
             return False
 
         self.processView.setCheckWorkstationDataStatus(_('DONE'))
+        self.processView.addProgressFraction(0.16)
+        
         self.processView.setChefCertificateRetrievalStatus(_('IN PROCESS'))
 
         # Save workstation data
@@ -366,6 +371,8 @@ class ConnectWithGecosCCController(object):
             return False
 
         self.processView.setChefCertificateRetrievalStatus(_('DONE'))
+        self.processView.addProgressFraction(0.16)
+        
         self.processView.setLinkToChefStatus(_('IN PROCESS'))
         
         # Link to Chef
@@ -447,6 +454,8 @@ class ConnectWithGecosCCController(object):
         
         
         self.processView.setLinkToChefStatus(_('DONE'))
+        self.processView.addProgressFraction(0.16)
+        
         self.processView.setRegisterInGecosStatus(_('IN PROCESS'))
         
         # Register from GECOS Control Center
@@ -473,12 +482,16 @@ class ConnectWithGecosCCController(object):
             return False    
         
         self.processView.setRegisterInGecosStatus(_('DONE'))
+        self.processView.addProgressFraction(0.16)
+        
         self.processView.setCleanStatus(_('IN PROCESS'))
         
         # Clean setup files
         self._remove_file('/etc/chef/validation.pem')
         
         self.processView.setCleanStatus(_('DONE'))
+        self.processView.addProgressFraction(0.2)
+        
         self.processView.enableAcceptButton()
         
         return True
@@ -501,13 +514,18 @@ class ConnectWithGecosCCController(object):
             return False
         
         self.processView.setCheckGecosCredentialsStatus(_('DONE'))
+        self.processView.addProgressFraction(0.16)
+        
         self.processView.setCheckWorkstationDataStatus(_('IN PROCESS'))
+        
         if not self._check_workstation_data(self.view.get_workstation_data(), False):
             self.processView.setCheckWorkstationDataStatus(_('ERROR'))
             self.processView.enableAcceptButton()
             return False
 
         self.processView.setCheckWorkstationDataStatus(_('DONE'))
+        self.processView.addProgressFraction(0.16)
+        
         self.processView.setChefCertificateRetrievalStatus(_('IN PROCESS'))
 
         # Save workstation data
@@ -545,6 +563,8 @@ class ConnectWithGecosCCController(object):
             return False
 
         self.processView.setChefCertificateRetrievalStatus(_('DONE'))
+        self.processView.addProgressFraction(0.16)
+        
         self.processView.setLinkToChefStatus(_('IN PROCESS'))
 
         # Unregister from GECOS Control Center
@@ -669,6 +689,8 @@ class ConnectWithGecosCCController(object):
         
         
         self.processView.setLinkToChefStatus(_('DONE'))
+        self.processView.addProgressFraction(0.16)
+        
         self.processView.setRegisterInGecosStatus(_('IN PROCESS'))
         
         if not self.accessDataDao.delete(self.view.get_gecos_access_data()):
@@ -680,6 +702,8 @@ class ConnectWithGecosCCController(object):
             return False    
         
         self.processView.setRegisterInGecosStatus(_('DONE'))
+        self.processView.addProgressFraction(0.16)
+        
         self.processView.setCleanStatus(_('IN PROCESS'))
         
         # Clean setup files
@@ -687,6 +711,8 @@ class ConnectWithGecosCCController(object):
         self._remove_file('/etc/chef/knife.rb')
         
         self.processView.setCleanStatus(_('DONE'))
+        self.processView.addProgressFraction(0.2)
+        
         self.processView.enableAcceptButton()
 
         return True

@@ -49,7 +49,7 @@ from gecosws_config_assistant.dto.LocalUsersAuthMethod import LocalUsersAuthMeth
 import socket
 import logging
 import traceback
-
+import types
 
 import gettext
 from gettext import gettext as _
@@ -76,11 +76,12 @@ class UserAuthenticationMethodController(object):
         self.view = UserAuthDialog(mainController)
         
         data = self.dao.load()
+        self.logger.debug('data from dao is of type %s'%(type(data).__name__))
         if self.mainController.requirementsCheck.autoSetup.view is not None:
             conf = self.mainController.requirementsCheck.autoSetup.get_conf()
             if conf is not None:
                 new_data = self.get_auth_data_from_conf(conf)
-                if new_data is not False:
+                if type(new_data) != types.BooleanType:
                     data = new_data
                  
         
