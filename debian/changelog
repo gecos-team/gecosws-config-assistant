@@ -1,3 +1,9 @@
+gecosws-config-assistant (2.0.1-1gecos1) trusty; urgency=medium
+
+  * Usability and translations improved
+
+ -- Gecos Team <gecos@guadalinex.org>  Mon, 15 Feb 2016 11:00:00 +0100
+
 gecosws-config-assistant (2.0.0-1gecos1) trusty; urgency=medium
 
   * First widely redesigned version (v2) for use in v2.1 to v2.3
