@@ -1,9 +1,13 @@
+../data/glade/adsetupdata.glade
 ../data/glade/autoconf.glade
 ../data/glade/gecoscon.glade
+../data/glade/localuserpopup.glade
+../data/glade/localusers.glade
 ../data/glade/main.glade
 ../data/glade/network.glade
 ../data/glade/ntp.glade
 ../data/glade/progress.glade
 ../data/glade/requirements.glade
+../data/glade/systemstatus.glade
 ../data/glade/users.glade
 ../data/glade/window.glade

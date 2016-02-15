@@ -20,7 +20,7 @@ __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
 __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
-from gecosws_config_assistant.view.SystemStatusElemView import SystemStatusElemView
+from gecosws_config_assistant.view.SystemStatusElemDialog import SystemStatusElemDialog
 
 from gecosws_config_assistant.dto.SystemStatus import SystemStatus 
 from gecosws_config_assistant.dao.NTPServerDAO import NTPServerDAO
@@ -40,11 +40,12 @@ class SystemStatusController(object):
     '''
 
 
-    def __init__(self):
+    def __init__(self, mainController):
         '''
         Constructor
         '''
         self.view = None # TODO!
+        self.controller = mainController
         self.gecosAccessDao = GecosAccessDataDAO()
         self.workstationDataDao = WorkstationDataDAO()
         self.localUserDao = LocalUserDAO()
@@ -55,7 +56,7 @@ class SystemStatusController(object):
 
 
     def show(self):
-        self.view = SystemStatusElemView(self)
+        self.view = SystemStatusElemDialog(self, self.controller.window)
         pm = PackageManager()
         
         

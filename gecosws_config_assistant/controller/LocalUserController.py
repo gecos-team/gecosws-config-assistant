@@ -23,6 +23,9 @@ __license__ = "GPL-2"
 
 from gecosws_config_assistant.view.LocalUserListView import LocalUserListView
 from gecosws_config_assistant.view.LocalUserElemView import LocalUserElemView
+
+from gecosws_config_assistant.view.LocalUserListDialog import LocalUserListDialog
+from gecosws_config_assistant.view.LocalUserElemDialog import LocalUserElemDialog
 from gecosws_config_assistant.view.CommonDialog import showerror_gtk, askyesno_gtk
 
 import gettext
@@ -40,18 +43,20 @@ class LocalUserController(object):
     '''
 
 
-    def __init__(self):
+    def __init__(self, mainController):
         '''
         Constructor
         '''
         self.listView = None
         self.elemView = None
         self.dao = LocalUserDAO()
+        self.controller = mainController
         self.logger = logging.getLogger('LocalUserController')
 
     def showList(self, mainWindow):
         self.logger.debug('show - BEGIN')
-        self.listView = LocalUserListView(mainWindow)
+        self.listView = LocalUserListDialog(mainWindow, self.controller)
+        self.listView.setLocalUserController(self)
         self.listView.set_data(self.dao.loadAll())
         
         self.listView.show()   
@@ -118,16 +123,17 @@ class LocalUserController(object):
     def newElement(self):
         self.logger.debug('newElement - BEGIN')
 
-        self.elemView = LocalUserElemView(self.listView, self)
+        #self.elemView = LocalUserElemView(self.listView, self)
+        self.elemView = LocalUserElemDialog(self.listView, self)
         self.elemView.set_data(None)
         self.elemView.show()  
 
+    def createNewElement(self):
         localUser = self.elemView.get_data()
         if localUser is not None:
+            self.logger.debug("Saving new user")
             self.dao.save(localUser)
         self.refreshList()
-
-
 
     def hideElementView(self):
         self.logger.debug('hideElementView - BEGIN')
@@ -136,7 +142,8 @@ class LocalUserController(object):
     def updateElement(self, obj):
         self.logger.debug('updateElement - BEGIN')
 
-        self.elemView = LocalUserElemView(self.listView, self)
+        #self.elemView = LocalUserElemView(self.listView, self)
+        self.elemView = LocalUserElemDialog(self.listView, self)
         self.elemView.set_data(obj)
         self.elemView.show()          
         
@@ -153,9 +160,10 @@ class LocalUserController(object):
 
     def deleteElement(self, obj):
         self.logger.debug('deleteElement - BEGIN')
+        self.logger.debug(self.listView.controller)
         
         if askyesno_gtk(_('Do you really want to delete this user? '+ obj.get_login())
-                        , self.listView) :
+                        , self.listView.controller) :
             self.dao.delete(obj)
             
         self.refreshList()
