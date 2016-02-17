@@ -110,16 +110,20 @@ class LDAPSetupData(object):
 
             # Check user DN
             ldapfilter = "(objectclass=*)"
-            results = ld.search_s(self.get_base(), ldap.SCOPE_SUBTREE, ldapfilter)
+            results = ld.search_ext_s(self.get_base(), ldap.SCOPE_ONELEVEL, ldapfilter, None, 0, None, None, -1, 1)
             if results is None:
-                return False            
+                return False
+            else:
+                self.logger.debug('LDAP user DN check was successful')            
 
 
             # Check user groups DN
             if self.get_base_group() is not None and self.get_base_group().strip() != '':
-                results = ld.search_s(self.get_base_group(), ldap.SCOPE_SUBTREE, ldapfilter)
+                results = ld.search_ext_s(self.get_base(), ldap.SCOPE_ONELEVEL, ldapfilter, None, 0, None, None, -1, 1)
                 if results is None:
                     return False
+                else:
+                    self.logger.trace('LDAP group check was successful')
 
             return True
 
