@@ -344,7 +344,7 @@ class ConnectWithGecosCCController(object):
         self.logger.debug("Get validation.pem from server")
         gecosCC = GecosCC()
         conf = gecosCC.get_json_autoconf(self.view.get_gecos_access_data())
-        self.logger.debug(json.dumps(conf))
+        #self.logger.debug(json.dumps(conf))
         chef_validation = None
         if (conf is not None 
             and conf.has_key("chef")

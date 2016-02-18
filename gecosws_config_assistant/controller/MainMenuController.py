@@ -111,7 +111,7 @@ class MainMenuController(object):
                 # NTP is green
                 ret[self.ntpStatusKey] = 1
 
-            self.logger.debug('calculateStatus - autoconf is: %s'%(self.checkAutoconf()));
+            #self.logger.debug('calculateStatus - autoconf is: %s'%(self.checkAutoconf()));
             if(self.checkAutoconf()):
                 # Auto configuration is green
                 ret[self.autoconfStatusKey] = 1
