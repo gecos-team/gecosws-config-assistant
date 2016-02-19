@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-12 08:59+0100\n"
+"POT-Creation-Date: 2016-02-15 13:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1209,6 +1209,9 @@ msgstr ""
 msgid "Method:"
 msgstr ""
 
+#. text
+#. Domain
+#. text
 #. Domain
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemDialog.py:133
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemView.py:137

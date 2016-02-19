@@ -156,11 +156,6 @@ msgstr "Confirmación:"
 msgid "Connect to CC GECOS"
 msgstr "Conectar al CC GECOS"
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserListView.py:122
-#: ../gecosws_config_assistant/view/LocalUserListView.py:122
-msgid "Delete"
-msgstr "Borrar"
-
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemDialog.py:133
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemView.py:137
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:246
@@ -297,11 +292,6 @@ msgstr ""
 "Los datos de conexión con el Centro de Control GECOS son necesarios para la "
 "autoconfiguración"
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserListView.py:112
-#: ../gecosws_config_assistant/view/LocalUserListView.py:112
-msgid "New"
-msgstr "Nuevo"
-
 #: ../data/glade/gecoscon.glade:412
 msgid "OU"
 msgstr ""
@@ -400,11 +390,6 @@ msgstr ""
 #: ../data/glade/users.glade:351
 msgid "URI:"
 msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserListView.py:117
-#: ../gecosws_config_assistant/view/LocalUserListView.py:117
-msgid "Update"
-msgstr "Modificar"
 
 #: ../data/glade/autoconf.glade:543 ../data/glade/gecoscon.glade:730
 #: ../data/glade/main.glade:338 ../data/glade/network.glade:463
