@@ -21,10 +21,12 @@ __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 from gecosws_config_assistant.dao.NTPServerDAO import NTPServerDAO
+from gecosws_config_assistant.dto.NTPServer import NTPServer
 from gecosws_config_assistant.view.NTPServerElemView import NTPServerElemView
 from gecosws_config_assistant.view.CommonDialog import showerror_gtk
 
 import logging
+import json
 
 import gettext
 from gettext import gettext as _
@@ -49,8 +51,23 @@ class NTPServerController(object):
     def show(self, mainWindow):
         self.logger.debug('show - BEGIN')
         self.view = NTPServerElemView(mainWindow, self)
-
-        self.view.set_data(self.dao.load())
+        
+        ntpDto = self.dao.load()
+        
+        conf = self.mainWindowController.requirementsCheck.autoSetup.get_conf()
+        ntpKey = 'uri_ntp'
+        if conf:
+            self.logger.debug('We got an autoconf response object')
+            if conf.has_key(ntpKey) and conf[ntpKey].strip() != '':
+                self.logger.debug('Ntp key is present in the autoconf object')
+                ntpDto = NTPServer()
+                ntpDto.set_address(conf[ntpKey])
+            else:
+                self.logger.debug('Something went wrong extractiong data from the json repsone')
+        else:
+            self.logger.debug('Autoconf is not done yet')
+        
+        self.view.set_data(ntpDto)
         
         self.view.show()   
         self.logger.debug('show - END')
