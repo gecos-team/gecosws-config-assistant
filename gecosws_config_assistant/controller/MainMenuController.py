@@ -35,6 +35,7 @@ from gecosws_config_assistant.controller.NetworkInterfaceController import Netwo
 from gecosws_config_assistant.controller.RequirementsCheckController import RequirementsCheckController
 from gecosws_config_assistant.controller.SystemStatusController import SystemStatusController
 from gecosws_config_assistant.controller.UserAuthenticationMethodController import UserAuthenticationMethodController
+from gecosws_config_assistant.controller.LogTerminalController import LogTerminalController
 from gecosws_config_assistant.util.PackageManager import PackageManager 
 from gecosws_config_assistant.view.CommonDialog import showerror_gtk, showinfo_gtk, askyesno_gtk
 from gecosws_config_assistant.view.MainWindow import MainWindow
@@ -68,6 +69,7 @@ class MainMenuController(object):
         self.userAuthenticationMethod = UserAuthenticationMethodController(self)
         self.localUserList = LocalUserController(self)
         self.systemStatus = SystemStatusController(self)
+        self.logController = LogTerminalController(self)
         self.requirementsCheck = RequirementsCheckController(self)
         
         #keys
@@ -111,7 +113,7 @@ class MainMenuController(object):
                 # NTP is green
                 ret[self.ntpStatusKey] = 1
 
-            self.logger.debug('calculateStatus - autoconf is: %s'%(self.checkAutoconf()));
+            #self.logger.debug('calculateStatus - autoconf is: %s'%(self.checkAutoconf()));
             if(self.checkAutoconf()):
                 # Auto configuration is green
                 ret[self.autoconfStatusKey] = 1
@@ -285,6 +287,8 @@ class MainMenuController(object):
     def showSystemStatus(self):
         self.systemStatus.show()
 
+    def showTerminalWindow(self):
+        self.logController.show()
 
     def getNTPController(self):
         return self.requirementsCheck.ntpServer
