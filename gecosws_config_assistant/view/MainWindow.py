@@ -142,6 +142,8 @@ class MainWindow(object):
         self.handlers["onMana"] = self.softwareManagementHandler
         self.logger.debug("Adding onUpdt handler")
         self.handlers["onUpdt"] = self.updateManagementHandler
+        self.logger.debug("Adding onUpdt handler")
+        self.handlers["onLogr"] = self.showLogTerminalHandler
         self.logger.debug("Adding close handlers")
         self.handlers['onDeleteWindow'] = Gtk.main_quit
     
@@ -195,6 +197,10 @@ class MainWindow(object):
     def updateManagementHandler(self, *args):
         self.logger.debug('Update config assistant')
         self.controller.updateConfigAsystant()
+    
+    def showLogTerminalHandler(self, *args):
+        self.logger.debug('Show log window')
+        self.controller.showTerminalWindow()
     
     def getElementById(self, id_):
         elem = self.builder.get_object(id_)

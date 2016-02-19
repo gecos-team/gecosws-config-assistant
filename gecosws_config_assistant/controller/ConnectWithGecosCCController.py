@@ -51,6 +51,7 @@ import pwd
 import grp
 import subprocess
 import base64
+import json
 
 import gettext
 from gettext import gettext as _
@@ -343,6 +344,7 @@ class ConnectWithGecosCCController(object):
         self.logger.debug("Get validation.pem from server")
         gecosCC = GecosCC()
         conf = gecosCC.get_json_autoconf(self.view.get_gecos_access_data())
+        #self.logger.debug(json.dumps(conf))
         chef_validation = None
         if (conf is not None 
             and conf.has_key("chef")
@@ -389,7 +391,7 @@ class ConnectWithGecosCCController(object):
         
         if (conf is not None 
             and conf.has_key("chef")
-            and conf["chef"].has_key("chef_url")):
+            and conf["chef"].has_key("chef_server_uri")):
             chef_url = conf["chef"]["chef_server_uri"]
             self.logger.debug("chef_url retrieved from GECOS auto conf")        
 
@@ -611,7 +613,7 @@ class ConnectWithGecosCCController(object):
         
         if (conf is not None 
             and conf.has_key("chef")
-            and conf["chef"].has_key("chef_url")):
+            and conf["chef"].has_key("chef_server_uri")):
             chef_url = conf["chef"]["chef_server_uri"]
             self.logger.debug("chef_url retrieved from GECOS auto conf")        
 
