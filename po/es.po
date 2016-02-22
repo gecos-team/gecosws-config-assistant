@@ -166,15 +166,6 @@ msgstr "Confirmación:"
 msgid "Connect to CC GECOS"
 msgstr "Conectar al CC GECOS"
 
-<<<<<<< HEAD
-=======
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserListView.py:122
-#: ../debian/gecosws-config-assistant/usr/lib/python2.7/dist-packages/gecosws_config_assistant/view/LocalUserListView.py:122
-#: ../gecosws_config_assistant/view/LocalUserListView.py:122
-msgid "Delete"
-msgstr "Borrar"
-
->>>>>>> 6df16f35fb557ab051719c8850b949d395c0bd7e
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemDialog.py:133
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemView.py:137
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:246
@@ -430,17 +421,6 @@ msgstr ""
 msgid "URI:"
 msgstr ""
 
-<<<<<<< HEAD
-#: ../data/glade/autoconf.glade:543 ../data/glade/gecoscon.glade:730
-=======
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserListView.py:117
-#: ../debian/gecosws-config-assistant/usr/lib/python2.7/dist-packages/gecosws_config_assistant/view/LocalUserListView.py:117
-#: ../gecosws_config_assistant/view/LocalUserListView.py:117
-msgid "Update"
-msgstr "Modificar"
-
-#: ../data/glade/autoconf.glade:543 ../data/glade/gecoscon.glade:732
->>>>>>> 6df16f35fb557ab051719c8850b949d395c0bd7e
 #: ../data/glade/main.glade:338 ../data/glade/network.glade:463
 #: ../data/glade/ntp.glade:457 ../data/glade/requirements.glade:684
 #: ../data/glade/users.glade:634 ../data/glade/window.glade:319
@@ -1749,11 +1729,6 @@ msgstr "Modificar"
 #: ../gecosws_config_assistant/view/LocalUserListView.py:122
 msgid "Delete"
 msgstr "Borrar"
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/MainWindow.py:166
-#: ../gecosws_config_assistant/view/MainWindow.py:166
-msgid "Link with GECOS server"
-msgstr "Vincular al Centro de Contol GECOS"
 
 #: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LogTerminalDialog.py:110
 #: ../gecosws_config_assistant/view/LogTerminalDialog.py:110
