@@ -202,6 +202,14 @@ def create_solo_json(server_conf):
     json_solo_sssd['gecos_ws_mgmt'] = {}
     json_solo['gecos_ws_mgmt']['misc_mgmt'] = {}
     json_solo_sssd['gecos_ws_mgmt']['network_mgmt'] = {}
+    json_solo_sssd['gecos_ws_mgmt']['misc_mgmt'] = {}
+    gcc_username = server_conf.get_gcc_conf().get_gcc_username()
+    gcc_password = server_conf.get_gcc_conf().get_gcc_pwd_user()
+    gcc_endpoint = server_conf.get_gcc_conf().get_uri_gcc()
+    chef_gcc_json = {'gcc_username': gcc_username, 'gcc_password': gcc_password, 'gcc_endpoint': gcc_endpoint}
+    json_solo['gecos_ws_mgmt']['misc_mgmt']['gcc_res'] = chef_gcc_json
+    json_solo_sssd['gecos_ws_mgmt']['misc_mgmt']['gcc_res'] = chef_gcc_json
+
     if server_conf.get_ntp_conf().get_uri_ntp() != '':
         json_solo['gecos_ws_mgmt']['misc_mgmt']['tz_date_res'] = {'server':server_conf.get_ntp_conf().get_uri_ntp()}
     if server_conf.get_chef_conf().get_url() != '' and not chef_is_configured():
@@ -213,7 +221,9 @@ def create_solo_json(server_conf):
             chef_admin_name = server_conf.get_chef_conf().toChefUsername(server_conf.get_gcc_conf().get_gcc_username())
         chef_link = server_conf.get_chef_conf().get_chef_link()
         chef_link_existing = server_conf.get_chef_conf().get_chef_link_existing()
-        chef_json = {'chef_server_url':chef_url, 'chef_node_name': chef_node_name, 'chef_validation_pem': tmpfile, 'chef_link': chef_link, 'chef_admin_name': chef_admin_name, 'chef_link_existing': chef_link_existing}
+        chef_json = {'chef_server_url':chef_url, 'chef_node_name': chef_node_name, \
+                     'chef_validation_pem': tmpfile, 'chef_link': chef_link, \
+                     'chef_admin_name': chef_admin_name, 'chef_link_existing': chef_link_existing}
         json_solo['gecos_ws_mgmt']['misc_mgmt']['chef_conf_res'] = chef_json
     if server_conf.get_auth_conf().get_auth_type() != '' and not ad_is_configured():
         auth_type = server_conf.get_auth_conf().get_auth_type()
@@ -256,7 +266,7 @@ def create_solo_json(server_conf):
             json_solo_sssd['gecos_ws_mgmt']['network_mgmt']['sssd_res'] = sssd_ldap_json
     if server_conf.get_gcc_conf().get_uri_gcc() != '' and not gcc_is_configured():
         gcc_conf = server_conf.get_gcc_conf()
-        gcc_json = {'uri_gcc': gcc_conf.get_uri_gcc(), 'gcc_username' : gcc_conf.get_gcc_username(),'gcc_pwd_user': gcc_conf.get_gcc_pwd_user(),'gcc_nodename': gcc_conf.get_gcc_nodename(),'gcc_link': gcc_conf.get_gcc_link(), 'gcc_selected_ou': gcc_conf.get_selected_ou(), 'run_attr': gcc_conf.get_run()}
+        gcc_json = {'uri_gcc': gcc_conf.get_uri_gcc(), 'gcc_username' : gcc_conf.get_gcc_username(),'gcc_pwd_user': gcc_conf.get_gcc_pwd_user(),'gcc_nodename': gcc_conf.get_gcc_nodename(),'gcc_link': gcc_conf.get_gcc_link(), 'gcc_selected_ou': gcc_conf.get_selected_ou(), 'run_attr': gcc_conf.get_run(), 'gcc_endpoint': gcc_endpoint, 'gcc_password': gcc_password}
         json_solo['gecos_ws_mgmt']['misc_mgmt']['gcc_res'] = gcc_json
 
     if server_conf.get_users_conf().get_users_list():
@@ -565,6 +575,12 @@ def unlink_from_chef():
     chef_url = server_conf.get_chef_conf().get_url()
     chef_node_name = server_conf.get_chef_conf().get_node_name()
     chef_admin_name = server_conf.get_chef_conf().get_admin_name()
+    gcc_username = server_conf.get_gcc_conf().get_gcc_username()
+    gcc_password = server_conf.get_gcc_conf().get_gcc_pwd_user()
+    gcc_endpoint = server_conf.get_gcc_conf().get_uri_gcc()
+    chef_gcc_json = {'gcc_username': gcc_username, 'gcc_password': gcc_password , 'gcc_endpoint': gcc_endpoint}
+    json_solo['gecos_ws_mgmt']['misc_mgmt']['gcc_res'] = chef_gcc_json
+
     if chef_admin_name == "":
         chef_admin_name = server_conf.get_gcc_conf().get_gcc_username()
     chef_link = server_conf.get_chef_conf().get_chef_link()
