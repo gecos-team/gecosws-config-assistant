@@ -2,7 +2,7 @@ Source: gecosws-config-assistant
 Section: utils
 Priority: optional
 Maintainer: Gecos Team <gecos@guadalinex.org>
-Build-Depends: debhelper (>= 8), cdbs (>=0.4.43), python-all-dev (>=2.3.5-11)
+Build-Depends: debhelper (>= 8), cdbs (>=0.4.43), python-all-dev (>=2.3.5-11), python-support
 Build-Depends-Indep: gettext, python-distutils-extra
 Standards-Version: 3.8.3
 Homepage: https://github.com/gecos-team/gecosws-config-assistant
