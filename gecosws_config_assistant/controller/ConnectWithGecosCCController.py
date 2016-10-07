@@ -36,6 +36,7 @@ else:
 from gecosws_config_assistant.util.GecosCC import GecosCC
 from gecosws_config_assistant.util.Validation import Validation
 from gecosws_config_assistant.util.Template import Template
+from gecosws_config_assistant.util.CommandUtil import CommandUtil
 
 from gecosws_config_assistant.dao.GecosAccessDataDAO import GecosAccessDataDAO
 from gecosws_config_assistant.dao.WorkstationDataDAO import WorkstationDataDAO
@@ -256,26 +257,8 @@ class ConnectWithGecosCCController(object):
         return True
     
     def _execute_command(self, cmd, my_env={}):
-        try:
-            p = subprocess.Popen(cmd, shell=True, 
-                                 stdout=subprocess.PIPE, 
-                                 stderr=subprocess.STDOUT,
-                                 env=my_env)
-            for line in p.stdout.readlines():
-                self.logger.debug(line)
-                    
-            retval = p.wait()
-            if retval != 0:
-                self.logger.error('Error running command: %s'%(cmd))
-                return False     
-            
-        except:
-            self.logger.error('Error running command: %s'%(cmd))
-            self.logger.error(str(traceback.format_exc()))
-            return False        
-        
-        
-        return True                  
+        commandUtil = CommandUtil()
+        commandUtil.execute_command(cmd, my_env={})
     
     def _clean_connection_files_on_error(self):
         self.logger.debug("_clean_connection_files_on_error")

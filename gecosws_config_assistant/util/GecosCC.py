@@ -80,7 +80,7 @@ class GecosCC(object):
             user = data.get_login()
             password = data.get_password()
             r = requests.get(url, auth=(user,password), headers=headers, 
-                             verify=False, timeout=self.timeout)
+                             verify=True, timeout=self.timeout)
             if r.ok:
                 if hasattr(r,'text'):
                     self.last_request_content = r.text

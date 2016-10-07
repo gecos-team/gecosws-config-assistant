@@ -108,7 +108,7 @@ class AutoSetupDialog(ViewMock):
     def get_data(self):
         self.logger.debug("Return test Gecos access data")
         self.__data = GecosAccessData()
-        self.__data.set_url('http://192.168.1.139/')
+        self.__data.set_url('http://192.168.0.15/')
         self.__data.set_login('amacias')
         self.__data.set_password('console')        
         
