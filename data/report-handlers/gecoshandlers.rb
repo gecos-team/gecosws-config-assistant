@@ -2,6 +2,7 @@ require 'json'
 require 'rest_client'
 require 'chef/log'
 require "resolv"
+require 'uri'
 
 module GECOSReports
   class StatusHandler < Chef::Handler
@@ -23,9 +24,12 @@ module GECOSReports
           has_conection = false
           tries = 0
           dns_resolver = Resolv::DNS.new()
-          while not has_conection and tries < 10
+          while (not has_conection and tries < 10 and not gcc_control.nil? and 
+                gcc_control.key?("uri_gcc") and not gcc_control['uri_gcc'].nil? and 
+                not gcc_control['uri_gcc'].empty?)
             begin
-              domain = gcc_control['uri_gcc'].split(':')[1].split('/')[2]
+              uri = URI(gcc_control['uri_gcc'])
+              domain = uri.host
               dns_resolver.getaddress(domain)
               has_conection = true
             rescue Resolv::ResolvError => e
@@ -50,7 +54,7 @@ module GECOSReports
             Chef::Log.error('GECOS Control Center connection error')
           end
         rescue Exception => e
-          Chef::Log.error(e.message)
+          Chef::Log.error(e)
         end
       end
     end
