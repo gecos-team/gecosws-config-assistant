@@ -54,7 +54,7 @@ class SSLUtil(object):
         
         # Check credentials
         try:
-            r = requests.get(url, verify='/etc/ssl/certs/ca-certificates.crt', timeout=self.timeout)
+            r = requests.get(url, verify=True, timeout=self.timeout)
             return True            
             
         except requests.exceptions.SSLError:
@@ -65,8 +65,53 @@ class SSLUtil(object):
             self.logger.warn(str(traceback.format_exc()))
             
         return False    
-        
 
+    def getUntrustedCertificateCause(self, url):
+        if url is None:
+            return None
+        
+        # Check credentials
+        try:
+            r = requests.get(url, verify=True, timeout=self.timeout)
+            
+        except requests.exceptions.SSLError as e:
+            msg = str(e)
+            if msg.rfind(':') > 0:
+                msg = msg[(msg.rfind(':')+1):]
+            
+            return msg
+            
+        except Exception as e:
+            return str(e)
+            
+        return None    
+
+    def getUntrustedCertificateErrorCode(self, url):
+        if url is None:
+            return None
+        
+        # Check credentials
+        try:
+            r = requests.get(url, verify=True, timeout=self.timeout)
+            
+        except requests.exceptions.SSLError as e:
+            msg = str(e)
+            errornum = None
+            print "MSG: ", msg
+            
+            if msg.rfind('error:') > 0:
+                msg = msg[(msg.find('error:')+6):]
+                errornum = msg[:(msg.find(':'))]
+                errornum = int(errornum)
+            
+            return errornum
+            
+        except Exception as e:
+            return str(e)
+            
+        return None    
+        
+        
     def getServerCertificate(self, url):
         if url is None:
             return None
@@ -226,6 +271,34 @@ class SSLUtil(object):
             # Run update-ca-certificates
             commandUtil = CommandUtil()
             commandUtil.execute_command('/usr/sbin/update-ca-certificates')
+        
+    def formatX509Name(self, x509Name):
+        str = '';
+        
+        if x509Name.commonName is not None:
+            str = str + 'CN='+x509Name.commonName+', '
+
+        if x509Name.organizationalUnitName is not None:
+            str = str + 'OU='+x509Name.organizationalUnitName+', '
+
+        if x509Name.organizationName is not None:
+            str = str + 'O='+x509Name.organizationName+', '
+            
+        if x509Name.localityName is not None:
+            str = str + 'L='+x509Name.localityName+', '
+            
+        if x509Name.stateOrProvinceName is not None:
+            str = str + 'ST='+x509Name.stateOrProvinceName+', '
+            
+        if x509Name.countryName is not None:
+            str = str + 'C='+x509Name.countryName+', '
+        
+        if str.endswith(', '):
+            str = str[:-2]
+        
+        return str
+        
+        
         
     def removeCertificateFromTrustedCAs(self, certificate):
         if certificate is None:

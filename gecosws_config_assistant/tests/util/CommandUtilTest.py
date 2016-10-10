@@ -37,3 +37,10 @@ class CommandUtilTest(unittest.TestCase):
 		self.assertFalse(commandUtil.execute_command('non existent command'))
 		self.assertTrue(commandUtil.execute_command('ls'))
 		
+		self.assertFalse(commandUtil.get_command_output('non existent command'), [])
+		self.assertNotEqual(commandUtil.get_command_output('ls'), [])
+
+		self.assertTrue(commandUtil.execute_command('echo "Asking a yes no question (y/n)?" & read choice'))
+		self.assertTrue(commandUtil.get_command_output('echo "Asking a yes no question (y/n)?" & read choice'))
+        
+

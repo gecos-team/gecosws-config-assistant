@@ -47,7 +47,13 @@ class SSLUtilTest(unittest.TestCase):
 		self.assertFalse(sslUtil.isServerCertificateTrusted(None))
 		self.assertFalse(sslUtil.isServerCertificateTrusted('https://ws003.juntadeandalucia.es/'))
 		self.assertTrue(sslUtil.isServerCertificateTrusted('https://www.google.es/'))
-		
+
+        self.assertIsNotNone(sslUtil.getUntrustedCertificateCause('https://192.168.0.15:8443/'))
+        print('Untrusted certificate cause: %s'%(sslUtil.getUntrustedCertificateCause('https://192.168.0.15:8443/')))
+        
+        self.assertIsNotNone(sslUtil.getUntrustedCertificateErrorCode('https://192.168.0.15:8443/'))
+        print('Untrusted certificate error code: %s'%(sslUtil.getUntrustedCertificateErrorCode('https://192.168.0.15:8443/')))
+        
         self.assertIsNone(sslUtil.getServerCertificate(None))
         self.assertIsNotNone(sslUtil.getServerCertificate('https://ws003.juntadeandalucia.es/'))
         self.assertIsNone(sslUtil.getServerCertificate('https://ws003.juntadeandalucia.es:8443/'))
@@ -58,11 +64,11 @@ class SSLUtilTest(unittest.TestCase):
         self.assertIsNotNone(info)
         
         print('=================== self signed certificate ===================')
-        print('ISSUER: %s'%(info.get_issuer()))
+        print('ISSUER: %s'%(sslUtil.formatX509Name(info.get_issuer())))
         print('NOT BEFORE: %s'%(info.get_notBefore()))
         print('NOT AFTER: %s'%(info.get_notAfter()))
         print('SERIAL NUMBER: %s'%(info.get_serial_number()))
-        print('SUBJECT: %s'%(info.get_subject()))
+        print('SUBJECT: %s'%(sslUtil.formatX509Name(info.get_subject())))
         print('SUBJECT CN: %s'%(info.get_subject().commonName))
         print('EXPIRED: %s'%(info.has_expired()))
         print('SELF SIGNED: %s'%(sslUtil.isSelfSigned(info)))
@@ -72,6 +78,9 @@ class SSLUtilTest(unittest.TestCase):
 
         sslUtil.addCertificateToTrustedCAs(certificate)
 		self.assertTrue(sslUtil.isServerCertificateTrusted('https://gecos.solutia-it.es:8443/'))
+
+        self.assertIsNotNone(sslUtil.getUntrustedCertificateCause('https://192.168.0.15:8443/'))
+        print('Untrusted certificate cause: %s'%(sslUtil.getUntrustedCertificateCause('https://192.168.0.15:8443/')))
 
         sslUtil.removeCertificateFromTrustedCAs(certificate)
 		self.assertFalse(sslUtil.isServerCertificateTrusted('https://gecos.solutia-it.es:8443/'))
@@ -83,11 +92,11 @@ class SSLUtilTest(unittest.TestCase):
         self.assertIsNotNone(info)
         
         print('=================== signed by other entity certificate ===================')
-        print('ISSUER: %s'%(info.get_issuer()))
+        print('ISSUER: %s'%(sslUtil.formatX509Name(info.get_issuer())))
         print('NOT BEFORE: %s'%(info.get_notBefore()))
         print('NOT AFTER: %s'%(info.get_notAfter()))
         print('SERIAL NUMBER: %s'%(info.get_serial_number()))
-        print('SUBJECT: %s'%(info.get_subject()))
+        print('SUBJECT: %s'%(sslUtil.formatX509Name(info.get_subject())))
         print('SUBJECT CN: %s'%(info.get_subject().commonName))
         print('EXPIRED: %s'%(info.has_expired()))
         print('SELF SIGNED: %s'%(sslUtil.isSelfSigned(info)))

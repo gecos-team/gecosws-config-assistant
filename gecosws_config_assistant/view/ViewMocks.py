@@ -39,7 +39,9 @@ def showerror_gtk(title, message, parent_window):
     showerror("", message, parent_window)
 
 def askyesno_gtk(title, message, parent_window):
-    return aksyesno("", message, parent_window)
+    logger = logging.getLogger('GTK')
+    logger.debug("askyesno('%s', '%s')"%(title, message))
+    return True
 
 class ViewMock(object):
     def wait_window(self, window):
