@@ -188,6 +188,7 @@ class Check(Command):
         from gecosws_config_assistant.tests.util.GecosCCTest import GecosCCTest
         from gecosws_config_assistant.tests.util.CommandUtilTest import CommandUtilTest
         from gecosws_config_assistant.tests.util.SSLUtilTest import SSLUtilTest
+        from gecosws_config_assistant.tests.util.GemUtilTest import GemUtilTest
         
         # suite.addTest(PackageManagerTest())
         # suite.addTest(TemplateTest())
@@ -195,7 +196,8 @@ class Check(Command):
         # suite.addTest(ValidationTest())
         # suite.addTest(GecosCCTest())
         suite.addTest(CommandUtilTest())
-        suite.addTest(SSLUtilTest())
+        #suite.addTest(SSLUtilTest())
+        suite.addTest(GemUtilTest())
 
         from gecosws_config_assistant.tests.dao.NTPServerDAOTest import NTPServerDAOTest
         from gecosws_config_assistant.tests.dao.NetworkInterfaceDAOTest import NetworkInterfaceDAOTest
