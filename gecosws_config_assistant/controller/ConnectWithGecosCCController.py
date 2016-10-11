@@ -38,7 +38,7 @@ from gecosws_config_assistant.util.GecosCC import GecosCC
 from gecosws_config_assistant.util.Validation import Validation
 from gecosws_config_assistant.util.Template import Template
 from gecosws_config_assistant.util.CommandUtil import CommandUtil
-from gecosws_config_assistant.util.SSLUtil import SSLUtil
+from gecosws_config_assistant.util.SSLUtil import SSLUtil, SSL_R_CERTIFICATE_VERIFY_FAILED
 from gecosws_config_assistant.util.GemUtil import GemUtil
 
 from gecosws_config_assistant.dao.GecosAccessDataDAO import GecosAccessDataDAO
@@ -144,8 +144,8 @@ class ConnectWithGecosCCController(object):
             # Check server certificate
             sslUtil = SSLUtil()
             if not sslUtil.isServerCertificateTrusted(gecosAccessData.get_url()):
-                if sslUtil.getUntrustedCertificateErrorCode(gecosAccessData.get_url()) == 14090086 :
-                    # Error code 14090086 means that the certificate is not trusted
+                if sslUtil.getUntrustedCertificateErrorCode(gecosAccessData.get_url()) == SSL_R_CERTIFICATE_VERIFY_FAILED :
+                    # Error code SSL_R_CERTIFICATE_VERIFY_FAILED means that the certificate is not trusted
                     
                     errorcode = sslUtil.getUntrustedCertificateErrorCode( gecosAccessData.get_url() )
                     certificate = sslUtil.getServerCertificate(gecosAccessData.get_url())
@@ -176,7 +176,7 @@ class ConnectWithGecosCCController(object):
                             return False                    
                             
                         else:
-                            sslUtil.addCertificateToTrustedCAs(certificate)
+                            sslUtil.addCertificateToTrustedCAs(certificate, True)
                             
                             # Test again
                             if not sslUtil.isServerCertificateTrusted(gecosAccessData.get_url()):
@@ -439,8 +439,8 @@ class ConnectWithGecosCCController(object):
                 # Check server certificate
                 sslUtil = SSLUtil()
                 if not sslUtil.isServerCertificateTrusted(gem_repo):
-                    if sslUtil.getUntrustedCertificateErrorCode(gem_repo) == 14090086 :
-                        # Error code 14090086 means that the certificate is not trusted
+                    if sslUtil.getUntrustedCertificateErrorCode(gem_repo) == SSL_R_CERTIFICATE_VERIFY_FAILED :
+                        # Error code SSL_R_CERTIFICATE_VERIFY_FAILED means that the certificate is not trusted
                         
                         errorcode = sslUtil.getUntrustedCertificateErrorCode( gem_repo )
                         certificate = sslUtil.getServerCertificate(gem_repo)
@@ -449,7 +449,7 @@ class ConnectWithGecosCCController(object):
                         # Check if the certificate is expired
                         if info is not None and info.has_expired():
                             self.logger.debug("Server HTTPS certificate is expired!")
-                            showerror_gtk(_("Can't connect to GECOS CC!") + "\n" +  _("The server HTTPS certificate is expired!"),
+                            showerror_gtk(_("Can't connect to GEMs repository!") + "\n" +  _("The server HTTPS certificate is expired!"),
                                  None)
                             self.view.focusUrlField()            
                             return False                    
@@ -557,7 +557,71 @@ class ConnectWithGecosCCController(object):
             and conf["chef"].has_key("chef_admin_name")):
             chef_admin_name = conf["chef"]["chef_admin_name"]
             self.logger.debug("chef_admin_name retrieved from GECOS auto conf")               
-        
+
+        # Check Chef HTTPS certificate
+        if chef_url.startswith('https://'):
+            # Check server certificate
+            sslUtil = SSLUtil()
+            if not sslUtil.isServerCertificateTrusted(chef_url):
+                if sslUtil.getUntrustedCertificateErrorCode(chef_url) == SSL_R_CERTIFICATE_VERIFY_FAILED :
+                    # Error code SSL_R_CERTIFICATE_VERIFY_FAILED means that the certificate is not trusted
+                    
+                    errorcode = sslUtil.getUntrustedCertificateErrorCode( chef_url )
+                    certificate = sslUtil.getServerCertificate(chef_url)
+                    info = sslUtil.getCertificateInfo(certificate)                
+
+                    # Check if the certificate is expired
+                    if info is not None and info.has_expired():
+                        self.logger.debug("Server HTTPS certificate is expired!")
+                        showerror_gtk(_("Can't connect to Chef Server!") + "\n" +  _("The server HTTPS certificate is expired!"),
+                             None)
+                        self.view.focusUrlField()            
+                        return False                    
+                    
+                    # Ask to the user if he want to trust this certificate
+                    if info is not None:
+                        response =  askyesno_gtk((_("The certificate of this server is not trusted!")  + "\n" 
+                            + _("Do you wan't to add it to the trusted certificates list?") + "\n" 
+                            + "\n" 
+                            + _("Subject:") + " " + (sslUtil.formatX509Name(info.get_subject())) + "\n" 
+                            + _("Issuer:") + " " + (sslUtil.formatX509Name(info.get_issuer())) + "\n" 
+                            + _("Serial Number:") + " " + str(info.get_serial_number()) + "\n" 
+                            + _("Not before:") + " " + str(info.get_notBefore()) + " " + _("Not after:") + " " + str(info.get_notAfter()) + "\n" 
+                            ), self.view, 'warning')
+                            
+                        if not response:
+                            self.logger.debug("User don'w want to add the HTTPS server certificate to the Trusted CA list!")
+                            self.processView.setLinkToChefStatus(_('ERROR'))
+                            self.processView.enableAcceptButton()
+                            self._clean_connection_files_on_error()
+                            return False                 
+                            
+                        else:
+                            sslUtil.addCertificateToTrustedCAs(certificate, True)
+                            
+                            # Test again
+                            if not sslUtil.isServerCertificateTrusted(chef_url):
+                                # Trusted certificates produce connection errors
+                                # due to many things. For example a bad name.
+                                errormsg = sslUtil.getUntrustedCertificateCause( chef_url )
+                                self.logger.debug("Error connecting to HTTPS server: %s"%(errormsg))
+                                self.processView.setLinkToChefStatus(_('ERROR'))
+                                self.processView.enableAcceptButton()
+                                showerror_gtk(_("Can't connect to Chef Server!") + "\n" +  _("SSL ERROR:") + ' ' + errormsg,
+                                     None)
+                                self._clean_connection_files_on_error()
+                                return False                                
+                else:
+                    # Any other error code must be shown
+                    errormsg = sslUtil.getUntrustedCertificateCause( chef_url )
+                    self.logger.debug("Error connecting to HTTPS server: %s"%(errormsg))
+                    self.processView.setLinkToChefStatus(_('ERROR'))
+                    self.processView.enableAcceptButton()
+                    showerror_gtk(_("Can't connect to Chef Server!") + "\n" +  _("SSL ERROR:") + ' ' + errormsg,
+                         None)
+                    self._clean_connection_files_on_error()
+                    return False       
+
         template = Template()
         template.source = get_data_file('templates/client.rb')
         template.destination = '/etc/chef/client.rb'

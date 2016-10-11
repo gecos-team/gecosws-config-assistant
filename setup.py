@@ -195,9 +195,9 @@ class Check(Command):
         # suite.addTest(JSONUtilTest())
         # suite.addTest(ValidationTest())
         # suite.addTest(GecosCCTest())
-        suite.addTest(CommandUtilTest())
-        #suite.addTest(SSLUtilTest())
-        suite.addTest(GemUtilTest())
+        #suite.addTest(CommandUtilTest())
+        suite.addTest(SSLUtilTest())
+        #suite.addTest(GemUtilTest())
 
         from gecosws_config_assistant.tests.dao.NTPServerDAOTest import NTPServerDAOTest
         from gecosws_config_assistant.tests.dao.NetworkInterfaceDAOTest import NetworkInterfaceDAOTest

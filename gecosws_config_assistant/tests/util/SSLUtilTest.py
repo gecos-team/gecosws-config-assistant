@@ -24,7 +24,7 @@ __license__ = "GPL-2"
 import unittest
 import os
 
-from gecosws_config_assistant.util.SSLUtil import SSLUtil
+from gecosws_config_assistant.util.SSLUtil import SSLUtil, SSL_R_CERTIFICATE_VERIFY_FAILED
 
 class SSLUtilTest(unittest.TestCase):
     '''
@@ -41,13 +41,21 @@ class SSLUtilTest(unittest.TestCase):
         sslUtil.removeCertificateFromTrustedCAs(certificate)
         certificate = sslUtil.getServerCertificate('https://ws003.juntadeandalucia.es/')
         sslUtil.removeCertificateFromTrustedCAs(certificate)
-        
+
         # Start the test
         
 		self.assertFalse(sslUtil.isServerCertificateTrusted(None))
 		self.assertFalse(sslUtil.isServerCertificateTrusted('https://ws003.juntadeandalucia.es/'))
 		self.assertTrue(sslUtil.isServerCertificateTrusted('https://www.google.es/'))
 
+        self.assertIsNotNone(sslUtil.getUntrustedCertificateCause('https://ws003.juntadeandalucia.es/'))
+        print('Untrusted certificate cause: %s'%(sslUtil.getUntrustedCertificateCause('https://ws003.juntadeandalucia.es/')))
+        
+        self.assertIsNotNone(sslUtil.getUntrustedCertificateErrorCode('https://ws003.juntadeandalucia.es/'))
+        self.assertEquals(sslUtil.getUntrustedCertificateErrorCode('https://ws003.juntadeandalucia.es/'), SSL_R_CERTIFICATE_VERIFY_FAILED)
+        print('Untrusted certificate error code: %s'%(sslUtil.getUntrustedCertificateErrorCode('https://ws003.juntadeandalucia.es/')))
+        
+        
         self.assertIsNotNone(sslUtil.getUntrustedCertificateCause('https://192.168.0.15:8443/'))
         print('Untrusted certificate cause: %s'%(sslUtil.getUntrustedCertificateCause('https://192.168.0.15:8443/')))
         
@@ -76,14 +84,17 @@ class SSLUtilTest(unittest.TestCase):
         issuerCertificateUrl = sslUtil.getIssuerCertificateURL(info)
         self.assertIsNone(issuerCertificateUrl)        
 
-        sslUtil.addCertificateToTrustedCAs(certificate)
+        sslUtil.addCertificateToTrustedCAs(certificate, True)
 		self.assertTrue(sslUtil.isServerCertificateTrusted('https://gecos.solutia-it.es:8443/'))
+
+        self.assertTrue(os.path.exists('/etc/chef/trusted_certs/gecos.solutia-it.es.crt'))
 
         self.assertIsNotNone(sslUtil.getUntrustedCertificateCause('https://192.168.0.15:8443/'))
         print('Untrusted certificate cause: %s'%(sslUtil.getUntrustedCertificateCause('https://192.168.0.15:8443/')))
 
         sslUtil.removeCertificateFromTrustedCAs(certificate)
 		self.assertFalse(sslUtil.isServerCertificateTrusted('https://gecos.solutia-it.es:8443/'))
+        self.assertFalse(os.path.exists('/etc/chef/trusted_certs/gecos.solutia-it.es.crt'))
         
         
         # Signed by other entity certificate
