@@ -31,9 +31,6 @@ import os
 
 from gecosws_config_assistant.firstboot_lib.firstbootconfig import get_data_file
 
-import gettext
-from gettext import gettext as _
-gettext.textdomain('gecosws-config-assistant')
 
 class WorkstationDataDAO(object):
     '''
@@ -78,7 +75,7 @@ class WorkstationDataDAO(object):
                 data.set_name(name)     
                 
         except Exception:
-            self.logger.error(_('Error reading file:')+ self.pclabel_file)
+            self.logger.error('Error reading file:'+ self.pclabel_file)
             self.logger.error(str(traceback.format_exc()))             
             
         if name is None:
@@ -130,7 +127,7 @@ class WorkstationDataDAO(object):
                 fd.close()
             
         except Exception:
-            self.logger.error(_('Error writing file:') + self.pclabel_file)
+            self.logger.error('Error writing file:' + self.pclabel_file)
             self.logger.error(str(traceback.format_exc()))             
         
         # Do not save OU in GECOS CC at this point!!
@@ -180,7 +177,7 @@ class WorkstationDataDAO(object):
                 os.remove(self.pclabel_file)
             
         except Exception:
-            self.logger.error(_('Error removing file:') + self.pclabel_file)
+            self.logger.error('Error removing file:' + self.pclabel_file)
             self.logger.error(str(traceback.format_exc()))             
         
         # Eliminate node_name from gcc.control file

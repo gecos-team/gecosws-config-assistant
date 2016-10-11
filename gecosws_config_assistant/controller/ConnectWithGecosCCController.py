@@ -288,14 +288,14 @@ class ConnectWithGecosCCController(object):
             if current_usr != 'root':
                 uid = pwd.getpwnam('root').pw_uid
                 if uid is None:
-                    self.logger.error(_('Can not find user to be used as owner: ') + 'root')
+                    self.logger.error('Can not find user to be used as owner: ' + 'root')
                 else:
                     os.chown(filename, uid, gid)  
                 
             if current_grp != 'root':
                 gid = grp.getgrnam('root').gr_gid
                 if gid is None:
-                    self.logger.error(_('Can not find group to be used as owner: ') + 'root')
+                    self.logger.error('Can not find group to be used as owner: ' + 'root')
                 else:
                     os.chown(filename, uid, gid)  
                 

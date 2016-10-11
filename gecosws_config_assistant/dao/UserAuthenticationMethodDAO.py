@@ -39,10 +39,6 @@ from gecosws_config_assistant.firstboot_lib.firstbootconfig import get_data_file
 
 from pprint import pprint
 
-import gettext
-from gettext import gettext as _
-gettext.textdomain('gecosws-config-assistant')
-
 class UserAuthenticationMethodDAO(object):
     '''
     DAO class to manipulate UserAuthenticationMethod DTO objects.
@@ -78,7 +74,7 @@ class UserAuthenticationMethodDAO(object):
                 self.pm.install_package('sssd')
                 self.initiated = True
             except Exception:
-                self.logger.error(_('Package installation failed:') + 'sssd')
+                self.logger.error('Package installation failed:' + 'sssd')
                 self.logger.error(str(traceback.format_exc())) 
         else:
             self.logger.debug('Already installed "sssd" package')
@@ -174,7 +170,7 @@ class UserAuthenticationMethodDAO(object):
                 
         retval = p.wait()
         if retval != 0:
-            self.logger.error(_('Error running command: ')+'service sssd restart')
+            self.logger.error('Error running command: '+'service sssd restart')
             return False        
         
         self.logger.debug('Save /usr/share/pam-configs/my_mkhomedir file')
@@ -200,7 +196,7 @@ class UserAuthenticationMethodDAO(object):
                 
         retval = p.wait()
         if retval != 0:
-            self.logger.error(_('Error running command: ')+'pam-auth-update')
+            self.logger.error('Error running command: '+'pam-auth-update')
             return False           
         
         
@@ -248,7 +244,7 @@ class UserAuthenticationMethodDAO(object):
                 
         retval = p.wait()
         if retval != 0:
-            self.logger.error(_('Error running command: ')+'service sssd restart')
+            self.logger.error('Error running command: '+'service sssd restart')
             return False        
         
         self.logger.debug('Delete %s file'%('/etc/gca-sssd.control'))
@@ -395,7 +391,7 @@ class UserAuthenticationMethodDAO(object):
                 
         retval = p.wait()
         if retval != 0:
-            self.logger.error(_('Error running command: ')+command)
+            self.logger.error('Error running command: '+command)
             return False
               
               
@@ -408,7 +404,7 @@ class UserAuthenticationMethodDAO(object):
                 
         retval = p.wait()
         if retval != 0:
-            self.logger.error(_('Error running command: ')+'service sssd restart')
+            self.logger.error('Error running command: '+'service sssd restart')
             return False        
         
         self.logger.debug('Save /usr/share/pam-configs/my_mkhomedir file')
@@ -434,7 +430,7 @@ class UserAuthenticationMethodDAO(object):
                 
         retval = p.wait()
         if retval != 0:
-            self.logger.error(_('Error running command: ')+'pam-auth-update')
+            self.logger.error('Error running command: '+'pam-auth-update')
             return False           
         
         
@@ -514,7 +510,7 @@ class UserAuthenticationMethodDAO(object):
                 
         retval = p.wait()
         if retval != 0:
-            self.logger.error(_('Error running command: ')+command)
+            self.logger.error('Error running command: '+command)
             return False
               
               
@@ -541,7 +537,7 @@ class UserAuthenticationMethodDAO(object):
                 
         retval = p.wait()
         if retval != 0:
-            self.logger.error(_('Error running command: ')+'service sssd restart')
+            self.logger.error('Error running command: '+'service sssd restart')
             return False        
         
         self.logger.debug('Save /usr/share/pam-configs/my_mkhomedir file')
@@ -567,7 +563,7 @@ class UserAuthenticationMethodDAO(object):
                 
         retval = p.wait()
         if retval != 0:
-            self.logger.error(_('Error running command: ')+'pam-auth-update')
+            self.logger.error('Error running command: '+'pam-auth-update')
             return False           
         
         
@@ -602,7 +598,7 @@ class UserAuthenticationMethodDAO(object):
                 
         retval = p.wait()
         if retval != 0:
-            self.logger.error(_('Error running command: ')+command)
+            self.logger.error('Error running command: '+command)
             return False
 
         # Delete configuration files
@@ -638,7 +634,7 @@ class UserAuthenticationMethodDAO(object):
                 
         retval = p.wait()
         if retval != 0:
-            self.logger.error(_('Error running command: ')+'service sssd restart')
+            self.logger.error('Error running command: '+'service sssd restart')
             return False        
         
         self.logger.debug('Delete %s file'%('/etc/gca-sssd.control'))
@@ -652,7 +648,7 @@ class UserAuthenticationMethodDAO(object):
         self.logger.debug('load - BEGIN')
       
         if not self.initiated:
-            self.logger.warn(_('UserAuthenticationMethodDAO used without a proper initialization!'))
+            self.logger.warn('UserAuthenticationMethodDAO used without a proper initialization!')
             # Return default method
             return LocalUsersAuthMethod()
       
@@ -677,7 +673,7 @@ class UserAuthenticationMethodDAO(object):
                         break
                 
         except Exception:
-            self.logger.error(_('Error reading file:')+ self.main_data_file)
+            self.logger.error('Error reading file:'+ self.main_data_file)
             self.logger.error(str(traceback.format_exc()))            
         
         if authType is None:
@@ -694,7 +690,7 @@ class UserAuthenticationMethodDAO(object):
         self.logger.debug('save - BEGIN')        
         
         if not self.initiated:
-            self.logger.warn(_('UserAuthenticationMethodDAO used without a proper initialization!'))
+            self.logger.warn('UserAuthenticationMethodDAO used without a proper initialization!')
             # Do nothing
             return
         
@@ -720,7 +716,7 @@ class UserAuthenticationMethodDAO(object):
         self.logger.debug('delete - BEGIN')        
         
         if not self.initiated:
-            self.logger.warn(_('UserAuthenticationMethodDAO used without a proper initialization!'))
+            self.logger.warn('UserAuthenticationMethodDAO used without a proper initialization!')
             # Do nothing
             return
         
