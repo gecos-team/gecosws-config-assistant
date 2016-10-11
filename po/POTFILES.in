@@ -40,7 +40,6 @@ build/lib.linux-i686-2.7/gecosws_config_assistant/util/Validation.py
 build/lib.linux-i686-2.7/gecosws_config_assistant/util/__init__.py
 build/lib.linux-i686-2.7/gecosws_config_assistant/view/ADSetupDataElemView.py
 build/lib.linux-i686-2.7/gecosws_config_assistant/view/AutoSetupDialog.py
-build/lib.linux-i686-2.7/gecosws_config_assistant/view/ChefValidationCertificateDialog.py
 build/lib.linux-i686-2.7/gecosws_config_assistant/view/CommonDialog.py
 build/lib.linux-i686-2.7/gecosws_config_assistant/view/ConnectWithGecosCCDialog.py
 build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProcessView.py

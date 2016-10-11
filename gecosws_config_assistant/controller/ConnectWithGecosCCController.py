@@ -25,11 +25,10 @@ import sys
 if 'check' in sys.argv:
     # Mock view classes for testing purposses
     print "==> Loading mocks..."
-    from gecosws_config_assistant.view.ViewMocks import showerror_gtk, askyesno_gtk, ConnectWithGecosCCDialog, ChefValidationCertificateDialog, GecosCCSetupProcessView
+    from gecosws_config_assistant.view.ViewMocks import showerror_gtk, askyesno_gtk, ConnectWithGecosCCDialog, GecosCCSetupProcessView
 else:
     # Use real view classes
     from gecosws_config_assistant.view.ConnectWithGecosCCDialog import ConnectWithGecosCCDialog
-    from gecosws_config_assistant.view.ChefValidationCertificateDialog import ChefValidationCertificateDialog
     from gecosws_config_assistant.view.GecosCCSetupProgressView import GecosCCSetupProgressView
     from gecosws_config_assistant.view.CommonDialog import showerror_gtk
     from gecosws_config_assistant.view.CommonDialog import askyesno_gtk
@@ -386,40 +385,43 @@ class ConnectWithGecosCCController(object):
 
         # Save workstation data
         self.workstationDataDao.save(self.view.get_workstation_data())
+        workstationData = self.view.get_workstation_data()
+
         
-        # Get validation.pem from server
-        self.logger.debug("Get validation.pem from server")
+        # Get client.pem from server
+        self.logger.debug("Get client.pem from server")
         gecosCC = GecosCC()
-        conf = gecosCC.get_json_autoconf(self.view.get_gecos_access_data())
-        self.logger.debug(json.dumps(conf))
-
-        chef_validation = None
-        if (conf is not None 
-            and conf.has_key("chef")
-            and conf["chef"].has_key("chef_validation")):
-            chef_validation = base64.decodestring(conf["chef"]["chef_validation"])
-            self.logger.debug("validation.pem retrieved from GECOS auto conf")
         
-        if chef_validation is None:
-            # Ask the user for the validation.pem URL
-            self.certificate_url_view = ChefValidationCertificateDialog(self.processView, self)
-            self.certificate_url_view.show()
-            if self.certificate_url_view.get_data() is None:
-                self.processView.setChefCertificateRetrievalStatus(_('CANCELED'))
-                self.processView.enableAcceptButton()
-                return False
-            else:
-                chef_validation = self.certificate_url_view.get_data()
-
-        # Save Chef validation certificate in a PEM file
-        if not self._save_secure_file('/etc/chef/validation.pem', chef_validation):
+        if gecosCC.is_registered_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name()):
+            # re-register
+            client_pem = gecosCC.reregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
+        else:
+            # register
+            client_pem = gecosCC.register_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
+            
+        # Check the client_pem data
+        if client_pem is False:
             self.processView.setChefCertificateRetrievalStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror_gtk(_("There was an error while saving validation certificate"),
+            showerror_gtk(_("There was an error while getting the client certificate"),
                  self.view)
+            gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
+            self._clean_connection_files_on_error()
+            return False        
+        
+        # Save Chef client certificate in a PEM file
+        if not self._save_secure_file('/etc/chef/client.pem', client_pem):
+            self.processView.setChefCertificateRetrievalStatus(_('ERROR'))
+            self.processView.enableAcceptButton()
+            showerror_gtk(_("There was an error while saving the client certificate"),
+                 self.view)
+            gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
             self._clean_connection_files_on_error()
             return False
 
+        # Get autoconf data
+        conf = gecosCC.get_json_autoconf(self.view.get_gecos_access_data())
+            
         # Check configured GEMs repo
         if (conf is not None 
             and conf.has_key("gem_repo")):
@@ -469,6 +471,7 @@ class ConnectWithGecosCCController(object):
                                 self.logger.debug("User don'w want to add the HTTPS server certificate to the Trusted CA list!")
                                 self.processView.setChefCertificateRetrievalStatus(_('ERROR'))
                                 self.processView.enableAcceptButton()
+                                gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
                                 self._clean_connection_files_on_error()
                                 return False                 
                                 
@@ -485,6 +488,7 @@ class ConnectWithGecosCCController(object):
                                     self.processView.enableAcceptButton()
                                     showerror_gtk(_("Can't connect to GEMs repository!") + "\n" +  _("SSL ERROR:") + ' ' + errormsg,
                                          None)
+                                    gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
                                     self._clean_connection_files_on_error()
                                     return False                                
                     else:
@@ -495,6 +499,7 @@ class ConnectWithGecosCCController(object):
                         self.processView.enableAcceptButton()
                         showerror_gtk(_("Can't connect to GEMs repository!") + "\n" +  _("SSL ERROR:") + ' ' + errormsg,
                              None)
+                        gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
                         self._clean_connection_files_on_error()
                         return False       
 
@@ -509,6 +514,7 @@ class ConnectWithGecosCCController(object):
                     self.processView.enableAcceptButton()
                     showerror_gtk(_("There was an error while adding the GEMs repository:" + "\n" + gem_repo),
                          self.view)
+                    gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
                     self._clean_connection_files_on_error()
                     return False
 
@@ -521,6 +527,7 @@ class ConnectWithGecosCCController(object):
                     self.processView.enableAcceptButton()
                     showerror_gtk(_("There was an error while installing a required GEM:" + " " + gem_name),
                          self.view)
+                    gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
                     self._clean_connection_files_on_error()
                     return False
 
@@ -539,12 +546,10 @@ class ConnectWithGecosCCController(object):
 
         self.logger.debug("- Create /etc/chef/client.rb")
         
-        workstationData = self.view.get_workstation_data()
         chef_admin_name = self.view.get_gecos_access_data().get_login()
         chef_url = self.view.get_gecos_access_data().get_url()
         chef_url = chef_url.split('//')[1].split(':')[0]
         chef_url = "https://" + chef_url + '/'        
-        
         
         if (conf is not None 
             and conf.has_key("chef")
@@ -593,6 +598,7 @@ class ConnectWithGecosCCController(object):
                             self.logger.debug("User don'w want to add the HTTPS server certificate to the Trusted CA list!")
                             self.processView.setLinkToChefStatus(_('ERROR'))
                             self.processView.enableAcceptButton()
+                            gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
                             self._clean_connection_files_on_error()
                             return False                 
                             
@@ -609,6 +615,7 @@ class ConnectWithGecosCCController(object):
                                 self.processView.enableAcceptButton()
                                 showerror_gtk(_("Can't connect to Chef Server!") + "\n" +  _("SSL ERROR:") + ' ' + errormsg,
                                      None)
+                                gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
                                 self._clean_connection_files_on_error()
                                 return False                                
                 else:
@@ -619,6 +626,7 @@ class ConnectWithGecosCCController(object):
                     self.processView.enableAcceptButton()
                     showerror_gtk(_("Can't connect to Chef Server!") + "\n" +  _("SSL ERROR:") + ' ' + errormsg,
                          None)
+                    gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
                     self._clean_connection_files_on_error()
                     return False       
 
@@ -629,14 +637,14 @@ class ConnectWithGecosCCController(object):
         template.group = 'root'
         template.mode = 00644
         template.variables = { 'chef_url':  chef_url,
-                              'chef_admin_name':  chef_admin_name,
-                              'chef_node_name':  workstationData.get_node_name()}                
+                              'chef_node_name':  workstationData.get_node_name()}
         
         if not template.save():
             self.processView.setLinkToChefStatus(_('ERROR'))
             self.processView.enableAcceptButton()
             showerror_gtk(_("Can't create/modify /etc/chef/client.rb file"),
                  None)
+            gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
             self._clean_connection_files_on_error()
             return False            
         
@@ -651,6 +659,7 @@ class ConnectWithGecosCCController(object):
             self.processView.enableAcceptButton()
             showerror_gtk(_("Can't link to chef server!"),
                  self.view)
+            gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
             self._clean_connection_files_on_error()
             return False 
         
@@ -673,6 +682,7 @@ class ConnectWithGecosCCController(object):
             self.processView.enableAcceptButton()
             showerror_gtk(_("Can't create/modify /etc/chef.control file"),
                  self.view)
+            gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
             self._clean_connection_files_on_error()
             return False    
     
@@ -694,6 +704,7 @@ class ConnectWithGecosCCController(object):
             self.processView.enableAcceptButton()
             showerror_gtk(_("Can't register the computer in GECOS CC"),
                  self.view)
+            gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
             self._clean_connection_files_on_error()
             return False          
         
@@ -703,6 +714,7 @@ class ConnectWithGecosCCController(object):
             self.processView.enableAcceptButton()
             showerror_gtk(_("Can't save /etc/gcc.control file"),
                  self.view)
+            gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
             self._clean_connection_files_on_error()
             return False    
         
@@ -756,42 +768,15 @@ class ConnectWithGecosCCController(object):
         # Save workstation data
         self.workstationDataDao.save(self.view.get_workstation_data())
 
-        # Get validation.pem from server
-        self.logger.debug("Get validation.pem from server")
-        gecosCC = GecosCC()
-        conf = gecosCC.get_json_autoconf(self.view.get_gecos_access_data())
-        chef_validation = None
-        if (conf is not None 
-            and conf.has_key("chef")
-            and conf["chef"].has_key("chef_validation")):
-            chef_validation = base64.decodestring(conf["chef"]["chef_validation"])
-            self.logger.debug("validation.pem retrieved from GECOS auto conf")
-        
-        if chef_validation is None:
-            # Ask the user for the validation.pem URL
-            self.certificate_url_view = ChefValidationCertificateDialog(self.processView, self)
-            self.certificate_url_view.show(self.processView, self)
-            if self.certificate_url_view.get_data() is None:
-                self.processView.setChefCertificateRetrievalStatus(_('CANCELED'))
-                self.processView.enableAcceptButton()
-                return False
-            else:
-                chef_validation = self.certificate_url_view.get_data()
-
-        # Save Chef validation certificate in a PEM file
-        if not self._save_secure_file('/etc/chef/validation.pem', chef_validation):
-            self.processView.setChefCertificateRetrievalStatus(_('ERROR'))
-            self.processView.enableAcceptButton()
-            showerror_gtk(_("There was an error while saving validation certificate"),
-                 self.view)
-            self._clean_disconnection_files_on_error()
-            return False
+        # We don't need any certificate to unlink from Chef or GECOS CC
 
         self.processView.setChefCertificateRetrievalStatus(_('DONE'))
         self.processView.addProgressFraction(0.16)
         
         self.processView.setLinkToChefStatus(_('IN PROCESS'))
 
+        gecosCC = GecosCC()
+        
         # Unregister from GECOS Control Center
         self.logger.debug("Unregister computer")
         workstationData = self.view.get_workstation_data()
@@ -808,62 +793,6 @@ class ConnectWithGecosCCController(object):
         # Unlink from Chef
         self.logger.debug("Unlink from Chef")
         
-        self.logger.debug("- Set /etc/chef/client.rb with default values")
-        template = Template()
-        template.source = get_data_file('templates/client.rb')
-        template.destination = '/etc/chef/client.rb'
-        template.owner = 'root'
-        template.group = 'root'
-        template.mode = 00644
-        template.variables = { 'chef_url':  'CHEF_URL',
-                              'chef_admin_name':  'ADMIN_NAME',
-                              'chef_node_name':  'NODE_NAME'}                
-        
-        if not template.save():
-            self.processView.setLinkToChefStatus(_('ERROR'))
-            self.processView.enableAcceptButton()
-            showerror_gtk(_("Can't create/modify /etc/chef/client.rb file"),
-                 None)
-            self._clean_disconnection_files_on_error()
-            return False            
-        
-        self.logger.debug("- Prepare /etc/chef/knife.rb")
-        chef_admin_name = self.view.get_gecos_access_data().get_login()
-        chef_url = self.view.get_gecos_access_data().get_url()
-        chef_url = chef_url.split('//')[1].split(':')[0]
-        chef_url = "https://" + chef_url + '/'        
-        
-        
-        if (conf is not None 
-            and conf.has_key("chef")
-            and conf["chef"].has_key("chef_server_uri")):
-            chef_url = conf["chef"]["chef_server_uri"]
-            self.logger.debug("chef_url retrieved from GECOS auto conf")        
-
-        if (conf is not None 
-            and conf.has_key("chef")
-            and conf["chef"].has_key("chef_admin_name")):
-            chef_admin_name = conf["chef"]["chef_admin_name"]
-            self.logger.debug("chef_admin_name retrieved from GECOS auto conf")        
-
-        
-        template = Template()
-        template.source = get_data_file('templates/knife.rb')
-        template.destination = '/etc/chef/knife.rb'
-        template.owner = 'root'
-        template.group = 'root'
-        template.mode = 00644
-        template.variables = { 'chef_url':  chef_url,
-                              'chef_admin_name':  chef_admin_name}                
-
-        if not template.save():
-            self.processView.setLinkToChefStatus(_('ERROR'))
-            self.processView.enableAcceptButton()
-            showerror_gtk(_("Can't create/modify /etc/chef/knife.rb file"),
-                 self.view)
-            self._clean_disconnection_files_on_error()
-            return False 
-
         self.logger.debug("- Remove control file")
         if not self._remove_file('/etc/chef.control'):
             self.processView.setLinkToChefStatus(_('ERROR'))
@@ -884,7 +813,8 @@ class ConnectWithGecosCCController(object):
 
 
         self.logger.debug('- Deleting node ' + workstationData.get_node_name())
-        if not self._execute_command('knife node delete "' + workstationData.get_node_name() + '" -c /etc/chef/knife.rb -y'):
+        if not gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), 
+                workstationData.get_node_name()):
             self.processView.setLinkToChefStatus(_('ERROR'))
             self.processView.enableAcceptButton()
             showerror_gtk(_("Can't delete Chef node"),
@@ -900,14 +830,6 @@ class ConnectWithGecosCCController(object):
                  self.view)
             self._clean_disconnection_files_on_error()
             return False         
-
-        self.logger.debug('- Deleting client ' + workstationData.get_node_name())
-        if not self._execute_command('knife client delete "' + workstationData.get_node_name() + '" -c /etc/chef/knife.rb -y'):
-            self.processView.setLinkToChefStatus(_('ERROR'))
-            showerror_gtk(_("Can't delete Chef node"),
-                 self.view)
-            self._clean_disconnection_files_on_error()
-            return False 
 
         self.logger.debug('- Stop chef client service ')
         self._execute_command('service chef-client stop')

@@ -43,9 +43,7 @@ class GecosCC(object):
         self.last_request_content = None
         self.timeout = 120
         
-    def validate_credentials(self, data):
-        self.logger.debug('Validating credentials...')
-        
+    def _check_credentials(self, data):
         if data is None:
             raise ValueError('data is None')
         
@@ -67,6 +65,14 @@ class GecosCC(object):
                 
         if not Validation().isUrl(data.get_url()):
             self.logger.warn('Malformed url!')
+            return False
+            
+        return True
+            
+    def validate_credentials(self, data):
+        self.logger.debug('Validating credentials...')
+        
+        if not self._check_credentials(data):
             return False
         
         # Check credentials
@@ -99,27 +105,7 @@ class GecosCC(object):
     def get_computer_names(self, data):
         self.logger.debug('Get all computer names by text...')
         
-        if data is None:
-            raise ValueError('data is None')
-        
-        if not isinstance(data, GecosAccessData):
-            raise ValueError('data is not a GecosAccessData instance')    
-            
-        # login, password and URL are mandatory
-        if data.get_login() is None or data.get_login().strip() == '':
-            self.logger.warn('Empty login!')
-            return False
-
-        if data.get_password() is None or data.get_password().strip() == '':
-            self.logger.warn('Empty password!')
-            return False
-
-        if data.get_url() is None or data.get_url().strip() == '':
-            self.logger.warn('Empty url!')
-            return False
-                
-        if not Validation().isUrl(data.get_url()):
-            self.logger.warn('Malformed url!')
+        if not self._check_credentials(data):
             return False
         
         # Get the list of workstation names
@@ -133,7 +119,7 @@ class GecosCC(object):
             user = data.get_login()
             password = data.get_password()
             r = requests.get(url, auth=(user,password), headers=headers, 
-                verify=False, timeout=self.timeout)
+                verify=True, timeout=self.timeout)
             if r.ok:
                 self.logger.debug('Response: %s'%(url))
                 computer_names = False
@@ -174,27 +160,7 @@ class GecosCC(object):
     def search_ou_by_text(self, data, searchFilter):
         self.logger.debug('Search ou by text...')
         
-        if data is None:
-            raise ValueError('data is None')
-        
-        if not isinstance(data, GecosAccessData):
-            raise ValueError('data is not a GecosAccessData instance')    
-            
-        # login, password and URL are mandatory
-        if data.get_login() is None or data.get_login().strip() == '':
-            self.logger.warn('Empty login!')
-            return False
-
-        if data.get_password() is None or data.get_password().strip() == '':
-            self.logger.warn('Empty password!')
-            return False
-
-        if data.get_url() is None or data.get_url().strip() == '':
-            self.logger.warn('Empty url!')
-            return False
-                
-        if not Validation().isUrl(data.get_url()):
-            self.logger.warn('Malformed url!')
+        if not self._check_credentials(data):
             return False
         
         if searchFilter is None:
@@ -211,7 +177,7 @@ class GecosCC(object):
             user = data.get_login()
             password = data.get_password()
             r = requests.get(url, auth=(user,password), headers=headers, 
-                verify=False, timeout=self.timeout)
+                verify=True, timeout=self.timeout)
             if r.ok:
                 self.logger.debug('Response: %s'%(url))
                 arr_ou = False
@@ -236,27 +202,7 @@ class GecosCC(object):
     def unregister_computer(self, data, nodename):
         self.logger.debug('Unregister computer...')
         
-        if data is None:
-            raise ValueError('data is None')
-        
-        if not isinstance(data, GecosAccessData):
-            raise ValueError('data is not a GecosAccessData instance')    
-            
-        # login, password and URL are mandatory
-        if data.get_login() is None or data.get_login().strip() == '':
-            self.logger.warn('Empty login!')
-            return False
-
-        if data.get_password() is None or data.get_password().strip() == '':
-            self.logger.warn('Empty password!')
-            return False
-
-        if data.get_url() is None or data.get_url().strip() == '':
-            self.logger.warn('Empty url!')
-            return False
-                
-        if not Validation().isUrl(data.get_url()):
-            self.logger.warn('Malformed url!')
+        if not self._check_credentials(data):
             return False
         
         if nodename is None or nodename.strip() == '':
@@ -275,7 +221,7 @@ class GecosCC(object):
             user = data.get_login()
             password = data.get_password()
             r = requests.delete(url, auth=(user,password), headers=headers, 
-                verify=False, timeout=self.timeout)
+                verify=True, timeout=self.timeout)
             if r.ok:
                 self.logger.debug('Response: %s'%(url))
                 response_json = False
@@ -307,27 +253,7 @@ class GecosCC(object):
     def register_computer(self, data, nodename, selected_ou):
         self.logger.debug('Register computer (%s, %s)...', nodename, selected_ou)
         
-        if data is None:
-            raise ValueError('data is None')
-        
-        if not isinstance(data, GecosAccessData):
-            raise ValueError('data is not a GecosAccessData instance')    
-            
-        # login, password and URL are mandatory
-        if data.get_login() is None or data.get_login().strip() == '':
-            self.logger.warn('Empty login!')
-            return False
-
-        if data.get_password() is None or data.get_password().strip() == '':
-            self.logger.warn('Empty password!')
-            return False
-
-        if data.get_url() is None or data.get_url().strip() == '':
-            self.logger.warn('Empty url!')
-            return False
-                
-        if not Validation().isUrl(data.get_url()):
-            self.logger.warn('Malformed url!')
+        if not self._check_credentials(data):
             return False
         
         if nodename is None or nodename.strip() == '':
@@ -353,7 +279,7 @@ class GecosCC(object):
             self.logger.debug('payload: %s'%(json.dumps(payload)))
             
             r = requests.post(url, auth=(user,password), 
-                verify=False, timeout=self.timeout, data=payload)
+                verify=True, timeout=self.timeout, data=payload)
             if r.ok:
                 self.logger.debug('Response: %s'%(url))
                 response_json = False
@@ -382,27 +308,213 @@ class GecosCC(object):
             
         return False          
 
-    def get_file_content_from_url(self, url):
-        if url is None or url.strip() == '':
-            self.logger.warn('Empty url!')
-            return None      
+     
+    def register_chef_node(self, data, nodename):
+        self.logger.debug('Register computer (%s)...', nodename)
         
-        # Get the file content
+        if not self._check_credentials(data):
+            return False
+        
+        if nodename is None or nodename.strip() == '':
+            self.logger.warn('nodename is empty!')
+            return False
+        
+        # Register in the Chef Node
         try:
-            url = str(url)
+            url = str(data.get_url())
+            if url.endswith('/'):
+                url = url[0:-1]
+            url = "%s/register/node/"%(url)
             self.logger.debug('Try to connect to: %s'%(url))
-            r = requests.get(url, verify=False, timeout=self.timeout)
+            user = data.get_login()
+            password = data.get_password()
+            
+            payload = {'node_id': nodename}
+            self.logger.debug('payload: %s'%(json.dumps(payload)))
+            
+            r = requests.post(url, auth=(user,password), 
+                verify=True, timeout=self.timeout, data=payload)
             if r.ok:
                 self.logger.debug('Response: %s'%(url))
+                response_json = False
                 if hasattr(r,'text'):
-                    return r.text
+                    self.logger.debug('Response: %s'%(r.text))
+                    response_json = json.loads(r.text)
                 else:  
-                    return r.content
+                    self.logger.debug('Response: %s'%(r.content))
+                    response_json = json.loads(r.content)               
+                
+                if response_json is None:
+                    self.logger.error('Error registering computer: NO RESPONSE')
+                    return False
+                
+                if not response_json["ok"]:
+                    self.logger.error('Error registering computer: %s'%(response_json['message']))
+                    return False
+                
+                return response_json["client_private_key"]            
 
             self.logger.debug('Response: NOT OK')
                      
         except Exception:
-            self.logger.warn('Error getting content from url: %s'%(url))
+            self.logger.warn('Error connecting to Gecos server: %s'%(data.get_url()))
             self.logger.warn(str(traceback.format_exc()))
             
-        return None          
+        return False
+
+    def reregister_chef_node(self, data, nodename):
+        self.logger.debug('Re-Register computer (%s)...', nodename)
+        
+        if not self._check_credentials(data):
+            return False
+        
+        if nodename is None or nodename.strip() == '':
+            self.logger.warn('nodename is empty!')
+            return False
+        
+        # Register in the Chef Node
+        try:
+            url = str(data.get_url())
+            if url.endswith('/'):
+                url = url[0:-1]
+            url = "%s/register/node/"%(url)
+            self.logger.debug('Try to connect to: %s'%(url))
+            user = data.get_login()
+            password = data.get_password()
+            
+            payload = {'node_id': nodename}
+            self.logger.debug('payload: %s'%(json.dumps(payload)))
+            
+            r = requests.put(url, auth=(user,password), 
+                verify=True, timeout=self.timeout, data=payload)
+            if r.ok:
+                self.logger.debug('Response: %s'%(url))
+                response_json = False
+                if hasattr(r,'text'):
+                    self.logger.debug('Response: %s'%(r.text))
+                    response_json = json.loads(r.text)
+                else:  
+                    self.logger.debug('Response: %s'%(r.content))
+                    response_json = json.loads(r.content)               
+                
+                if response_json is None:
+                    self.logger.error('Error registering computer: NO RESPONSE')
+                    return False
+                
+                if not response_json["ok"]:
+                    self.logger.error('Error registering computer: %s'%(response_json['message']))
+                    return False
+                
+                return response_json["client_private_key"]            
+
+            self.logger.debug('Response: NOT OK')
+                     
+        except Exception:
+            self.logger.warn('Error connecting to Gecos server: %s'%(data.get_url()))
+            self.logger.warn(str(traceback.format_exc()))
+            
+        return False        
+        
+        
+    def unregister_chef_node(self, data, nodename):
+        self.logger.debug('Unregister Chef node (%s)...'%(nodename))
+        
+        if not self._check_credentials(data):
+            return False
+
+        if nodename is None or nodename.strip() == '':
+            self.logger.warn('nodename is empty!')
+            return False
+
+        
+        # Unregister the Chef Node
+        try:
+            url = str(data.get_url())
+            if url.endswith('/'):
+                url = url[0:-1]
+            url = "%s/register/node/?node_id=%s"%(url, nodename)
+            self.logger.debug('Try to connect to: %s'%(url))
+            headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+            user = data.get_login()
+            password = data.get_password()
+            r = requests.delete(url, auth=(user,password), headers=headers, 
+                verify=True, timeout=self.timeout)
+            if r.ok:
+                self.logger.debug('Response: %s'%(url))
+                response_json = False
+                if hasattr(r,'text'):
+                    self.logger.debug('Response: %s'%(r.text))
+                    response_json = json.loads(r.text)
+                else:  
+                    self.logger.debug('Response: %s'%(r.content))
+                    response_json = json.loads(r.content)               
+                
+                if response_json is None:
+                    self.logger.error('Error unregistering computer: NO RESPONSE')
+                    return False
+                
+                if not response_json["ok"]:
+                    self.logger.error('Error unregistering computer: %s'%(response_json['message']))
+                    return False
+                
+                return True                
+
+            self.logger.debug('Response: NOT OK')
+                     
+        except Exception:
+            self.logger.warn('Error connecting to Gecos server: %s'%(data.get_url()))
+            self.logger.warn(str(traceback.format_exc()))
+            
+        return False
+        
+        
+    def is_registered_chef_node(self, data, nodename):
+        self.logger.debug('IsRegistered? Chef node (%s)...'%(nodename))
+        
+        if not self._check_credentials(data):
+            return False
+        
+        if nodename is None or nodename.strip() == '':
+            self.logger.warn('nodename is empty!')
+            return False
+
+        
+        # Unregister the Chef Node
+        try:
+            url = str(data.get_url())
+            if url.endswith('/'):
+                url = url[0:-1]
+            url = "%s/register/node/?node_id=%s"%(url, nodename)
+            self.logger.debug('Try to connect to: %s'%(url))
+            headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+            user = data.get_login()
+            password = data.get_password()
+            r = requests.get(url, auth=(user,password), headers=headers, 
+                verify=True, timeout=self.timeout)
+            if r.ok:
+                self.logger.debug('Response: %s'%(url))
+                response_json = False
+                if hasattr(r,'text'):
+                    self.logger.debug('Response: %s'%(r.text))
+                    response_json = json.loads(r.text)
+                else:  
+                    self.logger.debug('Response: %s'%(r.content))
+                    response_json = json.loads(r.content)               
+                
+                if response_json is None:
+                    self.logger.error('Error unregistering computer: NO RESPONSE')
+                    return False
+                
+                if not response_json["ok"]:
+                    self.logger.error('Error unregistering computer: %s'%(response_json['message']))
+                    return False
+                
+                return True                
+
+            self.logger.debug('Response: NOT OK')
+                     
+        except Exception:
+            self.logger.warn('Error connecting to Gecos server: %s'%(data.get_url()))
+            self.logger.warn(str(traceback.format_exc()))
+            
+        return False                  
