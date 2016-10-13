@@ -26,18 +26,11 @@ import sys
 import socket
 
 
-if 'check' in sys.argv:
-    # Mock view classes for testing purposses
-    print "==> Loading mocks..."
-    from gecosws_config_assistant.view.ViewMocks import showerror_gtk, askyesno_gtk, AutoSetupDialog, ADSetupDataElemView, ConnectWithGecosCCDialog
-    from gecosws_config_assistant.util.UtilMocks import GecosCC
-else:
-    # Use real view classes
-    from gecosws_config_assistant.view.AutoSetupDialog import AutoSetupDialog
-    from gecosws_config_assistant.view.ADSetupDataElemView import ADSetupDataElemView
-    from gecosws_config_assistant.view.CommonDialog import showerror_gtk, askyesno_gtk
-    from gecosws_config_assistant.util.GecosCC import GecosCC
-    from gecosws_config_assistant.view.ConnectWithGecosCCDialog import ConnectWithGecosCCDialog 
+from gecosws_config_assistant.view.AutoSetupDialog import AutoSetupDialog
+from gecosws_config_assistant.view.ADSetupDataElemView import ADSetupDataElemView
+from gecosws_config_assistant.view.CommonDialog import showerror_gtk, askyesno_gtk
+from gecosws_config_assistant.util.GecosCC import GecosCC
+from gecosws_config_assistant.view.ConnectWithGecosCCDialog import ConnectWithGecosCCDialog 
 
 
 from gecosws_config_assistant.util.Validation import Validation

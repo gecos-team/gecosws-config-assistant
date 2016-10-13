@@ -22,16 +22,10 @@ __license__ = "GPL-2"
 
 import sys
 
-if 'check' in sys.argv:
-    # Mock view classes for testing purposses
-    print "==> Loading mocks..."
-    from gecosws_config_assistant.view.ViewMocks import showerror_gtk, askyesno_gtk, ConnectWithGecosCCDialog, GecosCCSetupProgressView
-else:
-    # Use real view classes
-    from gecosws_config_assistant.view.ConnectWithGecosCCDialog import ConnectWithGecosCCDialog
-    from gecosws_config_assistant.view.GecosCCSetupProgressView import GecosCCSetupProgressView
-    from gecosws_config_assistant.view.CommonDialog import showerror_gtk
-    from gecosws_config_assistant.view.CommonDialog import askyesno_gtk
+from gecosws_config_assistant.view.ConnectWithGecosCCDialog import ConnectWithGecosCCDialog
+from gecosws_config_assistant.view.GecosCCSetupProgressView import GecosCCSetupProgressView
+from gecosws_config_assistant.view.CommonDialog import showerror_gtk
+from gecosws_config_assistant.view.CommonDialog import askyesno_gtk
 
 from gecosws_config_assistant.util.GecosCC import GecosCC
 from gecosws_config_assistant.util.Validation import Validation
