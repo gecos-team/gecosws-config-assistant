@@ -37,7 +37,7 @@ from gecosws_config_assistant.dto.ADSetupData import ADSetupData
 from gecosws_config_assistant.view.CommonDialog import showerror_gtk
 
 """
-UserAuthenticationMethodElemView redone in Glade
+View class to setup the user authentication method.
 """
 LOCAL_USERS = 0
 LDAP_USERS  = 1

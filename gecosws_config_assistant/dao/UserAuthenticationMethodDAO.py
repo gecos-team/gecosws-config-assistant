@@ -654,27 +654,28 @@ class UserAuthenticationMethodDAO(object):
       
         # Get authType of authentication method
         authType = None
-        try:
-            with open(self.main_data_file) as fp:
-                for line in fp:
-                    if line.strip() == 'domains = DEFAULT':
-                        self.logger.debug('Detected authentication method: Internal')
-                        authType = 'Internal'
-                        break
-                     
-                    if line.strip() == 'id_provider = ad':
-                        self.logger.debug('Detected authentication method: Active Directory')
-                        authType = 'AD'
-                        break
-            
-                    if line.strip() == 'id_provider = ldap':
-                        self.logger.debug('Detected authentication method: LDAP')
-                        authType = 'LDAP'
-                        break
+        if os.path.isfile(self.main_data_file):
+            try:
+                with open(self.main_data_file) as fp:
+                    for line in fp:
+                        if line.strip() == 'domains = DEFAULT':
+                            self.logger.debug('Detected authentication method: Internal')
+                            authType = 'Internal'
+                            break
+                         
+                        if line.strip() == 'id_provider = ad':
+                            self.logger.debug('Detected authentication method: Active Directory')
+                            authType = 'AD'
+                            break
                 
-        except Exception:
-            self.logger.error('Error reading file:'+ self.main_data_file)
-            self.logger.error(str(traceback.format_exc()))            
+                        if line.strip() == 'id_provider = ldap':
+                            self.logger.debug('Detected authentication method: LDAP')
+                            authType = 'LDAP'
+                            break
+                    
+            except Exception:
+                self.logger.error('Error reading file:'+ self.main_data_file)
+                self.logger.error(str(traceback.format_exc()))            
         
         if authType is None:
             return LocalUsersAuthMethod()

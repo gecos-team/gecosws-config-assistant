@@ -144,65 +144,6 @@ class AutoSetupDialog(ViewMock):
 
 
         
-class UserAuthenticationMethodElemView(ViewMock):
-    '''
-    View class to setup the user authentication method.
-    '''
-
-
-    def __init__(self, parent, mainController):
-        '''
-        Constructor
-        '''
-        self.parent = parent
-        self.controller = mainController
-        self.logger = logging.getLogger('UserAuthenticationMethodElemView')
-        
-        self.data = None
-        
-
-    def get_data(self):
-        return self.__data
-
-
-    def set_data(self, value):
-        self.__data = value
-
-
-    def show(self):
-        self.logger.debug("Show")
- 
-    def accept(self):
-        self.logger.debug("Accept")
-
-
-    def cancel(self):
-        self.logger.debug("cancel")
-
-    def setup(self):
-        self.logger.debug("setup")
-       
-    def focusLdapUriField(self):
-        self.logger.debug("focusLdapUriField")              
-
-    def focusUserBaseDNField(self):
-        self.logger.debug("focusUserBaseDNField")               
-
-    def focusAdDomainField(self):
-        self.logger.debug("focusAdDomainField")               
-
-    def focusAdWorkgroupField(self):
-        self.logger.debug("focusAdWorkgroupField")         
-
-    def focusAdUserField(self):
-        self.logger.debug("focusAdUserField")          
-
-    def focusAdPasswordField(self):
-        self.logger.debug("focusAdPasswordField")        
-               
-    data = property(get_data, set_data, None, None)
-
-
 
         
 class ConnectWithGecosCCDialog(ViewMock):
@@ -276,58 +217,60 @@ class ConnectWithGecosCCDialog(ViewMock):
     workstation_data = property(get_workstation_data, set_workstation_data, None, None)
                 
         
-class GecosCCSetupProcessView(ViewMock):
+class GecosCCSetupProgressView(ViewMock):
     '''
     Dialog class that shows the process of GECOS CC connection/disconnection.
     '''
 
 
     def __init__(self, parent, mainController):
-        '''
-        Constructor
-        '''
-        self.parent = parent
-        self.controller = mainController
-        self.logger = logging.getLogger('GecosCCSetupProcessView')
+        self.logger = logging.getLogger('GecosCCSetupProgressView')
         
-
-    def show(self):
-        self.logger.debug("Show")
-
-
-    def accept(self):
+    def setElements(self):
+        self.logger.debug("Setting elements")
+    
+    def addHandlers(self):
+        self.logger.info('addHandlers')
+    
+    def accept(self, *args):
         self.logger.debug("accept")
-  
-    def hide(self):
-        self.logger.debug("hide")
-                
+    
+    def hide(self, *args):
+        self.logger.debug("Hide this view")
+    
+    def show(self):
+        self.logger.debug("Show this view")
+    
+    def elementChangeText(self, element, text):
+        self.logger.debug("Changing "+str(element)+" to text "+text)
+        
     def setCheckGecosCredentialsStatus(self, status):
-        self.logger.debug("setCheckGecosCredentialsStatus")
-
+        self.logger.debug("Setting gecos cred status")
+    
     def setCheckWorkstationDataStatus(self, status):
-        self.logger.debug("setCheckWorkstationDataStatus")
+        self.logger.debug("Setting workstation data status")
 
     def setChefCertificateRetrievalStatus(self, status):
-        self.logger.debug("setChefCertificateRetrievalStatus")
+        self.logger.debug("Setting chef certificate status")
 
-    def setLinkToChefLabel(self, text):
-        self.logger.debug("setLinkToChefLabel")
+    def setLinkToChefLabel(self, status):
+        self.logger.debug("Setting link to chef label")
         
     def setLinkToChefStatus(self, status):
-        self.logger.debug("setLinkToChefStatus")
+        self.logger.debug("Setting link to chef status")
         
-    def setRegisterInGecosLabel(self, text):
-        self.logger.debug("setRegisterInGecosLabel")
-        
+    def setRegisterInGecosLabel(self, status):
+        self.logger.debug("Setting register in gecos label")
         
     def setRegisterInGecosStatus(self, status):
-        self.logger.debug("setRegisterInGecosStatus")
+        self.logger.debug("Setting register in gecos status")
         
     def setCleanStatus(self, status):
-        self.logger.debug("setCleanStatus")
-        
-        
+        self.logger.debug("Setting clean status")
+    
     def enableAcceptButton(self):
-        self.logger.debug("enableAcceptButton")
-
-
+        self.logger.debug("Enable accept button")
+    
+    def addProgressFraction(self, fraction):
+        self.logger.debug("addProgressFraction(%s)"%(fraction))
+        

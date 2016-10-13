@@ -21,9 +21,6 @@ __copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.o
 __license__ = "GPL-2"
 
 
-from gecosws_config_assistant.view.LocalUserListView import LocalUserListView
-from gecosws_config_assistant.view.LocalUserElemView import LocalUserElemView
-
 from gecosws_config_assistant.view.LocalUserListDialog import LocalUserListDialog
 from gecosws_config_assistant.view.LocalUserElemDialog import LocalUserElemDialog
 from gecosws_config_assistant.view.CommonDialog import showerror_gtk, askyesno_gtk
@@ -123,7 +120,6 @@ class LocalUserController(object):
     def newElement(self):
         self.logger.debug('newElement - BEGIN')
 
-        #self.elemView = LocalUserElemView(self.listView, self)
         self.elemView = LocalUserElemDialog(self.listView, self)
         self.elemView.set_data(None)
         self.elemView.show()  
@@ -142,7 +138,6 @@ class LocalUserController(object):
     def updateElement(self, obj):
         self.logger.debug('updateElement - BEGIN')
 
-        #self.elemView = LocalUserElemView(self.listView, self)
         self.elemView = LocalUserElemDialog(self.listView, self)
         self.elemView.set_data(obj)
         self.elemView.show()          
