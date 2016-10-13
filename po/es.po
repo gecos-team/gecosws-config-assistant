@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-13 10:58+0200\n"
+"POT-Creation-Date: 2016-10-13 17:06+0200\n"
 "PO-Revision-Date: 2015-09-29 17:13+0200\n"
 "Last-Translator: root <amp_21004@yahoo.es>\n"
 "Language-Team: Spanish\n"
@@ -54,8 +54,13 @@ msgstr "Aceptar "
 
 #: ../data/glade/localuserpopup.glade:6
 #: ../gecosws_config_assistant/view/LocalUserElemDialog.py:90
+#, fuzzy
 msgid "Add local user"
-msgstr "Añadir usuario local"
+msgstr ""
+"#-#-#-#-#  es.po.glade (PACKAGE VERSION)  #-#-#-#-#\n"
+"A&ntilde;adir usuario local\n"
+"#-#-#-#-#  es.po (PACKAGE VERSION)  #-#-#-#-#\n"
+"Añadir usuario local"
 
 #: ../data/glade/users.glade:167
 msgid "Authentication Method Setup"
@@ -431,12 +436,12 @@ msgstr "¡El campo URL está vacío!"
 #: ../gecosws_config_assistant/controller/LocalUserController.py:78
 #: ../gecosws_config_assistant/controller/LocalUserController.py:94
 #: ../gecosws_config_assistant/controller/LocalUserController.py:103
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:366
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:381
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:401
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:427
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:436
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:445
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:367
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:382
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:412
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:438
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:447
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:456
 #: ../gecosws_config_assistant/view/LocalUserElemDialog.py:123
 msgid "Please fill all the mandatory fields."
 msgstr "Por favor rellene todos los campos obligatorios."
@@ -800,7 +805,7 @@ msgid "Users authenticate by %s method"
 msgstr "Los usuarios se autentican usando el método %s"
 
 #: ../gecosws_config_assistant/controller/MainMenuController.py:205
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:229
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:230
 #: ../gecosws_config_assistant/dto/LDAPAuthMethod.py:43
 #: ../gecosws_config_assistant/tests/dto/LDAPAuthMethodTest.py:40
 #: ../gecosws_config_assistant/view/UserAuthDialog.py:66
@@ -810,7 +815,7 @@ msgid "LDAP"
 msgstr ""
 
 #: ../gecosws_config_assistant/controller/MainMenuController.py:207
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:231
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:232
 #: ../gecosws_config_assistant/dto/ADAuthMethod.py:44
 #: ../gecosws_config_assistant/tests/dto/ADAuthMethodTest.py:40
 #: ../gecosws_config_assistant/view/UserAuthDialog.py:66
@@ -820,7 +825,7 @@ msgid "Active Directory"
 msgstr ""
 
 #: ../gecosws_config_assistant/controller/MainMenuController.py:209
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:227
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:228
 #: ../gecosws_config_assistant/dto/LocalUsersAuthMethod.py:43
 #: ../gecosws_config_assistant/tests/dto/LocalUsersAuthMethodTest.py:39
 #: ../gecosws_config_assistant/view/UserAuthDialog.py:66
@@ -860,7 +865,7 @@ msgstr "Error guardando los datos del servidor de NTP"
 msgid "See log for more details."
 msgstr "Vea el log para más detalles."
 
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:301
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:302
 msgid ""
 "The user authentication data has changed.\n"
 "Do you want to setup the user authentication method using this new data?"
@@ -869,56 +874,64 @@ msgstr ""
 "¿Desea configurar los el método de autenticación de usuarios usando estos "
 "nuevos datos?"
 
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:366
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:367
 msgid "The URI field is empty!"
 msgstr "¡El campo URI está vacío!"
 
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:373
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:374
 msgid "Malformed LDAP URI!"
 msgstr "¡URI de LDAP mal formada!"
 
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:373
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:374
 msgid "Please check that the URI starts with 'ldap://' or 'ldaps://'."
 msgstr "Por favor, compruebe que la URI empieza con 'ldap://' o 'ldaps://'."
 
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:381
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:382
 msgid "The users base DN field is empty!"
 msgstr "¡El campo base DN de usuarios está vacío!"
 
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:388
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:389
 msgid "Can't connect to LDAP server!"
 msgstr "¡No se puede conectar al servidor de LDAP!"
 
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:388
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:453
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:389
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:464
 msgid "Please check all the fields and your network connection."
 msgstr "Por favor compruebe todos los campos y su conexión con la red!"
 
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:401
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:404
+msgid "Bad netbios hostname!"
+msgstr "¡El hosname no cumple los requisitos de Netbios!"
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:404
+msgid "Please change the hostname of this computer."
+msgstr "Por favor cambie el hostname de este ordenador."
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:412
 msgid "The Domain field is empty!"
 msgstr "¡El campo Dominio está vacío!"
 
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:418
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:429
 msgid "Can't resolv the Active Directory Domain name!"
 msgstr "¡No se puede resolver el nombre de dominio de Active Directory!"
 
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:419
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:430
 msgid "Please check the Domain field and your DNS configuration."
 msgstr "Por favor compurebe el campo Dominio y su configuración de DNS."
 
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:427
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:438
 msgid "The Workgroup field is empty!"
 msgstr "El campo Grupo de trabajo está vacío!"
 
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:435
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:446
 msgid "The AD administrator user field is empty!"
 msgstr "¡El campo usuario Administrador AD está vacío!"
 
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:444
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:455
 msgid "The AD administrator password field is empty!"
 msgstr "¡El campo contraseña de administrador AD está vacío!"
 
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:452
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:463
 msgid "Can't connect to Active Directory server!"
 msgstr "¡No se puede conectar con el servidor de Active Directory!"
 
@@ -1101,4 +1114,3 @@ msgstr ""
 #: ../gecosws_config_assistant/view/UserAuthDialog.py:408
 msgid "An error happened while saving the users authentication method!"
 msgstr "¡Ocurrió un error al guardar el método de autenticación de usuarios!"
-

@@ -30,6 +30,7 @@ from gecosws_config_assistant.util.Validation import Validation
 
 
 from gecosws_config_assistant.dao.UserAuthenticationMethodDAO import UserAuthenticationMethodDAO
+from gecosws_config_assistant.dao.NetworkInterfaceDAO import NetworkInterfaceDAO
 
 from gecosws_config_assistant.dto.NTPServer import NTPServer
 from gecosws_config_assistant.dto.LDAPSetupData import LDAPSetupData
@@ -394,6 +395,16 @@ class UserAuthenticationMethodController(object):
         if isinstance(newData, ADAuthMethod):
             # Check AD parameters
             newAuthData = newData.get_data()
+            
+            networkInterfaceDAO = NetworkInterfaceDAO()
+            hostname = networkInterfaceDAO.get_hostname()
+            
+            if not Validation().isValidNetbiosHostname(hostname):
+                self.logger.debug("Bad hostname: %s"%(hostname))
+                showerror_gtk(_("Bad netbios hostname!") + ": " +hostname + "\n" + _("Please change the hostname of this computer."),
+                     self.view)
+                self.view.focusAdDomainField()
+                return False                          
             
             if (newAuthData.get_domain() is None or
                 newAuthData.get_domain().strip() == ''):
