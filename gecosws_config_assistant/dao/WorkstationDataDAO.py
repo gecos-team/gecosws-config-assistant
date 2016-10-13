@@ -23,6 +23,7 @@ __license__ = "GPL-2"
 from gecosws_config_assistant.dto.WorkstationData import WorkstationData
 from gecosws_config_assistant.util.JSONUtil import JSONUtil
 from gecosws_config_assistant.util.Template import Template
+from gecosws_config_assistant.dao.NetworkInterfaceDAO import NetworkInterfaceDAO
 
 import logging
 import traceback
@@ -80,15 +81,11 @@ class WorkstationDataDAO(object):
             
         if name is None:
             # Get hostname as default name
-            p = subprocess.Popen('hostname', shell=True, 
-                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            for line in p.stdout.readlines():
-                name = line
-            p.wait()
+            networkInterfaceDAO = NetworkInterfaceDAO()
+            name = networkInterfaceDAO.get_hostname()
                
             if name is not None:
                 name = name.replace('"', '')
-                name = name.strip()
                 data.set_name(name)    
                                             
         

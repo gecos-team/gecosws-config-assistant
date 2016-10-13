@@ -55,9 +55,9 @@ class LDAPSetupDataTest(unittest.TestCase):
 
         # Check LDAP connection
         obj.set_uri('ldap://test.ldap.server')
-        obj.set_base('ou=users,dc=us,dc=es')
-        obj.set_base_group('ou=groups,dc=us,dc=es')
-        obj.set_bind_user_dn('cn=admin,dc=us,dc=es')
+        obj.set_base('ou=users,dc=example,dc=com')
+        obj.set_base_group('ou=groups,dc=example,dc=com')
+        obj.set_bind_user_dn('cn=admin,dc=example,dc=com')
         obj.set_bind_user_pwd('demoevaos')       
         
         self.assertTrue(obj.test()) 
@@ -67,20 +67,20 @@ class LDAPSetupDataTest(unittest.TestCase):
 
         obj = LDAPSetupData()
         obj.set_uri('ldap://test.ldap.server')
-        obj.set_base('ou=users,dc=us,dc=es')
+        obj.set_base('ou=users,dc=example,dc=com')
         
         self.assertTrue(obj.test()) 
 
         obj = LDAPSetupData()
         obj.set_uri('ldap://test.ldap.server')
-        obj.set_base('ou=users,dc=us,dc=es')
-        obj.set_bind_user_dn('cn=admin,dc=us,dc=es')
+        obj.set_base('ou=users,dc=example,dc=com')
+        obj.set_bind_user_dn('cn=admin,dc=example,dc=com')
         obj.set_bind_user_pwd('demoevaos')       
         self.assertTrue(obj.test()) 
 
         obj = LDAPSetupData()
         obj.set_uri('ldap://test.ldap.server')
-        obj.set_base('ou=users,dc=us,dc=es')
-        obj.set_base_group('ou=groups,dc=us,dc=es')
+        obj.set_base('ou=users,dc=example,dc=com')
+        obj.set_base_group('ou=groups,dc=example,dc=com')
         self.assertTrue(obj.test()) 
 

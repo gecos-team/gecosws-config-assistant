@@ -29,6 +29,8 @@ import array
 import struct
 import socket
 import platform
+import subprocess
+import traceback
 
 class NetworkInterfaceDAO(object):
     '''
@@ -96,4 +98,51 @@ class NetworkInterfaceDAO(object):
         
         return interfaces
 
+    def get_hostname(self):
+        name = None
+        try:
+            p = subprocess.Popen('hostname', shell=True, 
+                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            for line in p.stdout.readlines():
+                name = line
+            p.wait()
 
+            if name is not None:
+                name = name.strip()
+ 
+        except:
+            self.logger.warn('Error trying to get the hostname')
+            self.logger.warn(str(traceback.format_exc()))
+            
+        return name
+        
+    def set_hostname(self, name):
+        if name is None:
+            return False
+            
+        original = self.get_hostname()
+        try:
+            p = subprocess.Popen('hostname %s'%(name), shell=True, 
+                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            for line in p.stdout.readlines():
+                name = line
+            p.wait()
+ 
+        except:
+            self.logger.warn('Error trying to set the hostname')
+            self.logger.warn(str(traceback.format_exc()))
+            return False
+            
+        # Change the name is /etc/hosts file
+        hosts = None
+        with open('/etc/hosts','r') as f:
+            hosts = f.read()
+            
+        if hosts is not None:
+            hosts = hosts.replace(original, name)
+            
+            with open('/etc/hosts','w') as f:
+                f.write(hosts)
+        
+            
+        return True        

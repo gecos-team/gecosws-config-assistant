@@ -32,6 +32,9 @@ from gecosws_config_assistant.dto.LDAPSetupData import LDAPSetupData
 from gecosws_config_assistant.dto.ADAuthMethod import ADAuthMethod
 from gecosws_config_assistant.dto.ADSetupData import ADSetupData
 
+from gecosws_config_assistant.dao.NetworkInterfaceDAO import NetworkInterfaceDAO
+
+
 import PAM
 
 pam_password = 'none'
@@ -70,6 +73,16 @@ class UserAuthenticationMethodDAOTest(unittest.TestCase):
         localUserDao = LocalUserDAO()
         authMethodDao = UserAuthenticationMethodDAO()
         
+        # For Active Directory the hostname must be valid
+        networkInterfaceDAO = NetworkInterfaceDAO()
+        originalHostname = networkInterfaceDAO.get_hostname()
+        self.assertIsNotNone(originalHostname)
+        print 'Original host name is: %s'%(originalHostname)
+        
+        self.assertTrue(networkInterfaceDAO.set_hostname('mycomputer'))
+        self.assertEqual(networkInterfaceDAO.get_hostname(), 'mycomputer')
+        
+        
         adMethod = ADAuthMethod()
         adData = ADSetupData()
         
@@ -87,9 +100,9 @@ class UserAuthenticationMethodDAOTest(unittest.TestCase):
         
         # Data of a LDAP server used for tests 
         ldapData.set_uri('ldap://test.ldap.server')
-        ldapData.set_base('ou=users,dc=us,dc=es')
-        ldapData.set_base_group('ou=groups,dc=us,dc=es')
-        ldapData.set_bind_user_dn('cn=admin,dc=us,dc=es')
+        ldapData.set_base('ou=users,dc=example,dc=com')
+        ldapData.set_base_group('ou=groups,dc=example,dc=com')
+        ldapData.set_bind_user_dn('cn=admin,dc=example,dc=com')
         ldapData.set_bind_user_pwd('demoevaos')
         
         ldapMethod.set_data(ldapData)        
@@ -200,5 +213,8 @@ class UserAuthenticationMethodDAOTest(unittest.TestCase):
 
         print 'Delete the test user'
         localUserDao.delete(tstuser)   
+
+        # Restore the original hostname
+        self.assertTrue(networkInterfaceDAO.set_hostname(originalHostname))
 
       

@@ -435,7 +435,7 @@ class SSLUtil(object):
         
     def getCertificateInfo(self, certificate):
         if certificate is None:
-            return False
+            return None
         
         filetype = crypto.FILETYPE_ASN1
         if self.isPEM(certificate):
