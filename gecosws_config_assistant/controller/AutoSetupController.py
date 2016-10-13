@@ -138,13 +138,13 @@ class AutoSetupController(object):
                     
                     # Ask to the user if he want to trust this certificate
                     if info is not None:
-                        response =  askyesno_gtk((_("The certificate of this server is not trusted!")  + "\n" 
-                            + _("Do you wan't to add it to the trusted certificates list?") + "\n" 
+                        response =  askyesno_gtk((unicode(_("The certificate of this server is not trusted!"), 'utf-8')  + "\n" 
+                            + unicode(_("Do you wan't to add it to the trusted certificates list?"), 'utf-8') + "\n" 
                             + "\n" 
-                            + _("Subject:") + " " + (sslUtil.formatX509Name(info.get_subject())) + "\n" 
-                            + _("Issuer:") + " " + (sslUtil.formatX509Name(info.get_issuer())) + "\n" 
-                            + _("Serial Number:") + " " + str(info.get_serial_number()) + "\n" 
-                            + _("Not before:") + " " + str(info.get_notBefore()) + " " + _("Not after:") + " " + str(info.get_notAfter()) + "\n" 
+                            + unicode(_("Subject:"), 'utf-8') + " " + (sslUtil.formatX509Name(info.get_subject())) + "\n" 
+                            + unicode(_("Issuer:"), 'utf-8') + " " + (sslUtil.formatX509Name(info.get_issuer())) + "\n" 
+                            + unicode(_("Serial Number:"), 'utf-8') + " " + str(info.get_serial_number()) + "\n" 
+                            + unicode(_("Not before:"), 'utf-8') + " " + str(info.get_notBefore()) + " " + unicode(_("Not after:"), 'utf-8') + " " + str(info.get_notAfter()) + "\n" 
                             ), self.view, 'warning')
                             
                         if not response:
