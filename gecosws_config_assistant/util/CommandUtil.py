@@ -47,8 +47,8 @@ class CommandUtil(object):
         '''
         self.logger = logging.getLogger('CommandUtil')
 
-        # Timeout is 200 milliseconds
-        self.timeout = 200
+        # Timeout is 2000 milliseconds
+        self.timeout = 2000
 
 
     def execute_command(self, cmd, my_env={}):
