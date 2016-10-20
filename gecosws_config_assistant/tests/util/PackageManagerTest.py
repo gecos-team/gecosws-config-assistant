@@ -37,16 +37,19 @@ class PackageManagerTest(unittest.TestCase):
         pm = PackageManager()
         
         # Start from a Linux installation without that package
-        self.assertEqual(pm.is_package_installed(test_package_name), False)
+        self.assertFalse(pm.is_package_installed(test_package_name))
         
         # Install the package
         pm.install_package(test_package_name)
-        self.assertEqual(pm.is_package_installed(test_package_name), True)
+        self.assertTrue(pm.is_package_installed(test_package_name))
         
         # Remove the package
         pm.remove_package(test_package_name)
-        self.assertEqual(pm.is_package_installed(test_package_name), False)
+        self.assertFalse(pm.is_package_installed(test_package_name))
 
+        # Look for an existing package
+        self.assertTrue(pm.exists_package(test_package_name))
 
-
+        # Look for a non existing package
+        self.assertFalse(pm.exists_package('nonexisting-package'))
 

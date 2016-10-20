@@ -60,6 +60,26 @@ class PackageManager(object):
         
         return False
 
+    def exists_package(self, package_name):
+        self.logger.debug('exists_package BEGIN')
+        if package_name is None:
+            raise ValueError('package_name is None')
+        
+        self.logger.debug('exists_package(%s)'%(package_name))
+        
+        try:
+            import apt
+            cache = apt.Cache()
+            return cache.has_key(package_name)
+        
+        except ImportError:
+            self.logger.info('No apt library available')
+
+        # TODO: Yum version?
+        
+        
+        raise OSError('Package search failed!')
+
 
     def upgrade_package(self, package_name):
         self.logger.debug('upgrade_package BEGIN')

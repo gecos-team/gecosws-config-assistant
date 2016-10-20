@@ -39,6 +39,7 @@ class GemUtilTest(unittest.TestCase):
         gemUtil.remove_all_gem_sources()
         gemUtil.add_gem_source('https://rubygems.org/')
         gemUtil.uninstall_gem('a1425bt')
+        gemUtil.uninstall_gem('ruby-rc4')
         
         # Start the test
         self.assertNotEqual(gemUtil.get_gem_sources_list(), [])
@@ -51,9 +52,17 @@ class GemUtilTest(unittest.TestCase):
 
         self.assertFalse(gemUtil.add_gem_source('http://nonexistentdomain.org/'))
 
-
+        # Install GEM by using "gem install"
         self.assertFalse(gemUtil.is_gem_intalled('a1425bt'))
         self.assertTrue(gemUtil.install_gem('a1425bt'))
         self.assertTrue(gemUtil.is_gem_intalled('a1425bt'))
         self.assertTrue(gemUtil.uninstall_gem('a1425bt'))
         self.assertFalse(gemUtil.is_gem_intalled('a1425bt'))
+
+        # Install GEM by using package manager (in not embebed ruby)
+        self.assertFalse(gemUtil.is_gem_intalled('ruby-rc4'))
+        self.assertTrue(gemUtil.install_gem('ruby-rc4'))
+        self.assertTrue(gemUtil.is_gem_intalled('ruby-rc4'))
+        self.assertTrue(gemUtil.uninstall_gem('ruby-rc4'))
+        self.assertFalse(gemUtil.is_gem_intalled('ruby-rc4'))
+        

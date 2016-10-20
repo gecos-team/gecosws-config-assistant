@@ -24,6 +24,7 @@ import logging
 import os
 
 from gecosws_config_assistant.util.CommandUtil import CommandUtil
+from gecosws_config_assistant.util.PackageManager import PackageManager
 
 class GemUtil(object):
     '''
@@ -38,12 +39,15 @@ class GemUtil(object):
         self.logger = logging.getLogger('GemUtil')
         # Embebed Chef installation
         self.command = "/opt/chef/embedded/bin/gem"
+        self.rubyEmbeddedInChef = True
 
         if not os.path.isfile(self.command):
             # Linux distribution Chef installation
             self.command = "/usr/bin/gem"
+            self.rubyEmbeddedInChef = False
 
         self.commandUtil = CommandUtil()
+        self.pm = PackageManager()
 
     def get_gem_sources_list(self):
         list = []
@@ -76,7 +80,38 @@ class GemUtil(object):
         return res
 
     def install_gem(self, gem_name):
+        if not self.rubyEmbeddedInChef:
+            # Try to install the GEM by using the package manager
+            package_name = gem_name
+            if not package_name.startswith('ruby-'):
+                package_name = 'ruby-%s'%(package_name)
+                
+            if (self.pm.exists_package(package_name) and not self.pm.is_package_installed(package_name)):
+                self.pm.install_package(package_name)
+            
+            if self.is_gem_intalled(gem_name):
+                # GEM installed successfully by using the package manager
+                return True
+                
+            # GEM is not installed successfully
+            if not self.pm.is_package_installed('build-essential'):
+                # We will need 'build-essential' package to build GEMs
+                self.pm.install_package('build-essential')
+            
         return self.commandUtil.execute_command('%s install "%s"'%(self.command, gem_name))
 
     def uninstall_gem(self, gem_name):
+        if not self.rubyEmbeddedInChef:
+            # Try to uninstall the GEM by using the package manager
+            package_name = gem_name
+            if not package_name.startswith('ruby-'):
+                package_name = 'ruby-%s'%(package_name)
+                
+            if (self.pm.exists_package(package_name) and self.pm.is_package_installed(package_name)):
+                self.pm.remove_package(package_name)        
+                
+            if not self.is_gem_intalled(gem_name):
+                # GEM uninstalled successfully by using the package manager
+                return True    
+    
         return self.commandUtil.execute_command('%s uninstall "%s"'%(self.command, gem_name))
