@@ -215,6 +215,7 @@ class ConnectWithGecosCCDialog(GladeWindow):
         return self.lastComboValue
     
     def loadOUCombo(self, values):
+        self.store.clear()
         if isinstance(values, (list, tuple)):
             for value in values:
                 self.store.append([value[1]])        
