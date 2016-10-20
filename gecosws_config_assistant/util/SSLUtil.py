@@ -333,8 +333,19 @@ class SSLUtil(object):
             
         except requests.exceptions.SSLError as e:
             msg = str(e)
+            self.logger.warn('Untrusted Certificate Cause: %s'%(msg))
+            
+            # Check if the error message is similar to '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:590)'
+            p = re.compile('\\[SSL: (?P<constant>[A-Z_]+)\\] (?P<message>[^\\(]+)')
+            m = p.match(msg)
+            if m is not None:
+                if m.groups('message') is not None:
+                    return m.groups('message')[0].strip()
+            
+            # If not we simply suppose that the error message is at the end
             if msg.rfind(':') > 0:
                 msg = msg[(msg.rfind(':')+1):]
+            
             
             return msg
             
@@ -366,11 +377,25 @@ class SSLUtil(object):
             r = requests.get(url, verify=True, timeout=self.timeout)
             
         except requests.exceptions.SSLError as e:
+            self.logger.warn('Untrusted Certificate Cause to error code: %s'%(str(e)))
             sslError = self._getSSLError(e)
             if not sslError is None:
                 msg = str(sslError)
+                self.logger.debug('SSLError: %s'%(msg))
                 errornum = None
                 
+                # Check if the error message is similar to '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:590)'
+                p = re.compile('\\[SSL: (?P<constant>[A-Z_]+)\\] (?P<message>[^\\(]+)')
+                m = p.match(msg)
+                if m is not None:
+                    if m.groups('constant') is not None:
+                        constant = m.groups('message')[0].strip()
+                        try:
+                            errornum = eval('SSL_R_%s'%(constant))
+                        except:
+                            self.logger.warn('Error evaluating constant: %s'%(constant))
+                
+                # If not look for a packed error number
                 if msg.rfind('error:') > 0:
                     msg = msg[(msg.find('error:')+6):]
                     errornum = msg[:(msg.find(':'))]
