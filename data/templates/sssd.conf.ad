@@ -12,6 +12,8 @@ debug_level = 0
 cache_credentials=true
 enumerate = false
 
+${extra_conf_lines}
+
 id_provider = ad
 auth_provider = ad
 chpass_provider = ad

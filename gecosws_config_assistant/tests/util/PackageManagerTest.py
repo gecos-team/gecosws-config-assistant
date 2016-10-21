@@ -37,11 +37,22 @@ class PackageManagerTest(unittest.TestCase):
         pm = PackageManager()
         
         # Start from a Linux installation without that package
+        pm.remove_package(test_package_name)
         self.assertFalse(pm.is_package_installed(test_package_name))
+        self.assertIsNone(pm.get_package_version(test_package_name))
         
         # Install the package
         pm.install_package(test_package_name)
         self.assertTrue(pm.is_package_installed(test_package_name))
+
+        # Get package version
+        package_version = pm.get_package_version(test_package_name)
+        self.assertIsNotNone(package_version)
+        print('package_version=%s'%(package_version))
+        (major, minor, release) = pm.parse_version_number(package_version)
+        self.assertNotEqual(major, 0)
+        self.assertNotEqual(minor, 0)
+        print('major=%i minor=%i release=%i'%(major, minor, release))
         
         # Remove the package
         pm.remove_package(test_package_name)

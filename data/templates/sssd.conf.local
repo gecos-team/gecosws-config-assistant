@@ -7,3 +7,4 @@ debug_level = 0
 [nss]
 
 [pam] 
+${extra_conf_lines}

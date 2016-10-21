@@ -22,6 +22,7 @@ __license__ = "GPL-2"
 
 import logging
 import traceback
+import re
 
 
 class PackageManager(object):
@@ -182,6 +183,23 @@ class PackageManager(object):
         
         raise OSError('Package cache update failed!')
 
+    def parse_version_number(self, package_version):
+        major = 0
+        minor = 0
+        release = 0
+        
+        # Version must be similar to: '1.13.4-1ubuntu1'
+        p = re.compile('([0-9]+)\\.([0-9]+)(\\.([0-9]+))?')
+        m = p.match(package_version)
+        if m is not None:
+            if m.groups()[0] is not None:
+                major = int(m.groups()[0].strip())
+            if m.groups()[1] is not None:
+                minor = int(m.groups()[1].strip())
+            if m.groups()[3] is not None:
+                release = int(m.groups()[3].strip())        
+                
+        return (major, minor, release)
 
     def get_package_version(self, package_name):
         self.logger.debug('get_package_version - BEGIN')

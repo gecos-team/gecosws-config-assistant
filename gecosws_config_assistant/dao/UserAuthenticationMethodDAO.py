@@ -80,6 +80,9 @@ class UserAuthenticationMethodDAO(object):
             self.logger.debug('Already installed "sssd" package')
             self.initiated = True            
       
+        self.sssd_version = self.pm.get_package_version('sssd')
+        
+      
     def _load_ldap(self):
         data = LDAPSetupData()
         
@@ -514,6 +517,13 @@ class UserAuthenticationMethodDAO(object):
             return False
               
               
+        extra_conf_lines = ''
+        if self.sssd_version is not None:
+            (major, minor, release) = self.pm.parse_version_number(self.sssd_version)
+            
+            if major > 1 or (major == 1 and minor > 11):
+                extra_conf_lines = 'ad_gpo_map_interactive = +mdm'
+              
         self.logger.debug('Save /etc/sssd/sssd.conf file')
         # Save /etc/samba/sssd.conf file
         template = Template()
@@ -522,7 +532,7 @@ class UserAuthenticationMethodDAO(object):
         template.owner = 'root'
         template.group = 'root'
         template.mode = 00600
-        template.variables = { 'ad_domain':  data.get_domain()}
+        template.variables = { 'ad_domain':  data.get_domain(), 'extra_conf_lines': extra_conf_lines}
         
         if not template.save():
             self.logger.error('Error saving /etc/sssd/sssd.conf file')
@@ -610,7 +620,19 @@ class UserAuthenticationMethodDAO(object):
         if os.path.isfile(self.krb_conf_file):
             os.remove(self.krb_conf_file)
         
-     
+        extra_conf_lines = ''
+        if self.sssd_version is not None:
+            (major, minor, release) = self.pm.parse_version_number(self.sssd_version)
+            
+            if major > 1 or (major == 1 and minor > 11):
+                extra_conf_lines = '[domain/DEFAULT]\n'
+                extra_conf_lines = extra_conf_lines + 'enumerate = TRUE\n'
+                extra_conf_lines = extra_conf_lines + 'min_id = 500\n'
+                extra_conf_lines = extra_conf_lines + 'max_id = 999\n'
+                extra_conf_lines = extra_conf_lines + 'id_provider = local\n'
+                extra_conf_lines = extra_conf_lines + 'auth_provider = local\n'
+                extra_conf_lines = extra_conf_lines + '\n'
+
         self.logger.debug('Save /etc/sssd/sssd.conf file')
         # Save /etc/samba/sssd.conf file
         template = Template()
@@ -619,7 +641,7 @@ class UserAuthenticationMethodDAO(object):
         template.owner = 'root'
         template.group = 'root'
         template.mode = 00600
-        template.variables = { }
+        template.variables = {'extra_conf_lines': extra_conf_lines }
         
         if not template.save():
             self.logger.error('Error saving /etc/sssd/sssd.conf file')
