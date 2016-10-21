@@ -226,17 +226,7 @@ class UserAuthenticationMethodDAO(object):
 
         self.logger.debug('Save /etc/sssd/sssd.conf file')
         # Save /etc/samba/sssd.conf file
-        template = Template()
-        template.source = get_data_file('templates/sssd.conf.local')
-        template.destination = self.main_data_file
-        template.owner = 'root'
-        template.group = 'root'
-        template.mode = 00600
-        template.variables = { }
-        
-        if not template.save():
-            self.logger.error('Error saving /etc/sssd/sssd.conf file')
-            return False
+        self._back_to_local_users()
         
         # Restart SSSD service
         self.logger.debug('Restart SSSD service')
@@ -453,6 +443,33 @@ class UserAuthenticationMethodDAO(object):
 
         return True
 
+    def _back_to_local_users(self):
+        extra_conf_lines = ''
+        if self.sssd_version is not None:
+            (major, minor, release) = self.pm.parse_version_number(self.sssd_version)
+            
+            if major > 1 or (major == 1 and minor > 11):
+                extra_conf_lines = '[domain/DEFAULT]\n'
+                extra_conf_lines = extra_conf_lines + 'enumerate = TRUE\n'
+                extra_conf_lines = extra_conf_lines + 'min_id = 500\n'
+                extra_conf_lines = extra_conf_lines + 'max_id = 999\n'
+                extra_conf_lines = extra_conf_lines + 'id_provider = local\n'
+                extra_conf_lines = extra_conf_lines + 'auth_provider = local\n'
+                extra_conf_lines = extra_conf_lines + '\n'
+
+        self.logger.debug('Save /etc/sssd/sssd.conf file')
+        # Save /etc/samba/sssd.conf file
+        template = Template()
+        template.source = get_data_file('templates/sssd.conf.local')
+        template.destination = self.main_data_file
+        template.owner = 'root'
+        template.group = 'root'
+        template.mode = 00600
+        template.variables = {'extra_conf_lines': extra_conf_lines }
+
+        if not template.save():
+            self.logger.error('Error saving /etc/sssd/sssd.conf file')
+            return False 
 
     def _save_active_directory_normal(self, method):
         self.logger.debug('Saving active directory user authentication method')
@@ -635,17 +652,7 @@ class UserAuthenticationMethodDAO(object):
 
         self.logger.debug('Save /etc/sssd/sssd.conf file')
         # Save /etc/samba/sssd.conf file
-        template = Template()
-        template.source = get_data_file('templates/sssd.conf.local')
-        template.destination = self.main_data_file
-        template.owner = 'root'
-        template.group = 'root'
-        template.mode = 00600
-        template.variables = {'extra_conf_lines': extra_conf_lines }
-        
-        if not template.save():
-            self.logger.error('Error saving /etc/sssd/sssd.conf file')
-            return False
+        self._back_to_local_users()
         
         # Restart SSSD service
         self.logger.debug('Restart SSSD service')
