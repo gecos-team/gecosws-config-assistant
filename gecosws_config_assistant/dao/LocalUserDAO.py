@@ -27,10 +27,6 @@ import logging
 import pwd
 import subprocess
 
-import gettext
-from gettext import gettext as _
-gettext.textdomain('gecosws-config-assistant')
-
 
 class LocalUserDAO(object):
     '''
@@ -116,7 +112,7 @@ class LocalUserDAO(object):
             
             retval = p.wait()
             if retval != 0:
-                self.logger.error(_('Error creating user: ')+local_user.get_login())
+                self.logger.error('Error creating user: '+local_user.get_login())
             
         else:   
             # Modify an existent user
@@ -128,7 +124,7 @@ class LocalUserDAO(object):
                     
             retval = p.wait()
             if retval != 0:
-                self.logger.error(_('Error modifying user name: ')+local_user.get_login())
+                self.logger.error('Error modifying user name: '+local_user.get_login())
 
             # Change password            
             self.logger.debug('setting password for user: %s'%(local_user.get_login()))
@@ -142,7 +138,7 @@ class LocalUserDAO(object):
                     
             retval = p.wait()
             if retval != 0:
-                self.logger.error(_('Error modifying user password: ')+local_user.get_login())
+                self.logger.error('Error modifying user password: '+local_user.get_login())
             
         self.logger.debug('save - END')
 
@@ -166,7 +162,7 @@ class LocalUserDAO(object):
                     
             retval = p.wait()
             if retval != 0:
-                self.logger.error(_('Error deleting user: ')+local_user.get_login())
+                self.logger.error('Error deleting user: '+local_user.get_login())
 
             self.logger.debug('Deleting folder user: %s'%(local_user.get_login()))
             p = subprocess.Popen('rm -rf /home/%s'%(local_user.get_login()), shell=True, 
@@ -176,6 +172,6 @@ class LocalUserDAO(object):
                     
             retval = p.wait()
             if retval != 0:
-                self.logger.error(_('Error deleting user home: ')+local_user.get_login())
+                self.logger.error('Error deleting user home: '+local_user.get_login())
                 
                 

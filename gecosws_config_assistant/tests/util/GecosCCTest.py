@@ -59,20 +59,20 @@ class GecosCCTest(unittest.TestCase):
         self.assertFalse(gecosCC.validate_credentials(badCredentials), 
                         'Error validating credentials with a bad address')
 
-        badCredentials.set_url('http://192.168.1.139/')
+        badCredentials.set_url('http://192.168.0.15/')
         self.assertFalse(gecosCC.validate_credentials(badCredentials), 
                         'Error validating credentials with a non existent user')
 
-        badCredentials.set_login('amacias')
+        badCredentials.set_login('superuser')
         self.assertFalse(gecosCC.validate_credentials(badCredentials), 
                         'Error validating credentials with a bad password')
 
         
         # Test with valid Gecos CC credentials
         validCredentials = GecosAccessData()
-        validCredentials.set_url('http://192.168.1.139/')
-        validCredentials.set_login('amacias')
-        validCredentials.set_password('console')
+        validCredentials.set_url('http://192.168.0.15/')
+        validCredentials.set_login('superuser')
+        validCredentials.set_password('yzsrhysa')
         self.assertTrue(gecosCC.validate_credentials(validCredentials), 
                         'Error validating credentials')
         
@@ -93,9 +93,19 @@ class GecosCCTest(unittest.TestCase):
         result = gecosCC.get_computer_names(validCredentials)
         self.assertTrue(isinstance(result, (list, tuple)), 'Computer names must be a list!')
 
-        # Get content from URL
-        result = gecosCC.get_file_content_from_url('http://192.168.1.139/')
-        self.assertGreater(result.index('GECOS'), 0, 'URL content must contain "GECOS"')
+        # Chef node registration
+        self.assertFalse(gecosCC.is_registered_chef_node(validCredentials, 'test'))
+        
+        private_key = gecosCC.register_chef_node(validCredentials, 'test')
+        self.assertNotEqual(private_key, False, "No private key returned!")
+        self.assertTrue(gecosCC.is_registered_chef_node(validCredentials, 'test'))
 
-
+        # Chef node re-registering        
+        private_key = gecosCC.reregister_chef_node(validCredentials, 'test')
+        self.assertNotEqual(private_key, False, "No private key returned!")
+        self.assertTrue(gecosCC.is_registered_chef_node(validCredentials, 'test'))
+        
+        # Chef node unregistering        
+        self.assertTrue(gecosCC.unregister_chef_node(validCredentials, 'test'))
+        self.assertFalse(gecosCC.is_registered_chef_node(validCredentials, 'test'))
         

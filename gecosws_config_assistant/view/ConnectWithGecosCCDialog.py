@@ -86,7 +86,7 @@ class ConnectWithGecosCCDialog(GladeWindow):
         self.connectButton = self.getElementById("button3")
         
         self.workstationNameEntry = self.getElementById('workstation_entry')
-#         self.gecosCCurlEntry = self.getElementById('url_entry')
+        self.gecosCCurlEntry = self.getElementById('url_entry')
         self.gecosCCuserEntry = self.getElementById('login_entry')
         self.gecosCCpassEntry = self.getElementById('password_entry')
         
@@ -144,6 +144,11 @@ class ConnectWithGecosCCDialog(GladeWindow):
             if (gecos_data.get_password() is not None
                 and gecos_data.get_password().strip() != ''):
                 self.gecosCCpassEntry.set_text(gecos_data.get_password())
+
+            if (gecos_data.get_url() is not None
+                and gecos_data.get_url().strip() != ''):
+                self.gecosCCurlEntry.set_text(gecos_data.get_url())
+
         
         # set button text connect/disconnect
         gecosStatus = self.controller.getStatus()
@@ -165,29 +170,19 @@ class ConnectWithGecosCCDialog(GladeWindow):
         if self.get_gecos_access_data() is None:
             self.set_gecos_access_data(GecosAccessData())
         
-        dataUrl = ''
-        gecos_data = self.get_gecos_access_data()
-        if (gecos_data.get_url() is not None
-                and gecos_data.get_url().strip() != ''):
-            dataUrl = gecos_data.get_url()
+        self.get_gecos_access_data().set_url(self.gecosCCurlEntry.get_text())
+        self.get_gecos_access_data().set_login(self.gecosCCuserEntry.get_text())
+        self.get_gecos_access_data().set_password(self.gecosCCpassEntry.get_text())
         
-            self.get_gecos_access_data().set_url(dataUrl)
-            self.get_gecos_access_data().set_login(self.gecosCCuserEntry.get_text())
-            self.get_gecos_access_data().set_password(self.gecosCCpassEntry.get_text())
+        self.get_workstation_data()
+        if self.get_workstation_data() is None:
+            self.set_workstation_data(WorkstationData())
+        self.get_workstation_data().set_name(self.workstationNameEntry.get_text())
+        self.get_workstation_data().set_ou(self.getOUComboValue())
+  
+        
+        self.controller.connect()
             
-            self.get_workstation_data()
-            if self.get_workstation_data() is None:
-                self.set_workstation_data(WorkstationData())
-            self.get_workstation_data().set_name(self.workstationNameEntry.get_text())
-            self.get_workstation_data().set_ou(self.getOUComboValue())
-      
-            
-            self.controller.connect()
-            
-        else:
-            self.logger.debug("Can't retrieve url")
-            # disable button
-            self.connectButton.set_sensitive(False)
 
     def disconnect(self, *args):
         self.logger.debug("disconnect")
@@ -195,25 +190,17 @@ class ConnectWithGecosCCDialog(GladeWindow):
         if self.get_gecos_access_data() is None:
             self.set_gecos_access_data(GecosAccessData())
             
-        dataUrl = ''
-        gecos_data = self.get_gecos_access_data()
-        if (gecos_data.get_url() is not None
-                and gecos_data.get_url().strip() != ''):
-            dataUrl = gecos_data.get_url()
-            self.get_gecos_access_data().set_url(dataUrl)
-            self.get_gecos_access_data().set_login(self.gecosCCuserEntry.get_text())
-            self.get_gecos_access_data().set_password(self.gecosCCpassEntry.get_text())
-            
-            self.get_workstation_data()
-            if self.get_workstation_data() is None:
-                self.set_workstation_data(WorkstationData())
-            self.get_workstation_data().set_name(self.workstationNameEntry.get_text())
-            self.get_workstation_data().set_ou(self.getOUComboValue())
-    
-            self.controller.disconnect()
-        else:
-            # disable button
-            self.connectButton.set_sensitive(False)
+        self.get_gecos_access_data().set_url(self.gecosCCurlEntry.get_text())
+        self.get_gecos_access_data().set_login(self.gecosCCuserEntry.get_text())
+        self.get_gecos_access_data().set_password(self.gecosCCpassEntry.get_text())
+        
+        self.get_workstation_data()
+        if self.get_workstation_data() is None:
+            self.set_workstation_data(WorkstationData())
+        self.get_workstation_data().set_name(self.workstationNameEntry.get_text())
+        self.get_workstation_data().set_ou(self.getOUComboValue())
+
+        self.controller.disconnect()
         
     def onChangeComboBox(self, combo):
         self.logger.debug("This should show up each time the combobox is changed")
@@ -228,27 +215,23 @@ class ConnectWithGecosCCDialog(GladeWindow):
         return self.lastComboValue
     
     def loadOUCombo(self, values):
+        self.store.clear()
         if isinstance(values, (list, tuple)):
             for value in values:
                 self.store.append([value[1]])        
 
     def patternSearch(self, *args):
         self.logger.debug("patternSearch")
-        
+
         if self.get_gecos_access_data() is None:
             self.set_gecos_access_data(GecosAccessData())
-        dataUrl = ''
-        gecos_data = self.get_gecos_access_data()
-        if (gecos_data.get_url() is not None
-                and gecos_data.get_url().strip() != ''):
-            dataUrl = gecos_data.get_url()
-            
-            self.get_gecos_access_data().set_url(dataUrl)
-            self.get_gecos_access_data().set_login(self.gecosCCuserEntry.get_text())
-            self.get_gecos_access_data().set_password(self.gecosCCpassEntry.get_text())
-           
-            res = self.controller.patternSearch(self.searchFilterEntry.get_text())
-            self.loadOUCombo(res)
+        
+        self.get_gecos_access_data().set_url(self.gecosCCurlEntry.get_text())
+        self.get_gecos_access_data().set_login(self.gecosCCuserEntry.get_text())
+        self.get_gecos_access_data().set_password(self.gecosCCpassEntry.get_text())
+       
+        res = self.controller.patternSearch(self.searchFilterEntry.get_text())
+        self.loadOUCombo(res)
         
     def cancel(self, *args):
         self.logger.debug("cancel")

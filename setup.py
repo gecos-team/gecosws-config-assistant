@@ -50,6 +50,12 @@ def get_datafiles(datadir):
         datafiles.append(['share/gecosws-config-assistant/'+root, sources])
     return datafiles
 
+if not os.path.isfile('data/cookbooks/ohai-gecos/metadata.rb'):
+    # Initialize git submodules
+    os.system("git submodule init")
+    
+os.system("git submodule update")    
+    
 datafiles = get_datafiles('data')
 datafiles.append(('share/applications/', glob.glob('data/gecos-config-assistant.desktop')))
 
@@ -186,12 +192,18 @@ class Check(Command):
         from gecosws_config_assistant.tests.util.JSONUtilTest import JSONUtilTest
         from gecosws_config_assistant.tests.util.ValidationTest import ValidationTest
         from gecosws_config_assistant.tests.util.GecosCCTest import GecosCCTest
+        from gecosws_config_assistant.tests.util.CommandUtilTest import CommandUtilTest
+        from gecosws_config_assistant.tests.util.SSLUtilTest import SSLUtilTest
+        from gecosws_config_assistant.tests.util.GemUtilTest import GemUtilTest
         
         suite.addTest(PackageManagerTest())
         suite.addTest(TemplateTest())
         suite.addTest(JSONUtilTest())
         suite.addTest(ValidationTest())
         suite.addTest(GecosCCTest())
+        suite.addTest(CommandUtilTest())
+        suite.addTest(SSLUtilTest())
+        suite.addTest(GemUtilTest())
 
         from gecosws_config_assistant.tests.dao.NTPServerDAOTest import NTPServerDAOTest
         from gecosws_config_assistant.tests.dao.NetworkInterfaceDAOTest import NetworkInterfaceDAOTest

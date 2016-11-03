@@ -26,11 +26,6 @@ import grp
 import pwd
 import os
 
-import gettext
-from gettext import gettext as _
-gettext.textdomain('gecosws-config-assistant')
-
-
 class Template(object):
     '''
     Utility class to manipulate templates.
@@ -129,14 +124,14 @@ class Template(object):
             if self.owner is not None and current_usr != self.owner:
                 uid = pwd.getpwnam(self.owner).pw_uid
                 if uid is None:
-                    self.logger.error(_('Can not find user to be used as owner: ') + self.owner)
+                    self.logger.error('Can not find user to be used as owner: ' + self.owner)
                 else:
                     os.chown(self.destination, uid, gid)  
                 
             if self.group is not None and current_grp != self.group:
                 gid = grp.getgrnam(self.group).gr_gid
                 if gid is None:
-                    self.logger.error(_('Can not find group to be used as owner: ') + self.group)
+                    self.logger.error('Can not find group to be used as owner: ' + self.group)
                 else:
                     os.chown(self.destination, uid, gid)  
                 
@@ -147,7 +142,7 @@ class Template(object):
             return True
         
         except:
-            self.logger.error(_('Error saving template:') + self.source)
+            self.logger.error('Error saving template:' + self.source)
             self.logger.error(str(traceback.format_exc()))
 
        

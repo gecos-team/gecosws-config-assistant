@@ -71,3 +71,8 @@ class ValidationTest(unittest.TestCase):
         self.assertTrue(validation.isAscii('ascii with spaces'))
         self.assertTrue(validation.isAscii('ascii symbols: + . ; _ -'))
         
+        self.assertFalse(validation.isValidNetbiosHostname(None))
+        self.assertFalse(validation.isValidNetbiosHostname(''))
+        self.assertFalse(validation.isValidNetbiosHostname('very-long-host-name'))
+        self.assertFalse(validation.isValidNetbiosHostname('my/host'))
+        self.assertTrue(validation.isValidNetbiosHostname('myhost'))

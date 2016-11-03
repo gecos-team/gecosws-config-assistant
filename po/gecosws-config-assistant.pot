@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-22 12:21+0100\n"
+"POT-Creation-Date: 2016-10-13 17:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,1013 +17,709 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/AutoSetupController.py:107
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:108
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:101
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:108
 msgid "The URL field is empty!"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/AutoSetupController.py:107
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/AutoSetupController.py:122
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/AutoSetupController.py:130
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:108
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:123
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:131
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:152
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:184
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/LocalUserController.py:81
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/LocalUserController.py:97
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/LocalUserController.py:106
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/UserAuthenticationMethodController.py:373
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/UserAuthenticationMethodController.py:388
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/UserAuthenticationMethodController.py:408
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/UserAuthenticationMethodController.py:434
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/UserAuthenticationMethodController.py:443
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/UserAuthenticationMethodController.py:452
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserElemDialog.py:123
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserElemView.py:156
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:101
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:177
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:185
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:108
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:123
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:131
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:210
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:242
+#: ../gecosws_config_assistant/controller/LocalUserController.py:78
+#: ../gecosws_config_assistant/controller/LocalUserController.py:94
+#: ../gecosws_config_assistant/controller/LocalUserController.py:103
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:367
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:382
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:412
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:438
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:447
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:456
+#: ../gecosws_config_assistant/view/LocalUserElemDialog.py:123
 msgid "Please fill all the mandatory fields."
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/AutoSetupController.py:114
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:115
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:108
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:115
 msgid "Malformed URL in URL field!"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/AutoSetupController.py:114
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:115
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:108
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:115
 msgid "Please double-check it."
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/AutoSetupController.py:122
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:123
-msgid "The Username field is empty!"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/AutoSetupController.py:130
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:131
-msgid "The Password field is empty!"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/AutoSetupController.py:138
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:139
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:127
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:157
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:166
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:193
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:150
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:180
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:189
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:197
 msgid "Can't connect to GECOS CC!"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/AutoSetupController.py:138
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:139
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:127
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:150
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:448
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:575
+msgid "The server HTTPS certificate is expired!"
+msgstr ""
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:134
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:157
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:455
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:582
+msgid "The certificate of this server is not trusted!"
+msgstr ""
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:135
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:158
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:456
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:583
+msgid "Do you wan't to add it to the trusted certificates list?"
+msgstr ""
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:137
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:160
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:458
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:585
+msgid "Subject:"
+msgstr ""
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:138
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:161
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:459
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:586
+msgid "Issuer:"
+msgstr ""
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:139
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:162
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:460
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:587
+msgid "Serial Number:"
+msgstr ""
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:140
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:163
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:461
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:588
+msgid "Not before:"
+msgstr ""
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:140
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:163
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:461
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:588
+msgid "Not after:"
+msgstr ""
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:157
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:166
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:180
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:189
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:483
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:494
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:610
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:621
+msgid "SSL ERROR:"
+msgstr ""
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:177
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:123
+msgid "The Username field is empty!"
+msgstr ""
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:185
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:131
+msgid "The Password field is empty!"
+msgstr ""
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:193
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:197
 msgid "Please double-check all the data and your network setup."
 msgstr ""
 
-#. Show process view
-#. Get auto setup JSON
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/AutoSetupController.py:160
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:215
 msgid "Please wait"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/AutoSetupController.py:170
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:225
 msgid "Error getting data"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/AutoSetupController.py:171
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:226
 msgid "Can't read auto setup configuration data from GECOS Control Center!"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/AutoSetupController.py:176
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:231
 msgid "Success getting data from GECOS server"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:152
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:210
 msgid "The GECOS workstation name field is empty!"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:171
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:229
 msgid "The GECOS workstation name already exist!"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:171
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:229
 msgid "Please choose a different name."
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:184
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:242
 msgid "You must select an OU!"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:227
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/Template.py:132
-msgid "Can not find user to be used as owner: "
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:234
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/Template.py:139
-msgid "Can not find group to be used as owner: "
-msgstr ""
-
-#. Linking/unlinking to Chef server
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:299
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProcessView.py:85
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:339
 msgid "Link to Chef"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:300
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:340
 msgid "Register in GECOS CC"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:305
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:328
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:338
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:378
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:461
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:489
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:512
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:521
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:531
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:570
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:696
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:709
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:345
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:368
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:378
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:533
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:688
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:718
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:741
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:750
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:760
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:770
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:835
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:848
 msgid "IN PROCESS"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:309
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:315
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:321
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:331
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:368
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:415
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:427
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:449
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:470
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:479
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:514
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:524
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:560
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:577
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:600
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:637
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:646
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:655
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:665
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:674
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:683
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:699
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProcessView.py:134
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProcessView.py:139
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProcessView.py:144
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProcessView.py:153
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProcessView.py:163
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProcessView.py:168
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProgressView.py:106
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProgressView.py:111
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProgressView.py:116
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProgressView.py:125
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProgressView.py:134
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProgressView.py:139
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:349
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:355
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:361
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:371
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:398
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:408
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:466
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:481
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:492
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:507
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:520
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:593
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:608
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:619
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:637
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:652
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:675
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:697
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:707
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:743
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:753
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:779
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:792
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:801
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:812
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:821
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:838
+#: ../gecosws_config_assistant/view/GecosCCSetupProgressView.py:106
+#: ../gecosws_config_assistant/view/GecosCCSetupProgressView.py:111
+#: ../gecosws_config_assistant/view/GecosCCSetupProgressView.py:116
+#: ../gecosws_config_assistant/view/GecosCCSetupProgressView.py:125
+#: ../gecosws_config_assistant/view/GecosCCSetupProgressView.py:134
+#: ../gecosws_config_assistant/view/GecosCCSetupProgressView.py:139
 msgid "ERROR"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:325
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:335
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:375
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:458
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:486
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:494
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:518
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:528
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:567
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:693
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:706
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:715
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:365
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:375
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:530
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:685
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:715
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:723
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:747
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:757
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:767
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:832
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:845
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:854
 msgid "DONE"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:360
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:552
-msgid "CANCELED"
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:400
+msgid "There was an error while getting the client certificate"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:370
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:562
-msgid "There was an error while saving validation certificate"
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:410
+msgid "There was an error while saving the client certificate"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:417
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:602
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:448
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:483
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:494
+msgid "Can't connect to GEMs repository!"
+msgstr ""
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:509
+msgid "There was an error while adding the GEMs repository:\n"
+msgstr ""
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:522
+msgid "There was an error while installing a required GEM: "
+msgstr ""
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:575
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:610
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:621
+msgid "Can't connect to Chef Server!"
+msgstr ""
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:639
 msgid "Can't create/modify /etc/chef/client.rb file"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:429
-msgid "Can't link to chef server"
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:654
+msgid "Can't link to chef server!"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:451
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:677
 msgid "Can't create/modify /etc/chef.control file"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:472
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:699
 msgid "Can't register the computer in GECOS CC"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:481
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:709
 msgid "Can't save /etc/gcc.control file"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:506
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:735
 msgid "Unlink from Chef"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:507
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:736
 msgid "Unregister from GECOS CC"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:579
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:781
 msgid "Can't unregister the computer from GECOS CC"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:639
-msgid "Can't create/modify /etc/chef/knife.rb file"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:648
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:794
 msgid "Can't remove /etc/chef.control file"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:657
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:803
 msgid "Can't remove /etc/chef/client.pem file"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:667
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:684
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:814
 msgid "Can't delete Chef node"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:676
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:823
 msgid "Can't remove /usr/bin/chef-client-wrapper file"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:701
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:840
 msgid "Can't remove /etc/gcc.control file"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/ConnectWithGecosCCController.py:735
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:874
 msgid "Can't get OUs from GECOS Control Center"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/LocalUserController.py:81
+#: ../gecosws_config_assistant/controller/LocalUserController.py:78
 msgid "The login field is empty!"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/LocalUserController.py:88
+#: ../gecosws_config_assistant/controller/LocalUserController.py:85
 msgid "The login field contains not allowed characters!"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/LocalUserController.py:97
+#: ../gecosws_config_assistant/controller/LocalUserController.py:94
 msgid "The name field is empty!"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/LocalUserController.py:106
+#: ../gecosws_config_assistant/controller/LocalUserController.py:103
 msgid "The password field is empty!"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/LocalUserController.py:114
+#: ../gecosws_config_assistant/controller/LocalUserController.py:111
 msgid "The password field contains not allowed characters."
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/LocalUserController.py:165
+#: ../gecosws_config_assistant/controller/LocalUserController.py:160
 msgid "Do you really want to delete this user? "
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/MainMenuController.py:181
+#: ../gecosws_config_assistant/controller/MainMenuController.py:181
 msgid "The system has a network connection configured"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/MainMenuController.py:183
+#: ../gecosws_config_assistant/controller/MainMenuController.py:183
 msgid "The system has NO network connection"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/MainMenuController.py:186
+#: ../gecosws_config_assistant/controller/MainMenuController.py:186
 msgid "The system has loaded setup data values from GECOS server"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/MainMenuController.py:188
+#: ../gecosws_config_assistant/controller/MainMenuController.py:188
 msgid "The system may load setup data values from GECOS server"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/MainMenuController.py:191
+#: ../gecosws_config_assistant/controller/MainMenuController.py:191
 msgid "The system is synchronized with a NTP server"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/MainMenuController.py:193
+#: ../gecosws_config_assistant/controller/MainMenuController.py:193
 msgid "The system is NOT synchronized with a NTP server"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/MainMenuController.py:196
+#: ../gecosws_config_assistant/controller/MainMenuController.py:196
 msgid "The system is linked to a GECOS server"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/MainMenuController.py:198
+#: ../gecosws_config_assistant/controller/MainMenuController.py:198
 msgid "The system is NOT linked to a GECOS server"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/MainMenuController.py:200
+#: ../gecosws_config_assistant/controller/MainMenuController.py:200
 #, python-format
 msgid "Users authenticate by %s method"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/MainMenuController.py:205
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/UserAuthenticationMethodController.py:236
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dto/LDAPAuthMethod.py:43
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:66
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:147
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:189
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:101
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:296
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:314
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:334
+#: ../gecosws_config_assistant/controller/MainMenuController.py:205
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:230
+#: ../gecosws_config_assistant/dto/LDAPAuthMethod.py:43
+#: ../gecosws_config_assistant/tests/dto/LDAPAuthMethodTest.py:40
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:66
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:147
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:189
 msgid "LDAP"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/MainMenuController.py:207
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/UserAuthenticationMethodController.py:238
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dto/ADAuthMethod.py:44
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:66
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:149
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:191
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:101
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:298
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:311
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:345
+#: ../gecosws_config_assistant/controller/MainMenuController.py:207
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:232
+#: ../gecosws_config_assistant/dto/ADAuthMethod.py:44
+#: ../gecosws_config_assistant/tests/dto/ADAuthMethodTest.py:40
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:66
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:149
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:191
 msgid "Active Directory"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/MainMenuController.py:209
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/UserAuthenticationMethodController.py:234
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dto/LocalUsersAuthMethod.py:43
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:66
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:145
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:187
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:99
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:101
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:317
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:323
+#: ../gecosws_config_assistant/controller/MainMenuController.py:209
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:228
+#: ../gecosws_config_assistant/dto/LocalUsersAuthMethod.py:43
+#: ../gecosws_config_assistant/tests/dto/LocalUsersAuthMethodTest.py:39
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:66
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:145
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:187
 msgid "Internal"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/MainMenuController.py:272
+#: ../gecosws_config_assistant/controller/MainMenuController.py:272
 msgid "Are you sure you want to update the GECOS Config Assistant?"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/MainMenuController.py:275
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/MainMenuController.py:283
+#: ../gecosws_config_assistant/controller/MainMenuController.py:275
+#: ../gecosws_config_assistant/controller/MainMenuController.py:283
 msgid "An error occurred during the upgrade"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/MainMenuController.py:279
+#: ../gecosws_config_assistant/controller/MainMenuController.py:279
 msgid "CGA is already at the newest version!"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/MainMenuController.py:281
+#: ../gecosws_config_assistant/controller/MainMenuController.py:281
 msgid "GECOS Config Assistant has been udpated. Please restart GCA"
 msgstr ""
 
-#. Show error message
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/NTPServerController.py:87
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/NTPServerController.py:91
+#: ../gecosws_config_assistant/controller/NTPServerController.py:87
+#: ../gecosws_config_assistant/controller/NTPServerController.py:91
 msgid "Error saving NTP server data."
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/NTPServerController.py:87
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/NTPServerController.py:91
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:408
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:378
+#: ../gecosws_config_assistant/controller/NTPServerController.py:87
+#: ../gecosws_config_assistant/controller/NTPServerController.py:91
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:408
 msgid "See log for more details."
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/UserAuthenticationMethodController.py:308
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:302
 msgid ""
 "The user authentication data has changed.\n"
 "Do you want to setup the user authentication method using this new data?"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/UserAuthenticationMethodController.py:373
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:367
 msgid "The URI field is empty!"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/UserAuthenticationMethodController.py:380
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:374
 msgid "Malformed LDAP URI!"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/UserAuthenticationMethodController.py:380
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:374
 msgid "Please check that the URI starts with 'ldap://' or 'ldaps://'."
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/UserAuthenticationMethodController.py:388
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:382
 msgid "The users base DN field is empty!"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/UserAuthenticationMethodController.py:395
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:389
 msgid "Can't connect to LDAP server!"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/UserAuthenticationMethodController.py:395
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/UserAuthenticationMethodController.py:460
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:389
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:464
 msgid "Please check all the fields and your network connection."
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/UserAuthenticationMethodController.py:408
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:404
+msgid "Bad netbios hostname!"
+msgstr ""
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:404
+msgid "Please change the hostname of this computer."
+msgstr ""
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:412
 msgid "The Domain field is empty!"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/UserAuthenticationMethodController.py:425
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:429
 msgid "Can't resolv the Active Directory Domain name!"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/UserAuthenticationMethodController.py:426
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:430
 msgid "Please check the Domain field and your DNS configuration."
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/UserAuthenticationMethodController.py:434
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:438
 msgid "The Workgroup field is empty!"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/UserAuthenticationMethodController.py:442
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:446
 msgid "The AD administrator user field is empty!"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/UserAuthenticationMethodController.py:451
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:455
 msgid "The AD administrator password field is empty!"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/controller/UserAuthenticationMethodController.py:459
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:463
 msgid "Can't connect to Active Directory server!"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/GecosAccessDataDAO.py:178
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/WorkstationDataDAO.py:183
-msgid "Error removing file:"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/LocalUserDAO.py:119
-msgid "Error creating user: "
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/LocalUserDAO.py:131
-msgid "Error modifying user name: "
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/LocalUserDAO.py:145
-msgid "Error modifying user password: "
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/LocalUserDAO.py:169
-msgid "Error deleting user: "
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/LocalUserDAO.py:179
-msgid "Error deleting user home: "
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/NTPServerDAO.py:68
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/UserAuthenticationMethodDAO.py:81
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/PackageManager.py:131
-msgid "Package installation failed:"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/NTPServerDAO.py:95
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/UserAuthenticationMethodDAO.py:680
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/WorkstationDataDAO.py:81
-msgid "Error reading file:"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/NTPServerDAO.py:99
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/NTPServerDAO.py:135
-msgid "NTPServerDAO used without a proper initialization!"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/UserAuthenticationMethodDAO.py:177
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/UserAuthenticationMethodDAO.py:203
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/UserAuthenticationMethodDAO.py:251
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/UserAuthenticationMethodDAO.py:398
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/UserAuthenticationMethodDAO.py:411
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/UserAuthenticationMethodDAO.py:437
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/UserAuthenticationMethodDAO.py:517
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/UserAuthenticationMethodDAO.py:544
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/UserAuthenticationMethodDAO.py:570
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/UserAuthenticationMethodDAO.py:605
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/UserAuthenticationMethodDAO.py:641
-msgid "Error running command: "
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/UserAuthenticationMethodDAO.py:655
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/UserAuthenticationMethodDAO.py:697
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/UserAuthenticationMethodDAO.py:723
-msgid "UserAuthenticationMethodDAO used without a proper initialization!"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/dao/WorkstationDataDAO.py:133
-msgid "Error writing file:"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/JSONUtil.py:55
-msgid "Error reading file: "
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/PackageManager.py:59
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/PackageManager.py:99
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/PackageManager.py:137
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/PackageManager.py:161
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/PackageManager.py:192
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/PackageManager.py:231
-msgid "No apt library available"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/PackageManager.py:79
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/PackageManager.py:120
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/PackageManager.py:183
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/PackageManager.py:214
-msgid "Package not found:"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/PackageManager.py:81
-msgid "Package not installed:"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/PackageManager.py:83
-msgid "Package not upgradable:"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/PackageManager.py:93
-msgid "Package upgrade failed:"
-msgstr ""
-
-#. TODO: Yum version?
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/PackageManager.py:104
-msgid "Package upgrade failed!"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/PackageManager.py:122
-msgid "Package already installed:"
-msgstr ""
-
-#. TODO: Yum version?
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/PackageManager.py:142
-msgid "Package installation failed!"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/PackageManager.py:155
-msgid "Package update failed!"
-msgstr ""
-
-#. TODO: Yum version?
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/PackageManager.py:166
-msgid "Package cache update failed!"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/PackageManager.py:185
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/PackageManager.py:216
-msgid "Package is not installed:"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/PackageManager.py:225
-msgid "Package removal failed:"
-msgstr ""
-
-#. TODO: Yum version?
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/PackageManager.py:236
-msgid "Package removal failed!"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/util/Template.py:150
-msgid "Error saving template:"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/ADSetupDataElemView.py:118
+#: ../gecosws_config_assistant/view/ADSetupDataElemView.py:118
 msgid ""
 "Can't connect to Active Directory.\n"
 "Please double-check all the fields"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/ChefValidationCertificateDialog.py:66
-msgid "Url Chef Certificate Required"
-msgstr ""
-
-#. Explanation
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/ChefValidationCertificateDialog.py:79
-msgid ""
-"You need to enter url with certificate file\n"
-" in protocol://domain/resource format"
-msgstr ""
-
-#. Certificate URL
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/ChefValidationCertificateDialog.py:83
-msgid "Certificate URL:"
-msgstr ""
-
-#. Cancel button
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/ChefValidationCertificateDialog.py:91
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserElemView.py:116
-msgid "Cancel"
-msgstr ""
-
-#. Accept button
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/ChefValidationCertificateDialog.py:96
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProcessView.py:109
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserElemView.py:121
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemView.py:83
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:114
-msgid "Accept"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/ChefValidationCertificateDialog.py:121
-msgid "URL connection error"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/ChefValidationCertificateDialog.py:122
-msgid "Can't get certificate file from this URL"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/ConnectWithGecosCCDialog.py:154
+#: ../gecosws_config_assistant/view/ConnectWithGecosCCDialog.py:159
 msgid "Disconnect from CC GECOS"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/ConnectWithGecosCCDialog.py:156
+#: ../gecosws_config_assistant/view/ConnectWithGecosCCDialog.py:161
 msgid "Connect to CC GECOS"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProcessView.py:51
-msgid "GECOS CC connection process"
-msgstr ""
-
-#. Checking GECOS credentials
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProcessView.py:64
-msgid "Check GECOS credentials"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProcessView.py:67
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProcessView.py:74
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProcessView.py:81
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProcessView.py:88
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProcessView.py:95
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProcessView.py:102
-msgid "PENDING"
-msgstr ""
-
-#. Checking workstation data
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProcessView.py:71
-msgid "Check workstation data"
-msgstr ""
-
-#. Obtaining Chef validation certificate
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProcessView.py:78
-msgid "Get chef certificate"
-msgstr ""
-
-#. Registering computer in GECOS CC
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProcessView.py:92
-msgid "Register in GECOS"
-msgstr ""
-
-#. Removing old configuration files
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/GecosCCSetupProcessView.py:99
-msgid "Clean setup data"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserElemDialog.py:84
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserElemView.py:133
+#: ../gecosws_config_assistant/view/LocalUserElemDialog.py:84
 msgid "Modifiy local user"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserElemDialog.py:90
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserElemView.py:65
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserElemView.py:141
+#: ../gecosws_config_assistant/view/LocalUserElemDialog.py:90
 msgid "Add local user"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserElemDialog.py:122
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserElemView.py:155
+#: ../gecosws_config_assistant/view/LocalUserElemDialog.py:122
 msgid "The password confirmation field is empty!"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserElemDialog.py:130
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserElemView.py:163
+#: ../gecosws_config_assistant/view/LocalUserElemDialog.py:130
 msgid "The password confirmation is different from password"
 msgstr ""
 
-#. Name
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserElemView.py:79
-msgid "Name:"
-msgstr ""
-
-#. Login
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserElemView.py:88
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemDialog.py:117
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemView.py:121
-msgid "Login:"
-msgstr ""
-
-#. Password
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserElemView.py:98
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:281
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:163
-msgid "Password:"
-msgstr ""
-
-#. Password confirmation
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserElemView.py:107
-msgid "Confirm:"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserListView.py:62
-msgid "Manage local users"
-msgstr ""
-
-#. Explanation
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserListView.py:75
-msgid "You can create, update or delete local users in this workstation."
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserListView.py:78
-msgid ""
-"It isn't necessary to create here the users that are authenticated by "
-"external services (LDAP, AD, ...)"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserListView.py:84
-msgid "Please check default OEM users and change their passwords when needed:"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserListView.py:92
-msgid "Login"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserListView.py:93
-msgid "Name"
-msgstr ""
-
-#. New user button
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserListView.py:112
-msgid "New"
-msgstr ""
-
-#. Update user button
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserListView.py:117
-msgid "Update"
-msgstr ""
-
-#. Delete user button
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserListView.py:122
-msgid "Delete"
-msgstr ""
-
-#. Accept button
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LocalUserListView.py:128
-msgid "Go Back"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/LogTerminalDialog.py:110
+#: ../gecosws_config_assistant/view/LogTerminalDialog.py:110
 msgid "Log terminal"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/MainWindow.py:168
+#: ../gecosws_config_assistant/view/MainWindow.py:168
 msgid "Link with GECOS server"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/MainWindow.py:170
+#: ../gecosws_config_assistant/view/MainWindow.py:170
 msgid ""
 "You must link your workstation with a GECOS server to be \n"
 "able to manage this workstation in a centralized way"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/MainWindow.py:178
+#: ../gecosws_config_assistant/view/MainWindow.py:178
 msgid "Setup user authentication method"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/MainWindow.py:180
+#: ../gecosws_config_assistant/view/MainWindow.py:180
 msgid ""
 "You must setup the user authentication method to either: internal users, "
 "LDAP or Active Directory"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/MainWindow.py:356
+#: ../gecosws_config_assistant/view/MainWindow.py:356
 msgid "Unlink"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/NTPServerElemView.py:115
+#: ../gecosws_config_assistant/view/NTPServerElemView.py:115
 msgid ""
 "Can't connect with NTP server.\n"
 "Please double-check the NTP server address"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/NTPServerElemView.py:118
+#: ../gecosws_config_assistant/view/NTPServerElemView.py:118
 msgid "NTP server connection successful"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemDialog.py:87
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemView.py:65
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:87
 msgid "System status"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemDialog.py:92
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemDialog.py:94
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemView.py:96
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemView.py:98
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:92
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:94
 msgid "Assistant version: "
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemDialog.py:94
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemView.py:98
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:94
 msgid "UNKNOWN VERSION"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemDialog.py:99
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemView.py:103
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:99
 msgid "Workstation name: "
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemDialog.py:104
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemView.py:108
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:104
 msgid "Time server: "
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemDialog.py:107
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemView.py:111
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:107
 msgid "Network interfaces: "
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemDialog.py:113
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemView.py:117
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:113
 msgid "GECOS Control Center connection data: "
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemDialog.py:116
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemView.py:120
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:116
 msgid "Server URL:"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemDialog.py:120
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemView.py:124
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:117
+msgid "Login:"
+msgstr ""
+
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:120
 msgid "Local users: "
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemDialog.py:127
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemView.py:131
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:127
 msgid "User authentication method: "
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemDialog.py:130
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemView.py:134
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:130
 msgid "Method:"
 msgstr ""
 
-#. text
-#. Domain
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemDialog.py:133
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemView.py:137
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:246
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:278
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:140
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:133
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:246
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:278
 msgid "Domain:"
 msgstr ""
 
-#. Workgroup
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemDialog.py:134
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemView.py:138
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:247
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:279
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:147
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:134
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:247
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:279
 msgid "Workgroup:"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemDialog.py:137
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemView.py:141
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:137
 msgid "Server URI:"
 msgstr ""
 
-#. Users base DN
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemDialog.py:138
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemView.py:142
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:215
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:219
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:138
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:215
 msgid "Users base DN:"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemDialog.py:139
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemView.py:143
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:139
 msgid "Groups base DN:"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemDialog.py:144
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/SystemStatusElemView.py:148
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:144
 msgid "No status data!"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:211
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:207
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:211
 msgid "Please fill the data to setup the LDAP authentication method."
 msgstr ""
 
-#. text
-#. URI
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:214
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:212
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:214
 msgid "LDAP server URI:"
 msgstr ""
 
-#. Groups base DN
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:216
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:226
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:216
 msgid "Groups base DN (optional):"
 msgstr ""
 
-#. Bind user DN
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:217
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:233
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:217
 msgid "Bind user DN (optional):"
 msgstr ""
 
-#. Bind user password
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:218
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:241
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:218
 msgid "Bind user password (optional):"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:243
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:136
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:243
 msgid ""
 "Please fill the data to setup the Active Directory authentication method."
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:248
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:248
 msgid "(Active Directory) User:"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:249
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:249
 msgid "(Active Directory) Password:"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:274
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:274
 msgid ""
 "Specific configuration data was loaded from GECOS server\n"
 " (sssd.conf, krb5.conf, smb.conf and pam.conf)"
 msgstr ""
 
-#. User
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:280
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:154
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:280
 msgid "User:"
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:307
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:287
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:281
+msgid "Password:"
+msgstr ""
+
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:307
 msgid ""
 "There is no necessary data to setup the local users authentication method."
 msgstr ""
 
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthDialog.py:408
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:378
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:408
 msgid "An error happened while saving the users authentication method!"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:72
-msgid "User authentication method"
-msgstr ""
-
-#. Explanation
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:85
-msgid "The users of this workstation may authenticate by using"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:88
-msgid "an external system like LDAP or Microsoft Active Directory."
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:91
-msgid "Also, they can be authenticated by using local users of this O.S."
-msgstr ""
-
-#. Authentication Type
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:95
-msgid "Authentication type:"
-msgstr ""
-
-#. Setup button
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:109
-msgid "Setup"
-msgstr ""
-
-#. Options frame
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:125
-msgid "Active Directory authentication"
-msgstr ""
-
-#. Options frame
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:196
-msgid "LDAP authentication"
-msgstr ""
-
-#. Options frame
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:276
-msgid "Local users authentication"
-msgstr ""
-
-#: ../build/lib.linux-i686-2.7/gecosws_config_assistant/view/UserAuthenticationMethodElemView.py:377
-msgid "Error saving authentication method"
 msgstr ""

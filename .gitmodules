@@ -1,0 +1,15 @@
+[submodule "data/cookbooks/chef-client"]
+	path = data/cookbooks/chef-client
+	url = https://github.com/opscode-cookbooks/chef-client.git
+[submodule "data/cookbooks/cron"]
+	path = data/cookbooks/cron
+	url = https://github.com/opscode-cookbooks/cron.git
+[submodule "data/cookbooks/logrotate"]
+	path = data/cookbooks/logrotate
+	url = https://github.com/stevendanna/logrotate.git
+[submodule "data/cookbooks/gecos-ws-mgmt"]
+	path = data/cookbooks/gecos-ws-mgmt
+	url = https://github.com/gecos-team/gecos-workstation-management-cookbook.git
+[submodule "data/cookbooks/ohai-gecos"]
+	path = data/cookbooks/ohai-gecos
+	url = https://github.com/gecos-team/gecos-workstation-ohai-cookbook.git

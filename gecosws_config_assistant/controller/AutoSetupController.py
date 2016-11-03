@@ -26,21 +26,15 @@ import sys
 import socket
 
 
-if 'check' in sys.argv:
-    # Mock view classes for testing purposses
-    print "==> Loading mocks..."
-    from gecosws_config_assistant.view.ViewMocks import showerror_gtk, AutoSetupDialog, ADSetupDataElemView, ConnectWithGecosCCDialog
-    from gecosws_config_assistant.util.UtilMocks import GecosCC
-else:
-    # Use real view classes
-    from gecosws_config_assistant.view.AutoSetupDialog import AutoSetupDialog
-    from gecosws_config_assistant.view.ADSetupDataElemView import ADSetupDataElemView
-    from gecosws_config_assistant.view.CommonDialog import showerror_gtk
-    from gecosws_config_assistant.util.GecosCC import GecosCC
-    from gecosws_config_assistant.view.ConnectWithGecosCCDialog import ConnectWithGecosCCDialog 
+from gecosws_config_assistant.view.AutoSetupDialog import AutoSetupDialog
+from gecosws_config_assistant.view.ADSetupDataElemView import ADSetupDataElemView
+from gecosws_config_assistant.view.CommonDialog import showerror_gtk, askyesno_gtk
+from gecosws_config_assistant.util.GecosCC import GecosCC
+from gecosws_config_assistant.view.ConnectWithGecosCCDialog import ConnectWithGecosCCDialog 
 
 
 from gecosws_config_assistant.util.Validation import Validation
+from gecosws_config_assistant.util.SSLUtil import SSLUtil, SSL_R_CERTIFICATE_VERIFY_FAILED
 
 
 import logging
@@ -116,6 +110,67 @@ class AutoSetupController(object):
             self.view.focusUrlField()            
             return False
 
+        if gecosAccessData.get_url().startswith('https://'):
+            # Check server certificate
+            sslUtil = SSLUtil()
+            if not sslUtil.isServerCertificateTrusted(gecosAccessData.get_url()):
+                if sslUtil.getUntrustedCertificateErrorCode(gecosAccessData.get_url()) == SSL_R_CERTIFICATE_VERIFY_FAILED :
+                    # Error code SSL_R_CERTIFICATE_VERIFY_FAILED means that the certificate is not trusted
+                    
+                    errorcode = sslUtil.getUntrustedCertificateErrorCode( gecosAccessData.get_url() )
+                    certificate = sslUtil.getServerCertificate(gecosAccessData.get_url())
+                    info = sslUtil.getCertificateInfo(certificate)                
+
+                    # Check if the certificate is expired
+                    if info is not None and info.has_expired():
+                        self.logger.debug("Server HTTPS certificate is expired!")
+                        showerror_gtk(_("Can't connect to GECOS CC!") + "\n" +  _("The server HTTPS certificate is expired!"),
+                             None)
+                        self.view.focusUrlField()            
+                        return False                    
+                    
+                    # Ask to the user if he want to trust this certificate
+                    if info is not None:
+                        response =  askyesno_gtk((unicode(_("The certificate of this server is not trusted!"), 'utf-8')  + "\n" 
+                            + unicode(_("Do you wan't to add it to the trusted certificates list?"), 'utf-8') + "\n" 
+                            + "\n" 
+                            + unicode(_("Subject:"), 'utf-8') + " " + (sslUtil.formatX509Name(info.get_subject())) + "\n" 
+                            + unicode(_("Issuer:"), 'utf-8') + " " + (sslUtil.formatX509Name(info.get_issuer())) + "\n" 
+                            + unicode(_("Serial Number:"), 'utf-8') + " " + str(info.get_serial_number()) + "\n" 
+                            + unicode(_("Not before:"), 'utf-8') + " " + str(info.get_notBefore()) + " " + unicode(_("Not after:"), 'utf-8') + " " + str(info.get_notAfter()) + "\n" 
+                            ), self.view, 'warning')
+                            
+                        if not response:
+                            self.logger.debug("User don'w want to add the HTTPS server certificate to the Trusted CA list!")
+                            self.view.focusUrlField()            
+                            return False                    
+                            
+                        else:
+                            sslUtil.addCertificateToTrustedCAs(certificate, True)
+                            
+                            # Test again
+                            if not sslUtil.isServerCertificateTrusted(gecosAccessData.get_url()):
+                                # Trusted certificates produce connection errors
+                                # due to many things. For example a bad name.
+                                errormsg = sslUtil.getUntrustedCertificateCause( gecosAccessData.get_url() )
+                                self.logger.debug("Error connecting to HTTPS server: %s"%(errormsg))
+                                showerror_gtk(_("Can't connect to GECOS CC!") + "\n" +  _("SSL ERROR:") + ' ' + errormsg,
+                                     None)
+                                self.view.focusUrlField()            
+                                return False                    
+                            
+                else:
+                    # Any other error code must be shown
+                    errormsg = sslUtil.getUntrustedCertificateCause( gecosAccessData.get_url() )
+                    self.logger.debug("Error connecting to HTTPS server: %s"%(errormsg))
+                    showerror_gtk(_("Can't connect to GECOS CC!") + "\n" +  _("SSL ERROR:") + ' ' + errormsg,
+                         None)
+                    self.view.focusUrlField()
+                    return False       
+            
+            
+            
+            
         if (gecosAccessData.get_login() is None or
             gecosAccessData.get_login().strip() == ''):
             self.logger.debug("Empty login!")

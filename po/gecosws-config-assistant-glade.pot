@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-19 12:33+0100\n"
+"POT-Creation-Date: 2016-10-11 16:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,15 +31,15 @@ msgstr ""
 msgid "192.168.1.99"
 msgstr ""
 
-#: ../data/glade/gecoscon.glade:359
+#: ../data/glade/gecoscon.glade:335
 msgid "<b>Connection with GECOS</b>"
 msgstr ""
 
-#: ../data/glade/gecoscon.glade:486
+#: ../data/glade/gecoscon.glade:460
 msgid "<b>OU selection</b>"
 msgstr ""
 
-#: ../data/glade/gecoscon.glade:233
+#: ../data/glade/gecoscon.glade:213
 msgid "<b>Workstation name</b>"
 msgstr ""
 
@@ -60,10 +60,10 @@ msgstr ""
 msgid "Authentication Method Setup"
 msgstr ""
 
-#: ../data/glade/autoconf.glade:84 ../data/glade/gecoscon.glade:87
-#: ../data/glade/main.glade:94 ../data/glade/network.glade:99
-#: ../data/glade/ntp.glade:78 ../data/glade/requirements.glade:113
-#: ../data/glade/users.glade:87 ../data/glade/users.glade:215
+#: ../data/glade/autoconf.glade:84 ../data/glade/main.glade:94
+#: ../data/glade/network.glade:99 ../data/glade/ntp.glade:78
+#: ../data/glade/requirements.glade:113 ../data/glade/users.glade:87
+#: ../data/glade/users.glade:215
 msgid "Authentication type"
 msgstr ""
 
@@ -111,7 +111,7 @@ msgstr ""
 msgid "Clean up setup data"
 msgstr ""
 
-#: ../data/glade/autoconf.glade:573 ../data/glade/gecoscon.glade:762
+#: ../data/glade/autoconf.glade:573 ../data/glade/gecoscon.glade:736
 #: ../data/glade/main.glade:368 ../data/glade/network.glade:493
 #: ../data/glade/ntp.glade:487 ../data/glade/requirements.glade:714
 #: ../data/glade/users.glade:664 ../data/glade/window.glade:364
@@ -130,7 +130,7 @@ msgstr ""
 msgid "Confirm:"
 msgstr ""
 
-#: ../data/glade/gecoscon.glade:512
+#: ../data/glade/gecoscon.glade:486
 msgid "Connect to CC GECOS"
 msgstr ""
 
@@ -142,19 +142,23 @@ msgstr ""
 msgid "Domain:"
 msgstr ""
 
-#: ../data/glade/autoconf.glade:17 ../data/glade/gecoscon.glade:23
+#: ../data/glade/autoconf.glade:17 ../data/glade/gecoscon.glade:13
 #: ../data/glade/main.glade:27 ../data/glade/network.glade:35
 #: ../data/glade/ntp.glade:16 ../data/glade/requirements.glade:46
 #: ../data/glade/users.glade:23 ../data/glade/window.glade:35
 msgid "GECOS Config Assistant"
 msgstr ""
 
-#: ../data/glade/autoconf.glade:207
-msgid "GECOS URL"
+#: ../data/glade/gecoscon.glade:133
+msgid "GECOS Control Center URL"
 msgstr ""
 
-#: ../data/glade/gecoscon.glade:167
-msgid "GECOS server setup"
+#: ../data/glade/gecoscon.glade:117
+msgid "GECOS Control Center connection setup"
+msgstr ""
+
+#: ../data/glade/autoconf.glade:207
+msgid "GECOS URL"
 msgstr ""
 
 #: ../data/glade/progress.glade:49
@@ -171,7 +175,7 @@ msgstr ""
 msgid "Go Back"
 msgstr ""
 
-#: ../data/glade/gecoscon.glade:539 ../data/glade/ntp.glade:260
+#: ../data/glade/gecoscon.glade:513 ../data/glade/ntp.glade:260
 msgid "Go back"
 msgstr ""
 
@@ -181,7 +185,7 @@ msgid ""
 "external services (LDAP, AD, ...)"
 msgstr ""
 
-#: ../data/glade/gecoscon.glade:199
+#: ../data/glade/gecoscon.glade:181
 msgid ""
 "It must be unique, it can use white spaces or symbols. It would be the "
 "description on the reports."
@@ -195,14 +199,13 @@ msgstr ""
 msgid "Link to chef "
 msgstr ""
 
-#: ../data/glade/autoconf.glade:48 ../data/glade/gecoscon.glade:54
-#: ../data/glade/main.glade:57 ../data/glade/network.glade:66
-#: ../data/glade/ntp.glade:47 ../data/glade/requirements.glade:77
-#: ../data/glade/users.glade:54
+#: ../data/glade/autoconf.glade:48 ../data/glade/main.glade:57
+#: ../data/glade/network.glade:66 ../data/glade/ntp.glade:47
+#: ../data/glade/requirements.glade:77 ../data/glade/users.glade:54
 msgid "Link/Unlink"
 msgstr ""
 
-#: ../data/glade/autoconf.glade:457 ../data/glade/gecoscon.glade:646
+#: ../data/glade/autoconf.glade:457 ../data/glade/gecoscon.glade:620
 #: ../data/glade/main.glade:252 ../data/glade/network.glade:377
 #: ../data/glade/ntp.glade:373 ../data/glade/requirements.glade:596
 #: ../data/glade/users.glade:548 ../data/glade/window.glade:231
@@ -251,7 +254,7 @@ msgstr ""
 msgid "New"
 msgstr ""
 
-#: ../data/glade/gecoscon.glade:412
+#: ../data/glade/gecoscon.glade:388
 msgid "OU"
 msgstr ""
 
@@ -261,7 +264,7 @@ msgstr ""
 msgid "PENDING "
 msgstr ""
 
-#: ../data/glade/autoconf.glade:235 ../data/glade/gecoscon.glade:291
+#: ../data/glade/autoconf.glade:235 ../data/glade/gecoscon.glade:271
 msgid "Password"
 msgstr ""
 
@@ -283,7 +286,7 @@ msgstr ""
 msgid "Register in GECOS CC "
 msgstr ""
 
-#: ../data/glade/gecoscon.glade:437
+#: ../data/glade/gecoscon.glade:411
 msgid "Search"
 msgstr ""
 
@@ -291,14 +294,14 @@ msgstr ""
 msgid "See Log"
 msgstr ""
 
-#: ../data/glade/autoconf.glade:500 ../data/glade/gecoscon.glade:689
+#: ../data/glade/autoconf.glade:500 ../data/glade/gecoscon.glade:663
 #: ../data/glade/main.glade:295 ../data/glade/network.glade:420
 #: ../data/glade/ntp.glade:415 ../data/glade/requirements.glade:640
 #: ../data/glade/users.glade:591 ../data/glade/window.glade:275
 msgid "Software Manager"
 msgstr ""
 
-#: ../data/glade/autoconf.glade:414 ../data/glade/gecoscon.glade:603
+#: ../data/glade/autoconf.glade:414 ../data/glade/gecoscon.glade:577
 #: ../data/glade/main.glade:209 ../data/glade/network.glade:334
 #: ../data/glade/ntp.glade:331 ../data/glade/requirements.glade:552
 #: ../data/glade/users.glade:505 ../data/glade/window.glade:187
@@ -342,14 +345,14 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: ../data/glade/autoconf.glade:543 ../data/glade/gecoscon.glade:732
+#: ../data/glade/autoconf.glade:543 ../data/glade/gecoscon.glade:706
 #: ../data/glade/main.glade:338 ../data/glade/network.glade:463
 #: ../data/glade/ntp.glade:457 ../data/glade/requirements.glade:684
 #: ../data/glade/users.glade:634 ../data/glade/window.glade:319
 msgid "Update assistant"
 msgstr ""
 
-#: ../data/glade/autoconf.glade:221 ../data/glade/gecoscon.glade:279
+#: ../data/glade/autoconf.glade:221 ../data/glade/gecoscon.glade:259
 msgid "User"
 msgstr ""
 
@@ -372,6 +375,10 @@ msgstr ""
 #: ../data/glade/main.glade:408 ../data/glade/requirements.glade:39
 #: ../data/glade/window.glade:28
 msgid "eth0"
+msgstr ""
+
+#: ../data/glade/gecoscon.glade:149
+msgid "http://"
 msgstr ""
 
 #: ../data/glade/main.glade:404 ../data/glade/requirements.glade:35

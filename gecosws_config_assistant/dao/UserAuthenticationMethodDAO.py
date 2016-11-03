@@ -39,10 +39,6 @@ from gecosws_config_assistant.firstboot_lib.firstbootconfig import get_data_file
 
 from pprint import pprint
 
-import gettext
-from gettext import gettext as _
-gettext.textdomain('gecosws-config-assistant')
-
 class UserAuthenticationMethodDAO(object):
     '''
     DAO class to manipulate UserAuthenticationMethod DTO objects.
@@ -78,11 +74,14 @@ class UserAuthenticationMethodDAO(object):
                 self.pm.install_package('sssd')
                 self.initiated = True
             except Exception:
-                self.logger.error(_('Package installation failed:') + 'sssd')
+                self.logger.error('Package installation failed:' + 'sssd')
                 self.logger.error(str(traceback.format_exc())) 
         else:
             self.logger.debug('Already installed "sssd" package')
             self.initiated = True            
+      
+        self.sssd_version = self.pm.get_package_version('sssd')
+        
       
     def _load_ldap(self):
         data = LDAPSetupData()
@@ -174,7 +173,7 @@ class UserAuthenticationMethodDAO(object):
                 
         retval = p.wait()
         if retval != 0:
-            self.logger.error(_('Error running command: ')+'service sssd restart')
+            self.logger.error('Error running command: '+'service sssd restart')
             return False        
         
         self.logger.debug('Save /usr/share/pam-configs/my_mkhomedir file')
@@ -200,7 +199,7 @@ class UserAuthenticationMethodDAO(object):
                 
         retval = p.wait()
         if retval != 0:
-            self.logger.error(_('Error running command: ')+'pam-auth-update')
+            self.logger.error('Error running command: '+'pam-auth-update')
             return False           
         
         
@@ -227,17 +226,7 @@ class UserAuthenticationMethodDAO(object):
 
         self.logger.debug('Save /etc/sssd/sssd.conf file')
         # Save /etc/samba/sssd.conf file
-        template = Template()
-        template.source = get_data_file('templates/sssd.conf.local')
-        template.destination = self.main_data_file
-        template.owner = 'root'
-        template.group = 'root'
-        template.mode = 00600
-        template.variables = { }
-        
-        if not template.save():
-            self.logger.error('Error saving /etc/sssd/sssd.conf file')
-            return False
+        self._back_to_local_users()
         
         # Restart SSSD service
         self.logger.debug('Restart SSSD service')
@@ -248,7 +237,7 @@ class UserAuthenticationMethodDAO(object):
                 
         retval = p.wait()
         if retval != 0:
-            self.logger.error(_('Error running command: ')+'service sssd restart')
+            self.logger.error('Error running command: '+'service sssd restart')
             return False        
         
         self.logger.debug('Delete %s file'%('/etc/gca-sssd.control'))
@@ -395,7 +384,7 @@ class UserAuthenticationMethodDAO(object):
                 
         retval = p.wait()
         if retval != 0:
-            self.logger.error(_('Error running command: ')+command)
+            self.logger.error('Error running command: '+command)
             return False
               
               
@@ -408,7 +397,7 @@ class UserAuthenticationMethodDAO(object):
                 
         retval = p.wait()
         if retval != 0:
-            self.logger.error(_('Error running command: ')+'service sssd restart')
+            self.logger.error('Error running command: '+'service sssd restart')
             return False        
         
         self.logger.debug('Save /usr/share/pam-configs/my_mkhomedir file')
@@ -434,7 +423,7 @@ class UserAuthenticationMethodDAO(object):
                 
         retval = p.wait()
         if retval != 0:
-            self.logger.error(_('Error running command: ')+'pam-auth-update')
+            self.logger.error('Error running command: '+'pam-auth-update')
             return False           
         
         
@@ -454,6 +443,33 @@ class UserAuthenticationMethodDAO(object):
 
         return True
 
+    def _back_to_local_users(self):
+        extra_conf_lines = ''
+        if self.sssd_version is not None:
+            (major, minor, release) = self.pm.parse_version_number(self.sssd_version)
+            
+            if major > 1 or (major == 1 and minor > 11):
+                extra_conf_lines = '[domain/DEFAULT]\n'
+                extra_conf_lines = extra_conf_lines + 'enumerate = TRUE\n'
+                extra_conf_lines = extra_conf_lines + 'min_id = 500\n'
+                extra_conf_lines = extra_conf_lines + 'max_id = 999\n'
+                extra_conf_lines = extra_conf_lines + 'id_provider = local\n'
+                extra_conf_lines = extra_conf_lines + 'auth_provider = local\n'
+                extra_conf_lines = extra_conf_lines + '\n'
+
+        self.logger.debug('Save /etc/sssd/sssd.conf file')
+        # Save /etc/samba/sssd.conf file
+        template = Template()
+        template.source = get_data_file('templates/sssd.conf.local')
+        template.destination = self.main_data_file
+        template.owner = 'root'
+        template.group = 'root'
+        template.mode = 00600
+        template.variables = {'extra_conf_lines': extra_conf_lines }
+
+        if not template.save():
+            self.logger.error('Error saving /etc/sssd/sssd.conf file')
+            return False 
 
     def _save_active_directory_normal(self, method):
         self.logger.debug('Saving active directory user authentication method')
@@ -514,9 +530,16 @@ class UserAuthenticationMethodDAO(object):
                 
         retval = p.wait()
         if retval != 0:
-            self.logger.error(_('Error running command: ')+command)
+            self.logger.error('Error running command: '+command)
             return False
               
+              
+        extra_conf_lines = ''
+        if self.sssd_version is not None:
+            (major, minor, release) = self.pm.parse_version_number(self.sssd_version)
+            
+            if major > 1 or (major == 1 and minor > 11):
+                extra_conf_lines = 'ad_gpo_map_interactive = +mdm'
               
         self.logger.debug('Save /etc/sssd/sssd.conf file')
         # Save /etc/samba/sssd.conf file
@@ -526,7 +549,7 @@ class UserAuthenticationMethodDAO(object):
         template.owner = 'root'
         template.group = 'root'
         template.mode = 00600
-        template.variables = { 'ad_domain':  data.get_domain()}
+        template.variables = { 'ad_domain':  data.get_domain(), 'extra_conf_lines': extra_conf_lines}
         
         if not template.save():
             self.logger.error('Error saving /etc/sssd/sssd.conf file')
@@ -541,7 +564,7 @@ class UserAuthenticationMethodDAO(object):
                 
         retval = p.wait()
         if retval != 0:
-            self.logger.error(_('Error running command: ')+'service sssd restart')
+            self.logger.error('Error running command: '+'service sssd restart')
             return False        
         
         self.logger.debug('Save /usr/share/pam-configs/my_mkhomedir file')
@@ -567,7 +590,7 @@ class UserAuthenticationMethodDAO(object):
                 
         retval = p.wait()
         if retval != 0:
-            self.logger.error(_('Error running command: ')+'pam-auth-update')
+            self.logger.error('Error running command: '+'pam-auth-update')
             return False           
         
         
@@ -602,7 +625,7 @@ class UserAuthenticationMethodDAO(object):
                 
         retval = p.wait()
         if retval != 0:
-            self.logger.error(_('Error running command: ')+command)
+            self.logger.error('Error running command: '+command)
             return False
 
         # Delete configuration files
@@ -614,20 +637,22 @@ class UserAuthenticationMethodDAO(object):
         if os.path.isfile(self.krb_conf_file):
             os.remove(self.krb_conf_file)
         
-     
+        extra_conf_lines = ''
+        if self.sssd_version is not None:
+            (major, minor, release) = self.pm.parse_version_number(self.sssd_version)
+            
+            if major > 1 or (major == 1 and minor > 11):
+                extra_conf_lines = '[domain/DEFAULT]\n'
+                extra_conf_lines = extra_conf_lines + 'enumerate = TRUE\n'
+                extra_conf_lines = extra_conf_lines + 'min_id = 500\n'
+                extra_conf_lines = extra_conf_lines + 'max_id = 999\n'
+                extra_conf_lines = extra_conf_lines + 'id_provider = local\n'
+                extra_conf_lines = extra_conf_lines + 'auth_provider = local\n'
+                extra_conf_lines = extra_conf_lines + '\n'
+
         self.logger.debug('Save /etc/sssd/sssd.conf file')
         # Save /etc/samba/sssd.conf file
-        template = Template()
-        template.source = get_data_file('templates/sssd.conf.local')
-        template.destination = self.main_data_file
-        template.owner = 'root'
-        template.group = 'root'
-        template.mode = 00600
-        template.variables = { }
-        
-        if not template.save():
-            self.logger.error('Error saving /etc/sssd/sssd.conf file')
-            return False
+        self._back_to_local_users()
         
         # Restart SSSD service
         self.logger.debug('Restart SSSD service')
@@ -638,7 +663,7 @@ class UserAuthenticationMethodDAO(object):
                 
         retval = p.wait()
         if retval != 0:
-            self.logger.error(_('Error running command: ')+'service sssd restart')
+            self.logger.error('Error running command: '+'service sssd restart')
             return False        
         
         self.logger.debug('Delete %s file'%('/etc/gca-sssd.control'))
@@ -652,33 +677,34 @@ class UserAuthenticationMethodDAO(object):
         self.logger.debug('load - BEGIN')
       
         if not self.initiated:
-            self.logger.warn(_('UserAuthenticationMethodDAO used without a proper initialization!'))
+            self.logger.warn('UserAuthenticationMethodDAO used without a proper initialization!')
             # Return default method
             return LocalUsersAuthMethod()
       
         # Get authType of authentication method
         authType = None
-        try:
-            with open(self.main_data_file) as fp:
-                for line in fp:
-                    if line.strip() == 'domains = DEFAULT':
-                        self.logger.debug('Detected authentication method: Internal')
-                        authType = 'Internal'
-                        break
-                     
-                    if line.strip() == 'id_provider = ad':
-                        self.logger.debug('Detected authentication method: Active Directory')
-                        authType = 'AD'
-                        break
-            
-                    if line.strip() == 'id_provider = ldap':
-                        self.logger.debug('Detected authentication method: LDAP')
-                        authType = 'LDAP'
-                        break
+        if os.path.isfile(self.main_data_file):
+            try:
+                with open(self.main_data_file) as fp:
+                    for line in fp:
+                        if line.strip() == 'domains = DEFAULT':
+                            self.logger.debug('Detected authentication method: Internal')
+                            authType = 'Internal'
+                            break
+                         
+                        if line.strip() == 'id_provider = ad':
+                            self.logger.debug('Detected authentication method: Active Directory')
+                            authType = 'AD'
+                            break
                 
-        except Exception:
-            self.logger.error(_('Error reading file:')+ self.main_data_file)
-            self.logger.error(str(traceback.format_exc()))            
+                        if line.strip() == 'id_provider = ldap':
+                            self.logger.debug('Detected authentication method: LDAP')
+                            authType = 'LDAP'
+                            break
+                    
+            except Exception:
+                self.logger.error('Error reading file:'+ self.main_data_file)
+                self.logger.error(str(traceback.format_exc()))            
         
         if authType is None:
             return LocalUsersAuthMethod()
@@ -694,7 +720,7 @@ class UserAuthenticationMethodDAO(object):
         self.logger.debug('save - BEGIN')        
         
         if not self.initiated:
-            self.logger.warn(_('UserAuthenticationMethodDAO used without a proper initialization!'))
+            self.logger.warn('UserAuthenticationMethodDAO used without a proper initialization!')
             # Do nothing
             return
         
@@ -720,7 +746,7 @@ class UserAuthenticationMethodDAO(object):
         self.logger.debug('delete - BEGIN')        
         
         if not self.initiated:
-            self.logger.warn(_('UserAuthenticationMethodDAO used without a proper initialization!'))
+            self.logger.warn('UserAuthenticationMethodDAO used without a proper initialization!')
             # Do nothing
             return
         

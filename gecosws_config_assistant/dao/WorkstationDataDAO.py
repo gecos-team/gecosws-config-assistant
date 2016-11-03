@@ -23,6 +23,7 @@ __license__ = "GPL-2"
 from gecosws_config_assistant.dto.WorkstationData import WorkstationData
 from gecosws_config_assistant.util.JSONUtil import JSONUtil
 from gecosws_config_assistant.util.Template import Template
+from gecosws_config_assistant.dao.NetworkInterfaceDAO import NetworkInterfaceDAO
 
 import logging
 import traceback
@@ -31,9 +32,6 @@ import os
 
 from gecosws_config_assistant.firstboot_lib.firstbootconfig import get_data_file
 
-import gettext
-from gettext import gettext as _
-gettext.textdomain('gecosws-config-assistant')
 
 class WorkstationDataDAO(object):
     '''
@@ -78,20 +76,16 @@ class WorkstationDataDAO(object):
                 data.set_name(name)     
                 
         except Exception:
-            self.logger.error(_('Error reading file:')+ self.pclabel_file)
+            self.logger.error('Error reading file:'+ self.pclabel_file)
             self.logger.error(str(traceback.format_exc()))             
             
         if name is None:
             # Get hostname as default name
-            p = subprocess.Popen('hostname', shell=True, 
-                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            for line in p.stdout.readlines():
-                name = line
-            p.wait()
+            networkInterfaceDAO = NetworkInterfaceDAO()
+            name = networkInterfaceDAO.get_hostname()
                
             if name is not None:
                 name = name.replace('"', '')
-                name = name.strip()
                 data.set_name(name)    
                                             
         
@@ -130,7 +124,7 @@ class WorkstationDataDAO(object):
                 fd.close()
             
         except Exception:
-            self.logger.error(_('Error writing file:') + self.pclabel_file)
+            self.logger.error('Error writing file:' + self.pclabel_file)
             self.logger.error(str(traceback.format_exc()))             
         
         # Do not save OU in GECOS CC at this point!!
@@ -180,7 +174,7 @@ class WorkstationDataDAO(object):
                 os.remove(self.pclabel_file)
             
         except Exception:
-            self.logger.error(_('Error removing file:') + self.pclabel_file)
+            self.logger.error('Error removing file:' + self.pclabel_file)
             self.logger.error(str(traceback.format_exc()))             
         
         # Eliminate node_name from gcc.control file
