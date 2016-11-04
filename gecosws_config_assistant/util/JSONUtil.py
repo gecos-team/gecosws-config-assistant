@@ -25,10 +25,6 @@ import traceback
 import json
 
 
-import gettext
-from gettext import gettext as _
-gettext.textdomain('gecosws-config-assistant')
-
 class JSONUtil(object):
     '''
     Utility class to manipulate JSON.
@@ -52,7 +48,7 @@ class JSONUtil(object):
             json_data = json.loads(content)
             
         except Exception:
-            self.logger.warn(_('Error reading file: ') + filepath)
+            self.logger.warn('Error reading file: ' + filepath)
             #self.logger.warn(str(traceback.format_exc()))
             
         return json_data            

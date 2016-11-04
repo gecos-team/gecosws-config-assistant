@@ -93,3 +93,26 @@ class Validation(object):
         except:
             return False
 
+    def isValidNetbiosHostname(self, hostname):
+        # See https://support.microsoft.com/en-us/kb/909264
+        if hostname is None:
+            return False
+        if len(hostname) < 1 or len(hostname) > 15:
+            return False
+        
+        if hostname.startswith('.'):
+            return False
+        
+        if (hostname.find('\\') >= 0
+            or hostname.find('/') >= 0
+            or hostname.find(':') >= 0
+            or hostname.find('*') >= 0
+            or hostname.find('?') >= 0
+            or hostname.find('"') >= 0
+            or hostname.find('<') >= 0
+            or hostname.find('>') >= 0
+            or hostname.find('|') >= 0):
+            return False
+        
+        
+        return True

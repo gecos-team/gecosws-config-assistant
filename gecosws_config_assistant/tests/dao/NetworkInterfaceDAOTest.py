@@ -34,9 +34,9 @@ class NetworkInterfaceDAOTest(unittest.TestCase):
 
 
     def runTest(self):
-        dao = NetworkInterfaceDAO()
+        networkInterfaceDAO = NetworkInterfaceDAO()
         
-        interfaces = dao.loadAll() 
+        interfaces = networkInterfaceDAO.loadAll() 
         self.assertTrue(isinstance(interfaces, list))
         
         print 'Network interfaces: '
@@ -45,4 +45,13 @@ class NetworkInterfaceDAOTest(unittest.TestCase):
             print 'NAME: ', interface.get_name(), ' IP: ', interface.get_ip_address()
             self.assertNotEqual(interface.get_name(), '')
             self.assertNotEqual(interface.get_ip_address(), '')
-            
+        
+        # Test the hostname setting and getting
+        originalHostname = networkInterfaceDAO.get_hostname()
+        self.assertIsNotNone(originalHostname)
+        
+        self.assertTrue(networkInterfaceDAO.set_hostname('mycomputer'))
+        self.assertEqual(networkInterfaceDAO.get_hostname(), 'mycomputer')
+        
+        self.assertTrue(networkInterfaceDAO.set_hostname(originalHostname))
+        

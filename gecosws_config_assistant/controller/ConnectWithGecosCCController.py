@@ -22,20 +22,17 @@ __license__ = "GPL-2"
 
 import sys
 
-if 'check' in sys.argv:
-    # Mock view classes for testing purposses
-    print "==> Loading mocks..."
-    from gecosws_config_assistant.view.ViewMocks import showerror_gtk, ConnectWithGecosCCDialog, ChefValidationCertificateDialog, GecosCCSetupProcessView
-else:
-    # Use real view classes
-    from gecosws_config_assistant.view.ConnectWithGecosCCDialog import ConnectWithGecosCCDialog
-    from gecosws_config_assistant.view.ChefValidationCertificateDialog import ChefValidationCertificateDialog
-    from gecosws_config_assistant.view.GecosCCSetupProgressView import GecosCCSetupProgressView
-    from gecosws_config_assistant.view.CommonDialog import showerror_gtk
+from gecosws_config_assistant.view.ConnectWithGecosCCDialog import ConnectWithGecosCCDialog
+from gecosws_config_assistant.view.GecosCCSetupProgressView import GecosCCSetupProgressView
+from gecosws_config_assistant.view.CommonDialog import showerror_gtk
+from gecosws_config_assistant.view.CommonDialog import askyesno_gtk
 
 from gecosws_config_assistant.util.GecosCC import GecosCC
 from gecosws_config_assistant.util.Validation import Validation
 from gecosws_config_assistant.util.Template import Template
+from gecosws_config_assistant.util.CommandUtil import CommandUtil
+from gecosws_config_assistant.util.SSLUtil import SSLUtil, SSL_R_CERTIFICATE_VERIFY_FAILED
+from gecosws_config_assistant.util.GemUtil import GemUtil
 
 from gecosws_config_assistant.dao.GecosAccessDataDAO import GecosAccessDataDAO
 from gecosws_config_assistant.dao.WorkstationDataDAO import WorkstationDataDAO
@@ -73,6 +70,9 @@ class ConnectWithGecosCCController(object):
         self.accessDataDao = GecosAccessDataDAO()
         self.workstationDataDao = WorkstationDataDAO()
         self.logger = logging.getLogger('ConnectWithGecosCCController')
+
+        # List of GEMS required to run GECOS 
+        self.necessary_gems = ['json', 'rest-client', 'activesupport', 'sqlite3', 'netaddr']
 
     def show(self, mainWindow):
         self.logger.debug('show - BEGIN')
@@ -133,6 +133,64 @@ class ConnectWithGecosCCController(object):
             self.view.focusPasswordField()            
             return False
 
+        if gecosAccessData.get_url().startswith('https://'):
+            # Check server certificate
+            sslUtil = SSLUtil()
+            if not sslUtil.isServerCertificateTrusted(gecosAccessData.get_url()):
+                if sslUtil.getUntrustedCertificateErrorCode(gecosAccessData.get_url()) == SSL_R_CERTIFICATE_VERIFY_FAILED :
+                    # Error code SSL_R_CERTIFICATE_VERIFY_FAILED means that the certificate is not trusted
+                    
+                    errorcode = sslUtil.getUntrustedCertificateErrorCode( gecosAccessData.get_url() )
+                    certificate = sslUtil.getServerCertificate(gecosAccessData.get_url())
+                    info = sslUtil.getCertificateInfo(certificate)                
+
+                    # Check if the certificate is expired
+                    if info is not None and info.has_expired():
+                        self.logger.debug("Server HTTPS certificate is expired!")
+                        showerror_gtk(_("Can't connect to GECOS CC!") + "\n" +  _("The server HTTPS certificate is expired!"),
+                             None)
+                        self.view.focusUrlField()            
+                        return False                    
+                    
+                    # Ask to the user if he want to trust this certificate
+                    if info is not None:
+                        response =  askyesno_gtk((unicode(_("The certificate of this server is not trusted!"), 'utf-8')  + "\n" 
+                            + unicode(_("Do you wan't to add it to the trusted certificates list?"), 'utf-8') + "\n" 
+                            + "\n" 
+                            + unicode(_("Subject:"), 'utf-8') + " " + (sslUtil.formatX509Name(info.get_subject())) + "\n" 
+                            + unicode(_("Issuer:"), 'utf-8') + " " + (sslUtil.formatX509Name(info.get_issuer())) + "\n" 
+                            + unicode(_("Serial Number:"), 'utf-8') + " " + str(info.get_serial_number()) + "\n" 
+                            + unicode(_("Not before:"), 'utf-8') + " " + str(info.get_notBefore()) + " " + unicode(_("Not after:"), 'utf-8') + " " + str(info.get_notAfter()) + "\n" 
+                            ), self.view, 'warning')
+                            
+                        if not response:
+                            self.logger.debug("User don'w want to add the HTTPS server certificate to the Trusted CA list!")
+                            self.view.focusUrlField()            
+                            return False                    
+                            
+                        else:
+                            sslUtil.addCertificateToTrustedCAs(certificate, True)
+                            
+                            # Test again
+                            if not sslUtil.isServerCertificateTrusted(gecosAccessData.get_url()):
+                                # Trusted certificates produce connection errors
+                                # due to many things. For example a bad name.
+                                errormsg = sslUtil.getUntrustedCertificateCause( gecosAccessData.get_url() )
+                                self.logger.debug("Error connecting to HTTPS server: %s"%(errormsg))
+                                showerror_gtk(_("Can't connect to GECOS CC!") + "\n" +  _("SSL ERROR:") + ' ' + errormsg,
+                                     None)
+                                self.view.focusUrlField()            
+                                return False                    
+                            
+                else:
+                    # Any other error code must be shown
+                    errormsg = sslUtil.getUntrustedCertificateCause( gecosAccessData.get_url() )
+                    self.logger.debug("Error connecting to HTTPS server: %s"%(errormsg))
+                    showerror_gtk(_("Can't connect to GECOS CC!") + "\n" +  _("SSL ERROR:") + ' ' + errormsg,
+                         None)
+                    self.view.focusUrlField()
+                    return False       
+            
         gecosCC = GecosCC()
         if not gecosCC.validate_credentials(gecosAccessData):
             self.logger.debug("Bad access data!")
@@ -224,14 +282,14 @@ class ConnectWithGecosCCController(object):
             if current_usr != 'root':
                 uid = pwd.getpwnam('root').pw_uid
                 if uid is None:
-                    self.logger.error(_('Can not find user to be used as owner: ') + 'root')
+                    self.logger.error('Can not find user to be used as owner: ' + 'root')
                 else:
                     os.chown(filename, uid, gid)  
                 
             if current_grp != 'root':
                 gid = grp.getgrnam('root').gr_gid
                 if gid is None:
-                    self.logger.error(_('Can not find group to be used as owner: ') + 'root')
+                    self.logger.error('Can not find group to be used as owner: ' + 'root')
                 else:
                     os.chown(filename, uid, gid)  
                 
@@ -256,26 +314,8 @@ class ConnectWithGecosCCController(object):
         return True
     
     def _execute_command(self, cmd, my_env={}):
-        try:
-            p = subprocess.Popen(cmd, shell=True, 
-                                 stdout=subprocess.PIPE, 
-                                 stderr=subprocess.STDOUT,
-                                 env=my_env)
-            for line in p.stdout.readlines():
-                self.logger.debug(line)
-                    
-            retval = p.wait()
-            if retval != 0:
-                self.logger.error('Error running command: %s'%(cmd))
-                return False     
-            
-        except:
-            self.logger.error('Error running command: %s'%(cmd))
-            self.logger.error(str(traceback.format_exc()))
-            return False        
-        
-        
-        return True                  
+        commandUtil = CommandUtil()
+        return commandUtil.execute_command(cmd, my_env)
     
     def _clean_connection_files_on_error(self):
         self.logger.debug("_clean_connection_files_on_error")
@@ -339,38 +379,153 @@ class ConnectWithGecosCCController(object):
 
         # Save workstation data
         self.workstationDataDao.save(self.view.get_workstation_data())
-        
-        # Get validation.pem from server
-        self.logger.debug("Get validation.pem from server")
-        gecosCC = GecosCC()
-        conf = gecosCC.get_json_autoconf(self.view.get_gecos_access_data())
-        #self.logger.debug(json.dumps(conf))
-        chef_validation = None
-        if (conf is not None 
-            and conf.has_key("chef")
-            and conf["chef"].has_key("chef_validation")):
-            chef_validation = base64.decodestring(conf["chef"]["chef_validation"])
-            self.logger.debug("validation.pem retrieved from GECOS auto conf")
-        
-        if chef_validation is None:
-            # Ask the user for the validation.pem URL
-            self.certificate_url_view = ChefValidationCertificateDialog(self.processView, self)
-            self.certificate_url_view.show()
-            if self.certificate_url_view.get_data() is None:
-                self.processView.setChefCertificateRetrievalStatus(_('CANCELED'))
-                self.processView.enableAcceptButton()
-                return False
-            else:
-                chef_validation = self.certificate_url_view.get_data()
+        workstationData = self.view.get_workstation_data()
 
-        # Save Chef validation certificate in a PEM file
-        if not self._save_secure_file('/etc/chef/validation.pem', chef_validation):
+        
+        # Get client.pem from server
+        self.logger.debug("Get client.pem from server")
+        gecosCC = GecosCC()
+        
+        if gecosCC.is_registered_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name()):
+            # re-register
+            client_pem = gecosCC.reregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
+        else:
+            # register
+            client_pem = gecosCC.register_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
+            
+        # Check the client_pem data
+        if client_pem is False:
             self.processView.setChefCertificateRetrievalStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror_gtk(_("There was an error while saving validation certificate"),
+            showerror_gtk(_("There was an error while getting the client certificate"),
                  self.view)
+            gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
+            self._clean_connection_files_on_error()
+            return False        
+        
+        # Save Chef client certificate in a PEM file
+        if not self._save_secure_file('/etc/chef/client.pem', client_pem):
+            self.processView.setChefCertificateRetrievalStatus(_('ERROR'))
+            self.processView.enableAcceptButton()
+            showerror_gtk(_("There was an error while saving the client certificate"),
+                 self.view)
+            gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
             self._clean_connection_files_on_error()
             return False
+
+        # Get autoconf data
+        conf = gecosCC.get_json_autoconf(self.view.get_gecos_access_data())
+            
+        # Check configured GEMs repo
+        if (conf is not None 
+            and conf.has_key("gem_repo")):
+            gem_repo = conf['gem_repo']
+            if not gem_repo.endswith('/'):
+                gem_repo = gem_repo + '/'
+              
+            # Check if GEMs repository is http://rubygems.org/
+            if gem_repo == 'http://rubygems.org/':
+                # Chef 12 warns about using 'http://rubygems.org/' and recommends 
+                # using 'https://rubygems.org/' for security
+                gem_repo = 'https://rubygems.org/'
+                self.logger.debug("Switched from http://rubygems.org/ to https://rubygems.org/")
+
+            # Check if GEMs repository is a HTTPS site
+            if gem_repo.startswith('https://'):
+                # Check server certificate
+                sslUtil = SSLUtil()
+                if not sslUtil.isServerCertificateTrusted(gem_repo):
+                    if sslUtil.getUntrustedCertificateErrorCode(gem_repo) == SSL_R_CERTIFICATE_VERIFY_FAILED :
+                        # Error code SSL_R_CERTIFICATE_VERIFY_FAILED means that the certificate is not trusted
+                        
+                        errorcode = sslUtil.getUntrustedCertificateErrorCode( gem_repo )
+                        certificate = sslUtil.getServerCertificate(gem_repo)
+                        info = sslUtil.getCertificateInfo(certificate)                
+
+                        # Check if the certificate is expired
+                        if info is not None and info.has_expired():
+                            self.logger.debug("Server HTTPS certificate is expired!")
+                            showerror_gtk(_("Can't connect to GEMs repository!") + "\n" +  _("The server HTTPS certificate is expired!"),
+                                 None)
+                            self.view.focusUrlField()            
+                            return False                    
+                        
+                        # Ask to the user if he want to trust this certificate
+                        if info is not None:
+                            response =  askyesno_gtk((unicode(_("The certificate of this server is not trusted!"), 'utf-8')  + "\n" 
+                                + unicode(_("Do you wan't to add it to the trusted certificates list?"), 'utf-8') + "\n" 
+                                + "\n" 
+                                + unicode(_("Subject:"), 'utf-8') + " " + (sslUtil.formatX509Name(info.get_subject())) + "\n" 
+                                + unicode(_("Issuer:"), 'utf-8') + " " + (sslUtil.formatX509Name(info.get_issuer())) + "\n" 
+                                + unicode(_("Serial Number:"), 'utf-8') + " " + str(info.get_serial_number()) + "\n" 
+                                + unicode(_("Not before:"), 'utf-8') + " " + str(info.get_notBefore()) + " " + unicode(_("Not after:"), 'utf-8') + " " + str(info.get_notAfter()) + "\n" 
+                                ), self.view, 'warning')
+                                
+                            if not response:
+                                self.logger.debug("User don'w want to add the HTTPS server certificate to the Trusted CA list!")
+                                self.processView.setChefCertificateRetrievalStatus(_('ERROR'))
+                                self.processView.enableAcceptButton()
+                                gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
+                                self._clean_connection_files_on_error()
+                                return False                 
+                                
+                            else:
+                                sslUtil.addCertificateToTrustedCAs(certificate)
+                                
+                                # Test again
+                                if not sslUtil.isServerCertificateTrusted(gem_repo):
+                                    # Trusted certificates produce connection errors
+                                    # due to many things. For example a bad name.
+                                    errormsg = sslUtil.getUntrustedCertificateCause( gem_repo )
+                                    self.logger.debug("Error connecting to HTTPS server: %s"%(errormsg))
+                                    self.processView.setChefCertificateRetrievalStatus(_('ERROR'))
+                                    self.processView.enableAcceptButton()
+                                    showerror_gtk(_("Can't connect to GEMs repository!") + "\n" +  _("SSL ERROR:") + ' ' + errormsg,
+                                         None)
+                                    gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
+                                    self._clean_connection_files_on_error()
+                                    return False                                
+                    else:
+                        # Any other error code must be shown
+                        errormsg = sslUtil.getUntrustedCertificateCause( gem_repo )
+                        self.logger.debug("Error connecting to HTTPS server: %s"%(errormsg))
+                        self.processView.setChefCertificateRetrievalStatus(_('ERROR'))
+                        self.processView.enableAcceptButton()
+                        showerror_gtk(_("Can't connect to GEMs repository!") + "\n" +  _("SSL ERROR:") + ' ' + errormsg,
+                             None)
+                        gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
+                        self._clean_connection_files_on_error()
+                        return False       
+
+
+            gemUtil = GemUtil()
+            sourcesList = gemUtil.get_gem_sources_list()
+            if len(sourcesList)>1 or not gem_repo in sourcesList:
+                gemUtil.remove_all_gem_sources()
+                if not gemUtil.add_gem_source(gem_repo):
+                    # Error adding GEMs repository
+                    self.processView.setChefCertificateRetrievalStatus(_('ERROR'))
+                    self.processView.enableAcceptButton()
+                    showerror_gtk(_("There was an error while adding the GEMs repository:" + "\n" + gem_repo),
+                         self.view)
+                    gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
+                    self._clean_connection_files_on_error()
+                    return False
+
+        # Check installed GEMs
+        for gem_name in self.necessary_gems:
+            if not gemUtil.is_gem_intalled(gem_name):
+                if not gemUtil.install_gem(gem_name):
+                    # Error installing a GEM
+                    self.processView.setChefCertificateRetrievalStatus(_('ERROR'))
+                    self.processView.enableAcceptButton()
+                    showerror_gtk(_("There was an error while installing a required GEM:" + " " + gem_name),
+                         self.view)
+                    gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
+                    self._clean_connection_files_on_error()
+                    return False
+
+
 
         self.processView.setChefCertificateRetrievalStatus(_('DONE'))
         self.processView.addProgressFraction(0.16)
@@ -380,14 +535,15 @@ class ConnectWithGecosCCController(object):
         # Link to Chef
         self.logger.debug("Link to Chef")
         
+        # if a previous /etc/gcc.control file exist delete it
+        self._remove_file('/etc/gcc.control')
+
         self.logger.debug("- Create /etc/chef/client.rb")
         
-        workstationData = self.view.get_workstation_data()
         chef_admin_name = self.view.get_gecos_access_data().get_login()
         chef_url = self.view.get_gecos_access_data().get_url()
         chef_url = chef_url.split('//')[1].split(':')[0]
         chef_url = "https://" + chef_url + '/'        
-        
         
         if (conf is not None 
             and conf.has_key("chef")
@@ -400,7 +556,74 @@ class ConnectWithGecosCCController(object):
             and conf["chef"].has_key("chef_admin_name")):
             chef_admin_name = conf["chef"]["chef_admin_name"]
             self.logger.debug("chef_admin_name retrieved from GECOS auto conf")               
-        
+
+        # Check Chef HTTPS certificate
+        if chef_url.startswith('https://'):
+            # Check server certificate
+            sslUtil = SSLUtil()
+            if not sslUtil.isServerCertificateTrusted(chef_url):
+                if sslUtil.getUntrustedCertificateErrorCode(chef_url) == SSL_R_CERTIFICATE_VERIFY_FAILED :
+                    # Error code SSL_R_CERTIFICATE_VERIFY_FAILED means that the certificate is not trusted
+                    
+                    errorcode = sslUtil.getUntrustedCertificateErrorCode( chef_url )
+                    certificate = sslUtil.getServerCertificate(chef_url)
+                    info = sslUtil.getCertificateInfo(certificate)                
+
+                    # Check if the certificate is expired
+                    if info is not None and info.has_expired():
+                        self.logger.debug("Server HTTPS certificate is expired!")
+                        showerror_gtk(_("Can't connect to Chef Server!") + "\n" +  _("The server HTTPS certificate is expired!"),
+                             None)
+                        self.view.focusUrlField()            
+                        return False                    
+                    
+                    # Ask to the user if he want to trust this certificate
+                    if info is not None:
+                        response =  askyesno_gtk((unicode(_("The certificate of this server is not trusted!"), 'utf-8')  + "\n" 
+                            + unicode(_("Do you wan't to add it to the trusted certificates list?"), 'utf-8') + "\n" 
+                            + "\n" 
+                            + unicode(_("Subject:"), 'utf-8') + " " + (sslUtil.formatX509Name(info.get_subject())) + "\n" 
+                            + unicode(_("Issuer:"), 'utf-8') + " " + (sslUtil.formatX509Name(info.get_issuer())) + "\n" 
+                            + unicode(_("Serial Number:"), 'utf-8') + " " + str(info.get_serial_number()) + "\n" 
+                            + unicode(_("Not before:"), 'utf-8') + " " + str(info.get_notBefore()) + " " + unicode(_("Not after:"), 'utf-8') + " " + str(info.get_notAfter()) + "\n" 
+                            ), self.view, 'warning')
+                            
+                        if not response:
+                            self.logger.debug("User don'w want to add the HTTPS server certificate to the Trusted CA list!")
+                            self.processView.setLinkToChefStatus(_('ERROR'))
+                            self.processView.enableAcceptButton()
+                            gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
+                            self._clean_connection_files_on_error()
+                            return False                 
+                            
+                        else:
+                            sslUtil.addCertificateToTrustedCAs(certificate, True)
+                            
+                            # Test again
+                            if not sslUtil.isServerCertificateTrusted(chef_url):
+                                # Trusted certificates produce connection errors
+                                # due to many things. For example a bad name.
+                                errormsg = sslUtil.getUntrustedCertificateCause( chef_url )
+                                self.logger.debug("Error connecting to HTTPS server: %s"%(errormsg))
+                                self.processView.setLinkToChefStatus(_('ERROR'))
+                                self.processView.enableAcceptButton()
+                                showerror_gtk(_("Can't connect to Chef Server!") + "\n" +  _("SSL ERROR:") + ' ' + errormsg,
+                                     None)
+                                gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
+                                self._clean_connection_files_on_error()
+                                return False                                
+                else:
+                    # Any other error code must be shown
+                    errormsg = sslUtil.getUntrustedCertificateCause( chef_url )
+                    self.logger.debug("Error connecting to HTTPS server: %s"%(errormsg))
+                    self.processView.setLinkToChefStatus(_('ERROR'))
+                    self.processView.enableAcceptButton()
+                    showerror_gtk(_("Can't connect to Chef Server!") + "\n" +  _("SSL ERROR:") + ' ' + errormsg,
+                         None)
+                    gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
+                    self._clean_connection_files_on_error()
+                    return False       
+
         template = Template()
         template.source = get_data_file('templates/client.rb')
         template.destination = '/etc/chef/client.rb'
@@ -408,14 +631,14 @@ class ConnectWithGecosCCController(object):
         template.group = 'root'
         template.mode = 00644
         template.variables = { 'chef_url':  chef_url,
-                              'chef_admin_name':  chef_admin_name,
-                              'chef_node_name':  workstationData.get_node_name()}                
+                              'chef_node_name':  workstationData.get_node_name()}
         
         if not template.save():
             self.processView.setLinkToChefStatus(_('ERROR'))
             self.processView.enableAcceptButton()
             showerror_gtk(_("Can't create/modify /etc/chef/client.rb file"),
                  None)
+            gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
             self._clean_connection_files_on_error()
             return False            
         
@@ -423,11 +646,14 @@ class ConnectWithGecosCCController(object):
 
         self.logger.debug('- Linking the chef server ')
         env = {'LANG': 'es_ES.UTF-8', 'LC_ALL': 'es_ES.UTF-8', 'HOME': os.environ['HOME']}
-        if not self._execute_command('chef-client -j /usr/share/gecosws-config-assistant/base.json', env):
+        result = self._execute_command('chef-client -j /usr/share/gecosws-config-assistant/base.json', env)
+        self.logger.debug('chef-client -j /usr/share/gecosws-config-assistant/base.json --> %s'%(result))
+        if not result:
             self.processView.setLinkToChefStatus(_('ERROR'))
             self.processView.enableAcceptButton()
-            showerror_gtk(_("Can't link to chef server"),
+            showerror_gtk(_("Can't link to chef server!"),
                  self.view)
+            gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
             self._clean_connection_files_on_error()
             return False 
         
@@ -450,6 +676,7 @@ class ConnectWithGecosCCController(object):
             self.processView.enableAcceptButton()
             showerror_gtk(_("Can't create/modify /etc/chef.control file"),
                  self.view)
+            gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
             self._clean_connection_files_on_error()
             return False    
     
@@ -471,6 +698,7 @@ class ConnectWithGecosCCController(object):
             self.processView.enableAcceptButton()
             showerror_gtk(_("Can't register the computer in GECOS CC"),
                  self.view)
+            gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
             self._clean_connection_files_on_error()
             return False          
         
@@ -480,6 +708,7 @@ class ConnectWithGecosCCController(object):
             self.processView.enableAcceptButton()
             showerror_gtk(_("Can't save /etc/gcc.control file"),
                  self.view)
+            gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
             self._clean_connection_files_on_error()
             return False    
         
@@ -533,42 +762,15 @@ class ConnectWithGecosCCController(object):
         # Save workstation data
         self.workstationDataDao.save(self.view.get_workstation_data())
 
-        # Get validation.pem from server
-        self.logger.debug("Get validation.pem from server")
-        gecosCC = GecosCC()
-        conf = gecosCC.get_json_autoconf(self.view.get_gecos_access_data())
-        chef_validation = None
-        if (conf is not None 
-            and conf.has_key("chef")
-            and conf["chef"].has_key("chef_validation")):
-            chef_validation = base64.decodestring(conf["chef"]["chef_validation"])
-            self.logger.debug("validation.pem retrieved from GECOS auto conf")
-        
-        if chef_validation is None:
-            # Ask the user for the validation.pem URL
-            self.certificate_url_view = ChefValidationCertificateDialog(self.processView, self)
-            self.certificate_url_view.show(self.processView, self)
-            if self.certificate_url_view.get_data() is None:
-                self.processView.setChefCertificateRetrievalStatus(_('CANCELED'))
-                self.processView.enableAcceptButton()
-                return False
-            else:
-                chef_validation = self.certificate_url_view.get_data()
-
-        # Save Chef validation certificate in a PEM file
-        if not self._save_secure_file('/etc/chef/validation.pem', chef_validation):
-            self.processView.setChefCertificateRetrievalStatus(_('ERROR'))
-            self.processView.enableAcceptButton()
-            showerror_gtk(_("There was an error while saving validation certificate"),
-                 self.view)
-            self._clean_disconnection_files_on_error()
-            return False
+        # We don't need any certificate to unlink from Chef or GECOS CC
 
         self.processView.setChefCertificateRetrievalStatus(_('DONE'))
         self.processView.addProgressFraction(0.16)
         
         self.processView.setLinkToChefStatus(_('IN PROCESS'))
 
+        gecosCC = GecosCC()
+        
         # Unregister from GECOS Control Center
         self.logger.debug("Unregister computer")
         workstationData = self.view.get_workstation_data()
@@ -585,62 +787,6 @@ class ConnectWithGecosCCController(object):
         # Unlink from Chef
         self.logger.debug("Unlink from Chef")
         
-        self.logger.debug("- Set /etc/chef/client.rb with default values")
-        template = Template()
-        template.source = get_data_file('templates/client.rb')
-        template.destination = '/etc/chef/client.rb'
-        template.owner = 'root'
-        template.group = 'root'
-        template.mode = 00644
-        template.variables = { 'chef_url':  'CHEF_URL',
-                              'chef_admin_name':  'ADMIN_NAME',
-                              'chef_node_name':  'NODE_NAME'}                
-        
-        if not template.save():
-            self.processView.setLinkToChefStatus(_('ERROR'))
-            self.processView.enableAcceptButton()
-            showerror_gtk(_("Can't create/modify /etc/chef/client.rb file"),
-                 None)
-            self._clean_disconnection_files_on_error()
-            return False            
-        
-        self.logger.debug("- Prepare /etc/chef/knife.rb")
-        chef_admin_name = self.view.get_gecos_access_data().get_login()
-        chef_url = self.view.get_gecos_access_data().get_url()
-        chef_url = chef_url.split('//')[1].split(':')[0]
-        chef_url = "https://" + chef_url + '/'        
-        
-        
-        if (conf is not None 
-            and conf.has_key("chef")
-            and conf["chef"].has_key("chef_server_uri")):
-            chef_url = conf["chef"]["chef_server_uri"]
-            self.logger.debug("chef_url retrieved from GECOS auto conf")        
-
-        if (conf is not None 
-            and conf.has_key("chef")
-            and conf["chef"].has_key("chef_admin_name")):
-            chef_admin_name = conf["chef"]["chef_admin_name"]
-            self.logger.debug("chef_admin_name retrieved from GECOS auto conf")        
-
-        
-        template = Template()
-        template.source = get_data_file('templates/knife.rb')
-        template.destination = '/etc/chef/knife.rb'
-        template.owner = 'root'
-        template.group = 'root'
-        template.mode = 00644
-        template.variables = { 'chef_url':  chef_url,
-                              'chef_admin_name':  chef_admin_name}                
-
-        if not template.save():
-            self.processView.setLinkToChefStatus(_('ERROR'))
-            self.processView.enableAcceptButton()
-            showerror_gtk(_("Can't create/modify /etc/chef/knife.rb file"),
-                 self.view)
-            self._clean_disconnection_files_on_error()
-            return False 
-
         self.logger.debug("- Remove control file")
         if not self._remove_file('/etc/chef.control'):
             self.processView.setLinkToChefStatus(_('ERROR'))
@@ -661,7 +807,8 @@ class ConnectWithGecosCCController(object):
 
 
         self.logger.debug('- Deleting node ' + workstationData.get_node_name())
-        if not self._execute_command('knife node delete "' + workstationData.get_node_name() + '" -c /etc/chef/knife.rb -y'):
+        if not gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), 
+                workstationData.get_node_name()):
             self.processView.setLinkToChefStatus(_('ERROR'))
             self.processView.enableAcceptButton()
             showerror_gtk(_("Can't delete Chef node"),
@@ -677,14 +824,6 @@ class ConnectWithGecosCCController(object):
                  self.view)
             self._clean_disconnection_files_on_error()
             return False         
-
-        self.logger.debug('- Deleting client ' + workstationData.get_node_name())
-        if not self._execute_command('knife client delete "' + workstationData.get_node_name() + '" -c /etc/chef/knife.rb -y'):
-            self.processView.setLinkToChefStatus(_('ERROR'))
-            showerror_gtk(_("Can't delete Chef node"),
-                 self.view)
-            self._clean_disconnection_files_on_error()
-            return False 
 
         self.logger.debug('- Stop chef client service ')
         self._execute_command('service chef-client stop')

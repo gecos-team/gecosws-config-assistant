@@ -36,10 +36,6 @@ import struct
 from gecosws_config_assistant.firstboot_lib.firstbootconfig import get_data_file
 
 
-import gettext
-from gettext import gettext as _
-gettext.textdomain('gecosws-config-assistant')
-
 class GecosAccessDataDAO(object):
     '''
     DAO class to manipulate GecosAccessData DTO objects.
@@ -175,7 +171,7 @@ class GecosAccessDataDAO(object):
             
             return True
         except Exception:
-            self.logger.error(_('Error removing file:') + self.data_file)
+            self.logger.error('Error removing file:' + self.data_file)
             self.logger.error(str(traceback.format_exc()))             
         
         self.logger.debug('delete - END')

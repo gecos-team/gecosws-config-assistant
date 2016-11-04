@@ -22,10 +22,8 @@ __license__ = "GPL-2"
 
 import logging
 import traceback
+import re
 
-import gettext
-from gettext import gettext as _
-gettext.textdomain('gecosws-config-assistant')
 
 class PackageManager(object):
     '''
@@ -56,12 +54,32 @@ class PackageManager(object):
             return cache[package_name].is_installed
         
         except ImportError:
-            self.logger.info(_('No apt library available'))
+            self.logger.info('No apt library available')
 
         # TODO: Yum version?
         
         
         return False
+
+    def exists_package(self, package_name):
+        self.logger.debug('exists_package BEGIN')
+        if package_name is None:
+            raise ValueError('package_name is None')
+        
+        self.logger.debug('exists_package(%s)'%(package_name))
+        
+        try:
+            import apt
+            cache = apt.Cache()
+            return cache.has_key(package_name)
+        
+        except ImportError:
+            self.logger.info('No apt library available')
+
+        # TODO: Yum version?
+        
+        
+        raise OSError('Package search failed!')
 
 
     def upgrade_package(self, package_name):
@@ -76,11 +94,11 @@ class PackageManager(object):
             cache = apt.Cache()
             pkg = cache[package_name]
             if pkg is None:
-                self.logger.error(_('Package not found:') + package_name)
+                self.logger.error('Package not found:' + package_name)
             elif not pkg.is_installed:
-                self.logger.error(_('Package not installed:') + package_name)
+                self.logger.error('Package not installed:' + package_name)
             elif not pkg.is_upgradable:
-                self.logger.error(_('Package not upgradable:') + package_name)
+                self.logger.error('Package not upgradable:' + package_name)
                 return False
             else:
                 pkg.mark_install()
@@ -90,18 +108,18 @@ class PackageManager(object):
                     self.logger.debug('Package upgrade successfully')
                     return True
                 except Exception:
-                    self.logger.error(_('Package upgrade failed:') + package_name)
+                    self.logger.error('Package upgrade failed:' + package_name)
                     self.logger.error(str(traceback.format_exc()))
                 
                 
         
         except ImportError:
-            self.logger.info(_('No apt library available'))
+            self.logger.info('No apt library available')
 
         # TODO: Yum version?
         
         
-        raise OSError(_('Package upgrade failed!'))
+        raise OSError('Package upgrade failed!')
 
 
 
@@ -117,9 +135,9 @@ class PackageManager(object):
             cache = apt.Cache()
             pkg = cache[package_name]
             if pkg is None:
-                self.logger.error(_('Package not found:') + package_name)
+                self.logger.error('Package not found:' + package_name)
             elif pkg.is_installed:
-                self.logger.error(_('Package already installed:') + package_name)
+                self.logger.error('Package already installed:' + package_name)
             else:
                 pkg.mark_install()
 
@@ -128,18 +146,18 @@ class PackageManager(object):
                     self.logger.debug('Package installed successfully')
                     return True
                 except Exception:
-                    self.logger.error(_('Package installation failed:') + package_name)
+                    self.logger.error('Package installation failed:' + package_name)
                     self.logger.error(str(traceback.format_exc()))
                 
                 
         
         except ImportError:
-            self.logger.info(_('No apt library available'))
+            self.logger.info('No apt library available')
 
         # TODO: Yum version?
         
         
-        raise OSError(_('Package installation failed!'))
+        raise OSError('Package installation failed!')
 
     def update_cache(self):
         self.logger.debug('update_cache - BEGIN')
@@ -152,19 +170,36 @@ class PackageManager(object):
                 self.logger.debug('Packages cache updated successfully')
                 return True
             except Exception:
-                self.logger.error(_('Package update failed!'))
+                self.logger.error('Package update failed!')
                 self.logger.error(str(traceback.format_exc()))
                 
                 
         
         except ImportError:
-            self.logger.info(_('No apt library available'))
+            self.logger.info('No apt library available')
 
         # TODO: Yum version?
         
         
-        raise OSError(_('Package cache update failed!'))
+        raise OSError('Package cache update failed!')
 
+    def parse_version_number(self, package_version):
+        major = 0
+        minor = 0
+        release = 0
+        
+        # Version must be similar to: '1.13.4-1ubuntu1'
+        p = re.compile('([0-9]+)\\.([0-9]+)(\\.([0-9]+))?')
+        m = p.match(package_version)
+        if m is not None:
+            if m.groups()[0] is not None:
+                major = int(m.groups()[0].strip())
+            if m.groups()[1] is not None:
+                minor = int(m.groups()[1].strip())
+            if m.groups()[3] is not None:
+                release = int(m.groups()[3].strip())        
+                
+        return (major, minor, release)
 
     def get_package_version(self, package_name):
         self.logger.debug('get_package_version - BEGIN')
@@ -180,16 +215,16 @@ class PackageManager(object):
             cache = apt.Cache()
             pkg = cache[package_name]
             if pkg is None:
-                self.logger.error(_('Package not found:') + package_name)
+                self.logger.error('Package not found:' + package_name)
             elif not pkg.is_installed:
-                self.logger.error(_('Package is not installed:') + package_name)
+                self.logger.error('Package is not installed:' + package_name)
             else:
                 return pkg.installed.version
                 
                 
         
         except ImportError:
-            self.logger.info(_('No apt library available'))
+            self.logger.info('No apt library available')
 
         # TODO: Yum version?
         
@@ -211,9 +246,9 @@ class PackageManager(object):
             cache = apt.Cache()
             pkg = cache[package_name]
             if pkg is None:
-                self.logger.error(_('Package not found:') + package_name)
+                self.logger.error('Package not found:' + package_name)
             elif not pkg.is_installed:
-                self.logger.error(_('Package is not installed:') + package_name)
+                self.logger.error('Package is not installed:' + package_name)
             else:
                 pkg.mark_delete()
 
@@ -222,15 +257,15 @@ class PackageManager(object):
                     self.logger.debug('Package removed successfully')
                     return True
                 except Exception:
-                    self.logger.error(_('Package removal failed:') + package_name)
+                    self.logger.error('Package removal failed:' + package_name)
                     self.logger.error(str(traceback.format_exc()))
                 
                 
         
         except ImportError:
-            self.logger.info(_('No apt library available'))
+            self.logger.info('No apt library available')
 
         # TODO: Yum version?
         
         
-        raise OSError(_('Package removal failed!'))
+        raise OSError('Package removal failed!')

@@ -27,10 +27,6 @@ from gecosws_config_assistant.util.Template import Template
 import logging
 import traceback
 
-import gettext
-from gettext import gettext as _
-gettext.textdomain('gecosws-config-assistant')
-
 from gecosws_config_assistant.firstboot_lib.firstbootconfig import get_data_file
 
 
@@ -65,7 +61,7 @@ class NTPServerDAO(object):
                 self.pm.install_package('ntpdate')
                 self.initiated = True
             except Exception:
-                self.logger.error(_('Package installation failed:') + 'ntpdate')
+                self.logger.error('Package installation failed:' + 'ntpdate')
                 self.logger.error(str(traceback.format_exc())) 
         else:
             self.initiated = True               
@@ -92,11 +88,11 @@ class NTPServerDAO(object):
                     ntpServer.set_address(address)     
                 
             except Exception:
-                self.logger.error(_('Error reading file:') + self.data_file)
+                self.logger.error('Error reading file:' + self.data_file)
                 self.logger.error(str(traceback.format_exc()))             
             
         else:
-            self.logger.warn(_('NTPServerDAO used without a proper initialization!'))
+            self.logger.warn('NTPServerDAO used without a proper initialization!')
         
         if ntpServer is None:
             self.logger.debug('load - END - ntpServer is None')
@@ -132,7 +128,7 @@ class NTPServerDAO(object):
             
             return template.save()
         else:
-            self.logger.warn(_('NTPServerDAO used without a proper initialization!'))
+            self.logger.warn('NTPServerDAO used without a proper initialization!')
         
         return False
 
