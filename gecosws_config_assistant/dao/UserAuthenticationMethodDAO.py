@@ -28,6 +28,7 @@ from gecosws_config_assistant.dto.ADAuthMethod import ADAuthMethod
 from gecosws_config_assistant.dto.ADSetupData import ADSetupData
 from gecosws_config_assistant.util.Template import Template
 from gecosws_config_assistant.util.PackageManager import PackageManager
+from gecosws_config_assistant.util.CommandUtil import CommandUtil
 
 import logging
 import traceback
@@ -373,19 +374,21 @@ class UserAuthenticationMethodDAO(object):
 
             
         # Run "net ads join" command
+        commandUtil = CommandUtil()
         command = 'net ads join -U {0}%{1}'.format(
                 data.get_ad_administrator_user(), 
                 data.get_ad_administrator_pass())
         self.logger.debug('running: %s'%(command))
-        p = subprocess.Popen(command, shell=True, 
-                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        for line in p.stdout.readlines():
-            self.logger.debug(line)
-                
-        retval = p.wait()
-        if retval != 0:
-            self.logger.error('Error running command: '+command)
-            return False
+        
+        if not commandUtil.execute_command(command, {}):
+            self.logger.warn('Error running command: '+command)
+            self.logger.warn('Check if the configuration was OK')
+            
+            command = 'net ads testjoin'
+            self.logger.debug('running: %s'%(command))
+            if not commandUtil.execute_command(command, {}):
+                self.logger.error('Error testing if the workstation was joined to the domain with command: '+command)
+                return False
               
               
         # Restart SSSD service
@@ -520,18 +523,19 @@ class UserAuthenticationMethodDAO(object):
             self.logger.error('Error saving /etc/krb5.conf file')
             return False
               
+        commandUtil = CommandUtil()              
         # Run "net ads join" command
         command = 'net ads join -U {0}%{1}'.format(data.get_ad_administrator_user(), data.get_ad_administrator_pass())
         self.logger.debug('running: %s'%(command))
-        p = subprocess.Popen(command, shell=True, 
-                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        for line in p.stdout.readlines():
-            self.logger.debug(line)
-                
-        retval = p.wait()
-        if retval != 0:
-            self.logger.error('Error running command: '+command)
-            return False
+        if not commandUtil.execute_command(command, {}):
+            self.logger.warn('Error running command: '+command)
+            self.logger.warn('Check if the configuration was OK')
+            
+            command = 'net ads testjoin'
+            self.logger.debug('running: %s'%(command))
+            if not commandUtil.execute_command(command, {}):
+                self.logger.error('Error testing if the workstation was joined to the domain with command: '+command)
+                return False
               
               
         extra_conf_lines = ''
@@ -614,19 +618,13 @@ class UserAuthenticationMethodDAO(object):
         self.logger.debug('Deleting active directory user authentication method')
         data = method.get_data()
 
+        commandUtil = CommandUtil()
 
         # Run "net ads leave" command
         command = 'net ads leave -U {0}%{1}'.format(data.get_ad_administrator_user(), data.get_ad_administrator_pass())
         self.logger.debug('running: %s'%(command))
-        p = subprocess.Popen(command, shell=True, 
-                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        for line in p.stdout.readlines():
-            self.logger.debug(line)
-                
-        retval = p.wait()
-        if retval != 0:
-            self.logger.error('Error running command: '+command)
-            return False
+        if not commandUtil.execute_command(command, {}):
+            self.logger.warn('Error running command: '+command)
 
         # Delete configuration files
         self.logger.debug('Delete %s file'%(self.samba_conf_file))
