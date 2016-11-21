@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-13 17:06+0200\n"
+"POT-Creation-Date: 2016-11-21 14:04+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -146,6 +146,8 @@ msgstr ""
 msgid "Please double-check all the data and your network setup."
 msgstr ""
 
+#. Show process view
+#. Get auto setup JSON
 #: ../gecosws_config_assistant/controller/AutoSetupController.py:215
 msgid "Please wait"
 msgstr ""
@@ -201,6 +203,8 @@ msgstr ""
 msgid "IN PROCESS"
 msgstr ""
 
+#. Error adding GEMs repository
+#. Error installing a GEM
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:349
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:355
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:361
@@ -237,6 +241,7 @@ msgstr ""
 msgid "ERROR"
 msgstr ""
 
+#. We don't need any certificate to unlink from Chef or GECOS CC
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:365
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:375
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:530
@@ -444,6 +449,7 @@ msgstr ""
 msgid "GECOS Config Assistant has been udpated. Please restart GCA"
 msgstr ""
 
+#. Show error message
 #: ../gecosws_config_assistant/controller/NTPServerController.py:87
 #: ../gecosws_config_assistant/controller/NTPServerController.py:91
 msgid "Error saving NTP server data."
@@ -639,6 +645,7 @@ msgstr ""
 msgid "Method:"
 msgstr ""
 
+#. text
 #: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:133
 #: ../gecosws_config_assistant/view/UserAuthDialog.py:246
 #: ../gecosws_config_assistant/view/UserAuthDialog.py:278
@@ -672,6 +679,7 @@ msgstr ""
 msgid "Please fill the data to setup the LDAP authentication method."
 msgstr ""
 
+#. text
 #: ../gecosws_config_assistant/view/UserAuthDialog.py:214
 msgid "LDAP server URI:"
 msgstr ""

@@ -292,6 +292,8 @@ SSL_R_X509_VERIFICATION_SETUP_PROBLEMS=269
 
 UNKNOWN_ERROR=0x1000
 
+SSL_verification_enabled = True
+
 class SSLUtil(object):
     '''
     Utility class to work with SSL certificates.
@@ -305,9 +307,30 @@ class SSLUtil(object):
         self.logger = logging.getLogger('SSLUtil')
         self.timeout = 120
 
+    @staticmethod
+    def disableSSLCertificatesVerication():
+        global SSL_verification_enabled
+        SSL_verification_enabled = False
+
+    @staticmethod
+    def enableSSLCertificatesVerication():
+        global SSL_verification_enabled
+        SSL_verification_enabled = True
+
+    @staticmethod
+    def isSSLCertificatesVericationEnabled():
+        global SSL_verification_enabled
+        return SSL_verification_enabled
+
+
+
     def isServerCertificateTrusted(self, url):
         if url is None:
             return False
+
+        if not SSLUtil.isSSLCertificatesVericationEnabled():
+            # SSL certificate verification is disabled
+            return True
         
         # Check credentials
         try:
@@ -327,6 +350,10 @@ class SSLUtil(object):
         if url is None:
             return None
         
+        if not SSLUtil.isSSLCertificatesVericationEnabled():
+            # SSL certificate verification is disabled
+            return None
+
         # Check credentials
         try:
             r = requests.get(url, verify=True, timeout=self.timeout)
@@ -372,6 +399,10 @@ class SSLUtil(object):
         if url is None:
             return None
         
+        if not SSLUtil.isSSLCertificatesVericationEnabled():
+            # SSL certificate verification is disabled
+            return None
+
         # Check credentials
         try:
             r = requests.get(url, verify=True, timeout=self.timeout)
