@@ -585,8 +585,14 @@ class ConnectWithGecosCCController(object):
         template.owner = 'root'
         template.group = 'root'
         template.mode = 00644
+        
+        ssl_certificate_verication = ':verify_peer'
+        if not SSLUtil.isSSLCertificatesVericationEnabled():
+            ssl_certificate_verication = ':verify_none'
+        
         template.variables = { 'chef_url':  chef_url,
-                              'chef_node_name':  workstationData.get_node_name()}
+                              'chef_node_name':  workstationData.get_node_name(),
+                              'ssl_certificate_verication': ssl_certificate_verication}
         
         if not template.save():
             self.processView.setLinkToChefStatus(_('ERROR'))

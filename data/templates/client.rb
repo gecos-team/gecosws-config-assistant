@@ -5,6 +5,8 @@ log_level           :info
 
 log_location        STDOUT
 
+ssl_verify_mode    ${ssl_certificate_verication}
+
 chef_server_url     "${chef_url}"
 
 file_cache_path     "/var/cache/chef"
