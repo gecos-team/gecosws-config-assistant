@@ -308,17 +308,17 @@ class SSLUtil(object):
         self.timeout = 120
 
     @staticmethod
-    def disableSSLCertificatesVerication():
+    def disableSSLCertificatesVerification():
         global SSL_verification_enabled
         SSL_verification_enabled = False
 
     @staticmethod
-    def enableSSLCertificatesVerication():
+    def enableSSLCertificatesVerification():
         global SSL_verification_enabled
         SSL_verification_enabled = True
 
     @staticmethod
-    def isSSLCertificatesVericationEnabled():
+    def isSSLCertificatesVerificationEnabled():
         global SSL_verification_enabled
         return SSL_verification_enabled
 
@@ -328,7 +328,7 @@ class SSLUtil(object):
         if url is None:
             return False
 
-        if not SSLUtil.isSSLCertificatesVericationEnabled():
+        if not SSLUtil.isSSLCertificatesVerificationEnabled():
             # SSL certificate verification is disabled
             return True
         
@@ -350,7 +350,7 @@ class SSLUtil(object):
         if url is None:
             return None
         
-        if not SSLUtil.isSSLCertificatesVericationEnabled():
+        if not SSLUtil.isSSLCertificatesVerificationEnabled():
             # SSL certificate verification is disabled
             return None
 
@@ -399,7 +399,7 @@ class SSLUtil(object):
         if url is None:
             return None
         
-        if not SSLUtil.isSSLCertificatesVericationEnabled():
+        if not SSLUtil.isSSLCertificatesVerificationEnabled():
             # SSL certificate verification is disabled
             return None
 

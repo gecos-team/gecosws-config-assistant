@@ -143,7 +143,7 @@ class AutoSetupController(object):
                             return False                    
                             
                         else:
-                            SSLUtil.disableSSLCertificatesVerication()                
+                            SSLUtil.disableSSLCertificatesVerification()                
                             
                 else:
                     # Any other error code must be shown

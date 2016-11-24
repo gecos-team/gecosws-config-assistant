@@ -166,7 +166,7 @@ class ConnectWithGecosCCController(object):
                             return False                    
                             
                         else:
-                            SSLUtil.disableSSLCertificatesVerication()                
+                            SSLUtil.disableSSLCertificatesVerification()                
                             
                 else:
                     # Any other error code must be shown
@@ -454,7 +454,7 @@ class ConnectWithGecosCCController(object):
                                 return False                 
                                 
                             else:
-                                SSLUtil.disableSSLCertificatesVerication()
+                                SSLUtil.disableSSLCertificatesVerification()
     
                     else:
                         # Any other error code must be shown
@@ -565,7 +565,7 @@ class ConnectWithGecosCCController(object):
                             return False                 
                             
                         else:
-                            SSLUtil.disableSSLCertificatesVerication()
+                            SSLUtil.disableSSLCertificatesVerification()
                             
                 else:
                     # Any other error code must be shown
@@ -586,13 +586,13 @@ class ConnectWithGecosCCController(object):
         template.group = 'root'
         template.mode = 00644
         
-        ssl_certificate_verication = ':verify_peer'
-        if not SSLUtil.isSSLCertificatesVericationEnabled():
-            ssl_certificate_verication = ':verify_none'
+        ssl_certificate_verification = ':verify_peer'
+        if not SSLUtil.isSSLCertificatesVerificationEnabled():
+            ssl_certificate_verification = ':verify_none'
         
         template.variables = { 'chef_url':  chef_url,
                               'chef_node_name':  workstationData.get_node_name(),
-                              'ssl_certificate_verication': ssl_certificate_verication}
+                              'ssl_certificate_verification': ssl_certificate_verification}
         
         if not template.save():
             self.processView.setLinkToChefStatus(_('ERROR'))

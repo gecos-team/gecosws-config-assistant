@@ -87,7 +87,7 @@ class GecosCC(object):
             user = data.get_login()
             password = data.get_password()
             r = requests.get(url, auth=(user,password), headers=headers, 
-                             verify=SSLUtil.isSSLCertificatesVericationEnabled(), timeout=self.timeout)
+                             verify=SSLUtil.isSSLCertificatesVerificationEnabled(), timeout=self.timeout)
             if r.ok:
                 if hasattr(r,'text'):
                     self.last_request_content = r.text
@@ -120,7 +120,7 @@ class GecosCC(object):
             user = data.get_login()
             password = data.get_password()
             r = requests.get(url, auth=(user,password), headers=headers, 
-                verify=SSLUtil.isSSLCertificatesVericationEnabled(), timeout=self.timeout)
+                verify=SSLUtil.isSSLCertificatesVerificationEnabled(), timeout=self.timeout)
             if r.ok:
                 self.logger.debug('Response: %s'%(url))
                 computer_names = False
@@ -178,7 +178,7 @@ class GecosCC(object):
             user = data.get_login()
             password = data.get_password()
             r = requests.get(url, auth=(user,password), headers=headers, 
-                verify=SSLUtil.isSSLCertificatesVericationEnabled(), timeout=self.timeout)
+                verify=SSLUtil.isSSLCertificatesVerificationEnabled(), timeout=self.timeout)
             if r.ok:
                 self.logger.debug('Response: %s'%(url))
                 arr_ou = False
@@ -222,7 +222,7 @@ class GecosCC(object):
             user = data.get_login()
             password = data.get_password()
             r = requests.delete(url, auth=(user,password), headers=headers, 
-                verify=SSLUtil.isSSLCertificatesVericationEnabled(), timeout=self.timeout)
+                verify=SSLUtil.isSSLCertificatesVerificationEnabled(), timeout=self.timeout)
             if r.ok:
                 self.logger.debug('Response: %s'%(url))
                 response_json = False
@@ -280,7 +280,7 @@ class GecosCC(object):
             self.logger.debug('payload: %s'%(json.dumps(payload)))
             
             r = requests.post(url, auth=(user,password), 
-                verify=SSLUtil.isSSLCertificatesVericationEnabled(), timeout=self.timeout, data=payload)
+                verify=SSLUtil.isSSLCertificatesVerificationEnabled(), timeout=self.timeout, data=payload)
             if r.ok:
                 self.logger.debug('Response: %s'%(url))
                 response_json = False
@@ -334,7 +334,7 @@ class GecosCC(object):
             self.logger.debug('payload: %s'%(json.dumps(payload)))
             
             r = requests.post(url, auth=(user,password), 
-                verify=SSLUtil.isSSLCertificatesVericationEnabled(), timeout=self.timeout, data=payload)
+                verify=SSLUtil.isSSLCertificatesVerificationEnabled(), timeout=self.timeout, data=payload)
             if r.ok:
                 self.logger.debug('Response: %s'%(url))
                 response_json = False
@@ -387,7 +387,7 @@ class GecosCC(object):
             self.logger.debug('payload: %s'%(json.dumps(payload)))
             
             r = requests.put(url, auth=(user,password), 
-                verify=SSLUtil.isSSLCertificatesVericationEnabled(), timeout=self.timeout, data=payload)
+                verify=SSLUtil.isSSLCertificatesVerificationEnabled(), timeout=self.timeout, data=payload)
             if r.ok:
                 self.logger.debug('Response: %s'%(url))
                 response_json = False
@@ -439,7 +439,7 @@ class GecosCC(object):
             user = data.get_login()
             password = data.get_password()
             r = requests.delete(url, auth=(user,password), headers=headers, 
-                verify=SSLUtil.isSSLCertificatesVericationEnabled(), timeout=self.timeout)
+                verify=SSLUtil.isSSLCertificatesVerificationEnabled(), timeout=self.timeout)
             if r.ok:
                 self.logger.debug('Response: %s'%(url))
                 response_json = False
@@ -491,7 +491,7 @@ class GecosCC(object):
             user = data.get_login()
             password = data.get_password()
             r = requests.get(url, auth=(user,password), headers=headers, 
-                verify=SSLUtil.isSSLCertificatesVericationEnabled(), timeout=self.timeout)
+                verify=SSLUtil.isSSLCertificatesVerificationEnabled(), timeout=self.timeout)
             if r.ok:
                 self.logger.debug('Response: %s'%(url))
                 response_json = False
