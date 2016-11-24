@@ -12,7 +12,7 @@ XS-Python-Version: current
 
 Package: gecosws-config-assistant
 Architecture: all
-Depends: ${misc:Depends}, python, python-requests, python-xdg, synaptic, python-gi, python-ldap, python-openssl, python-pyasn1, python-pyasn1-modules
+Depends: ${misc:Depends}, python, python-requests, python-xdg, synaptic, python-gi, python-ldap, python-openssl, python-pyasn1, python-pyasn1-modules, python-apt
 Description: Gecos Workstation Configuration Assistant
  Desktop Application used to link an standalone GECOS Workstation to a
  Control Center, and a Login Authority.

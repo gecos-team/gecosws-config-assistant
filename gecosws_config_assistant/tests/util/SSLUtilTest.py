@@ -43,9 +43,20 @@ class SSLUtilTest(unittest.TestCase):
         sslUtil.removeCertificateFromTrustedCAs(certificate)
 
         # Start the test
+        SSLUtil.disableSSLCertificatesVerification()
+   		self.assertFalse(SSLUtil.isSSLCertificatesVerificationEnabled())
+
+   		self.assertFalse(SSLUtil.isSSLCertificatesVerificationEnabled())
+        SSLUtil.enableSSLCertificatesVerification()
+
         
 		self.assertFalse(sslUtil.isServerCertificateTrusted(None))
 		self.assertFalse(sslUtil.isServerCertificateTrusted('https://ws003.juntadeandalucia.es/'))
+
+        SSLUtil.disableSSLCertificatesVerification()
+		self.assertTrue(sslUtil.isServerCertificateTrusted('https://ws003.juntadeandalucia.es/'))
+        SSLUtil.enableSSLCertificatesVerification()
+
 		self.assertTrue(sslUtil.isServerCertificateTrusted('https://www.google.es/'))
 
         self.assertIsNotNone(sslUtil.getUntrustedCertificateCause('https://ws003.juntadeandalucia.es/'))

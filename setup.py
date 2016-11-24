@@ -173,18 +173,18 @@ class Check(Command):
         from gecosws_config_assistant.tests.dto.SystemStatusTest import SystemStatusTest
 
         suite = unittest.TestSuite()
-        suite.addTest(NTPServerTest())
-        suite.addTest(NetworkInterfaceTest())
-        suite.addTest(WorkstationDataTest())
-        suite.addTest(GecosAccessDataTest())
-        suite.addTest(LocalUserTest())
-        suite.addTest(UserAuthenticationMethodTest())
-        suite.addTest(LocalUsersAuthMethodTest())
-        suite.addTest(ADSetupDataTest())
-        suite.addTest(LDAPSetupDataTest())
-        suite.addTest(ADAuthMethodTest())
-        suite.addTest(LDAPAuthMethodTest())
-        suite.addTest(SystemStatusTest())
+        # suite.addTest(NTPServerTest())
+        # suite.addTest(NetworkInterfaceTest())
+        # suite.addTest(WorkstationDataTest())
+        # suite.addTest(GecosAccessDataTest())
+        # suite.addTest(LocalUserTest())
+        # suite.addTest(UserAuthenticationMethodTest())
+        # suite.addTest(LocalUsersAuthMethodTest())
+        # suite.addTest(ADSetupDataTest())
+        # suite.addTest(LDAPSetupDataTest())
+        # suite.addTest(ADAuthMethodTest())
+        # suite.addTest(LDAPAuthMethodTest())
+        # suite.addTest(SystemStatusTest())
         
 
         from gecosws_config_assistant.tests.util.PackageManagerTest import PackageManagerTest
@@ -196,14 +196,14 @@ class Check(Command):
         from gecosws_config_assistant.tests.util.SSLUtilTest import SSLUtilTest
         from gecosws_config_assistant.tests.util.GemUtilTest import GemUtilTest
         
-        suite.addTest(PackageManagerTest())
-        suite.addTest(TemplateTest())
-        suite.addTest(JSONUtilTest())
-        suite.addTest(ValidationTest())
-        suite.addTest(GecosCCTest())
-        suite.addTest(CommandUtilTest())
+        # suite.addTest(PackageManagerTest())
+        # suite.addTest(TemplateTest())
+        # suite.addTest(JSONUtilTest())
+        # suite.addTest(ValidationTest())
+        # suite.addTest(GecosCCTest())
+        # suite.addTest(CommandUtilTest())
         suite.addTest(SSLUtilTest())
-        suite.addTest(GemUtilTest())
+        # suite.addTest(GemUtilTest())
 
         from gecosws_config_assistant.tests.dao.NTPServerDAOTest import NTPServerDAOTest
         from gecosws_config_assistant.tests.dao.NetworkInterfaceDAOTest import NetworkInterfaceDAOTest
@@ -212,12 +212,12 @@ class Check(Command):
         from gecosws_config_assistant.tests.dao.LocalUserDAOTest import LocalUserDAOTest
         from gecosws_config_assistant.tests.dao.UserAuthenticationMethodDAOTest import UserAuthenticationMethodDAOTest
 
-        suite.addTest(NTPServerDAOTest())
-        suite.addTest(NetworkInterfaceDAOTest())
-        suite.addTest(WorkstationDataDAOTest())
-        suite.addTest(GecosAccessDataDAOTest())
-        suite.addTest(LocalUserDAOTest())
-        suite.addTest(UserAuthenticationMethodDAOTest())
+        # suite.addTest(NTPServerDAOTest())
+        # suite.addTest(NetworkInterfaceDAOTest())
+        # suite.addTest(WorkstationDataDAOTest())
+        # suite.addTest(GecosAccessDataDAOTest())
+        # suite.addTest(LocalUserDAOTest())
+        # suite.addTest(UserAuthenticationMethodDAOTest())
 
         
         return unittest.TextTestRunner(verbosity=2).run(suite)    
