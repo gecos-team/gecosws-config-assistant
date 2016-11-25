@@ -1,0 +1,387 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-10-11 16:52+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../data/glade/autoconf.glade:320 ../data/glade/autoconf.glade:352
+msgid " "
+msgstr ""
+
+#: ../data/glade/main.glade:405 ../data/glade/requirements.glade:36
+#: ../data/glade/window.glade:25
+msgid "127.0.0.1"
+msgstr ""
+
+#: ../data/glade/main.glade:409 ../data/glade/requirements.glade:40
+#: ../data/glade/window.glade:29
+msgid "192.168.1.99"
+msgstr ""
+
+#: ../data/glade/gecoscon.glade:335
+msgid "<b>Connection with GECOS</b>"
+msgstr ""
+
+#: ../data/glade/gecoscon.glade:460
+msgid "<b>OU selection</b>"
+msgstr ""
+
+#: ../data/glade/gecoscon.glade:213
+msgid "<b>Workstation name</b>"
+msgstr ""
+
+#: ../data/glade/adsetupdata.glade:126 ../data/glade/localuserpopup.glade:204
+msgid "Accept"
+msgstr ""
+
+#: ../data/glade/ntp.glade:244 ../data/glade/progress.glade:180
+#: ../data/glade/users.glade:427
+msgid "Accept "
+msgstr ""
+
+#: ../data/glade/localuserpopup.glade:6
+msgid "Add local user"
+msgstr ""
+
+#: ../data/glade/users.glade:167
+msgid "Authentication Method Setup"
+msgstr ""
+
+#: ../data/glade/autoconf.glade:84 ../data/glade/main.glade:94
+#: ../data/glade/network.glade:99 ../data/glade/ntp.glade:78
+#: ../data/glade/requirements.glade:113 ../data/glade/users.glade:87
+#: ../data/glade/users.glade:215
+msgid "Authentication type"
+msgstr ""
+
+#: ../data/glade/autoconf.glade:167
+msgid "Auto setup"
+msgstr ""
+
+#: ../data/glade/users.glade:373
+msgid "Base group:"
+msgstr ""
+
+#: ../data/glade/users.glade:360
+msgid "Base:"
+msgstr ""
+
+#: ../data/glade/requirements.glade:259
+msgid "Basic setup values got from GECOS server"
+msgstr ""
+
+#: ../data/glade/users.glade:386
+msgid "Bind DN:"
+msgstr ""
+
+#: ../data/glade/users.glade:399
+msgid "Bind password:"
+msgstr ""
+
+#: ../data/glade/adsetupdata.glade:144 ../data/glade/localuserpopup.glade:185
+msgid "Cancel"
+msgstr ""
+
+#: ../data/glade/ntp.glade:206
+msgid "Check"
+msgstr ""
+
+#: ../data/glade/progress.glade:21
+msgid "Check GECOS credentials "
+msgstr ""
+
+#: ../data/glade/progress.glade:34
+msgid "Check workstation data "
+msgstr ""
+
+#: ../data/glade/progress.glade:94
+msgid "Clean up setup data"
+msgstr ""
+
+#: ../data/glade/autoconf.glade:573 ../data/glade/gecoscon.glade:736
+#: ../data/glade/main.glade:368 ../data/glade/network.glade:493
+#: ../data/glade/ntp.glade:487 ../data/glade/requirements.glade:714
+#: ../data/glade/users.glade:664 ../data/glade/window.glade:364
+msgid "Close"
+msgstr ""
+
+#: ../data/glade/requirements.glade:459
+msgid "Configure"
+msgstr ""
+
+#: ../data/glade/network.glade:266
+msgid "Configure network connection"
+msgstr ""
+
+#: ../data/glade/localuserpopup.glade:83
+msgid "Confirm:"
+msgstr ""
+
+#: ../data/glade/gecoscon.glade:486
+msgid "Connect to CC GECOS"
+msgstr ""
+
+#: ../data/glade/localusers.glade:156
+msgid "Delete"
+msgstr ""
+
+#: ../data/glade/adsetupdata.glade:70
+msgid "Domain:"
+msgstr ""
+
+#: ../data/glade/autoconf.glade:17 ../data/glade/gecoscon.glade:13
+#: ../data/glade/main.glade:27 ../data/glade/network.glade:35
+#: ../data/glade/ntp.glade:16 ../data/glade/requirements.glade:46
+#: ../data/glade/users.glade:23 ../data/glade/window.glade:35
+msgid "GECOS Config Assistant"
+msgstr ""
+
+#: ../data/glade/gecoscon.glade:133
+msgid "GECOS Control Center URL"
+msgstr ""
+
+#: ../data/glade/gecoscon.glade:117
+msgid "GECOS Control Center connection setup"
+msgstr ""
+
+#: ../data/glade/autoconf.glade:207
+msgid "GECOS URL"
+msgstr ""
+
+#: ../data/glade/progress.glade:49
+msgid "Get chef certificate "
+msgstr ""
+
+#: ../data/glade/autoconf.glade:299 ../data/glade/requirements.glade:440
+msgid "Get data"
+msgstr ""
+
+#: ../data/glade/autoconf.glade:334 ../data/glade/localusers.glade:173
+#: ../data/glade/network.glade:247 ../data/glade/systemstatus.glade:63
+#: ../data/glade/users.glade:442
+msgid "Go Back"
+msgstr ""
+
+#: ../data/glade/gecoscon.glade:513 ../data/glade/ntp.glade:260
+msgid "Go back"
+msgstr ""
+
+#: ../data/glade/localusers.glade:59
+msgid ""
+"It isn't necessary to create here the users that are authenticated by "
+"external services (LDAP, AD, ...)"
+msgstr ""
+
+#: ../data/glade/gecoscon.glade:181
+msgid ""
+"It must be unique, it can use white spaces or symbols. It would be the "
+"description on the reports."
+msgstr ""
+
+#: ../data/glade/requirements.glade:477
+msgid "Link"
+msgstr ""
+
+#: ../data/glade/progress.glade:64
+msgid "Link to chef "
+msgstr ""
+
+#: ../data/glade/autoconf.glade:48 ../data/glade/main.glade:57
+#: ../data/glade/network.glade:66 ../data/glade/ntp.glade:47
+#: ../data/glade/requirements.glade:77 ../data/glade/users.glade:54
+msgid "Link/Unlink"
+msgstr ""
+
+#: ../data/glade/autoconf.glade:457 ../data/glade/gecoscon.glade:620
+#: ../data/glade/main.glade:252 ../data/glade/network.glade:377
+#: ../data/glade/ntp.glade:373 ../data/glade/requirements.glade:596
+#: ../data/glade/users.glade:548 ../data/glade/window.glade:231
+msgid "Local Users"
+msgstr ""
+
+#: ../data/glade/localuserpopup.glade:45
+msgid "Login:"
+msgstr ""
+
+#: ../data/glade/localusers.glade:24
+msgid "Manage local users"
+msgstr ""
+
+#: ../data/glade/requirements.glade:495
+msgid "Modify"
+msgstr ""
+
+#: ../data/glade/ntp.glade:156
+msgid "NTP Server configuration"
+msgstr ""
+
+#: ../data/glade/ntp.glade:195
+msgid "NTP Server:"
+msgstr ""
+
+#: ../data/glade/localuserpopup.glade:26
+msgid "Name:"
+msgstr ""
+
+#: ../data/glade/network.glade:178
+msgid "Network Setup"
+msgstr ""
+
+#: ../data/glade/requirements.glade:206
+msgid "Network connection"
+msgstr ""
+
+#: ../data/glade/autoconf.glade:183 ../data/glade/network.glade:194
+msgid ""
+"Network connection parameters with GECOS Control Center are mandatory for "
+"auto setup"
+msgstr ""
+
+#: ../data/glade/localusers.glade:122
+msgid "New"
+msgstr ""
+
+#: ../data/glade/gecoscon.glade:388
+msgid "OU"
+msgstr ""
+
+#: ../data/glade/progress.glade:106 ../data/glade/progress.glade:117
+#: ../data/glade/progress.glade:130 ../data/glade/progress.glade:143
+#: ../data/glade/progress.glade:156 ../data/glade/progress.glade:169
+msgid "PENDING "
+msgstr ""
+
+#: ../data/glade/autoconf.glade:235 ../data/glade/gecoscon.glade:271
+msgid "Password"
+msgstr ""
+
+#: ../data/glade/adsetupdata.glade:115 ../data/glade/localuserpopup.glade:64
+msgid "Password:"
+msgstr ""
+
+#: ../data/glade/localusers.glade:82
+msgid "Please check default OEM users and change their passwords when needed:"
+msgstr ""
+
+#: ../data/glade/ntp.glade:172
+msgid ""
+"Precise time is needed to keep some services synchronized.\n"
+"Please set your NTP server address:"
+msgstr ""
+
+#: ../data/glade/progress.glade:79
+msgid "Register in GECOS CC "
+msgstr ""
+
+#: ../data/glade/gecoscon.glade:411
+msgid "Search"
+msgstr ""
+
+#: ../data/glade/window.glade:349
+msgid "See Log"
+msgstr ""
+
+#: ../data/glade/autoconf.glade:500 ../data/glade/gecoscon.glade:663
+#: ../data/glade/main.glade:295 ../data/glade/network.glade:420
+#: ../data/glade/ntp.glade:415 ../data/glade/requirements.glade:640
+#: ../data/glade/users.glade:591 ../data/glade/window.glade:275
+msgid "Software Manager"
+msgstr ""
+
+#: ../data/glade/autoconf.glade:414 ../data/glade/gecoscon.glade:577
+#: ../data/glade/main.glade:209 ../data/glade/network.glade:334
+#: ../data/glade/ntp.glade:331 ../data/glade/requirements.glade:552
+#: ../data/glade/users.glade:505 ../data/glade/window.glade:187
+msgid "System Status"
+msgstr ""
+
+#: ../data/glade/systemstatus.glade:11
+msgid "System status"
+msgstr ""
+
+#: ../data/glade/requirements.glade:229
+msgid "The system has network connection (connection data)"
+msgstr ""
+
+#: ../data/glade/requirements.glade:327
+msgid "The system is NOT linked to GECOS"
+msgstr ""
+
+#: ../data/glade/requirements.glade:293
+msgid "The system is NOT synchronized its time with a NTP server"
+msgstr ""
+
+#: ../data/glade/users.glade:196
+msgid ""
+"The users of this workstation may authenticate by using an external system "
+"like LDAP or Microsoft Active Directory. Also, they can be authenticated by "
+"using local users of this O.S."
+msgstr ""
+
+#: ../data/glade/adsetupdata.glade:167
+msgid ""
+"To disconnect from Active Directory you need \n"
+"to enter the Administrator user and password:"
+msgstr ""
+
+#: ../data/glade/users.glade:351
+msgid "URI:"
+msgstr ""
+
+#: ../data/glade/localusers.glade:139
+msgid "Update"
+msgstr ""
+
+#: ../data/glade/autoconf.glade:543 ../data/glade/gecoscon.glade:706
+#: ../data/glade/main.glade:338 ../data/glade/network.glade:463
+#: ../data/glade/ntp.glade:457 ../data/glade/requirements.glade:684
+#: ../data/glade/users.glade:634 ../data/glade/window.glade:319
+msgid "Update assistant"
+msgstr ""
+
+#: ../data/glade/autoconf.glade:221 ../data/glade/gecoscon.glade:259
+msgid "User"
+msgstr ""
+
+#: ../data/glade/adsetupdata.glade:100
+msgid "User:"
+msgstr ""
+
+#: ../data/glade/requirements.glade:361
+msgid "Users are authenticated using the INTERNAL method"
+msgstr ""
+
+#: ../data/glade/adsetupdata.glade:85
+msgid "Workgroup:"
+msgstr ""
+
+#: ../data/glade/localusers.glade:43
+msgid "You can create, update or delete local users in this workstation."
+msgstr ""
+
+#: ../data/glade/main.glade:408 ../data/glade/requirements.glade:39
+#: ../data/glade/window.glade:28
+msgid "eth0"
+msgstr ""
+
+#: ../data/glade/gecoscon.glade:149
+msgid "http://"
+msgstr ""
+
+#: ../data/glade/main.glade:404 ../data/glade/requirements.glade:35
+#: ../data/glade/window.glade:24
+msgid "lo"
+msgstr ""

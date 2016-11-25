@@ -11,4 +11,6 @@ podir="../po"
 pofile="${podir}/${lang}.po"
 mofile="${podir}/${appname}.mo"
 
-msgfmt $pofile --output-file $mofile
+cp $pofile /tmp/tmp.po
+
+msgfmt /tmp/tmp.po --output-file $mofile

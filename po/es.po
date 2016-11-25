@@ -1,15 +1,15 @@
-# Spanish translations for gecos-firstboot package.
-# Copyright (C) 2014 
-# This file is distributed under the same license as the gecosws-config-assistant package.
-# David Amian <damian@emergya.com>, 2014.
-#
+# Spanish translations for PACKAGE package.
+# Copyright (C) 2015 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# root <amp_21004@yahoo.es>, 2015.
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: gecosws-config-assistant 0.0.1\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-11 10:44+0100\n"
-"PO-Revision-Date: 2014-04-28 17:12+0200\n"
-"Last-Translator: David Amian Valle <damian@emergya.com>\n"
+"POT-Creation-Date: 2016-10-11 16:52+0200\n"
+"PO-Revision-Date: 2015-09-29 17:13+0200\n"
+"Last-Translator: root <amp_21004@yahoo.es>\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
@@ -17,720 +17,1080 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../firstboot/FirstbootWindow.py:126
-msgid "GECOS Config Assistant"
-msgstr "Asistente de configuración de GECOS"
+#: ../data/glade/autoconf.glade:320 ../data/glade/autoconf.glade:352
+msgid " "
+msgstr " "
 
-#: ../firstboot/FirstbootWindow.py:128
-msgid "Previous"
-msgstr "Anterior"
-
-#: ../firstboot/FirstbootWindow.py:129
-msgid "Next"
-msgstr "Siguiente"
-
-#: ../firstboot/FirstbootWindow.py:130
-#: ../firstboot/pages/localUsers/__init__.py:99
-msgid "Apply"
-msgstr "Aplicar"
-
-#: ../firstboot/FirstbootWindow.py:131
-msgid "Update this assistant"
-msgstr "Actualizar este asistente"
-
-#: ../firstboot/FirstbootWindow.py:132
-msgid "Version: "
-msgstr "Versión"
-
-#: ../firstboot/FirstbootWindow.py:152
-msgid "Are you sure you close Gecos Config Assistant?"
-msgstr "¿Está seguro que desea cerrar GECOS Config Assistant?"
-
-#: ../firstboot/FirstbootWindow.py:169 ../firstboot/FirstbootWindow.py:175
-msgid "Update GECOS Config Assistant"
-msgstr "Actualizar GECOS Config Assistant"
-
-#: ../firstboot/FirstbootWindow.py:169
-msgid "Are you sure you want to update the GECOS Config Assistant?"
-msgstr "¿Está seguro que desea actualizar GECOS Config Assistant?"
-
-#: ../firstboot/FirstbootWindow.py:173
-msgid "Update Error"
-msgstr "Error de actualización"
-
-#: ../firstboot/FirstbootWindow.py:173
-msgid "An error occurred during the upgrade"
-msgstr "Se ha producido un error durante la actualización"
-
-#: ../firstboot/FirstbootWindow.py:175
-msgid "GECOS Config Assistant has been udpated. Please restart GCA"
-msgstr "GECOS Config Assistant ha sido actualizado. Porfavor reinicie GCA"
-
-#: ../firstboot/pages/installSoftware/__init__.py:35
-#: ../firstboot/pages/installSoftware/__init__.py:56
-msgid "Install software"
-msgstr "Instalar software"
-
-#: ../firstboot/pages/installSoftware/__init__.py:51
-msgid "Close"
-msgstr "Cerrar"
-
-#: ../firstboot/pages/installSoftware/__init__.py:57
-msgid ""
-"Install software packages from a safe repository.\n"
-"\n"
-"You can skip this step if this workstation will be managed from your GECOS "
-"server."
+#: ../data/glade/main.glade:405 ../data/glade/requirements.glade:36
+#: ../data/glade/window.glade:25
+msgid "127.0.0.1"
 msgstr ""
-"Instala paquetes de software desde un repositorio seguro.\n"
-"\n"
-"Puede saltarse este paso si la estación de trabajo va a ser controlada desde "
-"su servidor GECOS."
 
-#: ../firstboot/pages/network/__init__.py:37
-msgid "Configure the network"
-msgstr "Configurar la red"
-
-#: ../firstboot/pages/network/__init__.py:54
-msgid "Configure a network interface"
-msgstr "Configurar una interfaz de red"
-
-#: ../firstboot/pages/network/__init__.py:55
-msgid ""
-"This workstation needs a network connection in order to autenticate users, "
-"link to GECOS Control Center, and software installation."
+#: ../data/glade/main.glade:409 ../data/glade/requirements.glade:40
+#: ../data/glade/window.glade:29
+msgid "192.168.1.99"
 msgstr ""
-"Esta estación de trabajo necesita una conexión de red para autenticar los "
-"usuarios, enlazar con el servidor GECOS e instalar software."
 
-#: ../firstboot/pages/network/__init__.py:57
-msgid "Available network cards are listed below:"
-msgstr "Las tarjetas de red disponibles son las siguientes:"
+#: ../data/glade/gecoscon.glade:335
+msgid "<b>Connection with GECOS</b>"
+msgstr "<b>Conexión con GECOS</b>"
 
-#: ../firstboot/pages/network/__init__.py:72
-msgid "Interface"
-msgstr "Interfaz"
+#: ../data/glade/gecoscon.glade:460
+msgid "<b>OU selection</b>"
+msgstr "<b>Selección de OU</b>"
 
-#: ../firstboot/pages/network/__init__.py:78
-msgid "IP"
-msgstr "IP"
+#: ../data/glade/gecoscon.glade:213
+msgid "<b>Workstation name</b>"
+msgstr "<b>Nombre de la estación</b>"
 
-#: ../firstboot/pages/autoConfig/AutoConfigResult.py:63
-msgid "This is the information about autoconfig file"
-msgstr "Esta es la información del fichero de autoconfiguración"
+#: ../data/glade/adsetupdata.glade:126 ../data/glade/localuserpopup.glade:204
+msgid "Accept"
+msgstr "Aceptar"
 
-#: ../firstboot/pages/autoConfig/AutoConfigResult.py:67
-msgid "Version"
-msgstr "Versión"
+#: ../data/glade/ntp.glade:244 ../data/glade/progress.glade:180
+#: ../data/glade/users.glade:427
+msgid "Accept "
+msgstr "Aceptar "
 
-#: ../firstboot/pages/autoConfig/AutoConfigResult.py:68
-msgid "Organization"
-msgstr "Organización"
+#: ../data/glade/localuserpopup.glade:6
+msgid "Add local user"
+msgstr "A&ntilde;adir usuario local"
 
-#: ../firstboot/pages/autoConfig/AutoConfigResult.py:69
-msgid "Notes"
-msgstr "Notas"
+#: ../data/glade/users.glade:167
+msgid "Authentication Method Setup"
+msgstr "Configurar el Método de Autenticación"
 
-#: ../firstboot/pages/autoConfig/__init__.py:40
-msgid "Auto Configuration"
-msgstr "Auto Configuración"
+#: ../data/glade/autoconf.glade:84 ../data/glade/main.glade:94
+#: ../data/glade/network.glade:99 ../data/glade/ntp.glade:78
+#: ../data/glade/requirements.glade:113 ../data/glade/users.glade:87
+#: ../data/glade/users.glade:215
+msgid "Authentication type"
+msgstr "Tipo de autenticación"
 
-#: ../firstboot/pages/autoConfig/__init__.py:77
-msgid ""
-"Parameters can be filled automatically if an autoconfiguration file is "
-"available in your GECOS Control Center"
-msgstr ""
-"Los parámetros pueden ser rellenados automáticamente si dispone de un "
-"fichero de autoconfiguración en el servidor de GECOS"
+#: ../data/glade/autoconf.glade:167
+msgid "Auto setup"
+msgstr "Auto setup"
 
-#: ../firstboot/pages/autoConfig/__init__.py:79
-msgid "Default parameters are cached, download again?"
-msgstr "Parámetros por defecto cacheados, ¿descargar de nuevo?"
+#: ../data/glade/users.glade:373
+msgid "Base group:"
+msgstr "DN Base para grupos:"
 
-#: ../firstboot/pages/autoConfig/__init__.py:81
-msgid "Download a file with default configuration parameters."
-msgstr "Descargar un archivo con los parámetros de configuración por defecto."
+#: ../data/glade/users.glade:360
+msgid "Base:"
+msgstr "DN Base:"
 
-#: ../firstboot/pages/autoConfig/__init__.py:84
-msgid "Control Center URL"
-msgstr "URL del Centro de Control"
+#: ../data/glade/requirements.glade:259
+msgid "Basic setup values got from GECOS server"
+msgstr "Valores de configuración obtenidos del servidor"
 
-#: ../firstboot/pages/linkToServer/LinkToServerResultsPage.py:67
-#: ../firstboot/pages/linkToServer/__init__.py:157
-#: ../firstboot/pages/linkToChef/LinkToChefResultsPage.py:69
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:212
-#: ../firstboot/pages/linkToChef/__init__.py:123
-msgid "The configuration was updated successfully."
-msgstr "La configuración fue actualizada satisfactoriamente."
+#: ../data/glade/users.glade:386
+msgid "Bind DN:"
+msgstr "DN para enlace:"
 
-#: ../firstboot/pages/linkToServer/LinkToServerResultsPage.py:72
-#: ../firstboot/pages/linkToChef/LinkToChefResultsPage.py:74
-msgid "There are some errors you must fix."
-msgstr "Hay algunos errores que debe corregir."
+#: ../data/glade/users.glade:399
+msgid "Bind password:"
+msgstr "Contraseña para enlace:"
 
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:100
-msgid ""
-"These parameters are required in order to join an authentication server:"
-msgstr ""
-"Estos parámetros son necesarios para vincularse a un servidor de "
-"autenticación:"
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:108
-msgid "Base DN for users"
-msgstr "DN base para usuarios"
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:109
-msgid "Base DN for groups"
-msgstr "DN base para grupos"
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:111
-#: ../firstboot/pages/localUsers/__init__.py:93
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:76
-msgid "Password"
-msgstr "Contraseña"
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:113
-msgid "Workgroup"
-msgstr "Grupo de trabajo"
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:114
-msgid "Change specific configuration from server?"
-msgstr "¿Cambiar configuración específica desde el servidor?"
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:135
-#: ../firstboot/pages/linkToServer/__init__.py:187
-#: ../firstboot/serverconf/__init__.py:85
-#: ../firstboot/serverconf/__init__.py:88
-msgid "Authentication Required"
-msgstr "Autenticación requerida"
-
-#: ../firstboot/pages/linkToServer/LinkToServerConfEditorPage.py:136
-#: ../firstboot/pages/linkToServer/__init__.py:188
-msgid "Please, provide administration credentials for the Active Directory."
-msgstr ""
-"Por favor, indique credenciales de administración para el Active Directory."
-
-#: ../firstboot/pages/linkToServer/__init__.py:44
-msgid "Select authentication method"
-msgstr "Seleccionar método de autenticación"
-
-#: ../firstboot/pages/linkToServer/__init__.py:103
-msgid ""
-"Users in this workstation can be authenticated against a external system.\n"
-"\n"
-msgstr ""
-"Los usuarios de esta estación de trabajo pueden ser autenticados contra un "
-"sistema externo.\n"
-"\n"
-
-#: ../firstboot/pages/linkToServer/__init__.py:106
-#: ../firstboot/pages/linkToServer/__init__.py:108
-msgid "This workstation currently uses an authentication user method."
-msgstr ""
-"Esta estación de trabajo utiliza actualmente un método de autenticación de "
-"usuarios."
-
-#: ../firstboot/pages/linkToServer/__init__.py:110
-msgid "No authentication system is currently configured."
-msgstr "Ningún sistema de autenticación está configurado actualmente."
-
-#: ../firstboot/pages/linkToServer/__init__.py:112
-msgid "Select the authentication method you would like to use:"
-msgstr "Seleccione el método de autenticación que desee usar:"
-
-#: ../firstboot/pages/linkToServer/__init__.py:117
-#: ../firstboot/pages/linkToServer/__init__.py:118
-msgid "Unlink from authentication method"
-msgstr "Desvincular del método de autenticación"
-
-#: ../firstboot/pages/linkToServer/__init__.py:119
-msgid "LDAP"
-msgstr "LDAP"
-
-#: ../firstboot/pages/linkToServer/__init__.py:120
-msgid "Active Directory"
-msgstr "Active Directory"
-
-#: ../firstboot/pages/linkToServer/__init__.py:121
-msgid "None"
-msgstr "Ninguno"
-
-#: ../firstboot/pages/linkToServer/__init__.py:151
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:206
-#: ../firstboot/pages/linkToChef/__init__.py:117
-msgid "The configuration file is valid."
-msgstr "El fichero de configuración es válido."
-
-#: ../firstboot/pages/linkToServer/__init__.py:169
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:224
-#: ../firstboot/pages/linkToChef/__init__.py:135
-msgid "Trying to connect..."
-msgstr "Intentando conectar..."
-
-#: ../firstboot/pages/linkToServer/__init__.py:232
-msgid "The hostname can't not be longer than 15 characters"
-msgstr "El hostname no puede tener más de 15 caracteres"
-
-#: ../firstboot/pages/localUsers/Dialogs.py:34
-msgid "New user"
-msgstr "Nuevo usuario"
-
-#: ../firstboot/pages/localUsers/Dialogs.py:38
-msgid "Type the new user information:"
-msgstr "Escriba la información sobre el nuevo usuario:"
-
-#: ../firstboot/pages/localUsers/Dialogs.py:41
-msgid "name"
-msgstr "nombre"
-
-#: ../firstboot/pages/localUsers/Dialogs.py:51
-msgid "login"
-msgstr "login"
-
-#: ../firstboot/pages/localUsers/Dialogs.py:61
-#: ../firstboot/serverconf/__init__.py:887
-#: ../firstboot/serverconf/__init__.py:943
-msgid "password"
-msgstr "contraseña"
-
-#: ../firstboot/pages/localUsers/Dialogs.py:72
-msgid "confirm"
-msgstr "confirmar"
-
-#: ../firstboot/pages/localUsers/Dialogs.py:105
-msgid "Remove user"
-msgstr "Eliminar usuario"
-
-#: ../firstboot/pages/localUsers/Dialogs.py:109
-#, python-format
-msgid "The user %s is going to be removed, are you sure?"
-msgstr "El usuario %s va a ser eliminado, ¿está seguro?"
-
-#: ../firstboot/pages/localUsers/Dialogs.py:112
-msgid "Remove the user home?"
-msgstr "¿Eliminar el directorio home del usuario?"
-
-#: ../firstboot/pages/localUsers/Dialogs.py:131
-msgid "Error"
-msgstr "Error"
-
-#: ../firstboot/pages/localUsers/__init__.py:42
-msgid "Manage local users"
-msgstr "Gestionar usuarios locales"
-
-#: ../firstboot/pages/localUsers/__init__.py:88
-msgid ""
-"You can create or delete local users on thisworkstation. \n"
-"\n"
-"Users authenticated by external services (AD, LDAP...) directory do not need "
-"to be created here\n"
-"\n"
-"Check default OEM users and change its passwords if needed."
-msgstr ""
-"Puede crear o borrar usuarios locales en esta estación de trabajo. \n"
-"\n"
-"No se requiere crear aquí aquellos usuarios que sean autenticados por "
-"servicios externos (AD, LDAP...)\n"
-"\n"
-"Compruebe los usuarios OEM por defecto y cambie sus contraseñas si lo "
-"necesita."
-
-#: ../firstboot/pages/localUsers/__init__.py:92
-msgid "Name"
-msgstr "Nombre"
-
-#: ../firstboot/pages/localUsers/__init__.py:94
-msgid "Confirm"
-msgstr "Confirmar"
-
-#: ../firstboot/pages/localUsers/__init__.py:95
-msgid "Groups"
-msgstr "Grupos"
-
-#: ../firstboot/pages/localUsers/__init__.py:96
-msgid "Add"
-msgstr "Añadir"
-
-#: ../firstboot/pages/localUsers/__init__.py:97
-msgid "Remove"
-msgstr "Eliminar"
-
-#: ../firstboot/pages/localUsers/__init__.py:98
+#: ../data/glade/adsetupdata.glade:144 ../data/glade/localuserpopup.glade:185
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../firstboot/pages/localUsers/__init__.py:114
+#: ../data/glade/ntp.glade:206
+msgid "Check"
+msgstr "Comprobar"
+
+#: ../data/glade/progress.glade:21
+msgid "Check GECOS credentials "
+msgstr "Comprobar credenciales de GECOS "
+
+#: ../data/glade/progress.glade:34
+msgid "Check workstation data "
+msgstr "Comprobar datos del puesto de trabajo"
+
+#: ../data/glade/progress.glade:94
+msgid "Clean up setup data"
+msgstr "Limpiar los datos de configuración"
+
+#: ../data/glade/autoconf.glade:573 ../data/glade/gecoscon.glade:736
+#: ../data/glade/main.glade:368 ../data/glade/network.glade:493
+#: ../data/glade/ntp.glade:487 ../data/glade/requirements.glade:714
+#: ../data/glade/users.glade:664 ../data/glade/window.glade:364
+msgid "Close"
+msgstr "Cerrar"
+
+#: ../data/glade/requirements.glade:459
+msgid "Configure"
+msgstr "Configurar"
+
+#: ../data/glade/network.glade:266
+msgid "Configure network connection"
+msgstr "Configurar la conexión de red"
+
+#: ../data/glade/localuserpopup.glade:83
+msgid "Confirm:"
+msgstr "Confirmar:"
+
+#: ../data/glade/gecoscon.glade:486
+#: ../gecosws_config_assistant/view/ConnectWithGecosCCDialog.py:161
+msgid "Connect to CC GECOS"
+msgstr "Conectar al CC GECOS"
+
+#: ../data/glade/localusers.glade:156
+msgid "Delete"
+msgstr "Borrar"
+
+#: ../data/glade/adsetupdata.glade:70
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:133
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:246
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:278
+msgid "Domain:"
+msgstr "Dominio:"
+
+#: ../data/glade/autoconf.glade:17 ../data/glade/gecoscon.glade:13
+#: ../data/glade/main.glade:27 ../data/glade/network.glade:35
+#: ../data/glade/ntp.glade:16 ../data/glade/requirements.glade:46
+#: ../data/glade/users.glade:23 ../data/glade/window.glade:35
+msgid "GECOS Config Assistant"
+msgstr "Asistente de configuración GECOS"
+
+#: ../data/glade/gecoscon.glade:133
+msgid "GECOS Control Center URL"
+msgstr "URL del Centro de Control GECOS"
+
+#: ../data/glade/gecoscon.glade:117
+msgid "GECOS Control Center connection setup"
+msgstr "Configuración de la conexión con el Centro de Control GECOS"
+
+#: ../data/glade/autoconf.glade:207
+msgid "GECOS URL"
+msgstr "URL de GECOS"
+
+#: ../data/glade/progress.glade:49
+msgid "Get chef certificate "
+msgstr "Obtener certificado de chef"
+
+#: ../data/glade/autoconf.glade:299 ../data/glade/requirements.glade:440
+msgid "Get data"
+msgstr "Obtener datos"
+
+#: ../data/glade/autoconf.glade:334 ../data/glade/localusers.glade:173
+#: ../data/glade/network.glade:247 ../data/glade/systemstatus.glade:63
+#: ../data/glade/users.glade:442
+msgid "Go Back"
+msgstr "Volver"
+
+#: ../data/glade/gecoscon.glade:513 ../data/glade/ntp.glade:260
+msgid "Go back"
+msgstr "Volver"
+
+#: ../data/glade/localusers.glade:59
+msgid ""
+"It isn't necessary to create here the users that are authenticated by "
+"external services (LDAP, AD, ...)"
+msgstr ""
+"No es necesario crear aquí los usuarios que se autentican por servicios "
+"externos (LDAP, AD, ...)"
+
+#: ../data/glade/gecoscon.glade:181
+msgid ""
+"It must be unique, it can use white spaces or symbols. It would be the "
+"description on the reports."
+msgstr ""
+"Debe ser único. Pueden usarse espacios o símbolos. Será usado como "
+"descripción en los informes."
+
+#: ../data/glade/requirements.glade:477
+msgid "Link"
+msgstr "Vincular"
+
+#: ../data/glade/progress.glade:64
+msgid "Link to chef "
+msgstr "Vincular a Chef "
+
+#: ../data/glade/autoconf.glade:48 ../data/glade/main.glade:57
+#: ../data/glade/network.glade:66 ../data/glade/ntp.glade:47
+#: ../data/glade/requirements.glade:77 ../data/glade/users.glade:54
+msgid "Link/Unlink"
+msgstr "Vincular/Desvincular"
+
+#: ../data/glade/autoconf.glade:457 ../data/glade/gecoscon.glade:620
+#: ../data/glade/main.glade:252 ../data/glade/network.glade:377
+#: ../data/glade/ntp.glade:373 ../data/glade/requirements.glade:596
+#: ../data/glade/users.glade:548 ../data/glade/window.glade:231
+msgid "Local Users"
+msgstr "Usuarios locales"
+
+#: ../data/glade/localuserpopup.glade:45
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:117
+msgid "Login:"
+msgstr "Login:"
+
+#: ../data/glade/localusers.glade:24
+msgid "Manage local users"
+msgstr "Gestionar usuarios locales"
+
+#: ../data/glade/requirements.glade:495
+msgid "Modify"
+msgstr "Modificar"
+
+#: ../data/glade/ntp.glade:156
+msgid "NTP Server configuration"
+msgstr "Configuración del servidor NTP"
+
+#: ../data/glade/ntp.glade:195
+msgid "NTP Server:"
+msgstr "Servidor NTP:"
+
+#: ../data/glade/localuserpopup.glade:26
+msgid "Name:"
+msgstr "Nombre:"
+
+#: ../data/glade/network.glade:178
+msgid "Network Setup"
+msgstr "Configuración de Red"
+
+#: ../data/glade/requirements.glade:206
+msgid "Network connection"
+msgstr "Conexión de red"
+
+#: ../data/glade/autoconf.glade:183 ../data/glade/network.glade:194
+msgid ""
+"Network connection parameters with GECOS Control Center are mandatory for "
+"auto setup"
+msgstr ""
+"Los datos de conexión con el Centro de Control GECOS son necesarios para la "
+"autoconfiguración"
+
+#: ../data/glade/localusers.glade:122
+msgid "New"
+msgstr "Nuevo"
+
+#: ../data/glade/gecoscon.glade:388
+msgid "OU"
+msgstr ""
+
+#: ../data/glade/progress.glade:106 ../data/glade/progress.glade:117
+#: ../data/glade/progress.glade:130 ../data/glade/progress.glade:143
+#: ../data/glade/progress.glade:156 ../data/glade/progress.glade:169
+msgid "PENDING "
+msgstr "PENDIENTE "
+
+#: ../data/glade/autoconf.glade:235 ../data/glade/gecoscon.glade:271
+msgid "Password"
+msgstr "Contraseña"
+
+#: ../data/glade/adsetupdata.glade:115 ../data/glade/localuserpopup.glade:64
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:281
+msgid "Password:"
+msgstr "Contraseña:"
+
+#: ../data/glade/localusers.glade:82
+msgid "Please check default OEM users and change their passwords when needed:"
+msgstr ""
+"Por favor revise los usuarios OEM y cambie sus contraseñas si es necesario:"
+
+#: ../data/glade/ntp.glade:172
+msgid ""
+"Precise time is needed to keep some services synchronized.\n"
+"Please set your NTP server address:"
+msgstr ""
+"Se necesita una hora precisa parra mantener algunos servicios "
+"sincronizados.\n"
+"Por favor configure su servidor NTP:"
+
+#: ../data/glade/progress.glade:79
+msgid "Register in GECOS CC "
+msgstr "Registrar en CC GECOS"
+
+#: ../data/glade/gecoscon.glade:411
+msgid "Search"
+msgstr "Buscar"
+
+#: ../data/glade/window.glade:349
+msgid "See Log"
+msgstr "Ver log"
+
+#: ../data/glade/autoconf.glade:500 ../data/glade/gecoscon.glade:663
+#: ../data/glade/main.glade:295 ../data/glade/network.glade:420
+#: ../data/glade/ntp.glade:415 ../data/glade/requirements.glade:640
+#: ../data/glade/users.glade:591 ../data/glade/window.glade:275
+msgid "Software Manager"
+msgstr "Gestor de Software"
+
+#: ../data/glade/autoconf.glade:414 ../data/glade/gecoscon.glade:577
+#: ../data/glade/main.glade:209 ../data/glade/network.glade:334
+#: ../data/glade/ntp.glade:331 ../data/glade/requirements.glade:552
+#: ../data/glade/users.glade:505 ../data/glade/window.glade:187
+msgid "System Status"
+msgstr "Estado del Sistema"
+
+#: ../data/glade/systemstatus.glade:11
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:87
+msgid "System status"
+msgstr "Estado del Sistema"
+
+#: ../data/glade/requirements.glade:229
+msgid "The system has network connection (connection data)"
+msgstr "El sistema dispone de conexión a red (datos de conexión)"
+
+#: ../data/glade/requirements.glade:327
+msgid "The system is NOT linked to GECOS"
+msgstr "El sistema NO está vinculado a GECOS"
+
+#: ../data/glade/requirements.glade:293
+msgid "The system is NOT synchronized its time with a NTP server"
+msgstr "El sistema NO está sincronizado con un servidor NTP"
+
+#: ../data/glade/users.glade:196
+msgid ""
+"The users of this workstation may authenticate by using an external system "
+"like LDAP or Microsoft Active Directory. Also, they can be authenticated by "
+"using local users of this O.S."
+msgstr ""
+"Los usuarios de esta estación pueden autenticarse mediante un sistema "
+"externocomo LDAP o Microsoft Active Directory. También, pueden autenticarse "
+"usando usuarios locales de este S. O."
+
+#: ../data/glade/adsetupdata.glade:167
+msgid ""
+"To disconnect from Active Directory you need \n"
+"to enter the Administrator user and password:"
+msgstr ""
+"Para desconectar de Active Directory necesitará \n"
+"introducir el usuario Administrador y su contraseña:"
+
+#: ../data/glade/users.glade:351
+msgid "URI:"
+msgstr ""
+
+#: ../data/glade/localusers.glade:139
+msgid "Update"
+msgstr "Actualizar"
+
+#: ../data/glade/autoconf.glade:543 ../data/glade/gecoscon.glade:706
+#: ../data/glade/main.glade:338 ../data/glade/network.glade:463
+#: ../data/glade/ntp.glade:457 ../data/glade/requirements.glade:684
+#: ../data/glade/users.glade:634 ../data/glade/window.glade:319
+msgid "Update assistant"
+msgstr "Actualizar asistente"
+
+#: ../data/glade/autoconf.glade:221 ../data/glade/gecoscon.glade:259
 msgid "User"
 msgstr "Usuario"
 
-#: ../firstboot/pages/localUsers/__init__.py:304
-msgid "Duplicated user"
-msgstr "Usuario duplicado"
+#: ../data/glade/adsetupdata.glade:100
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:280
+msgid "User:"
+msgstr "Usuario:"
 
-#: ../firstboot/pages/localUsers/__init__.py:376
-msgid "User login is empty or contains invalid characters."
-msgstr "El login de usuario está vacío o contiene caracteres no válidos."
+#: ../data/glade/requirements.glade:361
+msgid "Users are authenticated using the INTERNAL method"
+msgstr "Los usuarios se autentican usando el método INTERNO"
 
-#: ../firstboot/pages/localUsers/__init__.py:380
-msgid "User password can not be empty."
-msgstr "La contraseña de usuario no puede estar vacía."
+#: ../data/glade/adsetupdata.glade:85
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:134
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:247
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:279
+msgid "Workgroup:"
+msgstr "Gurpo de trabajo:"
 
-#: ../firstboot/pages/localUsers/__init__.py:384
-msgid "Passwords do not match."
-msgstr "Las contraseñas no coinciden."
+#: ../data/glade/localusers.glade:43
+msgid "You can create, update or delete local users in this workstation."
+msgstr ""
+"Puede crear, actualizar o borrar usuarios locales en esta estación de "
+"trabajo."
 
-#: ../firstboot/pages/pcLabel/__init__.py:37
-#: ../firstboot/pages/pcLabel/__init__.py:64
-msgid "Workstation Name"
-msgstr "Nombre de la estación de trabajo"
+#: ../data/glade/main.glade:408 ../data/glade/requirements.glade:39
+#: ../data/glade/window.glade:28
+msgid "eth0"
+msgstr ""
 
-#: ../firstboot/pages/pcLabel/__init__.py:60
+#: ../data/glade/gecoscon.glade:149
+msgid "http://"
+msgstr ""
+
+#: ../data/glade/main.glade:404 ../data/glade/requirements.glade:35
+#: ../data/glade/window.glade:24
+msgid "lo"
+msgstr ""
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:101
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:108
+msgid "The URL field is empty!"
+msgstr "¡El campo URL está vacío!"
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:101
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:163
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:171
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:108
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:123
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:131
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:196
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:228
+#: ../gecosws_config_assistant/controller/LocalUserController.py:78
+#: ../gecosws_config_assistant/controller/LocalUserController.py:94
+#: ../gecosws_config_assistant/controller/LocalUserController.py:103
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:367
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:382
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:412
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:438
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:447
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:456
+#: ../gecosws_config_assistant/view/LocalUserElemDialog.py:123
+msgid "Please fill all the mandatory fields."
+msgstr "Por favor rellene todos los campos obligatorios."
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:108
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:115
+msgid "Malformed URL in URL field!"
+msgstr "¡URL mal escrita en el campo URL!"
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:108
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:115
+msgid "Please double-check it."
+msgstr "Por favor revise el dato."
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:127
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:150
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:434
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:546
+msgid "The certificate of this server is expired!"
+msgstr "¡El certificado de este servidor ha expirado!"
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:129
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:152
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:436
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:548
+msgid "The certificate of this server is not trusted!"
+msgstr "¡No se confía en el certificado de este servidor!"
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:132
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:155
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:440
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:551
+msgid "Do you want to disable the SSL certificate verification?"
+msgstr "¿Desea desactivar la validación de certificados SSL?"
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:134
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:157
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:442
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:553
+msgid "Subject:"
+msgstr "Objeto:"
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:135
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:158
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:443
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:554
+msgid "Issuer:"
+msgstr "Emisor:"
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:136
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:159
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:444
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:555
+msgid "Serial Number:"
+msgstr "Número de serie:"
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:137
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:160
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:445
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:556
+msgid "Not before:"
+msgstr "No antes:"
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:137
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:160
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:445
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:556
+msgid "Not after:"
+msgstr "No después:"
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:152
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:179
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:175
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:183
+msgid "Can't connect to GECOS CC!"
+msgstr "¡Imposible conectar al CC GECOS!"
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:152
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:175
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:465
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:576
+msgid "SSL ERROR:"
+msgstr "ERROR de SSL:"
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:163
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:123
+msgid "The Username field is empty!"
+msgstr "¡El campo Usuario está vacío!"
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:171
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:131
+msgid "The Password field is empty!"
+msgstr "¡El campo Contraseña está vacío!"
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:179
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:183
+msgid "Please double-check all the data and your network setup."
+msgstr "Por favor revise todos los datos y su configuración de red."
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:201
+msgid "Please wait"
+msgstr "Por favor espere"
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:211
+msgid "Error getting data"
+msgstr "Error obteniendo datos"
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:212
+msgid "Can't read auto setup configuration data from GECOS Control Center!"
+msgstr ""
+"¡No se pueden leer los datos de autoconfiguración desde el Centro de Control "
+"GECOS!"
+
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:217
+msgid "Success getting data from GECOS server"
+msgstr "Exito al obtener los datos desde el servidor GECOS"
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:196
+msgid "The GECOS workstation name field is empty!"
+msgstr "¡El campo Nombre de estación de trabajo está vacío!"
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:215
+msgid "The GECOS workstation name already exist!"
+msgstr "¡El nombre de estación de trabajo ya existe!"
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:215
+msgid "Please choose a different name."
+msgstr "Por favor elija un nombre diferente"
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:228
+msgid "You must select an OU!"
+msgstr "¡Debe seleccionar una OU!"
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:325
+msgid "Link to Chef"
+msgstr "Vincular a Chef "
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:326
+msgid "Register in GECOS CC"
+msgstr "Registrar en CC GECOS"
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:331
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:354
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:364
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:504
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:649
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:679
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:702
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:711
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:721
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:731
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:796
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:809
+msgid "IN PROCESS"
+msgstr "EN PROCESO"
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:335
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:341
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:347
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:357
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:384
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:394
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:450
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:463
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:478
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:491
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:561
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:574
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:598
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:613
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:636
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:658
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:668
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:704
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:714
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:740
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:753
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:762
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:773
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:782
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:799
+#: ../gecosws_config_assistant/view/GecosCCSetupProgressView.py:106
+#: ../gecosws_config_assistant/view/GecosCCSetupProgressView.py:111
+#: ../gecosws_config_assistant/view/GecosCCSetupProgressView.py:116
+#: ../gecosws_config_assistant/view/GecosCCSetupProgressView.py:125
+#: ../gecosws_config_assistant/view/GecosCCSetupProgressView.py:134
+#: ../gecosws_config_assistant/view/GecosCCSetupProgressView.py:139
+msgid "ERROR"
+msgstr ""
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:351
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:361
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:501
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:646
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:676
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:684
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:708
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:718
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:728
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:793
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:806
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:815
+msgid "DONE"
+msgstr "HECHO"
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:386
+msgid "There was an error while getting the client certificate"
+msgstr "Ha ocurrido un error al obtener el certificado de cliente"
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:396
+msgid "There was an error while saving the client certificate"
+msgstr "Ha ocurrido un error al guardar el certificado de cliente"
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:465
+msgid "Can't connect to GEMs repository!"
+msgstr "¡No se puede conectar al repositrio de GEMas!"
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:480
+msgid "There was an error while adding the GEMs repository:\n"
+msgstr "Ha ocurrido un error al añadir el repositorio de GEMas:\n"
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:493
+msgid "There was an error while installing a required GEM: "
+msgstr "Ha ocurrido un error al instalar una GEMa requerida: "
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:576
+msgid "Can't connect to Chef Server!"
+msgstr "¡No se puede conectar con el servidor de Chef!"
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:600
+msgid "Can't create/modify /etc/chef/client.rb file"
+msgstr "¡No se puede crear/modificar el fichero  /etc/chef/client.rb!"
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:615
+msgid "Can't link to chef server!"
+msgstr "¡No se ha podido vincular al servidor de Chef!"
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:638
+msgid "Can't create/modify /etc/chef.control file"
+msgstr "No se puede crear/modificar el fichero /etc/chef.control"
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:660
+msgid "Can't register the computer in GECOS CC"
+msgstr "No se ha posido registar el ordenador en el CC GECOS"
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:670
+msgid "Can't save /etc/gcc.control file"
+msgstr "No se puede guardar el fichero /etc/gcc.control"
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:696
+msgid "Unlink from Chef"
+msgstr "Desvincular de Chef "
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:697
+msgid "Unregister from GECOS CC"
+msgstr "Desregistrar del CC GECOS"
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:742
+msgid "Can't unregister the computer from GECOS CC"
+msgstr "No se puede desregistrar el ordenador del CC GECOS"
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:755
+msgid "Can't remove /etc/chef.control file"
+msgstr "No se puede borar el fichero /etc/chef.control"
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:764
+msgid "Can't remove /etc/chef/client.pem file"
+msgstr "No se puede borrar el fichero /etc/chef/client.pem"
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:775
+msgid "Can't delete Chef node"
+msgstr "No se puede borrar el nodo de Chef"
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:784
+msgid "Can't remove /usr/bin/chef-client-wrapper file"
+msgstr "No se puede borrar el fichero /usr/bin/chef-client-wrapper"
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:801
+msgid "Can't remove /etc/gcc.control file"
+msgstr "No se puede borrar el fichero /etc/gcc.control"
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:835
+msgid "Can't get OUs from GECOS Control Center"
+msgstr "No se pueden obtener las OUs desde el Centro de Control GECOS"
+
+#: ../gecosws_config_assistant/controller/LocalUserController.py:78
+msgid "The login field is empty!"
+msgstr "¡El campo Login está vacío!"
+
+#: ../gecosws_config_assistant/controller/LocalUserController.py:85
+msgid "The login field contains not allowed characters!"
+msgstr "¡El campo Login contiene caracteres no permitidos!"
+
+#: ../gecosws_config_assistant/controller/LocalUserController.py:94
+msgid "The name field is empty!"
+msgstr "¡El campo Nombre está vacío!"
+
+#: ../gecosws_config_assistant/controller/LocalUserController.py:103
+msgid "The password field is empty!"
+msgstr "¡El campo Contraseña está vacío!"
+
+#: ../gecosws_config_assistant/controller/LocalUserController.py:111
+msgid "The password field contains not allowed characters."
+msgstr "El campo Contraseña contiene caracteres no permitidos"
+
+#: ../gecosws_config_assistant/controller/LocalUserController.py:160
+msgid "Do you really want to delete this user? "
+msgstr "¿Realmente desea borrar este usuario?"
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:181
+msgid "The system has a network connection configured"
+msgstr "El sistema dispone de conexión a red configurada"
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:183
+msgid "The system has NO network connection"
+msgstr "El sistema no dispone de conexión a red"
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:186
+msgid "The system has loaded setup data values from GECOS server"
+msgstr ""
+"El sistema ha cargado los valores de configuración desde el servidor de GECOS"
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:188
+msgid "The system may load setup data values from GECOS server"
+msgstr ""
+"El sistema cargará los datos de configuración desde el servidor de GECOS"
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:191
+msgid "The system is synchronized with a NTP server"
+msgstr "El sistema está sincronizado con un servidor NTP"
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:193
+msgid "The system is NOT synchronized with a NTP server"
+msgstr "El sistema NO está sincronizado con un servidor NTP"
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:196
+msgid "The system is linked to a GECOS server"
+msgstr "El sistema está vinculado al servidor GECOS"
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:198
+msgid "The system is NOT linked to a GECOS server"
+msgstr "El sistema NO está vinculado al servidor GECOS"
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:200
+#, python-format
+msgid "Users authenticate by %s method"
+msgstr "Los usuarios se autentican usando el método %s"
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:205
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:230
+#: ../gecosws_config_assistant/dto/LDAPAuthMethod.py:43
+#: ../gecosws_config_assistant/tests/dto/LDAPAuthMethodTest.py:40
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:66
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:147
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:189
+msgid "LDAP"
+msgstr ""
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:207
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:232
+#: ../gecosws_config_assistant/dto/ADAuthMethod.py:44
+#: ../gecosws_config_assistant/tests/dto/ADAuthMethodTest.py:40
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:66
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:149
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:191
+msgid "Active Directory"
+msgstr ""
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:209
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:228
+#: ../gecosws_config_assistant/dto/LocalUsersAuthMethod.py:43
+#: ../gecosws_config_assistant/tests/dto/LocalUsersAuthMethodTest.py:39
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:66
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:145
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:187
+msgid "Internal"
+msgstr "Interno"
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:272
+msgid "Are you sure you want to update the GECOS Config Assistant?"
+msgstr ""
+"¿Está seguro de que quiere actualizar el Asistente de Configuración GECOS?"
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:275
+#: ../gecosws_config_assistant/controller/MainMenuController.py:283
+msgid "An error occurred during the upgrade"
+msgstr "Ha ocurrido un problema durante la actualización"
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:279
+msgid "CGA is already at the newest version!"
+msgstr "¡ACG ya está en la versión más actual!"
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:281
+msgid "GECOS Config Assistant has been udpated. Please restart GCA"
+msgstr ""
+"El Asistente de Configuración GECOS se ha actualizado. Por favor reinicie el "
+"ACG!"
+
+#: ../gecosws_config_assistant/controller/NTPServerController.py:87
+#: ../gecosws_config_assistant/controller/NTPServerController.py:91
+msgid "Error saving NTP server data."
+msgstr "Error guardando los datos del servidor de NTP"
+
+#: ../gecosws_config_assistant/controller/NTPServerController.py:87
+#: ../gecosws_config_assistant/controller/NTPServerController.py:91
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:408
+msgid "See log for more details."
+msgstr "Vea el log para más detalles."
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:302
 msgid ""
-"Workstation name. This text doesn't need to be unique, and you can use "
-"spaces or symbols. \n"
-"You will find this description in your GECOS server reports later."
+"The user authentication data has changed.\n"
+"Do you want to setup the user authentication method using this new data?"
 msgstr ""
-"Nombre de la estación de trabajo. Este texto no necesita ser único, y puede "
-"utilizar espacios o símbolos. \n"
-"Esta descripción aparecerá después en los informes del servidor GECOS."
+"Los datos de autenticación del usuario han cambiado.\n"
+"¿Desea configurar los el método de autenticación de usuarios usando estos "
+"nuevos datos?"
 
-#: ../firstboot/pages/pcLabel/__init__.py:70
-msgid "PC label has been updated correctly."
-msgstr "La etiqueta del PC se ha actualizado correctamente."
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:367
+msgid "The URI field is empty!"
+msgstr "¡El campo URI está vacío!"
 
-#: ../firstboot/pages/dateSync/__init__.py:41
-msgid "Date/Time Synchronization"
-msgstr "Sincronización de Fecha/Hora"
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:374
+msgid "Malformed LDAP URI!"
+msgstr "¡URI de LDAP mal formada!"
 
-#: ../firstboot/pages/dateSync/__init__.py:62
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:374
+msgid "Please check that the URI starts with 'ldap://' or 'ldaps://'."
+msgstr "Por favor, compruebe que la URI empieza con 'ldap://' o 'ldaps://'."
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:382
+msgid "The users base DN field is empty!"
+msgstr "¡El campo base DN de usuarios está vacío!"
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:389
+msgid "Can't connect to LDAP server!"
+msgstr "¡No se puede conectar al servidor de LDAP!"
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:389
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:464
+msgid "Please check all the fields and your network connection."
+msgstr "Por favor compruebe todos los campos y su conexión con la red!"
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:404
+msgid "Bad netbios hostname!"
+msgstr "¡El hosname no cumple los requisitos de Netbios!"
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:404
+msgid "Please change the hostname of this computer."
+msgstr "Por favor cambie el hostname de este ordenador."
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:412
+msgid "The Domain field is empty!"
+msgstr "¡El campo Dominio está vacío!"
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:429
+msgid "Can't resolv the Active Directory Domain name!"
+msgstr "¡No se puede resolver el nombre de dominio de Active Directory!"
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:430
+msgid "Please check the Domain field and your DNS configuration."
+msgstr "Por favor compurebe el campo Dominio y su configuración de DNS."
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:438
+msgid "The Workgroup field is empty!"
+msgstr "El campo Grupo de trabajo está vacío!"
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:446
+msgid "The AD administrator user field is empty!"
+msgstr "¡El campo usuario Administrador AD está vacío!"
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:455
+msgid "The AD administrator password field is empty!"
+msgstr "¡El campo contraseña de administrador AD está vacío!"
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:463
+msgid "Can't connect to Active Directory server!"
+msgstr "¡No se puede conectar con el servidor de Active Directory!"
+
+#: ../gecosws_config_assistant/view/ADSetupDataElemView.py:118
 msgid ""
-"Workstations and server time must be synchronized.\n"
-"Please, provide the name or IP address of a valid Network Time Protocol "
-"server."
+"Can't connect to Active Directory.\n"
+"Please double-check all the fields"
 msgstr ""
-"Las estaciones de trabajo y el servidor de tiempo deben estar "
-"sincronizados.\n"
-"Por favor, indique el nombre o dirección IP de un servidor NTP válido."
+"No se ha podido conectar con el Active Directory.\n"
+"Por favor revise todos los campos"
 
-#: ../firstboot/pages/dateSync/__init__.py:66
-msgid "NTP Server"
-msgstr "Servidor NTP"
+#: ../gecosws_config_assistant/view/ConnectWithGecosCCDialog.py:159
+msgid "Disconnect from CC GECOS"
+msgstr "Desconectar del CC GECOS"
 
-#: ../firstboot/pages/dateSync/__init__.py:115
-msgid "Incorrect value for NTP Server"
-msgstr "Valor incorrecto para el servidor NTP"
+#: ../gecosws_config_assistant/view/LocalUserElemDialog.py:84
+msgid "Modifiy local user"
+msgstr "Modificar usuario local"
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:69
-msgid "These parameters are required in order to join a Control Center:"
-msgstr "Estos parámetros son requeridos para vincularse al Centro de Control:"
+#: ../gecosws_config_assistant/view/LocalUserElemDialog.py:122
+msgid "The password confirmation field is empty!"
+msgstr "El campo Confirmación de la clave está vacío!"
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:72
+#: ../gecosws_config_assistant/view/LocalUserElemDialog.py:130
+msgid "The password confirmation is different from password"
+msgstr "El campo confirmación de la clave es diferente del campo clave"
+
+#: ../gecosws_config_assistant/view/LogTerminalDialog.py:110
+msgid "Log terminal"
+msgstr "Terminal de Log"
+
+#: ../gecosws_config_assistant/view/MainWindow.py:168
+msgid "Link with GECOS server"
+msgstr "Enlazar al servidor GECOS"
+
+#: ../gecosws_config_assistant/view/MainWindow.py:170
 msgid ""
-"\"Control Center URL\": an existant URL in your server where GECOS Control "
-"Center is installed."
+"You must link your workstation with a GECOS server to be \n"
+"able to manage this workstation in a centralized way"
 msgstr ""
-"\"URL del Centro de Control\": una URL existente en el servidor donde el "
-"Centro de Control GECOS esté instalado."
+"Debe enlazar su estación de trabajo con el servidor GECOS para \n"
+"poder gestionarla de una forma centralizada"
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:73
+#: ../gecosws_config_assistant/view/MainWindow.py:178
+msgid "Setup user authentication method"
+msgstr "Configurar el Método de Autenticación"
+
+#: ../gecosws_config_assistant/view/MainWindow.py:180
 msgid ""
-"\"Username\": User with administrative privilees (This will not be "
-"workstation user)"
+"You must setup the user authentication method to either: internal users, "
+"LDAP or Active Directory"
 msgstr ""
-"\"Nombre de usuario\": Usuario con privilegios de administración (no el "
-"usuario de la estación de trabajo)"
+"Debe configurar su método de autenticación de usuarios como: usuarios "
+"internos, LDAP o Active Directory"
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:75
-msgid "Control Center Username"
-msgstr "Nombre de usuario del Centro de Control"
+#: ../gecosws_config_assistant/view/MainWindow.py:356
+msgid "Unlink"
+msgstr "Desvincular"
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:77
-msgid "Link to an existing workstation?"
-msgstr "¿Vincular a un estación de trabajo existente?"
-
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:93
-#: ../firstboot/serverconf/__init__.py:791
-msgid "Select OU"
-msgstr "Seleccionar OU"
-
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:93
-msgid "Select the OU to link into GCC Ui"
-msgstr "Seleccionar OU para vincular a la GCC Ui"
-
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:101
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:148
-msgid "Url Chef Certificate Required"
-msgstr "URL del certificado de Chef requerida"
-
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:101
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:148
+#: ../gecosws_config_assistant/view/NTPServerElemView.py:115
 msgid ""
-"You need to enter url with certificate file\n"
-" in protocol://domain/resource format"
+"Can't connect with NTP server.\n"
+"Please double-check the NTP server address"
 msgstr ""
-"Necesita introducir la URL con el fichero de certificado\n"
-" con el formato protocolo://dominio/recurso"
+"No se puede conectar con el servidor NTP.\n"
+"Por favor revise la dirección del servidor NTP"
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:105
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:152
-msgid "Can not download pem file"
-msgstr "No se puede descargar el fichero pem"
+#: ../gecosws_config_assistant/view/NTPServerElemView.py:118
+msgid "NTP server connection successful"
+msgstr "Éxito al configurar el servidor NTP"
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:138
-#: ../firstboot/serverconf/__init__.py:740
-msgid "Select Workstation"
-msgstr "Seleccione la estación de trabajo"
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:92
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:94
+msgid "Assistant version: "
+msgstr "Versión del asistente: "
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:138
-msgid "Select a workstation to link"
-msgstr "Seleccione una estación de trabajo para vincular"
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:94
+msgid "UNKNOWN VERSION"
+msgstr "VERSIÓN DESCONOCIDA"
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:140
-msgid "You need selected a workstation"
-msgstr "Necesita seleccionar una estación de trabajo"
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:99
+msgid "Workstation name: "
+msgstr "Nombre de la estación: "
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:186
-msgid "Chef URL must be valid URL and need certificate"
-msgstr "La URL de Chef debe ser una URL válida y necesita certificado"
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:104
+msgid "Time server: "
+msgstr "Servidor NTP: "
 
-#: ../firstboot/pages/linkToChef/LinkToChefConfEditorPage.py:190
-msgid "Some GCC attributes are incorrect or blank"
-msgstr "Algunos atributos de GCC son incorrectos o están vacíos"
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:107
+msgid "Network interfaces: "
+msgstr "Interfaces de red: "
 
-#: ../firstboot/pages/linkToChef/__init__.py:42
-msgid "Link workstation to GECOS Control Center"
-msgstr "Vincular la estación de trabajo al Centro de Control GECOS"
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:113
+msgid "GECOS Control Center connection data: "
+msgstr "Datos de conexión con el Centro de Control GECOS: "
 
-#: ../firstboot/pages/linkToChef/__init__.py:80
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:116
+msgid "Server URL:"
+msgstr "URL del servidor:"
+
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:120
+msgid "Local users: "
+msgstr "Usuarios locales: "
+
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:127
+msgid "User authentication method: "
+msgstr "Método de Autenticación de usuarios: "
+
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:130
+msgid "Method:"
+msgstr "Método: "
+
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:137
+msgid "Server URI:"
+msgstr "URI del servidor:"
+
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:138
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:215
+msgid "Users base DN:"
+msgstr "DN base de usuarios:"
+
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:139
+msgid "Groups base DN:"
+msgstr "DN base de grupos:"
+
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:144
+msgid "No status data!"
+msgstr "¡No hay información de estado!"
+
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:211
+msgid "Please fill the data to setup the LDAP authentication method."
+msgstr ""
+"Por favor rellene todos los datos para configurar el méotod de autenticación "
+"por LDAP."
+
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:214
+msgid "LDAP server URI:"
+msgstr "URI del servidor LDAP:"
+
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:216
+msgid "Groups base DN (optional):"
+msgstr "DN base de grupos (opcional):"
+
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:217
+msgid "Bind user DN (optional):"
+msgstr "DN del usuario para enlazar (opcional):"
+
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:218
+msgid "Bind user password (optional):"
+msgstr "Contraseña para enlace (opcional):"
+
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:243
 msgid ""
-"When a workstation is linked to a Control Center can be easily managed "
-"remotely.\n"
-"\n"
+"Please fill the data to setup the Active Directory authentication method."
 msgstr ""
-"Cuando una estación de trabajo es vinculada a un Centro de Control, puede "
-"ser controlada fácilmente de manera remota.\n"
-"\n"
 
-#: ../firstboot/pages/linkToChef/__init__.py:84
-msgid "Unlink from Control Center"
-msgstr "Desvincular del Centro de Control"
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:248
+msgid "(Active Directory) User:"
+msgstr "(Active Directory) Usuario:"
 
-#: ../firstboot/pages/linkToChef/__init__.py:85
-msgid "Link to Control Center server?"
-msgstr "¿Vincular con el servidor del Centro de Control?"
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:249
+msgid "(Active Directory) Password:"
+msgstr "(Active Directory) Contraseña:"
 
-#: ../firstboot/pages/linkToChef/__init__.py:86
-#: ../firstboot/pages/linkToChef/__init__.py:94
-msgid "Unlink Locally"
-msgstr "Desvincular localmente"
-
-#: ../firstboot/pages/linkToChef/__init__.py:94
-msgid "Are you sure to unlink locally this workstation?"
-msgstr "¿Esta seguro de desvincularlo localmente?"
-
-#: ../firstboot/pages/linkToChef/__init__.py:103
-msgid "Unlink Error"
-msgstr "Error al desvincular"
-
-#: ../firstboot/pages/linkToChef/__init__.py:103
-msgid "An error occurred during the locally unlink"
-msgstr "Se ha producido un error durante la desvinculación local"
-
-#: ../firstboot/pages/linkToChef/__init__.py:185
-msgid "Error in user and password"
-msgstr "Error en el usuario y la contraseña"
-
-#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:60
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:274
 msgid ""
-"You must provide an unique valid short name for the workstation. Only ASCII "
-"letters, numbers and the hyphen (-) are allowed."
+"Specific configuration data was loaded from GECOS server\n"
+" (sssd.conf, krb5.conf, smb.conf and pam.conf)"
 msgstr ""
-"Debe indicar un nombre corto, válido y único para la estación de trabajo. "
-"Solo caracteres ASCII, números y el guión (-) están permitidos."
+"Se ha descargado desde el Centro de Control GECOS datos de configuración\n"
+"específicos (sssd.conf, krb5.conf, smb.conf y pam.conf)"
 
-#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:64
-msgid "Hostname"
-msgstr "Nombre del host"
-
-#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:85
-msgid "This name is already used."
-msgstr "Este nombre ya está en uso."
-
-#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:102
-msgid "Host name can not be empty."
-msgstr "El nombre del host no puede ser vacío."
-
-#: ../firstboot/pages/linkToChef/LinkToChefHostnamePage.py:106
-msgid "This name already exists in your organization."
-msgstr "Este nombre ya existe en su organización."
-
-#: ../firstboot/__init__.py:42
-msgid "Show debug messages (-vv debugs firstboot_lib also)"
-msgstr "Mostrar mensajes de depuración (-vv depura firstboot_lib también)"
-
-#: ../firstboot/__init__.py:46
-msgid "Debug mode. Force run the application after the first start"
-msgstr "Modo depuración. Forzar a ejecutar la aplicación tras el primer inicio"
-
-#: ../firstboot/__init__.py:50
-msgid "Use this URL by default in the \"Link to Server\" page."
-msgstr "Usar esta URL por defecto en la página \"Vincular con el servidor\"."
-
-#: ../firstboot/serverconf/__init__.py:86
-msgid "You need to enter your Control Center credentials to restore this workstation."
-msgstr ""
-"Necesita introducir las credenciales del Centro de Control para restaurar este puesto."
-"de trabajo."
-
-#: ../firstboot/serverconf/__init__.py:89
-msgid "You need to enter your credentials to access the requested resource."
-msgstr ""
-"Necesita introducir sus credenciales para acceder al recurso solicitado."
-
-#: ../firstboot/serverconf/__init__.py:98
-#: ../firstboot/serverconf/__init__.py:670
-#: ../firstboot/serverconf/__init__.py:709
-msgid "Authentication is failed."
-msgstr "La autenticación falló."
-
-#: ../firstboot/serverconf/__init__.py:320
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:307
 msgid ""
-"The Date/Time Syncronization parameters are incorrect, please got to Date/"
-"Time section or review your autconf file"
+"There is no necessary data to setup the local users authentication method."
 msgstr ""
-"Los parámetros de sincronización de Fecha/Hora son incorrectos, por favor "
-"vaya a la sección Fecha/Hora o revise su fichero de autoconfiguración"
+"No se necesita configuración para usar el método de autenticación por "
+"usuarios locales."
 
-#: ../firstboot/serverconf/__init__.py:323
-msgid ""
-"The GCC parameters are incorrect, please got to GCC section or review your "
-"autconf file"
-msgstr ""
-"Los parámetros de GCC son incorrectos, por favor vaya a la sección GCC o "
-"revise su fichero de autoconfiguración"
-
-#: ../firstboot/serverconf/__init__.py:326
-msgid ""
-"The Chef parameters are incorrect, please got to GCC section or review your "
-"autconf file"
-msgstr ""
-"Los parámetros de Chef son incorrectos, por favor vaya a la sección GCC o "
-"revise su fichero de autoconfiguración"
-
-#: ../firstboot/serverconf/__init__.py:329
-msgid "The Local Users parameters are incorrect, please go to Users section"
-msgstr ""
-"Los parámetros de Usuarios Locales son incorrectos, por favor vaya a la "
-"sección Usuarios"
-
-#: ../firstboot/serverconf/__init__.py:335
-msgid ""
-"The authentication parameters are incorrect, please go to Authentication "
-"section or review your autconf file"
-msgstr ""
-"Los parámetros de autenticación son incorrectos, por favor vaya a la sección "
-"Autenticación o revise su fichero de autoconfiguración"
-
-#: ../firstboot/serverconf/__init__.py:338
-#: ../firstboot/serverconf/__init__.py:407
-#: ../firstboot/serverconf/__init__.py:455
-#: ../firstboot/serverconf/__init__.py:458
-msgid "Configuration Error"
-msgstr "Error de configuración"
-
-#: ../firstboot/serverconf/__init__.py:346
-msgid ""
-"Configuring the client to link with Gecos Control Center, this may take "
-"several minutes.\n"
-"Please wait a moment"
-msgstr ""
-"Configurando el cliente para vincular con el Centro de Control, esto puede tardar varios minutos.\n"
-"Por favor, espere un momento"
-
-#: ../firstboot/serverconf/__init__.py:354
-msgid ""
-"Configuring the client to link authentication method, this may take several "
-"minutes.\n"
-"Please wait a moment"
-msgstr ""
-"Configurando el metodo de autenticación del cliente, esto puede tardar varios minutos.\n"
-"Por favor, espere un momento"
-
-#: ../firstboot/serverconf/__init__.py:369
-msgid "Configuring the client"
-msgstr "Configuración del cliente"
-
-#: ../firstboot/serverconf/__init__.py:403
-msgid "The client has been configured"
-msgstr "El cliente se ha configurado"
-
-#: ../firstboot/serverconf/__init__.py:406
-msgid "An error has ocurred running chef-solo"
-msgstr "Ha ocurrido un error al ejecutar chef-solo"
-
-#: ../firstboot/serverconf/__init__.py:454
-msgid "No connection to the server. It will unlink locally"
-msgstr ""
-
-#: ../firstboot/serverconf/__init__.py:515
-msgid "Restoring authentication configuration"
-msgstr "Seleccionar método de autenticación"
-
-#: ../firstboot/serverconf/__init__.py:535
-msgid "Unlink from GCC"
-msgstr "Desvincular del Centro de Control"
-
-#: ../firstboot/serverconf/__init__.py:560
-msgid "Unlink from Server"
-msgstr "Desvincular del servidor"
-
-#: ../firstboot/serverconf/__init__.py:593
-msgid "Url Certificate"
-msgstr "URL del certificado"
-
-#: ../firstboot/serverconf/__init__.py:622
-msgid "OU Name"
-msgstr "Nombre OU"
-
-#: ../firstboot/serverconf/__init__.py:735
-#: ../firstboot/serverconf/__init__.py:786
-msgid "Pattern search"
-msgstr "Patron de búsqueda"
-
-#: ../firstboot/serverconf/__init__.py:810
-msgid "Search"
-msgstr "Búsqueda"
-
-#: ../firstboot/serverconf/__init__.py:881
-msgid "GCC Password"
-msgstr "Contraseña de GCC"
-
-#: ../firstboot/serverconf/__init__.py:885
-msgid "Please insert GCC password for user "
-msgstr "Por favor introduzca la contraseña para el usuario de GCC "
-
-#: ../firstboot/serverconf/__init__.py:933
-msgid "user"
-msgstr "usuario"
-
-#~ msgid "Restoring GCC configuration"
-#~ msgstr "Restaurara configuración de GCC"
-
-#~ msgid "Restoring Server configuration"
-#~ msgstr "Restaurar la configuración del servidor"
-
-#~ msgid ""
-#~ "This workstation currently uses an Active Directory server for user "
-#~ "authentication."
-#~ msgstr ""
-#~ "Esta estación de trabajo usa actualmente un servidor Active Directory "
-#~ "para autenticación de usuarios."
-
-#~ msgid "Unlink from Active Directory"
-#~ msgstr "Desvincular de Active Directory"
-
-#~ msgid "Enter the correct OU to link into GCC Ui"
-#~ msgstr "Introducir el OU correcto para vincular con la GCC Ui"
-
-#~ msgid "Couldn't retrieve the host names list"
-#~ msgstr "No se pudo recuperar la lista de nombres de host"
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:408
+msgid "An error happened while saving the users authentication method!"
+msgstr "¡Ocurrió un error al guardar el método de autenticación de usuarios!"

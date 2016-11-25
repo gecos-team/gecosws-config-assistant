@@ -1,0 +1,9 @@
+deb http://v2.gecos.guadalinex.org/ubuntu/   trusty             main restricted universe multiverse
+deb http://v2.gecos.guadalinex.org/ubuntu/   trusty-updates     main restricted universe multiverse
+deb http://v2.gecos.guadalinex.org/ubuntu/   trusty-security    main restricted universe multiverse
+deb http://v2.gecos.guadalinex.org/ubuntu/   trusty-backports   main restricted universe multiverse
+
+deb http://v2.gecos.guadalinex.org/mint/     qiana              main upstream import backport
+
+deb http://v2.gecos.guadalinex.org/gecos/    v2                 main 
+

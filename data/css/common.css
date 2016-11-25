@@ -1,0 +1,10 @@
+GtkWindow {
+    background: url("/usr/share/gecosws-config-assistant/media/bg-background.png");
+}
+.helpButton{
+    background: transparent;
+}
+.blueBg{
+    background-color: #5498A4;
+    color: white;
+}
