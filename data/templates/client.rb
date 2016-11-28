@@ -5,7 +5,7 @@ log_level           :info
 
 log_location        STDOUT
 
-ssl_verify_mode    ${ssl_certificate_verication}
+ssl_verify_mode    ${ssl_certificate_verification}
 
 chef_server_url     "${chef_url}"
 
