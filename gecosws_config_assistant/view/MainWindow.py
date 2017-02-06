@@ -27,6 +27,7 @@ import traceback
 from gi.repository import Gtk, Gdk
 from gecosws_config_assistant.view import GLADE_PATH, CSS_PATH, CSS_COMMON
 from gecosws_config_assistant.firstboot_lib.firstbootconfig import get_data_file
+from gecosws_config_assistant.util.PackageManager import PackageManager
 
 from gettext import gettext as _
 import gettext
@@ -67,6 +68,10 @@ class MainWindow(object):
         
         self.addHandlers()
         self.bindHandlers()
+        
+        # Get version
+        pm = PackageManager()
+        self.window.set_title(_('GECOS Config Assistant') + ' v'+pm.get_package_version('gecosws-config-assistant'))
         
     
     def show(self):
