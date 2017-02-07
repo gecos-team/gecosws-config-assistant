@@ -679,7 +679,7 @@ msgstr "No se puede crear/modificar el fichero /etc/chef.control"
 
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:660
 msgid "Can't register the computer in GECOS CC"
-msgstr "No se ha posido registar el ordenador en el CC GECOS"
+msgstr "No se ha podido registar el ordenador en el CC GECOS"
 
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:670
 msgid "Can't save /etc/gcc.control file"
