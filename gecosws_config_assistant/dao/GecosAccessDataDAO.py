@@ -143,8 +143,11 @@ class GecosAccessDataDAO(object):
         template.owner = 'root'
         template.group = 'root'
         template.mode = 00755
+        url = data.get_url()
+        if url.endswith('/'):
+            url = url[0:-1]
         template.variables = { 
-            'uri_gcc':  data.get_url(), 
+            'uri_gcc':  url, 
             'gcc_username':  data.get_login(), 
             'gcc_nodename':  gcc_nodename, 
         }        
