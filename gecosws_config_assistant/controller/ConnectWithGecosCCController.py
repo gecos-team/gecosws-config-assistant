@@ -24,7 +24,7 @@ import sys
 
 from gecosws_config_assistant.view.ConnectWithGecosCCDialog import ConnectWithGecosCCDialog
 from gecosws_config_assistant.view.GecosCCSetupProgressView import GecosCCSetupProgressView
-from gecosws_config_assistant.view.CommonDialog import showerror_gtk
+from gecosws_config_assistant.view.CommonDialog import showerror_gtk, showwarning_gtk
 from gecosws_config_assistant.view.CommonDialog import askyesno_gtk
 
 from gecosws_config_assistant.util.GecosCC import GecosCC
@@ -692,6 +692,20 @@ class ConnectWithGecosCCController(object):
     def disconnect(self):
         self.logger.info("Disconnect from Gecos CC")
         
+        if local_disconn_checkbox:
+            # local disconnection
+            self.logger.debug("Executing a local disconnection")
+
+            self._remove_file('/etc/gcc.control')
+            self._remove_file('/etc/chef.control')
+            self._remove_file('/etc/chef/client.rb')
+            self._remove_file('/etc/chef/client.pem')
+            self._remove_file('/etc/chef/validation.pem')
+            self._remove_file('/etc/chef/knife.rb')
+
+            self.logger.debug("DONE.")
+            showwarning_gtk(_("Local disconnection done!"), self)
+        else:
         self.processView = GecosCCSetupProgressView(self, self.mainController.window)
         self.processView.setLinkToChefLabel(_('Unlink from Chef'))
         self.processView.setRegisterInGecosLabel(_('Unregister from GECOS CC'))
@@ -734,6 +748,7 @@ class ConnectWithGecosCCController(object):
         
         # Unregister from GECOS Control Center
         self.logger.debug("Unregister computer")
+
         workstationData = self.view.get_workstation_data()
         if not gecosCC.unregister_computer(self.view.get_gecos_access_data(), 
                 workstationData.get_node_name()):

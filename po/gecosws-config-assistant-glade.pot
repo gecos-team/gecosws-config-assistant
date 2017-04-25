@@ -134,6 +134,10 @@ msgstr ""
 msgid "Connect to CC GECOS"
 msgstr ""
 
+#: ../data/glade/gecoscon.glade:502
+msgid "Local disconnection?"
+msgstr "¿Desconexión local?"
+
 #: ../data/glade/localusers.glade:156
 msgid "Delete"
 msgstr ""

@@ -84,6 +84,7 @@ class ConnectWithGecosCCDialog(GladeWindow):
         
     def extractGUIElements(self):
         self.connectButton = self.getElementById("button3")
+        self.disconnectCheckbox= self.getElementById("local_disconn_checkbox")
         
         self.workstationNameEntry = self.getElementById('workstation_entry')
         self.gecosCCurlEntry = self.getElementById('url_entry')
@@ -200,7 +201,7 @@ class ConnectWithGecosCCDialog(GladeWindow):
         self.get_workstation_data().set_name(self.workstationNameEntry.get_text())
         self.get_workstation_data().set_ou(self.getOUComboValue())
 
-        self.controller.disconnect()
+        self.controller.disconnect(self.disconnectCheckbox.get_active())
         
     def onChangeComboBox(self, combo):
         self.logger.debug("This should show up each time the combobox is changed")
