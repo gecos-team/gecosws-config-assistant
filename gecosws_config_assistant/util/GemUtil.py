@@ -23,6 +23,7 @@ __license__ = "GPL-2"
 import logging
 import os
 
+
 from gecosws_config_assistant.util.CommandUtil import CommandUtil
 from gecosws_config_assistant.util.PackageManager import PackageManager
 
@@ -30,7 +31,6 @@ class GemUtil(object):
     '''
     Utility class to configure Ruby GEMs.
     '''
-
 
     def __init__(self):
         '''
@@ -40,6 +40,7 @@ class GemUtil(object):
         # Embebed Chef installation
         self.command = "/opt/chef/embedded/bin/gem"
         self.rubyEmbeddedInChef = True
+        self.sys_gemrc = "/etc/gemrc"
 
         if not os.path.isfile(self.command):
             # Linux distribution Chef installation
@@ -59,15 +60,32 @@ class GemUtil(object):
                 list.append(line.strip())
 
         return list
+    def clear_cache_gem_sources(self):
+
+        return self.commandUtil.execute_command('%s source -c --config-file "%s"'%(self.command, self.sys_gemrc))
         
     def remove_all_gem_sources(self):
         sources = self.get_gem_sources_list()
         for source in sources:
             print "removing %s", source
-            self.commandUtil.execute_command('%s source -r "%s"'%(self.command, source))
+            self.commandUtil.execute_command('%s source -r "%s" --config-file "%s"'%(self.command, source, self.sys_gemrc))
+        if os.path.exists(self.sys_gemrc):
+            os.remove(self.sys_gemrc)
 
+    # Adding only gecoscc.ini source ("gem_repo")
+    # The gem add command adds https://rubygems.org source by default. We must manually delete it.
+    def add_gem_only_one_source(self, url):
+
+        res = self.add_gem_source(url)
+        # Remove default source
+        res &= self.commandUtil.execute_command('%s source -r "%s" --config-file "%s"'%(self.command,'https://rubygems.org/', self.sys_gemrc))
+
+        if res and url == 'https://rubygems.org/':
+            res = self.add_gem_source(url)
+
+        return res
     def add_gem_source(self, url):
-        return self.commandUtil.execute_command('%s source -a "%s"'%(self.command, url))
+        return self.commandUtil.execute_command('%s source -a "%s" --config-file "%s"'%(self.command, url, self.sys_gemrc))
 
     def is_gem_intalled(self, gem_name):
         output = self.commandUtil.get_command_output('%s list'%(self.command))
