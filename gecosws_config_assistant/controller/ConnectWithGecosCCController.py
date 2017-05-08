@@ -470,18 +470,17 @@ class ConnectWithGecosCCController(object):
 
 
             gemUtil = GemUtil()
-            sourcesList = gemUtil.get_gem_sources_list()
-            if len(sourcesList)>1 or not gem_repo in sourcesList:
-                gemUtil.remove_all_gem_sources()
-                if not gemUtil.add_gem_source(gem_repo):
-                    # Error adding GEMs repository
-                    self.processView.setChefCertificateRetrievalStatus(_('ERROR'))
-                    self.processView.enableAcceptButton()
-                    showerror_gtk(_("There was an error while adding the GEMs repository:" + "\n" + gem_repo),
-                         self.view)
-                    gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
-                    self._clean_connection_files_on_error()
-                    return False
+            gemUtil.remove_all_gem_sources()
+            gemUtil.clear_cache_gem_sources()
+            if not gemUtil.add_gem_only_one_source(gem_repo):
+                # Error adding GEMs repository
+                self.processView.setChefCertificateRetrievalStatus(_('ERROR'))
+                self.processView.enableAcceptButton()
+                showerror_gtk(_("There was an error while adding the GEMs repository:" + "\n" + gem_repo),
+                    self.view)
+                gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
+                self._clean_connection_files_on_error()
+                return False
 
         # Check installed GEMs
         for gem_name in self.necessary_gems:
