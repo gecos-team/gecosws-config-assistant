@@ -688,7 +688,7 @@ class ConnectWithGecosCCController(object):
         return True
 
         
-    def disconnect(self):
+    def disconnect(self, local_disconn_checkbox):
         self.logger.info("Disconnect from Gecos CC")
         
         if local_disconn_checkbox:
@@ -704,7 +704,8 @@ class ConnectWithGecosCCController(object):
 
             self.logger.debug("DONE.")
             showwarning_gtk(_("Local disconnection done!"), self)
-        else:
+            return True
+
         self.processView = GecosCCSetupProgressView(self, self.mainController.window)
         self.processView.setLinkToChefLabel(_('Unlink from Chef'))
         self.processView.setRegisterInGecosLabel(_('Unregister from GECOS CC'))
