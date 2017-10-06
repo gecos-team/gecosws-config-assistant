@@ -72,7 +72,7 @@ class ConnectWithGecosCCController(object):
         self.logger = logging.getLogger('ConnectWithGecosCCController')
 
         # List of GEMS required to run GECOS 
-        self.necessary_gems = ['json', 'rest-client', 'activesupport', 'sqlite3', 'netaddr']
+        self.necessary_gems = ['json', 'rest-client', 'activesupport', 'netaddr']
 
     def show(self, mainWindow):
         self.logger.debug('show - BEGIN')

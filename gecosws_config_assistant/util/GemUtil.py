@@ -116,7 +116,7 @@ class GemUtil(object):
                 # We will need 'build-essential' package to build GEMs
                 self.pm.install_package('build-essential')
             
-        return self.commandUtil.execute_command('%s install "%s"'%(self.command, gem_name))
+        return self.commandUtil.execute_command('%s install "%s"'%(self.command, gem_name), os.environ)
 
     def uninstall_gem(self, gem_name):
         if not self.rubyEmbeddedInChef:
