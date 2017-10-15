@@ -51,6 +51,12 @@ class Validation(object):
         else:
             return False
 
+    def isValidPath(self, url):
+        if url is None:
+            return False
+
+        return urlparse(url).path in ['','/']
+
     def isLdapUri(self, url):
         if url is None:
             return False

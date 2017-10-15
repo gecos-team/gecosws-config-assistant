@@ -117,6 +117,13 @@ class ConnectWithGecosCCController(object):
             self.view.focusUrlField()            
             return False
 
+        if not Validation().isValidPath(gecosAccessData.get_url()):
+            self.logger.debug("Invalid path URL!")
+            showerror_gtk(_("Invalid path in URL field!") + "\n" + _("Please url must be of the form http(s)://hostname:port/"),
+                 None)            
+            self.view.focusUrlField()            
+            return False
+
         if (gecosAccessData.get_login() is None or
             gecosAccessData.get_login().strip() == ''):
             self.logger.debug("Empty login!")
