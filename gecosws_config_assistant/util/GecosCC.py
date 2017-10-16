@@ -25,6 +25,7 @@ import requests
 import traceback
 import json
 
+from urlparse import urlparse
 from gecosws_config_assistant.dto.GecosAccessData import GecosAccessData
 from gecosws_config_assistant.util.Validation import Validation
 from gecosws_config_assistant.util.SSLUtil import SSLUtil
@@ -79,9 +80,8 @@ class GecosCC(object):
         # Check credentials
         try:
             url = str(data.get_url())
-            if url.endswith('/'):
-                url = url[0:-1]
-            url = "%s/auth/config/"%(url)
+            if urlparse(url).path in ['','/']:
+                url = "%s/auth/config/" % (url[0:-1] if url.endswith('/') else url)
             self.logger.debug('Try to connect to: %s'%(url))
             headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
             user = data.get_login()

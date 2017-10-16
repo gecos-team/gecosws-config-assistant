@@ -110,13 +110,6 @@ class AutoSetupController(object):
             self.view.focusUrlField()            
             return False
 
-        if not Validation().isValidPath(gecosAccessData.get_url()):
-            self.logger.debug("Invalid path URL!")
-            showerror_gtk(_("Invalid path in URL field!") + "\n" + _("Please url must be of the form http(s)://hostname:port/"),
-                 None)            
-            self.view.focusUrlField()            
-            return False
-
         if gecosAccessData.get_url().startswith('https://'):
             # Check server certificate
             sslUtil = SSLUtil()
