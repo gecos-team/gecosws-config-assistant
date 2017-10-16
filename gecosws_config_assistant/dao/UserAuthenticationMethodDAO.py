@@ -29,6 +29,7 @@ from gecosws_config_assistant.dto.ADSetupData import ADSetupData
 from gecosws_config_assistant.util.Template import Template
 from gecosws_config_assistant.util.PackageManager import PackageManager
 from gecosws_config_assistant.util.CommandUtil import CommandUtil
+from gecosws_config_assistant.util.PasswordMaskingFilter import PasswordMaskingFilter
 
 import logging
 import traceback
@@ -60,6 +61,7 @@ class UserAuthenticationMethodDAO(object):
         '''
         
         self.logger = logging.getLogger('UserAuthenticationMethodDAO')
+        self.logger.addFilter(PasswordMaskingFilter())
         
         self.main_data_file = '/etc/sssd/sssd.conf'
         self.samba_conf_file = '/etc/samba/smb.conf'
@@ -378,10 +380,10 @@ class UserAuthenticationMethodDAO(object):
         command = 'net ads join -U {0}%{1}'.format(
                 data.get_ad_administrator_user(), 
                 data.get_ad_administrator_pass())
-        self.logger.debug('running: %s'%(command))
+        self.logger.debug('running: %s',command)
         
         if not commandUtil.execute_command(command, {}):
-            self.logger.warn('Error running command: '+command)
+            self.logger.warn('Error running command: %s',command)
             self.logger.warn('Check if the configuration was OK')
             
             command = 'net ads testjoin'
@@ -526,9 +528,9 @@ class UserAuthenticationMethodDAO(object):
         commandUtil = CommandUtil()              
         # Run "net ads join" command
         command = 'net ads join -U {0}%{1}'.format(data.get_ad_administrator_user(), data.get_ad_administrator_pass())
-        self.logger.debug('running: %s'%(command))
+        self.logger.debug('running: %s',command)
         if not commandUtil.execute_command(command, {}):
-            self.logger.warn('Error running command: '+command)
+            self.logger.warn('Error running command: %s',command)
             self.logger.warn('Check if the configuration was OK')
             
             command = 'net ads testjoin'
@@ -622,9 +624,9 @@ class UserAuthenticationMethodDAO(object):
 
         # Run "net ads leave" command
         command = 'net ads leave -U {0}%{1}'.format(data.get_ad_administrator_user(), data.get_ad_administrator_pass())
-        self.logger.debug('running: %s'%(command))
+        self.logger.debug('running: %s',command)
         if not commandUtil.execute_command(command, {}):
-            self.logger.warn('Error running command: '+command)
+            self.logger.warn('Error running command: %s',command)
 
         # Delete configuration files
         self.logger.debug('Delete %s file'%(self.samba_conf_file))
