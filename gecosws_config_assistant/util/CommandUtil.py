@@ -27,6 +27,8 @@ import sys
 import time
 import select
 
+from gecosws_config_assistant.util.PasswordMaskingFilter import PasswordMaskingFilter
+
 if 'check' in sys.argv:
     # Mock view classes for testing purposses
     print "==> Loading mocks..."
@@ -46,6 +48,7 @@ class CommandUtil(object):
         Constructor
         '''
         self.logger = logging.getLogger('CommandUtil')
+        self.logger.addFilter(PasswordMaskingFilter())
 
         # Timeout is 2000 milliseconds
         self.timeout = 2000
@@ -57,7 +60,7 @@ class CommandUtil(object):
         
     def get_command_output(self, cmd, my_env={}):
         output = []
-        self.logger.debug('CMD: %s'%(cmd))
+        self.logger.debug('CMD: %s',cmd)
         try:
             p = subprocess.Popen(cmd, shell=True, 
                                  stdout=subprocess.PIPE, 
@@ -101,11 +104,11 @@ class CommandUtil(object):
                     
             retval = p.wait()
             if retval != 0:
-                self.logger.error('Error running command: %s'%(cmd))
+                self.logger.error('Error running command: %s',cmd)
                 return False     
             
         except:
-            self.logger.error('Error running command: %s'%(cmd))
+            self.logger.error('Error running command: %s',cmd)
             self.logger.error(str(traceback.format_exc()))
             return False        
         
