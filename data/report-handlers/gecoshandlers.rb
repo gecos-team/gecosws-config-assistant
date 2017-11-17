@@ -23,7 +23,7 @@ module GECOSReports
         begin
           has_conection = false
           tries = 0
-          dns_resolver = Resolv::DNS.new()
+          dns_resolver = Resolv.new()
           while (not has_conection and tries < 10 and not gcc_control.nil? and 
                 gcc_control.key?("uri_gcc") and not gcc_control['uri_gcc'].nil? and 
                 not gcc_control['uri_gcc'].empty?)
