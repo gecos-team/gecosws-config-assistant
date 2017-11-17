@@ -1,9 +1,15 @@
-gecosws-config-assistant (2.0.3-1gecos1) trusty; urgency=medium
+gecosws-config-assistant (2.1.1-1gecos1) trusty; urgency=medium
 
-  * Added local disconnection.
+  * Fix: Ruby resolver does not work without DNS
 
- -- Gecos Team <gecos@guadalinex.org>  Tue, 06 Jun 2017 10:00:00 +0100
- 
+ -- Gecos Team <gecos@guadalinex.org>  Mon, 16 Nov 2016 13:00:00 +0100
+
+gecosws-config-assistant (2.1.0-1gecos1) trusty; urgency=medium
+
+  * Changing URL Validation. Hide credentials in log files
+
+ -- Gecos Team <gecos@guadalinex.org>  Mon, 16 Oct 2016 13:00:00 +0100
+
 gecosws-config-assistant (2.0.2-1gecos1) trusty; urgency=medium
 
   * Fixed LDAP bug. Log view button added.
