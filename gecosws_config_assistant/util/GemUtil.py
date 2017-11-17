@@ -75,15 +75,19 @@ class GemUtil(object):
     # Adding only gecoscc.ini source ("gem_repo")
     # The gem add command adds https://rubygems.org source by default. We must manually delete it.
     def add_gem_only_one_source(self, url):
+        sources = self.get_gem_sources_list()
 
+        self.logger.debug("adding gem source from gecoscc.ini: %s" % (url))
         res = self.add_gem_source(url)
-        # Remove default source
-        res &= self.commandUtil.execute_command('%s source -r "%s" --config-file "%s"'%(self.command,'https://rubygems.org/', self.sys_gemrc))
 
-        if res and url == 'https://rubygems.org/':
-            res = self.add_gem_source(url)
+        self.logger.debug("deleting all the other sources")
+        for source in sources:
+            if source != url:
+                self.logger.debug("removing %s from gem sources" % (source))
+                res &= self.commandUtil.execute_command('%s source -r "%s" --config-file "%s"'%(self.command, source, self.sys_gemrc))
 
         return res
+
     def add_gem_source(self, url):
         return self.commandUtil.execute_command('%s source -a "%s" --config-file "%s"'%(self.command, url, self.sys_gemrc))
 
