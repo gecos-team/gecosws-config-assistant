@@ -1,23 +1,11 @@
-# Spanish translations for PACKAGE package.
-# Copyright (C) 2015 THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# root <amp_21004@yahoo.es>, 2015.
+# Spanish translations for GECOS CONFIG ASSISTANT package.
+# Copyright (C) 2015 GECOS-TEAM
+# This file is distributed under the same license as the GECOS CONFIG ASSISTANT package.
+# GECOS TEAM <gecos@guadalinex.org>, 201
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"#-#-#-#-#  es.po.glade (PACKAGE VERSION)  #-#-#-#-#\n"
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-11 16:52+0200\n"
-"PO-Revision-Date: 2015-09-29 17:13+0200\n"
-"Last-Translator: root <amp_21004@yahoo.es>\n"
-"Language-Team: Spanish\n"
-"Language: es\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "#-#-#-#-#  es.po (PACKAGE VERSION)  #-#-#-#-#\n"
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
@@ -29,9 +17,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"#-#-#-#-#  es.po.glade (PACKAGE VERSION)  #-#-#-#-#\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"#-#-#-#-#  es.po (PACKAGE VERSION)  #-#-#-#-#\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../data/glade/autoconf.glade:320 ../data/glade/autoconf.glade:352
