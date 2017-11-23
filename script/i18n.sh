@@ -50,7 +50,7 @@ else
 fi
 
 # Merge both
-msgcat $gladepofile $pofile > $pofilemerged
+msgcat --use-first $gladepofile $pofile > $pofilemerged
 mv $pofilemerged $pofile
 
 
