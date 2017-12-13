@@ -33,6 +33,7 @@ from gecosws_config_assistant.util.Template import Template
 from gecosws_config_assistant.util.CommandUtil import CommandUtil
 from gecosws_config_assistant.util.SSLUtil import SSLUtil, SSL_R_CERTIFICATE_VERIFY_FAILED
 from gecosws_config_assistant.util.GemUtil import GemUtil
+from gecosws_config_assistant.util.PackageManager import PackageManager 
 
 from gecosws_config_assistant.dao.GecosAccessDataDAO import GecosAccessDataDAO
 from gecosws_config_assistant.dao.WorkstationDataDAO import WorkstationDataDAO
@@ -73,6 +74,23 @@ class ConnectWithGecosCCController(object):
 
         # List of GEMS required to run GECOS 
         self.necessary_gems = ['json', 'rest-client', 'activesupport', 'netaddr']
+        
+        # Check if 'gecosws-certificates-locale' package exists
+        try:
+            self.pm = PackageManager()
+            if not self.pm.is_package_installed('gecosws-certificates-locale'):
+                # Try to install the package
+                self.logger.debug('Try to install "gecosws-certificates-locale" package')
+                try:
+                    self.pm.install_package('gecosws-certificates-locale')
+                except Exception:
+                    self.logger.error('Package installation failed:' + 'gecosws-certificates-locale')
+                    self.logger.error(str(traceback.format_exc())) 
+            else:
+                self.logger.debug('Already installed "gecosws-certificates-locale" package')        
+        except Exception, e:
+            self.logger.warn('Error installing "gecosws-certificates-locale": %s'%(str(e)))
+        
 
     def show(self, mainWindow):
         self.logger.debug('show - BEGIN')

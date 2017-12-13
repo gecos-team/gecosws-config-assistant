@@ -1,14 +1,26 @@
+gecosws-config-assistant (2.1.3-1gecos1) trusty; urgency=medium
+
+  * Installs local certificates for https connections
+
+ -- Gecos Team <gecos@guadalinex.org>  Wed, 13 Dec 2017 12:00:00 +0100
+
+gecosws-config-assistant (2.1.2-1gecos1) trusty; urgency=medium
+
+  * Fix: Bad translation headers
+
+ -- Gecos Team <gecos@guadalinex.org>  Mon, 20 Nov 2017 13:00:00 +0100
+
 gecosws-config-assistant (2.1.1-1gecos1) trusty; urgency=medium
 
   * Fix: Ruby resolver does not work without DNS
 
- -- Gecos Team <gecos@guadalinex.org>  Mon, 16 Nov 2016 13:00:00 +0100
+ -- Gecos Team <gecos@guadalinex.org>  Mon, 16 Nov 2017 13:00:00 +0100
 
 gecosws-config-assistant (2.1.0-1gecos1) trusty; urgency=medium
 
   * Changing URL Validation. Hide credentials in log files
 
- -- Gecos Team <gecos@guadalinex.org>  Mon, 16 Oct 2016 13:00:00 +0100
+ -- Gecos Team <gecos@guadalinex.org>  Mon, 16 Oct 2017 13:00:00 +0100
 
 gecosws-config-assistant (2.0.2-1gecos1) trusty; urgency=medium
 
