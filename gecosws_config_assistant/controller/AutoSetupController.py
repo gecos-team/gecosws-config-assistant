@@ -35,7 +35,7 @@ from gecosws_config_assistant.view.ConnectWithGecosCCDialog import ConnectWithGe
 
 from gecosws_config_assistant.util.Validation import Validation
 from gecosws_config_assistant.util.SSLUtil import SSLUtil, SSL_R_CERTIFICATE_VERIFY_FAILED
-
+from gecosws_config_assistant.util.PackageManager import PackageManager 
 
 import logging
 import traceback
@@ -65,6 +65,22 @@ class AutoSetupController(object):
         
         self.auto_setup_success = False
         self.conf = False
+        
+        # Check if 'gecosws-certificates-locale' package exists
+        try:
+            self.pm = PackageManager()
+            if not self.pm.is_package_installed('gecosws-certificates-locale'):
+                # Try to install the package
+                self.logger.debug('Try to install "gecosws-certificates-locale" package')
+                try:
+                    self.pm.install_package('gecosws-certificates-locale')
+                except Exception:
+                    self.logger.error('Package installation failed:' + 'gecosws-certificates-locale')
+                    self.logger.error(str(traceback.format_exc())) 
+            else:
+                self.logger.debug('Already installed "gecosws-certificates-locale" package')        
+        except Exception, e:
+            self.logger.warn('Error installing "gecosws-certificates-locale": %s'%(str(e)))        
 
     def show(self, mainWindow):
         self.logger.debug('show - BEGIN')
