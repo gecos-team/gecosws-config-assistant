@@ -339,7 +339,7 @@ class UserAuthenticationMethodController(object):
             
             if self.dao.delete(oldData):
                 # Set new authentication method
-                if self.dao.save(newData)
+                if self.dao.save(newData):
                     self.logger.debug("Authentication method saved!")
                     showinfo_gtk(_("Authentication method saved!"),self.view)
                     return True
