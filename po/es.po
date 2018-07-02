@@ -950,11 +950,11 @@ msgstr ""
 "nuevos datos?"
 
 #: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:344
-msgid "New authentication method saved!"
+msgid "Authentication method saved!"
 msgstr "Método de Autenticación configurado!"
 
 #: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:348
-msgid "New authentication method failed!"
+msgid "Authentication method failed!"
 msgstr "Método de Autenticación falló!"
 
 #: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:377
