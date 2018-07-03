@@ -229,7 +229,7 @@ class Check(Command):
 
 DistUtilsExtra.auto.setup(
     name='gecosws-config-assistant',
-    version='2.1.3-1gecos1',
+    version='2.1.4-1gecos1',
     license='GPL-2',
     author='GECOS Team',
     author_email='gecos@guadalinex.org',

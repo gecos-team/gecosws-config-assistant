@@ -22,7 +22,7 @@ __license__ = "GPL-2"
 
 import sys
 
-from gecosws_config_assistant.view.CommonDialog import askyesno_gtk, showerror_gtk
+from gecosws_config_assistant.view.CommonDialog import askyesno_gtk, showerror_gtk, showinfo_gtk
 from gecosws_config_assistant.view.ADSetupDataElemView import ADSetupDataElemView
 from gecosws_config_assistant.view.UserAuthDialog import UserAuthDialog, LOCAL_USERS, LDAP_USERS, AD_USERS
 
@@ -339,7 +339,13 @@ class UserAuthenticationMethodController(object):
             
             if self.dao.delete(oldData):
                 # Set new authentication method
-                return self.dao.save(newData)
+                if self.dao.save(newData):
+                    self.logger.debug("Authentication method saved!")
+                    showinfo_gtk(_("Authentication method saved!"),self.view)
+                    return True
+                else:
+                    self.logger.error("Authentication method failed!")
+                    showerror_gtk(_("Authentication method failed!"),self.view)
             else:
                 return False
         else:
