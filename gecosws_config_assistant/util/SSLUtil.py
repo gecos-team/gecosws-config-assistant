@@ -363,7 +363,7 @@ class SSLUtil(object):
             self.logger.warn('Untrusted Certificate Cause: %s'%(msg))
             
             # Check if the error message is similar to '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:590)'
-            p = re.compile('\\[SSL: (?P<constant>[A-Z_]+)\\] (?P<message>[^\\(]+)')
+            p = re.compile('.*\\[SSL: (?P<constant>[A-Z_]+)\\] (?P<message>[^\\(]+)')
             m = p.match(msg)
             if m is not None:
                 if m.groups('message') is not None:
@@ -380,20 +380,6 @@ class SSLUtil(object):
             return str(e)
             
         return None    
-
-    def _getSSLError(self, e):
-        if isinstance(e, ssl.SSLError):
-            return e
-
-        for arg in e.args:
-            if isinstance(arg, ssl.SSLError):
-                return arg
-                
-            if isinstance(arg, Exception):
-                return self._getSSLError(arg)
-            
-        return None
-
         
     def getUntrustedCertificateErrorCode(self, url):
         if url is None:
@@ -409,36 +395,30 @@ class SSLUtil(object):
             
         except requests.exceptions.SSLError as e:
             self.logger.warn('Untrusted Certificate Cause to error code: %s'%(str(e)))
-            sslError = self._getSSLError(e)
-            if not sslError is None:
-                msg = str(sslError)
-                self.logger.debug('SSLError: %s'%(msg))
-                errornum = None
-                
-                # Check if the error message is similar to '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:590)'
-                p = re.compile('\\[SSL: (?P<constant>[A-Z_]+)\\] (?P<message>[^\\(]+)')
-                m = p.match(msg)
-                if m is not None:
-                    if m.groups('constant') is not None:
-                        constant = m.groups('message')[0].strip()
-                        try:
-                            errornum = eval('SSL_R_%s'%(constant))
-                        except:
-                            self.logger.warn('Error evaluating constant: %s'%(constant))
-                
-                # If not look for a packed error number
-                if msg.rfind('error:') > 0:
-                    msg = msg[(msg.find('error:')+6):]
-                    errornum = msg[:(msg.find(':'))]
-                    errornum = int('0x'+errornum, 16)
-                    
-                    # Unpack the reason
-                    errornum = errornum & 0xFFF
-                
-                return errornum
+            msg = str(e)
+            errornum = None
+            
+            # Check if the error message is similar to '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:590)'
+            p = re.compile('.*\\[SSL: (?P<constant>[A-Z_]+)\\] (?P<message>[^\\(]+)')
+            m = p.match(msg)
+            if m is not None:
+                if m.groups('constant') is not None:
+                    constant = m.groups('message')[0].strip()
+                    try:
+                        errornum = eval('SSL_R_%s'%(constant))
+                    except:
+                        self.logger.warn('Error evaluating constant: %s'%(constant))
+            
+            # If not look for a packed error number
+            if msg.rfind('error:') > 0:
+                msg = msg[(msg.find('error:')+6):]
+                errornum = msg[:(msg.find(':'))]
+                errornum = int('0x'+errornum, 16)
 
-            else:
-                return UNKNOWN_ERROR
+                # Unpack the reason
+                errornum = errornum & 0xFFF
+            
+            return errornum
             
         except Exception as e:
             return None
