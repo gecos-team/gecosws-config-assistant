@@ -1,3 +1,9 @@
+gecosws-config-assistant (2.1.4-2gecos1) trusty; urgency=medium
+
+  * Use pkexec instead of gksu where gksu is deprecated
+
+ -- Gecos Team <gecos@guadalinex.org>  Fri, 10 Aug 2018 12:00:00 +0100
+
 gecosws-config-assistant (2.1.4-1gecos1) trusty; urgency=medium
 
   * Fix Chef SSL certificate error
