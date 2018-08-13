@@ -58,6 +58,7 @@ os.system("git submodule update")
     
 datafiles = get_datafiles('data')
 datafiles.append(('share/applications/', glob.glob('data/gecos-config-assistant.desktop')))
+datafiles.append(('share/polkit-1/actions/', glob.glob('polkit/com.ubuntu.pkexec.gecos-config-assistant.policy')))
 
 def update_config(values={}):
 
