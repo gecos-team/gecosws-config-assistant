@@ -55,6 +55,7 @@ import gettext
 from gettext import gettext as _
 gettext.textdomain('gecosws-config-assistant')
 
+from distutils.version import LooseVersion
 
 class ConnectWithGecosCCController(object):
     '''
@@ -610,7 +611,20 @@ class ConnectWithGecosCCController(object):
         template.variables = { 'chef_url':  chef_url,
                               'chef_node_name':  workstationData.get_node_name(),
                               'ssl_certificate_verification': ssl_certificate_verification}
-        
+
+        # Ohai new config syntax
+        # https://docs.chef.io/deprecations_ohai_legacy_config.html
+        commandUtil = CommandUtil()
+        output_cmd = commandUtil.get_command_output('ohai -v')
+        ohai_version = output_cmd.pop().split(':')[1].strip()
+        self.logger.info('- Ohai version: %s' % ohai_version)
+        ohai_new_config_syntax = LooseVersion(ohai_version) >= LooseVersion('8.6.0')
+
+        if ohai_new_config_syntax:
+            template.variables['ohai_new_config_syntax'] = 'true'
+        else:
+            template.variables['ohai_old_config_syntax'] = 'true'
+
         if not template.save():
             self.processView.setLinkToChefStatus(_('ERROR'))
             self.processView.enableAcceptButton()
