@@ -390,8 +390,10 @@ class ConnectWithGecosCCController(object):
         self.logger.debug("Get client.pem from server")
         gecosCC = GecosCC()
         
+        rekey = False
         if gecosCC.is_registered_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name()):
             # re-register
+            rekey = True
             client_pem = gecosCC.reregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
         else:
             # register
@@ -670,13 +672,20 @@ class ConnectWithGecosCCController(object):
         ou = gecosCC.search_ou_by_text(self.view.get_gecos_access_data(), 
                                   workstationData.get_ou())
         
-        if not gecosCC.register_computer(self.view.get_gecos_access_data(), 
-                workstationData.get_node_name(), ou[0][0]):
+        ok, reason = gecosCC.register_computer(self.view.get_gecos_access_data(), 
+                workstationData.get_node_name(), ou[0][0])
+
+        if not ok:
             self.processView.setRegisterInGecosStatus(_('ERROR'))
             self.processView.enableAcceptButton()
             showerror_gtk(_("Can't register the computer in GECOS CC"),
                  self.view)
-            gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
+
+            # New Chef node registered but node name already exists in gcc. Then, we remove new chef node
+            # Otherwise, we do not remove chef node.
+            if not rekey and reason=='duplicated':
+                gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
+
             self._clean_connection_files_on_error()
             return False          
         

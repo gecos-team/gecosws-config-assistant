@@ -1,4 +1,8 @@
 #!/bin/bash
-	
-gksu -g python /usr/bin/gecos-config-assistant
+
+if [ -f /usr/bin/gksu ]; then
+   gksu -g python /usr/bin/gecos-config-assistant
+else
+   pkexec /usr/bin/gecos-config-assistant
+fi
 

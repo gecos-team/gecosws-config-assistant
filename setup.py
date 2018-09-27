@@ -58,6 +58,7 @@ os.system("git submodule update")
     
 datafiles = get_datafiles('data')
 datafiles.append(('share/applications/', glob.glob('data/gecos-config-assistant.desktop')))
+datafiles.append(('share/polkit-1/actions/', glob.glob('polkit/com.ubuntu.pkexec.gecos-config-assistant.policy')))
 
 def update_config(values={}):
 
@@ -229,7 +230,7 @@ class Check(Command):
 
 DistUtilsExtra.auto.setup(
     name='gecosws-config-assistant',
-    version='2.1.3-1gecos1',
+    version='2.1.5',
     license='GPL-2',
     author='GECOS Team',
     author_email='gecos@guadalinex.org',
