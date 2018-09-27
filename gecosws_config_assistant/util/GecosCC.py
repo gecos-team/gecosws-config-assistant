@@ -254,16 +254,18 @@ class GecosCC(object):
     def register_computer(self, data, nodename, selected_ou):
         self.logger.debug('Register computer (%s, %s)...', nodename, selected_ou)
         
+        reason = ''
+
         if not self._check_credentials(data):
-            return False
+            return False, reason
         
         if nodename is None or nodename.strip() == '':
             self.logger.warn('nodename is empty!')
-            return False
+            return False, reason
 
         if selected_ou is None or selected_ou.strip() == '':
             self.logger.warn('selected_ou is empty!')
-            return False
+            return False, reason
 
         
         # Register in the server
@@ -293,13 +295,13 @@ class GecosCC(object):
                 
                 if response_json is None:
                     self.logger.error('Error registering computer: NO RESPONSE')
-                    return False
+                    return False, reason
                 
                 if not response_json["ok"]:
                     self.logger.error('Error registering computer: %s'%(response_json['message']))
-                    return False
+                    return False, response_json["reason"]
                 
-                return True            
+                return True, reason            
 
             self.logger.debug('Response: NOT OK')
                      
