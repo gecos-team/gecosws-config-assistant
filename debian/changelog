@@ -1,6 +1,6 @@
-gecosws-config-assistant (2.1.4-3gecos1) trusty; urgency=medium
+gecosws-config-assistant (2.1.5-1) xenial; urgency=medium
 
-  * Fix: not remove chef node when linking
+  * Fix: chef node removed when linked
 
  -- Gecos Team <gecos@guadalinex.org>  Thu, 27 Sep 2018 12:12:00 +0100
 gecosws-config-assistant (2.1.4-2gecos1) trusty; urgency=medium
