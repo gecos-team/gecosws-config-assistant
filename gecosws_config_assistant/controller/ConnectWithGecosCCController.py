@@ -672,18 +672,21 @@ class ConnectWithGecosCCController(object):
         ou = gecosCC.search_ou_by_text(self.view.get_gecos_access_data(), 
                                   workstationData.get_ou())
         
-        ok, reason = gecosCC.register_computer(self.view.get_gecos_access_data(), 
-                workstationData.get_node_name(), ou[0][0])
+        if not gecosCC.register_computer(self.view.get_gecos_access_data(), 
+                workstationData.get_node_name(), ou[0][0]):
 
-        if not ok:
             self.processView.setRegisterInGecosStatus(_('ERROR'))
             self.processView.enableAcceptButton()
             showerror_gtk(_("Can't register the computer in GECOS CC"),
                  self.view)
 
-            # New Chef node registered but node name already exists in gcc. Then, we remove new chef node
+            # New register of a chef node but there is already a node in gcc 
+            # that has the same node chef id. Because at this point in the code
+            # the uniqueness of the name has already been checked (line 221)
+            # This scenarie occurs when we unlink a workstation locally and
+            # again link it to another name.
             # Otherwise, we do not remove chef node.
-            if not rekey and reason=='duplicated':
+            if not rekey:
                 gecosCC.unregister_chef_node(self.view.get_gecos_access_data(), workstationData.get_node_name())
 
             self._clean_connection_files_on_error()
