@@ -8,27 +8,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-11 16:52+0200\n"
+"POT-Creation-Date: 2018-10-17 13:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../data/glade/autoconf.glade:320 ../data/glade/autoconf.glade:352
 msgid " "
-msgstr ""
-
-#: ../data/glade/main.glade:405 ../data/glade/requirements.glade:36
-#: ../data/glade/window.glade:25
-msgid "127.0.0.1"
-msgstr ""
-
-#: ../data/glade/main.glade:409 ../data/glade/requirements.glade:40
-#: ../data/glade/window.glade:29
-msgid "192.168.1.99"
 msgstr ""
 
 #: ../data/glade/gecoscon.glade:335
@@ -111,10 +100,10 @@ msgstr ""
 msgid "Clean up setup data"
 msgstr ""
 
-#: ../data/glade/autoconf.glade:573 ../data/glade/gecoscon.glade:736
-#: ../data/glade/main.glade:368 ../data/glade/network.glade:493
-#: ../data/glade/ntp.glade:487 ../data/glade/requirements.glade:714
-#: ../data/glade/users.glade:664 ../data/glade/window.glade:364
+#: ../data/glade/autoconf.glade:530 ../data/glade/gecoscon.glade:707
+#: ../data/glade/main.glade:325 ../data/glade/network.glade:450
+#: ../data/glade/ntp.glade:445 ../data/glade/requirements.glade:670
+#: ../data/glade/users.glade:621 ../data/glade/window.glade:322
 msgid "Close"
 msgstr ""
 
@@ -133,10 +122,6 @@ msgstr ""
 #: ../data/glade/gecoscon.glade:486
 msgid "Connect to CC GECOS"
 msgstr ""
-
-#: ../data/glade/gecoscon.glade:502
-msgid "Local disconnection?"
-msgstr "¿Desconexión local?"
 
 #: ../data/glade/localusers.glade:156
 msgid "Delete"
@@ -179,7 +164,7 @@ msgstr ""
 msgid "Go Back"
 msgstr ""
 
-#: ../data/glade/gecoscon.glade:513 ../data/glade/ntp.glade:260
+#: ../data/glade/gecoscon.glade:527 ../data/glade/ntp.glade:260
 msgid "Go back"
 msgstr ""
 
@@ -209,11 +194,15 @@ msgstr ""
 msgid "Link/Unlink"
 msgstr ""
 
-#: ../data/glade/autoconf.glade:457 ../data/glade/gecoscon.glade:620
+#: ../data/glade/autoconf.glade:457 ../data/glade/gecoscon.glade:634
 #: ../data/glade/main.glade:252 ../data/glade/network.glade:377
 #: ../data/glade/ntp.glade:373 ../data/glade/requirements.glade:596
-#: ../data/glade/users.glade:548 ../data/glade/window.glade:231
+#: ../data/glade/users.glade:548 ../data/glade/window.glade:233
 msgid "Local Users"
+msgstr ""
+
+#: ../data/glade/gecoscon.glade:502
+msgid "Local disconnection?"
 msgstr ""
 
 #: ../data/glade/localuserpopup.glade:45
@@ -294,21 +283,21 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: ../data/glade/window.glade:349
+#: ../data/glade/window.glade:307
 msgid "See Log"
 msgstr ""
 
-#: ../data/glade/autoconf.glade:500 ../data/glade/gecoscon.glade:663
+#: ../data/glade/autoconf.glade:500 ../data/glade/gecoscon.glade:677
 #: ../data/glade/main.glade:295 ../data/glade/network.glade:420
 #: ../data/glade/ntp.glade:415 ../data/glade/requirements.glade:640
-#: ../data/glade/users.glade:591 ../data/glade/window.glade:275
+#: ../data/glade/users.glade:591 ../data/glade/window.glade:277
 msgid "Software Manager"
 msgstr ""
 
-#: ../data/glade/autoconf.glade:414 ../data/glade/gecoscon.glade:577
+#: ../data/glade/autoconf.glade:414 ../data/glade/gecoscon.glade:591
 #: ../data/glade/main.glade:209 ../data/glade/network.glade:334
 #: ../data/glade/ntp.glade:331 ../data/glade/requirements.glade:552
-#: ../data/glade/users.glade:505 ../data/glade/window.glade:187
+#: ../data/glade/users.glade:505 ../data/glade/window.glade:189
 msgid "System Status"
 msgstr ""
 
@@ -349,13 +338,6 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: ../data/glade/autoconf.glade:543 ../data/glade/gecoscon.glade:706
-#: ../data/glade/main.glade:338 ../data/glade/network.glade:463
-#: ../data/glade/ntp.glade:457 ../data/glade/requirements.glade:684
-#: ../data/glade/users.glade:634 ../data/glade/window.glade:319
-msgid "Update assistant"
-msgstr ""
-
 #: ../data/glade/autoconf.glade:221 ../data/glade/gecoscon.glade:259
 msgid "User"
 msgstr ""
@@ -376,16 +358,6 @@ msgstr ""
 msgid "You can create, update or delete local users in this workstation."
 msgstr ""
 
-#: ../data/glade/main.glade:408 ../data/glade/requirements.glade:39
-#: ../data/glade/window.glade:28
-msgid "eth0"
-msgstr ""
-
 #: ../data/glade/gecoscon.glade:149
 msgid "http://"
-msgstr ""
-
-#: ../data/glade/main.glade:404 ../data/glade/requirements.glade:35
-#: ../data/glade/window.glade:24
-msgid "lo"
 msgstr ""

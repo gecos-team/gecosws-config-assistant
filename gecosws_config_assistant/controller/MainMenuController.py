@@ -38,7 +38,9 @@ from gecosws_config_assistant.controller.UserAuthenticationMethodController impo
 from gecosws_config_assistant.controller.LogTerminalController import LogTerminalController
 from gecosws_config_assistant.util.PackageManager import PackageManager 
 from gecosws_config_assistant.view.CommonDialog import showerror_gtk, showinfo_gtk, askyesno_gtk
+from gecosws_config_assistant.view.SplashScreen import SplashScreen
 from gecosws_config_assistant.view.MainWindow import MainWindow
+from gecosws_config_assistant.util.GtkAptProgress import GtkAptProgress
 from gecosws_config_assistant.view.UserAuthDialog import UserAuthDialog, LOCAL_USERS, LDAP_USERS, AD_USERS
 
 gettext.textdomain('gecosws-config-assistant')
@@ -79,11 +81,12 @@ class MainMenuController(object):
         self.gecosStatusKey = "gecos"
         self.usersStatusKey = "users"
         
-    def show(self):
         self.window.buildUI()
-        
         self.showRequirementsCheckDialog()
-        
+
+    def show(self):
+          
+        self.checkForUpdates() 
         self.window.show()
 
     def hide(self):
@@ -268,21 +271,43 @@ class MainMenuController(object):
     def showLocalUserListView(self):
         self.localUserList.showList(self.window)
 
-    def updateConfigAsystant(self):
-        if askyesno_gtk( _("Are you sure you want to update the GECOS Config Assistant?"), self.window.getMainWindow()):
-            pm = PackageManager()
-            if not pm.update_cache():
-                showerror_gtk( _("An error occurred during the upgrade"), self.window.getMainWindow())
-            else:
-                try:
-                    if not pm.upgrade_package('gecosws-config-assistant'):
-                        showerror_gtk( _("CGA is already at the newest version!"), self.window.getMainWindow())
-                    else:
-                        showerror_gtk( _("GECOS Config Assistant has been udpated. Please restart GCA"), self.window.getMainWindow())
-                except:
-                    showerror_gtk( _("An error occurred during the upgrade"), self.window.getMainWindow())
-                    
-        
+    def checkForUpdates(self):
+
+        import apt
+
+        apt_progress = GtkAptProgress()
+        cache = apt.cache.Cache(apt_progress.open)
+        pkg = cache["gecosws-config-assistant"]
+
+        if pkg.is_installed and pkg.is_upgradable:
+
+            pkg.mark_upgrade()
+
+            splash = SplashScreen()
+            hbox2 = splash.getElementById('hbox2')
+            hbox2.pack_start(apt_progress, True, True, 0)
+            apt_progress.show()
+            #self.splash.window.show_all()
+            self.splash.show()
+
+            button = splash.getElementById('label1')
+            button.set_label(_('Upgrading ...'))
+
+            # For testing purposes
+            #pkg = cache["0ad-data"]
+            #if pkg.is_installed:
+            #    pkg.mark_delete()
+            #else:
+            #    pkg.mark_install()
+
+            apt_progress.show_terminal(True)
+            try:
+                cache.commit(apt_progress.acquire, apt_progress.install)
+            except Exception as exc:
+                self.logger.debug("Exception happened: %s" % exc)
+
+            splash.hide()
+
 
     def showSystemStatus(self):
         self.systemStatus.show()

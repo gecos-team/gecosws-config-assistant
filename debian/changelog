@@ -1,8 +1,15 @@
+gecosws-config-assistant (2.1.6-1) xenial; urgency=medium
+
+  * Splash and Upgrade screens added.
+
+ -- Gecos Team <gecos@guadalinex.org>  Wed, 17 Oct 2018 13:12:00 +0100
+
 gecosws-config-assistant (2.1.5-1) xenial; urgency=medium
 
   * Fix: chef node removed when linked
 
  -- Gecos Team <gecos@guadalinex.org>  Thu, 27 Sep 2018 12:12:00 +0100
+
 gecosws-config-assistant (2.1.4-2gecos1) trusty; urgency=medium
 
   * Use pkexec instead of gksu where gksu is deprecated
