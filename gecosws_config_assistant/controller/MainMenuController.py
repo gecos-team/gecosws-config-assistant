@@ -287,26 +287,20 @@ class MainMenuController(object):
             hbox2 = splash.getElementById('hbox2')
             hbox2.pack_start(apt_progress, True, True, 0)
             apt_progress.show()
-            #self.splash.window.show_all()
-            self.splash.show()
+            splash.show()
 
             button = splash.getElementById('label1')
             button.set_label(_('Upgrading ...'))
-
-            # For testing purposes
-            #pkg = cache["0ad-data"]
-            #if pkg.is_installed:
-            #    pkg.mark_delete()
-            #else:
-            #    pkg.mark_install()
 
             apt_progress.show_terminal(True)
             try:
                 cache.commit(apt_progress.acquire, apt_progress.install)
             except Exception as exc:
                 self.logger.debug("Exception happened: %s" % exc)
+                showerror_gtk(_("An error occurred during the upgrade"), self.window.getMainWindow())
 
             splash.hide()
+            showinfo_gtk(_("GECOS Config Assistant has been udpated. Please restart GCA"), self.window.getMainWindow())
 
 
     def showSystemStatus(self):
