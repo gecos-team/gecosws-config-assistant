@@ -23,11 +23,10 @@ __license__ = "GPL-2"
 
 import logging
 import gettext
-
-from GladeWindow import GladeWindow
-from gi.repository import Gtk
 from gettext import gettext as _
+from gi.repository import Gtk
 
+from gecosws_config_assistant.view.GladeWindow import GladeWindow
 from gecosws_config_assistant.dto.GecosAccessData import GecosAccessData
 from gecosws_config_assistant.dto.WorkstationData import WorkstationData
 

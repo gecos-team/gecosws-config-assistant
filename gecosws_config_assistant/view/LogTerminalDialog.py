@@ -24,11 +24,12 @@ __license__ = "GPL-2"
 import logging
 import gettext
 from gettext import gettext as _
-from subprocess import Popen, PIPE
 import fcntl
 import os
-from GladeWindow import GladeWindow
+from subprocess import Popen, PIPE
 from gi.repository import Gtk, Pango, GObject
+
+from gecosws_config_assistant.view.GladeWindow import GladeWindow
 
 gettext.textdomain('gecosws-config-assistant')
 
@@ -45,9 +46,9 @@ class LogTerminalDialog(GladeWindow):
         self.controller = controller
         self.logger = logging.getLogger('LogTerminalDialog')
         self.gladepath = 'logterminal.glade'
-        
+
         self.data = None
-        
+
         self.initUI()
 
     def get_data(self):
@@ -114,7 +115,7 @@ class LogTerminalDialog(GladeWindow):
 
         fontdesc = Pango.FontDescription("monospace")
         self.statusText.modify_font(fontdesc)
-    
+
     def addHandlers(self):
         ''' Adding handlers '''
 

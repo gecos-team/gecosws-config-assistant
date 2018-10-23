@@ -483,7 +483,7 @@ class UserAuthenticationMethodController(object):
                 ipaddress = None
                 try:
                     ipaddress = socket.gethostbyname(newAuthData.get_domain())
-                except:
+                except Exception:
                     self.logger.error(
                         "Can't resolv domain name: %s",
                         newAuthData.get_domain())

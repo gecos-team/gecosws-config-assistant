@@ -33,7 +33,6 @@ class NetworkInterfaceController(object):
     Controller class for the network interfaces functionality.
     '''
 
-
     def __init__(self, mainController):
         '''
         Constructor

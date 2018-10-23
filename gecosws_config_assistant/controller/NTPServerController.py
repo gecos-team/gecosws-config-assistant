@@ -23,14 +23,14 @@ __license__ = "GPL-2"
 
 
 import logging
+import gettext
+from gettext import gettext as _
 
 from gecosws_config_assistant.dao.NTPServerDAO import NTPServerDAO
 from gecosws_config_assistant.dto.NTPServer import NTPServer
 from gecosws_config_assistant.view.NTPServerElemView import NTPServerElemView
 from gecosws_config_assistant.view.CommonDialog import showerror_gtk
 
-import gettext
-from gettext import gettext as _
 gettext.textdomain('gecosws-config-assistant')
 
 class NTPServerController(object):

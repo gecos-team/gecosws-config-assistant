@@ -25,7 +25,6 @@ import logging
 import traceback
 from gettext import gettext as _
 
-
 from gecosws_config_assistant.dao.GecosAccessDataDAO import GecosAccessDataDAO
 from gecosws_config_assistant.view.AutoSetupDialog import AutoSetupDialog
 from gecosws_config_assistant.view.CommonDialog import (

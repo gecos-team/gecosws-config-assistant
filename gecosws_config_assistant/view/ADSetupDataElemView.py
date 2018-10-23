@@ -21,7 +21,7 @@ __copyright__ = "Copyright (C) 2015, Junta de Andalucía" + \
     "<devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
-from GladeWindow import GladeWindow
+from gecosws_config_assistant.view.GladeWindow import GladeWindow
 from gi.repository import Gtk
 import logging
 import gettext
