@@ -977,14 +977,6 @@ class ConnectWithGecosCCController(object):
                  self.view)
             return False
 
-        self.logger.debug("- Remove chef-client-wrapper")
-        if not self._remove_file('/usr/bin/chef-client-wrapper'):
-            self.processView.setLinkToChefStatus(_('ERROR'))
-            self.processView.enableAcceptButton()
-            showerror_gtk(_("Can't remove /usr/bin/chef-client-wrapper file"),
-                 self.view)
-            return False
-
         self.processView.setLinkToChefStatus(_('DONE'))
         self.processView.addProgressFraction(0.16)
 
