@@ -173,9 +173,7 @@ class MainWindow(object):
         self.handlers["onUsrs"] = self.localUsersManagementHandler
         self.logger.debug("Adding onMana handler")
         self.handlers["onMana"] = self.softwareManagementHandler
-        self.logger.debug("Adding onUpdt handler")
-        self.handlers["onUpdt"] = self.updateManagementHandler
-        self.logger.debug("Adding onUpdt handler")
+        self.logger.debug("Adding onLogr handler")
         self.handlers["onLogr"] = self.showLogTerminalHandler
         self.logger.debug("Adding close handlers")
         self.handlers['onDeleteWindow'] = Gtk.main_quit
