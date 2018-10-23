@@ -54,6 +54,7 @@ def askyesno_gtk(message, parent_window = None,
                  msgtype = Gtk.MessageType.QUESTION):
     ''' Asking yes/no gtk '''
 
+    parent_window = None
     if msgtype == 'warning':
         msgtype = Gtk.MessageType.WARNING
     dialog = Gtk.MessageDialog(parent_window, 0, msgtype,
