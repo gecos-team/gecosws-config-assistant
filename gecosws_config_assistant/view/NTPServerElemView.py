@@ -17,26 +17,25 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
-__copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
+__copyright__ = "Copyright (C) 2015, Junta de Andalucía" + \
+    "<devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
-from GladeWindow import GladeWindow
-from gi.repository import Gtk, Gdk
 import logging
-
 import gettext
 from gettext import gettext as _
-gettext.textdomain('gecosws-config-assistant')
+from gecosws_config_assistant.view.GladeWindow import GladeWindow
 
 from gecosws_config_assistant.dto.NTPServer import NTPServer
+from gecosws_config_assistant.view.CommonDialog import (
+    showwarning_gtk, showinfo_gtk)
 
-from gecosws_config_assistant.view.CommonDialog import showwarning_gtk, showinfo_gtk
+gettext.textdomain('gecosws-config-assistant')
 
 class NTPServerElemView(GladeWindow):
     '''
     Dialog class that shows the a NTP server element.
     '''
-
 
     def __init__(self, parent, mainController):
         '''
@@ -46,26 +45,30 @@ class NTPServerElemView(GladeWindow):
         self.controller = mainController
         self.logger = logging.getLogger('NTPServerElemView')
         self.gladepath = 'ntp.glade'
-        
+
         self.data = None
         self.displaySuccess = True
-        
-        self.initUI()        
+
+        self.initUI()
 
     def get_data(self):
+        ''' Getter data '''
+
         return self.__data
 
-
     def set_data(self, value):
+        ''' Setter data '''
+
         self.__data = value
 
-
-
     def initUI(self):
+        ''' Initialize UI '''
+
         self.buildUI(self.gladepath)
-        
 
     def addHandlers(self):
+        ''' Adding handlers '''
+
         self.logger.debug("Adding all handlers")
         self.handlers = self.parent.get_common_handlers()
 
@@ -78,53 +81,67 @@ class NTPServerElemView(GladeWindow):
         self.handlers["onBack"] = self.goBack
 
     def show(self):
+        ''' Show '''
+
         self.logger.debug("Show")
-        
+
         data = self.get_data()
         if data is not None:
-            self.getElementById('ntp_server_entry').set_text(data.get_address())
-        
+            self.getElementById('ntp_server_entry') \
+                .set_text(data.get_address())
+
         self.parent.navigate(self)
-        
+
     def goBack(self, *args):
+        ''' Go back '''
+
         self.logger.debug("Go back")
         self.controller.mainWindowController.backToMainWindowDialog()
 
     def accept(self, *args):
+        ''' Accept '''
+
         self.logger.debug("Accept")
         if self.get_data() is None:
             self.set_data(NTPServer())
-        self.get_data().set_address(self.getElementById('ntp_server_entry').get_text())
-        
+        self.get_data().set_address(
+            self.getElementById('ntp_server_entry').get_text())
+
         self.displaySuccess = False
         if self.test(False):
             self.displaySuccess = True
             self.controller.save()
         self.displaySuccess = True
 
-
     def test(self, *args):
+        ''' Testing purposes '''
+
         self.logger.debug("test")
         if self.get_data() is None:
             self.set_data(NTPServer())
-        self.get_data().set_address(self.getElementById('ntp_server_entry').get_text())
-        self.logger.debug("test: %s"%(self.get_data().get_address()))
+        self.get_data().set_address(
+            self.getElementById('ntp_server_entry').get_text())
+        self.logger.debug("test: %s", self.get_data().get_address())
         result = self.controller.test()
-        
+
         if not result:
-            showwarning_gtk(_("Can't connect with NTP server.\nPlease double-check the NTP server address"), 
+            showwarning_gtk(
+                _("Can't connect with NTP server.\n" +
+                  "Please double-check the NTP server address"), 
                 self)
         elif self.displaySuccess:
             showinfo_gtk(_("NTP server connection successful"), self)
-            
+
         return result
-        
+
     def cancel(self, *args):
+        ''' Cancel '''
+
         self.logger.debug("cancel")
         self.controller.hide()
-                
-    data = property(get_data, set_data, None, None)
 
-
-
-        
+    data = property(
+        get_data,
+        set_data,
+        None,
+        None)

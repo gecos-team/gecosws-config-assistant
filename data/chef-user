@@ -1,9 +1,0 @@
-#!/bin/bash
-if [ -f /etc/chef.control ]
-then
-  if [[ ! -f $HOME/.firstart ]]
-  then
-    sudo chef-client
-  fi
-fi
-

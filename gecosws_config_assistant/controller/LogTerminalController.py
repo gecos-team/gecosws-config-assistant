@@ -17,11 +17,13 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 __author__ = "Francisco Fuentes Barrera <ffuentes@solutia-it.es>"
-__copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
+__copyright__ = "Copyright (C) 2015, Junta de Andalucía" + \
+    "<devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
+import logging
 from gecosws_config_assistant.view.LogTerminalDialog import LogTerminalDialog
-import logging 
+
 
 class LogTerminalController(object):
     '''
@@ -38,9 +40,11 @@ class LogTerminalController(object):
 
 
     def show(self):
+        ''' Show log '''
         self.view = LogTerminalDialog(self, self.controller.window)
-        self.view.show()   
+        self.view.show()
 
     def hide(self):
-        # TODO!
+        ''' Hide log '''
+        # TODO implement this method
         pass

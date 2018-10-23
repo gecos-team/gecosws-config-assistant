@@ -17,18 +17,18 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
-__copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
+__copyright__ = "Copyright (C) 2015, Junta de Andalucía" + \
+    "<devmaster@guadalinex.org>"
 __license__ = "GPL-2"
-
-from gecosws_config_assistant.dto.NTPServer import NTPServer
-from gecosws_config_assistant.util.PackageManager import PackageManager
-from gecosws_config_assistant.util.Template import Template
 
 import logging
 import traceback
 
-from gecosws_config_assistant.firstboot_lib.firstbootconfig import get_data_file
-
+from gecosws_config_assistant.dto.NTPServer import NTPServer
+from gecosws_config_assistant.util.PackageManager import PackageManager
+from gecosws_config_assistant.util.Template import Template
+from gecosws_config_assistant.firstboot_lib.firstbootconfig import (
+    get_data_file)
 
 class NTPServerDAO(object):
     '''
@@ -48,11 +48,11 @@ class NTPServerDAO(object):
         '''
         Constructor
         '''
-        
+
         self.logger = logging.getLogger('NTPServerDAO')
         self.data_file = '/etc/default/ntpdate'
         self.initiated = False
-        
+
         # Check if 'ntpdate' package exists
         self.pm = PackageManager()
         if not self.pm.is_package_installed('ntpdate'):
@@ -62,15 +62,16 @@ class NTPServerDAO(object):
                 self.initiated = True
             except Exception:
                 self.logger.error('Package installation failed:' + 'ntpdate')
-                self.logger.error(str(traceback.format_exc())) 
+                self.logger.error(str(traceback.format_exc()))
         else:
-            self.initiated = True               
-        
+            self.initiated = True
 
     def load(self):
+        ''' Loading data '''
+
         self.logger.debug('load - BEGIN')
         ntpServer = None
-        
+
         if self.initiated:
             # Get server from data file
             try:
@@ -80,43 +81,49 @@ class NTPServerDAO(object):
                         if line.startswith('NTPSERVERS='):
                             address = line[len('NTPSERVERS='):]
                             break
-                
+
                 if address is not None:
                     address = address.replace('"', '')
                     address = address.strip()
                     ntpServer = NTPServer()
-                    ntpServer.set_address(address)     
-                
+                    ntpServer.set_address(address)
+
             except Exception:
                 self.logger.error('Error reading file:' + self.data_file)
-                self.logger.error(str(traceback.format_exc()))             
-            
+                self.logger.error(str(traceback.format_exc()))
+
         else:
-            self.logger.warn('NTPServerDAO used without a proper initialization!')
-        
+            self.logger.warn(
+                'NTPServerDAO used without a proper initialization!'
+            )
+
         if ntpServer is None:
             self.logger.debug('load - END - ntpServer is None')
         else:
-            self.logger.debug('load - END - ntpServer=%s'%(ntpServer))
+            self.logger.debug('load - END - ntpServer=%s', ntpServer)
         return ntpServer
 
-
     def save(self, ntp_server):
+        ''' Saving data '''
+
         self.logger.debug('save - BEGIN')
         if ntp_server is None:
             raise ValueError('ntp_server is None')
-        
+
         if not isinstance(ntp_server, NTPServer):
             raise ValueError('ntp_server is not a NTPServer instance')
-            
-        self.logger.debug('save("%s")'%(ntp_server.get_address()))
-        
+
+        self.logger.debug('save("%s")', ntp_server.get_address())
+
         if self.initiated:
             # Check the previous value
             previous = self.load()
-            if previous is not None and previous.get_address() == ntp_server.get_address():
+            if (
+                previous is not None and
+                previous.get_address() == ntp_server.get_address()
+            ):
                 return True
-            
+
             # Save the value to data file
             template = Template()
             template.source = get_data_file('templates/ntpdate')
@@ -125,17 +132,11 @@ class NTPServerDAO(object):
             template.group = 'root'
             template.mode = 00644
             template.variables = { 'ntp_server':  ntp_server.get_address()}
-            
+
             return template.save()
         else:
-            self.logger.warn('NTPServerDAO used without a proper initialization!')
-        
+            self.logger.warn(
+                'NTPServerDAO used without a proper initialization!'
+            )
+
         return False
-
-
-
-
-
-
-
-

@@ -17,20 +17,21 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 __author__ = "Francisco Fuentes Barrera <ffuentes@solutia-it.es>"
-__copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
+__copyright__ = "Copyright (C) 2015, Junta de Andalucía" + \
+    "<devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
-from GladeWindow import GladeWindow
-from gi.repository import Gtk, Gdk
 import logging
 import json
-
 import gettext
 from gettext import gettext as _
-gettext.textdomain('gecosws-config-assistant')
+from gecosws_config_assistant.view.GladeWindow import GladeWindow
+from gi.repository import Gtk
 
 from gecosws_config_assistant.dto.LocalUser import LocalUser
 from gecosws_config_assistant.view.CommonDialog import showerror_gtk
+
+gettext.textdomain('gecosws-config-assistant')
 
 class LocalUserElemDialog(GladeWindow):
     '''
@@ -45,40 +46,50 @@ class LocalUserElemDialog(GladeWindow):
         self.controller = mainController
         self.logger = logging.getLogger('LocalUserElemDialog')
         self.gladepath = 'localuserpopup.glade'
-        
+
         self.data = None
-        
-        self.initUI()       
+
+        self.initUI()
 
     def get_data(self):
+        ''' Getter data '''
+
         return self.__data
 
     def set_data(self, value):
+        ''' Setter data '''
+
         self.__data = value
 
     def initUI(self):
+        ''' Initialize UI '''
+
         self.buildUI(self.gladepath)
-        
+
         self.logger.debug('UI initiated')
-    
+
     def extractGUIElements(self):
+        ''' Extract GUI elements '''
+
         self.window                    = self.getElementById("window1")
         self.dialog                    = self.window
-        
+
         self.nameLabel                 = self.getElementById("label1")
         self.loginLabel                = self.getElementById("label2")
         self.passwordLabel             = self.getElementById("label3")
         self.passwordConfirmationLabel = self.getElementById("label4")
-        
+
         self.nameEntry                 = self.getElementById("entry1")
         self.loginEntry                = self.getElementById("entry2")
         self.passwordEntry             = self.getElementById("entry3")
         self.passwordConfirmationEntry = self.getElementById("entry4")
 
     def show(self):
+        ''' Show '''
+
         self.logger.debug("Show")
         self.extractGUIElements()
-        
+
         data = self.get_data()
         if data is not None:
             self.window.set_title(_('Modifiy local user'))
@@ -88,23 +99,26 @@ class LocalUserElemDialog(GladeWindow):
             self.loginEntry.set_editable(False)
         else:
             self.window.set_title(_('Add local user'))
-        
+
         self.window.set_modal(True)
         self.window.set_transient_for(self.parent.window)
         self.window.show_all()
-        
+
         x, y = self.parent.window.get_position()
         w, h = self.parent.window.get_size()
         sw, sh = self.window.get_size()
-        self.logger.debug('x=%s y=%s w=%s h=%s sw=%s sh=%s'%(x, y, w, h, sw, sh))
-        self.window.move(x + w/2 - sw/2, y + h/2 - sh/2)        
-        
+        self.logger.debug('x={} y={} w={} h={} sw={} sh={}'.format(
+            x, y, w, h, sw, sh))
+        self.window.move(x + w/2 - sw/2, y + h/2 - sh/2)
+
         while Gtk.events_pending():
             Gtk.main_iteration()
-    
+
     def addHandlers(self):
+        ''' Adding handlers '''
+
         self.handlers = self.parent.parent.get_common_handlers()
-        
+
         # add new handlers here
         self.logger.debug("Adding new handler")
         self.handlers["onAcpt"] = self.accept
@@ -115,35 +129,40 @@ class LocalUserElemDialog(GladeWindow):
         # Test confirm password
         password = self.passwordEntry.get_text()
         confirm = self.passwordConfirmationEntry.get_text()
-        
+
         if password is not None and password.strip() != '':
             if confirm is None or confirm.strip() == '':
                 self.logger.debug("Empty password confirmation!")
-                showerror_gtk(_("The password confirmation field is empty!") + "\n" 
-                     + _("Please fill all the mandatory fields."),
+                showerror_gtk(
+                    _("The password confirmation field is empty!") + "\n" +
+                    _("Please fill all the mandatory fields."),
                     self)
                 self.passwordConfirmationEntry.grab_focus()
                 return False
-            
+
             if confirm != password:
-                self.logger.debug("Password confirmation different from password!")
-                showerror_gtk(_("The password confirmation is different from password") ,
+                self.logger.debug(
+                    "Password confirmation different from password!")
+                showerror_gtk(
+                    _("The password confirmation is different from password"),
                     self)
-                self.passwordConfirmationEntry.grab_focus()  
+                self.passwordConfirmationEntry.grab_focus()
                 return False
-        
-        return True        
+
+        return True
 
     def accept(self, *args):
+        ''' Accept '''
+
         self.logger.debug("Accept")
-        
+
         user = LocalUser()
         user.set_login(self.loginEntry.get_text())
         user.set_name(self.nameEntry.get_text())
         user.set_password(self.passwordEntry.get_text())
-        
+
         check_password = (self.get_data() is None)
-        
+
         if self.controller.test(user, check_password) and self._test():
             self.logger.debug("Test is ok")
             self.set_data(user)
@@ -151,12 +170,14 @@ class LocalUserElemDialog(GladeWindow):
             self.dialog.destroy()
 
     def cancel(self, *args):
+        ''' Cancel '''
+
         self.logger.debug("cancel")
         self.dialog.destroy()
-                       
-                
-    data = property(get_data, set_data, None, None)
 
 
-
-        
+    data = property(
+        get_data,
+        set_data,
+        None,
+        None)

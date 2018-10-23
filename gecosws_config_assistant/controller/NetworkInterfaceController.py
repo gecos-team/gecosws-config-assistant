@@ -17,13 +17,16 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
-__copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
+__copyright__ = "Copyright (C) 2015, Junta de Andalucía" + \
+    "<devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
-from gecosws_config_assistant.dao.NetworkInterfaceDAO import NetworkInterfaceDAO
-from gecosws_config_assistant.view.NetworkInterfaceListView import NetworkInterfaceListView
-
 import logging
+
+from gecosws_config_assistant.dao.NetworkInterfaceDAO import (
+    NetworkInterfaceDAO)
+from gecosws_config_assistant.view.NetworkInterfaceListView import (
+    NetworkInterfaceListView)
 
 class NetworkInterfaceController(object):
     '''
@@ -35,23 +38,33 @@ class NetworkInterfaceController(object):
         '''
         Constructor
         '''
+
         self.view = None # TODO!
-        self.mainWindowController = mainController 
+        self.mainWindowController = mainController
         self.dao = NetworkInterfaceDAO()
         self.logger = logging.getLogger('NetworkInterfaceController')
 
     def show(self, mainWindow):
+        ''' Show network window '''
+
         self.view = NetworkInterfaceListView(mainWindow, self)
         self.view.set_data(self.dao.loadAll())
-        self.view.show()   
-
+        self.view.show()
 
     def hide(self):
+        ''' Hide network window '''
+
         self.logger.debug("hide")
         self.mainWindowController.showRequirementsCheckDialog()
-    
+
     def save(self):
+        ''' Save settings '''
+
+        # TODO implement this method
         pass
 
     def test(self):
+        ''' Testing purposes '''
+
+        # TODO implement this method
         pass

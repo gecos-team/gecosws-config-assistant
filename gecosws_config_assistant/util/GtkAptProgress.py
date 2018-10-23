@@ -1,7 +1,6 @@
-import apt
-import apt_pkg
 import time
 import os
+import apt_pkg
 import gi
 gi.require_version("Gtk", "3.0")
 gi.require_version("Vte", "2.90")

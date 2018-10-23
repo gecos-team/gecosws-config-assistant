@@ -17,25 +17,25 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
-__copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
+__copyright__ = "Copyright (C) 2015, Junta de Andalucía" + \
+    "<devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
-import logging
-import requests
+
 import traceback
 import json
-
+import logging
 from urlparse import urlparse
+import requests
+
 from gecosws_config_assistant.dto.GecosAccessData import GecosAccessData
 from gecosws_config_assistant.util.Validation import Validation
 from gecosws_config_assistant.util.SSLUtil import SSLUtil
-
 
 class GecosCC(object):
     '''
     Utility class to communicate with the Gecos Control Center.
     '''
-
 
     def __init__(self):
         '''
@@ -44,14 +44,16 @@ class GecosCC(object):
         self.logger = logging.getLogger('GecosCC')
         self.last_request_content = None
         self.timeout = 120
-        
+
     def _check_credentials(self, data):
+        ''' Checking credentials '''
+
         if data is None:
             raise ValueError('data is None')
-        
+
         if not isinstance(data, GecosAccessData):
-            raise ValueError('data is not a GecosAccessData instance')    
-            
+            raise ValueError('data is not a GecosAccessData instance')
+
         # login, password and URL are mandatory
         if data.get_login() is None or data.get_login().strip() == '':
             self.logger.warn('Empty login!')
@@ -64,201 +66,244 @@ class GecosCC(object):
         if data.get_url() is None or data.get_url().strip() == '':
             self.logger.warn('Empty url!')
             return False
-                
+
         if not Validation().isUrl(data.get_url()):
             self.logger.warn('Malformed url!')
             return False
-            
+
         return True
-            
+
     def validate_credentials(self, data):
+        ''' Validating credentials '''
+
         self.logger.debug('Validating credentials...')
-        
+
         if not self._check_credentials(data):
             return False
-        
+
         # Check credentials
         try:
             url = str(data.get_url())
             if urlparse(url).path in ['','/']:
-                url = "%s/auth/config/" % (url[0:-1] if url.endswith('/') else url)
-            self.logger.debug('Try to connect to: %s'%(url))
-            headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+                url = "{}/auth/config/".format(
+                    url[0:-1] if url.endswith('/') else url)
+
+            self.logger.debug('Try to connect to: %s', url)
+            headers = {
+                'Content-type': 'application/json',
+                'Accept': 'text/plain'
+            }
             user = data.get_login()
             password = data.get_password()
-            r = requests.get(url, auth=(user,password), headers=headers, 
-                             verify=SSLUtil.isSSLCertificatesVerificationEnabled(), timeout=self.timeout)
+            r = requests.get(
+                url,
+                auth=(user,password),
+                headers=headers,
+                verify=SSLUtil.isSSLCertificatesVerificationEnabled(),
+                timeout=self.timeout)
             if r.ok:
                 if hasattr(r,'text'):
                     self.last_request_content = r.text
-                else:  
-                    self.last_request_content = r.content                
-                
-                return True            
-            
-        except Exception:
-            self.logger.warn('Error connecting to Gecos server: %s'%(data.get_url()))
-            self.logger.warn(str(traceback.format_exc()))
-            
-        return False            
+                else:
+                    self.last_request_content = r.content
 
+                return True
+
+        except Exception:
+            self.logger.warn(
+                'Error connecting to Gecos server: %s', data.get_url())
+            self.logger.warn(str(traceback.format_exc()))
+
+        return False
 
     def get_computer_names(self, data):
+        ''' Get all computer names by text '''
+
         self.logger.debug('Get all computer names by text...')
-        
+
         if not self._check_credentials(data):
             return False
-        
+
         # Get the list of workstation names
         try:
             url = str(data.get_url())
             if url.endswith('/'):
                 url = url[0:-1]
-            url = "%s/computers/list/"%(url)
-            self.logger.debug('Try to connect to: %s'%(url))
-            headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+            url = "{}/computers/list/".format(url)
+            self.logger.debug('Try to connect to: %s', url)
+            headers = {
+                'Content-type': 'application/json',
+                'Accept': 'text/plain'
+            }
             user = data.get_login()
             password = data.get_password()
-            r = requests.get(url, auth=(user,password), headers=headers, 
-                verify=SSLUtil.isSSLCertificatesVerificationEnabled(), timeout=self.timeout)
+            r = requests.get(
+                url,
+                auth=(user,password),
+                headers=headers,
+                verify=SSLUtil.isSSLCertificatesVerificationEnabled(),
+                timeout=self.timeout)
             if r.ok:
-                self.logger.debug('Response: %s'%(url))
+                self.logger.debug('Response: %s', url)
                 computer_names = False
                 if hasattr(r,'text'):
-                    self.logger.debug('Response: %s'%(r.text))
+                    self.logger.debug('Response: %s', r.text)
                     computer_names = json.loads(r.text)['computers']
-                else:  
-                    self.logger.debug('Response: %s'%(r.content))
-                    computer_names = json.loads(r.content)['computers']               
-                
-                
-                return computer_names            
+                else:
+                    self.logger.debug('Response: %s', r.content)
+                    computer_names = json.loads(r.content)['computers']
+
+                return computer_names
 
             self.logger.debug('Response: NOT OK')
-                     
+
         except Exception:
-            self.logger.warn('Error connecting to Gecos server: %s'%(data.get_url()))
+            self.logger.warn(
+                'Error connecting to Gecos server: %s', data.get_url())
             self.logger.warn(str(traceback.format_exc()))
-            
-        return False  
-        
-        
+
+        return False
+
     def get_json_autoconf(self, data):
+        ''' Getting auto setup data '''
+
         self.logger.debug('Getting auto setup data...')
-        
+
         if not self.validate_credentials(data):
             return False
-        
+
         conf = json.loads(self.last_request_content)
         if conf["chef"]["chef_server_uri"] == "https://localhost/":
             chef_uri = conf["gcc"]["uri_gcc"].split('//')[1].split(':')[0]
             conf["chef"]["chef_server_uri"] = "https://" + chef_uri + '/'
-            
+
         return conf
 
-
-
     def search_ou_by_text(self, data, searchFilter):
+        ''' Search ou by text '''
+
         self.logger.debug('Search ou by text...')
-        
+
         if not self._check_credentials(data):
             return False
-        
+
         if searchFilter is None:
             searchFilter = ''
-        
+
         # Get the list of OUs
         try:
             url = str(data.get_url())
             if url.endswith('/'):
                 url = url[0:-1]
-            url = "%s/ou/gca/?q=%s"%(url, searchFilter)
-            self.logger.debug('Try to connect to: %s'%(url))
-            headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+            url = "{}/ou/gca/?q={}".format(url, searchFilter)
+            self.logger.debug('Try to connect to: %s', url)
+            headers = {
+                'Content-type': 'application/json',
+                'Accept': 'text/plain'
+            }
             user = data.get_login()
             password = data.get_password()
-            r = requests.get(url, auth=(user,password), headers=headers, 
-                verify=SSLUtil.isSSLCertificatesVerificationEnabled(), timeout=self.timeout)
+            r = requests.get(
+                url,
+                auth=(user,password),
+                headers=headers,
+                verify=SSLUtil.isSSLCertificatesVerificationEnabled(),
+                timeout=self.timeout)
             if r.ok:
-                self.logger.debug('Response: %s'%(url))
+                self.logger.debug('Response: %s', url)
                 arr_ou = False
                 if hasattr(r,'text'):
-                    self.logger.debug('Response: %s'%(r.text))
+                    self.logger.debug('Response: %s', r.text)
                     arr_ou = json.loads(r.text)['ous']
-                else:  
-                    self.logger.debug('Response: %s'%(r.content))
-                    arr_ou = json.loads(r.content)['ous']               
-                
-                return arr_ou            
+                else:
+                    self.logger.debug('Response: %s', r.content)
+                    arr_ou = json.loads(r.content)['ous']
+
+                return arr_ou
 
             self.logger.debug('Response: NOT OK')
-                     
-        except Exception:
-            self.logger.warn('Error connecting to Gecos server: %s'%(data.get_url()))
-            self.logger.warn(str(traceback.format_exc()))
-            
-        return False  
 
+        except Exception:
+            self.logger.warn(
+                'Error connecting to Gecos server: %s', data.get_url())
+            self.logger.warn(str(traceback.format_exc()))
+
+        return False
 
     def unregister_computer(self, data, nodename):
+        ''' Unregistering computer '''
+
         self.logger.debug('Unregister computer...')
-        
+
         if not self._check_credentials(data):
             return False
-        
+
         if nodename is None or nodename.strip() == '':
             self.logger.warn('nodename is empty!')
             return False
 
-        
         # Unregister the computer
         try:
             url = str(data.get_url())
             if url.endswith('/'):
                 url = url[0:-1]
-            url = "%s/register/computer/?node_id=%s"%(url, nodename)
-            self.logger.debug('Try to connect to: %s'%(url))
-            headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+            url = "{}/register/computer/?node_id={}".format(url, nodename)
+            self.logger.debug('Try to connect to: %s', url)
+            headers = {
+                'Content-type': 'application/json',
+                'Accept': 'text/plain'
+            }
             user = data.get_login()
             password = data.get_password()
-            r = requests.delete(url, auth=(user,password), headers=headers, 
-                verify=SSLUtil.isSSLCertificatesVerificationEnabled(), timeout=self.timeout)
+            r = requests.delete(
+                url,
+                auth=(user,password),
+                headers=headers,
+                verify=SSLUtil.isSSLCertificatesVerificationEnabled(),
+                timeout=self.timeout)
             if r.ok:
-                self.logger.debug('Response: %s'%(url))
+                self.logger.debug('Response: %s', url)
                 response_json = False
                 if hasattr(r,'text'):
-                    self.logger.debug('Response: %s'%(r.text))
+                    self.logger.debug('Response: %s', r.text)
                     response_json = json.loads(r.text)
-                else:  
-                    self.logger.debug('Response: %s'%(r.content))
-                    response_json = json.loads(r.content)               
-                
+                else:
+                    self.logger.debug('Response: %s', r.content)
+                    response_json = json.loads(r.content)
+
                 if response_json is None:
-                    self.logger.error('Error unregistering computer: NO RESPONSE')
+                    self.logger.error(
+                        'Error unregistering computer: NO RESPONSE')
                     return False
-                
+
                 if not response_json["ok"]:
-                    self.logger.error('Error unregistering computer: %s'%(response_json['message']))
+                    self.logger.error(
+                        'Error unregistering computer: %s',
+                        response_json['message'])
                     return False
-                
-                return True                
+
+                return True
 
             self.logger.debug('Response: NOT OK')
-                     
+
         except Exception:
-            self.logger.warn('Error connecting to Gecos server: %s'%(data.get_url()))
+            self.logger.warn(
+                'Error connecting to Gecos server: %s', data.get_url())
             self.logger.warn(str(traceback.format_exc()))
-            
-        return False  
+
+        return False
 
     def register_computer(self, data, nodename, selected_ou):
-        self.logger.debug('Register computer (%s, %s)...', nodename, selected_ou)
-        
+        ''' Registering computer '''
+
+        self.logger.debug(
+            'Register computer (%s, %s)...', nodename, selected_ou)
+
         reason = ''
 
         if not self._check_credentials(data):
             return False, reason
-        
+
         if nodename is None or nodename.strip() == '':
             self.logger.warn('nodename is empty!')
             return False, reason
@@ -267,257 +312,311 @@ class GecosCC(object):
             self.logger.warn('selected_ou is empty!')
             return False, reason
 
-        
         # Register in the server
         try:
             url = str(data.get_url())
             if url.endswith('/'):
                 url = url[0:-1]
-            url = "%s/register/computer/"%(url)
-            self.logger.debug('Try to connect to: %s'%(url))
+            url = "{}/register/computer/".format(url)
+            self.logger.debug('Try to connect to: %s', url)
             user = data.get_login()
             password = data.get_password()
-            
-            payload = {'node_id': nodename, 'ou_id': selected_ou}
-            self.logger.debug('payload: %s'%(json.dumps(payload)))
-            
-            r = requests.post(url, auth=(user,password), 
-                verify=SSLUtil.isSSLCertificatesVerificationEnabled(), timeout=self.timeout, data=payload)
+
+            payload = {
+                'node_id': nodename,
+                'ou_id': selected_ou
+            }
+
+            self.logger.debug('payload: %s', json.dumps(payload))
+
+            r = requests.post(
+                url,
+                auth=(user,password),
+                verify=SSLUtil.isSSLCertificatesVerificationEnabled(),
+                timeout=self.timeout,
+                data=payload)
             if r.ok:
-                self.logger.debug('Response: %s'%(url))
+                self.logger.debug('Response: %s', url)
                 response_json = False
                 if hasattr(r,'text'):
-                    self.logger.debug('Response: %s'%(r.text))
+                    self.logger.debug('Response: %s', r.text)
                     response_json = json.loads(r.text)
-                else:  
-                    self.logger.debug('Response: %s'%(r.content))
-                    response_json = json.loads(r.content)               
-                
+                else:
+                    self.logger.debug('Response: %s', r.content)
+                    response_json = json.loads(r.content)
+
                 if response_json is None:
-                    self.logger.error('Error registering computer: NO RESPONSE')
+                    self.logger.error(
+                        'Error registering computer: NO RESPONSE')
                     return False, reason
-                
+
                 if not response_json["ok"]:
-                    self.logger.error('Error registering computer: %s'%(response_json['message']))
+                    self.logger.error(
+                        'Error registering computer: %s',
+                        response_json['message'])
                     return False, response_json["reason"]
-                
-                return True, reason            
+
+                return True, reason
 
             self.logger.debug('Response: NOT OK')
-                     
-        except Exception:
-            self.logger.warn('Error connecting to Gecos server: %s'%(data.get_url()))
-            self.logger.warn(str(traceback.format_exc()))
-            
-        return False          
 
-     
+        except Exception:
+            self.logger.warn(
+                'Error connecting to Gecos server: %s', data.get_url())
+            self.logger.warn(str(traceback.format_exc()))
+
+        return False
+
     def register_chef_node(self, data, nodename):
+        ''' Registering chef node '''
+
         self.logger.debug('Register computer (%s)...', nodename)
-        
+
         if not self._check_credentials(data):
             return False
-        
+
         if nodename is None or nodename.strip() == '':
             self.logger.warn('nodename is empty!')
             return False
-        
+
         # Register in the Chef Node
         try:
             url = str(data.get_url())
             if url.endswith('/'):
                 url = url[0:-1]
-            url = "%s/register/node/"%(url)
-            self.logger.debug('Try to connect to: %s'%(url))
+            url = "{}/register/node/".format(url)
+            self.logger.debug('Try to connect to: %s', url)
             user = data.get_login()
             password = data.get_password()
-            
+
             payload = {'node_id': nodename}
-            self.logger.debug('payload: %s'%(json.dumps(payload)))
-            
-            r = requests.post(url, auth=(user,password), 
-                verify=SSLUtil.isSSLCertificatesVerificationEnabled(), timeout=self.timeout, data=payload)
+            self.logger.debug('payload: %s', json.dumps(payload))
+
+            r = requests.post(
+                url,
+                auth=(user,password),
+                verify=SSLUtil.isSSLCertificatesVerificationEnabled(),
+                timeout=self.timeout,
+                data=payload)
             if r.ok:
-                self.logger.debug('Response: %s'%(url))
+                self.logger.debug('Response: %s', url)
                 response_json = False
                 if hasattr(r,'text'):
-                    self.logger.debug('Response: %s'%(r.text))
+                    self.logger.debug('Response: %s', r.text)
                     response_json = json.loads(r.text)
-                else:  
-                    self.logger.debug('Response: %s'%(r.content))
-                    response_json = json.loads(r.content)               
-                
+                else:
+                    self.logger.debug('Response: %s', r.content)
+                    response_json = json.loads(r.content)
+
                 if response_json is None:
-                    self.logger.error('Error registering computer: NO RESPONSE')
+                    self.logger.error(
+                        'Error registering computer: NO RESPONSE')
                     return False
-                
+
                 if not response_json["ok"]:
-                    self.logger.error('Error registering computer: %s'%(response_json['message']))
+                    self.logger.error(
+                        'Error registering computer: %s',
+                        response_json['message'])
                     return False
-                
-                return response_json["client_private_key"]            
+
+                return response_json["client_private_key"]
 
             self.logger.debug('Response: NOT OK')
-                     
+
         except Exception:
-            self.logger.warn('Error connecting to Gecos server: %s'%(data.get_url()))
+            self.logger.warn(
+                'Error connecting to Gecos server: %s', data.get_url())
             self.logger.warn(str(traceback.format_exc()))
-            
+
         return False
 
     def reregister_chef_node(self, data, nodename):
+        ''' Re-registering computer '''
+
         self.logger.debug('Re-Register computer (%s)...', nodename)
-        
+
         if not self._check_credentials(data):
             return False
-        
+
         if nodename is None or nodename.strip() == '':
             self.logger.warn('nodename is empty!')
             return False
-        
+
         # Register in the Chef Node
         try:
             url = str(data.get_url())
             if url.endswith('/'):
                 url = url[0:-1]
-            url = "%s/register/node/"%(url)
-            self.logger.debug('Try to connect to: %s'%(url))
+            url = "{}/register/node/".format(url)
+            self.logger.debug('Try to connect to: %s', url)
             user = data.get_login()
             password = data.get_password()
-            
+
             payload = {'node_id': nodename}
-            self.logger.debug('payload: %s'%(json.dumps(payload)))
-            
-            r = requests.put(url, auth=(user,password), 
-                verify=SSLUtil.isSSLCertificatesVerificationEnabled(), timeout=self.timeout, data=payload)
+            self.logger.debug('payload: %s', json.dumps(payload))
+
+            r = requests.put(
+                url,
+                auth=(user,password),
+                verify=SSLUtil.isSSLCertificatesVerificationEnabled(),
+                timeout=self.timeout,
+                data=payload)
             if r.ok:
-                self.logger.debug('Response: %s'%(url))
+                self.logger.debug('Response: %s', url)
                 response_json = False
                 if hasattr(r,'text'):
-                    self.logger.debug('Response: %s'%(r.text))
+                    self.logger.debug('Response: %s', r.text)
                     response_json = json.loads(r.text)
-                else:  
-                    self.logger.debug('Response: %s'%(r.content))
-                    response_json = json.loads(r.content)               
-                
+                else:
+                    self.logger.debug('Response: %s', r.content)
+                    response_json = json.loads(r.content)
+
                 if response_json is None:
-                    self.logger.error('Error registering computer: NO RESPONSE')
+                    self.logger.error(
+                        'Error registering computer: NO RESPONSE')
                     return False
-                
+
                 if not response_json["ok"]:
-                    self.logger.error('Error registering computer: %s'%(response_json['message']))
+                    self.logger.error(
+                        'Error registering computer: %s',
+                        response_json['message'])
                     return False
-                
-                return response_json["client_private_key"]            
+
+                return response_json["client_private_key"]
 
             self.logger.debug('Response: NOT OK')
-                     
+
         except Exception:
-            self.logger.warn('Error connecting to Gecos server: %s'%(data.get_url()))
+            self.logger.warn(
+                'Error connecting to Gecos server: %s', data.get_url())
             self.logger.warn(str(traceback.format_exc()))
-            
-        return False        
-        
-        
-    def unregister_chef_node(self, data, nodename):
-        self.logger.debug('Unregister Chef node (%s)...'%(nodename))
-        
-        if not self._check_credentials(data):
-            return False
 
-        if nodename is None or nodename.strip() == '':
-            self.logger.warn('nodename is empty!')
-            return False
-
-        
-        # Unregister the Chef Node
-        try:
-            url = str(data.get_url())
-            if url.endswith('/'):
-                url = url[0:-1]
-            url = "%s/register/node/?node_id=%s"%(url, nodename)
-            self.logger.debug('Try to connect to: %s'%(url))
-            headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-            user = data.get_login()
-            password = data.get_password()
-            r = requests.delete(url, auth=(user,password), headers=headers, 
-                verify=SSLUtil.isSSLCertificatesVerificationEnabled(), timeout=self.timeout)
-            if r.ok:
-                self.logger.debug('Response: %s'%(url))
-                response_json = False
-                if hasattr(r,'text'):
-                    self.logger.debug('Response: %s'%(r.text))
-                    response_json = json.loads(r.text)
-                else:  
-                    self.logger.debug('Response: %s'%(r.content))
-                    response_json = json.loads(r.content)               
-                
-                if response_json is None:
-                    self.logger.error('Error unregistering computer: NO RESPONSE')
-                    return False
-                
-                if not response_json["ok"]:
-                    self.logger.error('Error unregistering computer: %s'%(response_json['message']))
-                    return False
-                
-                return True                
-
-            self.logger.debug('Response: NOT OK')
-                     
-        except Exception:
-            self.logger.warn('Error connecting to Gecos server: %s'%(data.get_url()))
-            self.logger.warn(str(traceback.format_exc()))
-            
         return False
-        
-        
-    def is_registered_chef_node(self, data, nodename):
-        self.logger.debug('IsRegistered? Chef node (%s)...'%(nodename))
-        
+
+    def unregister_chef_node(self, data, nodename):
+        ''' Unregistering Chef node '''
+
+        self.logger.debug('Unregister Chef node (%s)...', nodename)
+
         if not self._check_credentials(data):
             return False
-        
+
         if nodename is None or nodename.strip() == '':
             self.logger.warn('nodename is empty!')
             return False
 
-        
         # Unregister the Chef Node
         try:
             url = str(data.get_url())
             if url.endswith('/'):
                 url = url[0:-1]
-            url = "%s/register/node/?node_id=%s"%(url, nodename)
-            self.logger.debug('Try to connect to: %s'%(url))
-            headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+            url = "{}/register/node/?node_id={}".format(url, nodename)
+            self.logger.debug('Try to connect to: %s', url)
+            headers = {
+                'Content-type': 'application/json',
+                'Accept': 'text/plain'
+            }
             user = data.get_login()
             password = data.get_password()
-            r = requests.get(url, auth=(user,password), headers=headers, 
-                verify=SSLUtil.isSSLCertificatesVerificationEnabled(), timeout=self.timeout)
+            r = requests.delete(
+                url,
+                auth=(user,password),
+                headers=headers,
+                verify=SSLUtil.isSSLCertificatesVerificationEnabled(),
+                timeout=self.timeout)
             if r.ok:
-                self.logger.debug('Response: %s'%(url))
+                self.logger.debug('Response: %s', url)
                 response_json = False
                 if hasattr(r,'text'):
-                    self.logger.debug('Response: %s'%(r.text))
+                    self.logger.debug('Response: %s', r.text)
                     response_json = json.loads(r.text)
-                else:  
-                    self.logger.debug('Response: %s'%(r.content))
-                    response_json = json.loads(r.content)               
-                
+                else:
+                    self.logger.debug('Response: %s', r.content)
+                    response_json = json.loads(r.content)
+
                 if response_json is None:
-                    self.logger.error('Error unregistering computer: NO RESPONSE')
+                    self.logger.error(
+                        'Error unregistering computer: NO RESPONSE')
                     return False
-                
+
                 if not response_json["ok"]:
-                    self.logger.error('Error unregistering computer: %s'%(response_json['message']))
+                    self.logger.error(
+                        'Error unregistering computer: %s',
+                        response_json['message'])
                     return False
-                
-                return True                
+
+                return True
 
             self.logger.debug('Response: NOT OK')
-                     
+
         except Exception:
-            self.logger.warn('Error connecting to Gecos server: %s'%(data.get_url()))
+            self.logger.warn(
+                'Error connecting to Gecos server: %s',
+                data.get_url())
             self.logger.warn(str(traceback.format_exc()))
-            
-        return False                  
+
+        return False
+
+    def is_registered_chef_node(self, data, nodename):
+        ''' Is registered Chef node ? '''
+
+        self.logger.debug('IsRegistered? Chef node (%s)...', nodename)
+
+        if not self._check_credentials(data):
+            return False
+
+        if nodename is None or nodename.strip() == '':
+            self.logger.warn('nodename is empty!')
+            return False
+
+        # Unregister the Chef Node
+        try:
+            url = str(data.get_url())
+            if url.endswith('/'):
+                url = url[0:-1]
+            url = "{}/register/node/?node_id={}".format(url, nodename)
+            self.logger.debug('Try to connect to: %s', url)
+            headers = {
+                'Content-type': 'application/json',
+                'Accept': 'text/plain'
+            }
+            user = data.get_login()
+            password = data.get_password()
+            r = requests.get(
+                url,
+                auth=(user,password),
+                headers=headers,
+                verify=SSLUtil.isSSLCertificatesVerificationEnabled(),
+                timeout=self.timeout)
+            if r.ok:
+                self.logger.debug('Response: %s', url)
+                response_json = False
+                if hasattr(r,'text'):
+                    self.logger.debug('Response: %s', r.text)
+                    response_json = json.loads(r.text)
+                else:
+                    self.logger.debug('Response: %s', r.content)
+                    response_json = json.loads(r.content)
+
+                if response_json is None:
+                    self.logger.error(
+                        'Error unregistering computer: NO RESPONSE')
+                    return False
+
+                if not response_json["ok"]:
+                    self.logger.error(
+                        'Error unregistering computer: %s',
+                        response_json['message'])
+                    return False
+
+                return True
+
+            self.logger.debug('Response: NOT OK')
+
+        except Exception:
+            self.logger.warn(
+                'Error connecting to Gecos server: %s',
+                data.get_url())
+            self.logger.warn(str(traceback.format_exc()))
+
+        return False

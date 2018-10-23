@@ -17,7 +17,8 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 __author__ = "Antonio Hernández <ahernandez@emergya.com>"
-__copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.org>"
+__copyright__ = "Copyright (C) 2011, Junta de Andalucía" + \
+    "<devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
 
@@ -27,4 +28,3 @@ while keeping its api constant'''
 #from . helpers import set_up_logging
 #from . Window import Window
 from . firstbootconfig import get_version
-

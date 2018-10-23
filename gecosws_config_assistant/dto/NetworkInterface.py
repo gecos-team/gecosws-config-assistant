@@ -17,7 +17,8 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
-__copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
+__copyright__ = "Copyright (C) 2015, Junta de Andalucía" + \
+    "<devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
 
@@ -25,7 +26,6 @@ class NetworkInterface(object):
     '''
     DTO object that represents a Network Interface.
     '''
-
 
     def __init__(self):
         '''
@@ -35,21 +35,31 @@ class NetworkInterface(object):
         self.ipAddress = ''
 
     def get_name(self):
+        ''' Getter name '''
+
         return self.__name
 
-
     def get_ip_address(self):
+        ''' Getter ip address '''
+
         return self.__ipAddress
 
-
     def set_name(self, value):
+        ''' Setter name '''
+
         self.__name = value
 
-
     def set_ip_address(self, value):
+        ''' Setter ip address '''
         self.__ipAddress = value
 
-    name = property(get_name, set_name, None, None)
-    ipAddress = property(get_ip_address, set_ip_address, None, None)
-
-
+    name = property(
+        get_name,
+        set_name,
+        None,
+        None)
+    ipAddress = property(
+        get_ip_address,
+        set_ip_address,
+        None,
+        None)

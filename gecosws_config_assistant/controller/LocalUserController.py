@@ -17,22 +17,25 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
-__copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
+__copyright__ = "Copyright (C) 2015, Junta de Andalucía" + \
+    "<devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
-
-from gecosws_config_assistant.view.LocalUserListDialog import LocalUserListDialog
-from gecosws_config_assistant.view.LocalUserElemDialog import LocalUserElemDialog
-from gecosws_config_assistant.view.CommonDialog import showerror_gtk, askyesno_gtk
-
+import logging
 import gettext
 from gettext import gettext as _
-gettext.textdomain('gecosws-config-assistant')
 
+from gecosws_config_assistant.view.CommonDialog import (
+    showerror_gtk, askyesno_gtk)
+from gecosws_config_assistant.view.LocalUserListDialog import (
+    LocalUserListDialog)
+from gecosws_config_assistant.view.LocalUserElemDialog import (
+    LocalUserElemDialog)
 from gecosws_config_assistant.dao.LocalUserDAO import LocalUserDAO
 from gecosws_config_assistant.util.Validation import Validation
 
-import logging
+
+gettext.textdomain('gecosws-config-assistant')
 
 class LocalUserController(object):
     '''
@@ -51,49 +54,54 @@ class LocalUserController(object):
         self.logger = logging.getLogger('LocalUserController')
 
     def showList(self, mainWindow):
+        ''' Show list '''
         self.logger.debug('show - BEGIN')
         self.listView = LocalUserListDialog(mainWindow, self.controller)
         self.listView.setLocalUserController(self)
         self.listView.set_data(self.dao.loadAll())
-        
-        self.listView.show()   
+
+        self.listView.show()
         self.logger.debug('show - END')
 
     def refreshList(self):
+        ''' Refresh list '''
         self.logger.debug('refreshList')
         self.listView.set_data(self.dao.loadAll())
-        self.listView.refresh()   
-        
+        self.listView.refresh()
 
     def hideList(self):
+        ''' Hide list '''
         self.logger.debug('hideList - BEGIN')
         self.listView.cancel()
 
     def test(self, obj, check_password):
+        ''' Test '''
         self.logger.debug('test - BEGIN')
-        
+
         # Test login
         if obj.get_login() is None or obj.get_login().strip() == '':
             self.logger.debug("Empty login!")
-            showerror_gtk(_("The login field is empty!") + "\n" + _("Please fill all the mandatory fields."),
-                self.elemView)
-            self.elemView.focusLoginField() 
+            showerror_gtk(_("The login field is empty!") + "\n" +
+                          _("Please fill all the mandatory fields."),
+                          self.elemView)
+            self.elemView.focusLoginField()
             return False
 
         if not Validation().isLogin(obj.get_login()):
             self.logger.debug("Bad login!")
-            showerror_gtk(_("The login field contains not allowed characters!"),
+            showerror_gtk(
+                _("The login field contains not allowed characters!"),
                 self.elemView)
-            self.elemView.focusLoginField() 
+            self.elemView.focusLoginField()
             return False
-
 
         # Test name
         if obj.get_name() is None or obj.get_name().strip() == '':
             self.logger.debug("Empty name!")
-            showerror_gtk(_("The name field is empty!") + "\n" + _("Please fill all the mandatory fields."),
-                self.elemView)
-            self.elemView.focusNameField() 
+            showerror_gtk(_("The name field is empty!") + "\n" +
+                          _("Please fill all the mandatory fields."),
+                          self.elemView)
+            self.elemView.focusNameField()
             return False
 
         # Test password

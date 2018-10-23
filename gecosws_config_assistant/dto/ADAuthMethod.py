@@ -17,11 +17,13 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
-__copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
+__copyright__ = "Copyright (C) 2015, Junta de Andalucía" + \
+    "<devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
-from UserAuthenticationMethod import UserAuthenticationMethod
-from ADSetupData import ADSetupData 
+from gecosws_config_assistant.dto.UserAuthenticationMethod import (
+    UserAuthenticationMethod)
+from gecosws_config_assistant.dto.ADSetupData import ADSetupData
 
 import gettext
 from gettext import gettext as _
@@ -29,10 +31,9 @@ gettext.textdomain('gecosws-config-assistant')
 
 class ADAuthMethod(UserAuthenticationMethod):
     '''
-    DTO object that represents the necessary data to setup the active directory 
+    DTO object that represents the necessary data to setup the active directory
     authentication method.
     '''
-
 
     def __init__(self):
         '''
@@ -55,7 +56,4 @@ class ADAuthMethod(UserAuthenticationMethod):
             raise TypeError('value must be an instance of ADSetupData')
 
     data = property(get_data, set_data, None, None)
-
-
-
 

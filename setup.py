@@ -18,11 +18,14 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 __author__ = "Antonio Hernández <ahernandez@emergya.com>"
-__copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.org>"
+__copyright__ = "Copyright (C) 2011, Junta de Andalucía" + \
+    "<devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
 
-###################### DO NOT TOUCH THIS (HEAD TO THE SECOND PART) ######################
+###############################################
+# DO NOT TOUCH THIS (HEAD TO THE SECOND PART) #
+###############################################
 
 import os
 import sys
@@ -30,61 +33,71 @@ import glob
 
 try:
     import DistUtilsExtra.auto
-    from distutils.core import setup, Command
+    from distutils.core import Command
     from DistUtilsExtra.command import *
 except ImportError:
-    print >> sys.stderr, 'To build gecos-config-assistant you need https://launchpad.net/python-distutils-extra'
+    print >> sys.stderr, 'To build gecos-config-assistant you need' + \
+                         'https://launchpad.net/python-distutils-extra'
     sys.exit(1)
-assert DistUtilsExtra.auto.__version__ >= '2.18', 'needs DistUtilsExtra.auto >= 2.18'
+assert DistUtilsExtra.auto.__version__ >= '2.18', \
+    'needs DistUtilsExtra.auto >= 2.18'
 
 def get_datafiles(datadir):
-    source = ''
-    datafiles = []
-    for root, dirs, files in os.walk(datadir):
+
+    dfiles = []
+    for root, _, files in os.walk(datadir):
         sources = []
         for f in files:
             sources.append(os.path.join(root,f))
         root_s = root.split('/')
         root_s.remove(datadir)
         root = str.join('/', root_s)
-        datafiles.append(['share/gecosws-config-assistant/'+root, sources])
-    return datafiles
+        dfiles.append(['share/gecosws-config-assistant/'+root, sources])
+    return dfiles
 
 if not os.path.isfile('data/cookbooks/ohai-gecos/metadata.rb'):
     # Initialize git submodules
     os.system("git submodule init")
-    
-os.system("git submodule update")    
-    
+
+os.system("git submodule update")
+
 datafiles = get_datafiles('data')
-datafiles.append(('share/applications/', glob.glob('data/gecos-config-assistant.desktop')))
-datafiles.append(('share/polkit-1/actions/', glob.glob('polkit/com.ubuntu.pkexec.gecos-config-assistant.policy')))
+datafiles.append(
+    ('share/applications/',
+     glob.glob('data/gecos-config-assistant.desktop')))
+datafiles.append(
+    ('share/polkit-1/actions/',
+     glob.glob('polkit/com.ubuntu.pkexec.gecos-config-assistant.policy')))
 
 def update_config(values={}):
+    ''' Update configuration '''
 
     oldvalues = {}
     try:
-        fin = file('gecosws_config_assistant/firstboot_lib/firstbootconfig.py', 'r')
+        fin = file(
+            'gecosws_config_assistant/firstboot_lib/firstbootconfig.py',
+            'r')
         fout = file(fin.name + '.new', 'w')
 
         for line in fin:
             fields = line.split(' = ')  # Separate variable from value
             if fields[0] in values:
                 oldvalues[fields[0]] = fields[1].strip()
-                line = "%s = %s\n" % (fields[0], values[fields[0]])
+                line = "{} = {}\n".format(fields[0], values[fields[0]])
             fout.write(line)
 
         fout.flush()
         fout.close()
         fin.close()
         os.rename(fout.name, fin.name)
-    except (OSError, IOError), e:
-        print ("ERROR: Can't find gecosws_config_assistant/firstboot_lib/firstbootconfig.py")
+    except (OSError, IOError):
+        print "ERROR: Can't find gecosws_config_assistant/firstboot " + \
+            "lib/firstbootconfig.py"
         sys.exit(1)
     return oldvalues
 
-
 def update_desktop_file(datadir):
+    ''' Update desktop file '''
 
     try:
         fin = file('gecos-config-assistant.desktop.in', 'r')
@@ -92,37 +105,38 @@ def update_desktop_file(datadir):
 
         for line in fin:
             if 'Icon=' in line:
-                line = "Icon=%s\n" % (datadir + 'media/wizard1.png')
+                line = "Icon={}\n".format(datadir + 'media/wizard1.png')
             fout.write(line)
         fout.flush()
         fout.close()
         fin.close()
         os.rename(fout.name, fin.name)
-    except (OSError, IOError), e:
-        print ("ERROR: Can't find gecos-config-assistant.desktop.in")
+    except (OSError, IOError):
+        print "ERROR: Can't find gecos-config-assistant.desktop.in"
         sys.exit(1)
-
 
 def copy_pages(pages_path):
     pass
 
-
 class InstallAndUpdateDataDirectory(DistUtilsExtra.auto.install_auto):
+
     def run(self):
-        values = {'__firstboot_data_directory__': "'%s'" % (
-                                        self.prefix + '/share/gecosws-config-assistant/'),
-                  '__version__': "'%s'" % self.distribution.get_version(),
-                  '__firstboot_prefix__': "'%s'" % self.prefix}
+        values = {
+            '__firstboot_data_directory__': "'{}'".format(
+                self.prefix + '/share/gecosws-config-assistant/'),
+            '__version__': "'{}'".format(self.distribution.get_version()),
+            '__firstboot_prefix__': "'{}'".format(self.prefix)
+        }
+
         previous_values = update_config(values)
         update_desktop_file(self.prefix + '/share/gecosws-config-assistant/')
-        #create_solo_rb(self.prefix + '/share/gecosws-config-assistant/')
         DistUtilsExtra.auto.install_auto.run(self)
         update_config(previous_values)
         return True
 
-
 class Clean(Command):
-    description = "custom clean command that forcefully removes dist/build directories and update data directory"
+    description = "custom clean command that forcefully removes " + \
+                  "dist/build directories and update data directory"
     user_options = []
 
     def initialize_options(self):
@@ -132,10 +146,10 @@ class Clean(Command):
         self.cwd = os.getcwd()
 
     def run(self):
-        assert os.getcwd() == self.cwd, 'Must be in package root: %s' % self.cwd
+        assert os.getcwd() == self.cwd, 'Must be in package root: {}'.format(
+            self.cwd)
         os.system('rm -rf ./build ./dist')
         update_data_path(prefix, oldvalue)
-
 
 class Check(Command):
     description = "Run unit tests"
@@ -155,23 +169,34 @@ class Check(Command):
 
     def run(self):
         import unittest
-        
+
         import logging
         logging.basicConfig(level=logging.DEBUG)
-        
-        
-        from gecosws_config_assistant.tests.dto.NTPServerTest import NTPServerTest
-        from gecosws_config_assistant.tests.dto.NetworkInterfaceTest import NetworkInterfaceTest
-        from gecosws_config_assistant.tests.dto.WorkstationDataTest import WorkstationDataTest
-        from gecosws_config_assistant.tests.dto.GecosAccessDataTest import GecosAccessDataTest
-        from gecosws_config_assistant.tests.dto.LocalUserTest import LocalUserTest
-        from gecosws_config_assistant.tests.dto.UserAuthenticationMethodTest import UserAuthenticationMethodTest
-        from gecosws_config_assistant.tests.dto.LocalUsersAuthMethodTest import LocalUsersAuthMethodTest
-        from gecosws_config_assistant.tests.dto.ADSetupDataTest import ADSetupDataTest
-        from gecosws_config_assistant.tests.dto.LDAPSetupDataTest import LDAPSetupDataTest
-        from gecosws_config_assistant.tests.dto.ADAuthMethodTest import ADAuthMethodTest
-        from gecosws_config_assistant.tests.dto.LDAPAuthMethodTest import LDAPAuthMethodTest
-        from gecosws_config_assistant.tests.dto.SystemStatusTest import SystemStatusTest
+
+        from gecosws_config_assistant.tests.dto.NTPServerTest import (
+            NTPServerTest)
+        from gecosws_config_assistant.tests.dto.NetworkInterfaceTest import (
+            NetworkInterfaceTest)
+        from gecosws_config_assistant.tests.dto.WorkstationDataTest import (
+            WorkstationDataTest)
+        from gecosws_config_assistant.tests.dto.GecosAccessDataTest import (
+            GecosAccessDataTest)
+        from gecosws_config_assistant.tests.dto.LocalUserTest import (
+            LocalUserTest)
+        from gecosws_config_assistant.tests.dto.UserAuthenticationMethodTest \
+            import UserAuthenticationMethodTest
+        from gecosws_config_assistant.tests.dto.LocalUsersAuthMethodTest \
+            import LocalUsersAuthMethodTest
+        from gecosws_config_assistant.tests.dto.ADSetupDataTest import (
+            ADSetupDataTest)
+        from gecosws_config_assistant.tests.dto.LDAPSetupDataTest import (
+            LDAPSetupDataTest)
+        from gecosws_config_assistant.tests.dto.ADAuthMethodTest import (
+            ADAuthMethodTest)
+        from gecosws_config_assistant.tests.dto.LDAPAuthMethodTest import (
+            LDAPAuthMethodTest)
+        from gecosws_config_assistant.tests.dto.SystemStatusTest import (
+            SystemStatusTest)
 
         suite = unittest.TestSuite()
         # suite.addTest(NTPServerTest())
@@ -186,17 +211,25 @@ class Check(Command):
         # suite.addTest(ADAuthMethodTest())
         # suite.addTest(LDAPAuthMethodTest())
         # suite.addTest(SystemStatusTest())
-        
 
-        from gecosws_config_assistant.tests.util.PackageManagerTest import PackageManagerTest
-        from gecosws_config_assistant.tests.util.TemplateTest import TemplateTest
-        from gecosws_config_assistant.tests.util.JSONUtilTest import JSONUtilTest
-        from gecosws_config_assistant.tests.util.ValidationTest import ValidationTest
-        from gecosws_config_assistant.tests.util.GecosCCTest import GecosCCTest
-        from gecosws_config_assistant.tests.util.CommandUtilTest import CommandUtilTest
-        from gecosws_config_assistant.tests.util.SSLUtilTest import SSLUtilTest
-        from gecosws_config_assistant.tests.util.GemUtilTest import GemUtilTest
-        
+
+        from gecosws_config_assistant.tests.util.PackageManagerTest import (
+            PackageManagerTest)
+        from gecosws_config_assistant.tests.util.TemplateTest import (
+            TemplateTest)
+        from gecosws_config_assistant.tests.util.JSONUtilTest import (
+            JSONUtilTest)
+        from gecosws_config_assistant.tests.util.ValidationTest import (
+            ValidationTest)
+        from gecosws_config_assistant.tests.util.GecosCCTest import (
+            GecosCCTest)
+        from gecosws_config_assistant.tests.util.CommandUtilTest import (
+            CommandUtilTest)
+        from gecosws_config_assistant.tests.util.SSLUtilTest import (
+            SSLUtilTest)
+        from gecosws_config_assistant.tests.util.GemUtilTest import (
+            GemUtilTest)
+
         # suite.addTest(PackageManagerTest())
         # suite.addTest(TemplateTest())
         # suite.addTest(JSONUtilTest())
@@ -206,12 +239,18 @@ class Check(Command):
         suite.addTest(SSLUtilTest())
         # suite.addTest(GemUtilTest())
 
-        from gecosws_config_assistant.tests.dao.NTPServerDAOTest import NTPServerDAOTest
-        from gecosws_config_assistant.tests.dao.NetworkInterfaceDAOTest import NetworkInterfaceDAOTest
-        from gecosws_config_assistant.tests.dao.WorkstationDataDAOTest import WorkstationDataDAOTest
-        from gecosws_config_assistant.tests.dao.GecosAccessDataDAOTest import GecosAccessDataDAOTest
-        from gecosws_config_assistant.tests.dao.LocalUserDAOTest import LocalUserDAOTest
-        from gecosws_config_assistant.tests.dao.UserAuthenticationMethodDAOTest import UserAuthenticationMethodDAOTest
+        from gecosws_config_assistant.tests.dao.NTPServerDAOTest import (
+            NTPServerDAOTest)
+        from gecosws_config_assistant.tests.dao.NetworkInterfaceDAOTest import (
+            NetworkInterfaceDAOTest)
+        from gecosws_config_assistant.tests.dao.WorkstationDataDAOTest import (
+            WorkstationDataDAOTest)
+        from gecosws_config_assistant.tests.dao.GecosAccessDataDAOTest import (
+            GecosAccessDataDAOTest)
+        from gecosws_config_assistant.tests.dao.LocalUserDAOTest import (
+            LocalUserDAOTest)
+        from gecosws_config_assistant.tests.dao.UserAuthenticationMethodDAOTest \
+            import UserAuthenticationMethodDAOTest
 
         # suite.addTest(NTPServerDAOTest())
         # suite.addTest(NetworkInterfaceDAOTest())
@@ -220,13 +259,13 @@ class Check(Command):
         # suite.addTest(LocalUserDAOTest())
         # suite.addTest(UserAuthenticationMethodDAOTest())
 
-        
-        return unittest.TextTestRunner(verbosity=2).run(suite)    
-        
-        
-##################################################################################
-###################### YOU SHOULD MODIFY ONLY WHAT IS BELOW ######################
-##################################################################################
+
+        return unittest.TextTestRunner(verbosity=2).run(suite)
+
+
+##############################################################################
+#################### YOU SHOULD MODIFY ONLY WHAT IS BELOW ####################
+##############################################################################
 
 DistUtilsExtra.auto.setup(
     name='gecosws-config-assistant',

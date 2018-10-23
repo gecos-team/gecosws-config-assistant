@@ -1,5 +1,4 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
-
 # This file is part of Guadalinex
 #
 # This software is free software; you can redistribute it and/or modify
@@ -15,26 +14,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this package; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-
 __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
-__copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
+__copyright__ = "Copyright (C) 2015, Junta de Andalucía" + \
+    "<devmaster@guadalinex.org>"
 __license__ = "GPL-2"
-
 import re
 import logging
-import requests
 import traceback
 import ssl
 import os
+import codecs
 from socket import socket
 from OpenSSL import crypto
 from pyasn1.codec.ber import decoder
 from pyasn1_modules.rfc2459 import AuthorityInfoAccessSyntax, id_ad_caIssuers
 import requests
-import codecs
-
 from gecosws_config_assistant.util.CommandUtil import CommandUtil
-
 SSL_R_APP_DATA_IN_HANDSHAKE=100
 SSL_R_ATTEMPT_TO_REUSE_SESSION_IN_DIFFERENT_CONTEXT=272
 SSL_R_AT_LEAST_TLS_1_0_NEEDED_IN_FIPS_MODE=143
@@ -289,17 +284,13 @@ SSL_R_WRONG_SSL_VERSION=266
 SSL_R_WRONG_VERSION_NUMBER=267
 SSL_R_X509_LIB=268
 SSL_R_X509_VERIFICATION_SETUP_PROBLEMS=269
-
 UNKNOWN_ERROR=0x1000
-
 SSL_verification_enabled = True
 
 class SSLUtil(object):
     '''
     Utility class to work with SSL certificates.
     '''
-
-
     def __init__(self):
         '''
         Constructor
@@ -309,127 +300,124 @@ class SSLUtil(object):
 
     @staticmethod
     def disableSSLCertificatesVerification():
+        ''' Disabling SSL Certificate verification '''
+
         global SSL_verification_enabled
         SSL_verification_enabled = False
 
     @staticmethod
     def enableSSLCertificatesVerification():
+        ''' Enabling SSL certificate verification '''
+
         global SSL_verification_enabled
         SSL_verification_enabled = True
 
     @staticmethod
     def isSSLCertificatesVerificationEnabled():
+        ''' Is SSL certificate verification enabled? '''
+
         global SSL_verification_enabled
         return SSL_verification_enabled
 
-
-
     def isServerCertificateTrusted(self, url):
+        ''' Is server certificate trusted? '''
+
         if url is None:
             return False
-
         if not SSLUtil.isSSLCertificatesVerificationEnabled():
             # SSL certificate verification is disabled
             return True
-        
         # Check credentials
         try:
             r = requests.get(url, verify=True, timeout=self.timeout)
-            return True            
-            
+            return True
         except requests.exceptions.SSLError:
-            self.logger.debug('Certifcate not trusted in URL: %s'%(url))
-            
+            self.logger.debug('Certificate not trusted in URL: %s', url)
         except Exception:
-            self.logger.warn('Error connecting to server: %s'%(url))
+            self.logger.warn('Error connecting to server: %s', url)
             self.logger.warn(str(traceback.format_exc()))
-            
-        return False    
+        return False
 
     def getUntrustedCertificateCause(self, url):
+        ''' Getting untrusted certificate cause '''
+
         if url is None:
             return None
-        
         if not SSLUtil.isSSLCertificatesVerificationEnabled():
             # SSL certificate verification is disabled
             return None
-
         # Check credentials
         try:
             r = requests.get(url, verify=True, timeout=self.timeout)
-            
         except requests.exceptions.SSLError as e:
             msg = str(e)
-            self.logger.warn('Untrusted Certificate Cause: %s'%(msg))
-            
-            # Check if the error message is similar to '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:590)'
-            p = re.compile('.*\\[SSL: (?P<constant>[A-Z_]+)\\] (?P<message>[^\\(]+)')
+            self.logger.warn('Untrusted Certificate Cause: %s', msg)
+            # Check if the error message is similar to
+            # '[SSL: CERTIFICATE_VERIFY_FAILED] certificate
+            # verify failed (_ssl.c:590)'
+            p = re.compile(
+                '.*\\[SSL: (?P<constant>[A-Z_]+)\\] (?P<message>[^\\(]+)'
+            )
             m = p.match(msg)
             if m is not None:
                 if m.groups('message') is not None:
                     return m.groups('message')[0].strip()
-            
             # If not we simply suppose that the error message is at the end
             if msg.rfind(':') > 0:
                 msg = msg[(msg.rfind(':')+1):]
-            
-            
             return msg
-            
         except Exception as e:
             return str(e)
-            
-        return None    
-        
+        return None
+
     def getUntrustedCertificateErrorCode(self, url):
+        ''' Getting untrusted certificate error code '''
+
         if url is None:
             return None
-        
         if not SSLUtil.isSSLCertificatesVerificationEnabled():
             # SSL certificate verification is disabled
             return None
-
         # Check credentials
         try:
             r = requests.get(url, verify=True, timeout=self.timeout)
-            
         except requests.exceptions.SSLError as e:
-            self.logger.warn('Untrusted Certificate Cause to error code: %s'%(str(e)))
+            self.logger.warn(
+                'Untrusted Certificate Cause to error code: %s', str(e))
             msg = str(e)
             errornum = None
-            
-            # Check if the error message is similar to '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_ssl.c:590)'
-            p = re.compile('.*\\[SSL: (?P<constant>[A-Z_]+)\\] (?P<message>[^\\(]+)')
+            # Check if the error message is similar to
+            # '[SSL: CERTIFICATE_VERIFY_FAILED] certificate
+            #  verify failed (_ssl.c:590)'
+            p = re.compile(
+                '.*\\[SSL: (?P<constant>[A-Z_]+)\\] (?P<message>[^\\(]+)'
+            )
             m = p.match(msg)
             if m is not None:
                 if m.groups('constant') is not None:
                     constant = m.groups('message')[0].strip()
                     try:
-                        errornum = eval('SSL_R_%s'%(constant))
-                    except:
-                        self.logger.warn('Error evaluating constant: %s'%(constant))
-            
+                        errornum = eval('SSL_R_{}'.format(constant))
+                    except Exception:
+                        self.logger.warn(
+                            'Error evaluating constant: %s',constant)
             # If not look for a packed error number
             if msg.rfind('error:') > 0:
                 msg = msg[(msg.find('error:')+6):]
                 errornum = msg[:(msg.find(':'))]
                 errornum = int('0x'+errornum, 16)
-
                 # Unpack the reason
                 errornum = errornum & 0xFFF
-            
             return errornum
-            
         except Exception as e:
             return None
-            
-        return None    
-        
-        
+        return None
+
     def getServerCertificate(self, url):
+        ''' Getting server certificate '''
+
         if url is None:
             return None
-        
         server_port = 443
         server_ip = ''
         if not url.startswith('https://'):
@@ -439,274 +427,262 @@ class SSLUtil(object):
             slashpos = url.find('/')
             if slashpos > 0:
                 url = url[:slashpos]
-            
             colonpos = url.find(':')
-            
             if colonpos > 0:
                 server_ip = url[:colonpos]
                 server_port = int(url[(colonpos+1):])
             else:
                 server_ip = url
-            
-        try:            
-            self.logger.debug('server_ip: %s  server_port: %s'%(server_ip, server_port))
+        try:
+            self.logger.debug('server_ip: %s  server_port: %s',
+                              server_ip, server_port)
             s = socket()
             s.settimeout(self.timeout)
             c = ssl.wrap_socket(s,cert_reqs=ssl.CERT_NONE)
             c.connect((server_ip, server_port))
-            
             return c.getpeercert(True)
-            
         except Exception:
-            self.logger.warn('Error connecting to server: %s'%(url))
+            self.logger.warn('Error connecting to server: %s', url)
             self.logger.warn(str(traceback.format_exc()))
-            
-        return None    
-                    
+        return None
+
     def isPEM(self, certificate):
-        return (certificate.find('-----BEGIN CERTIFICATE-----') >= 0)
-        
+        ''' Is pem? '''
+
+        self.logger.debug("isPEM starting...")
+        return certificate.find('-----BEGIN CERTIFICATE-----') >= 0
+
     def isSelfSigned(self, certificate_info):
-        return (certificate_info.get_issuer() == certificate_info.get_subject())
-        
+        ''' Is self signed? '''
+
+        self.logger.debug("isSelfSigned starting...")
+        return certificate_info.get_issuer() == certificate_info.get_subject()
+
     def getCertificateInfo(self, certificate):
+        ''' Getting certificate info '''
+
         if certificate is None:
             return None
-        
         filetype = crypto.FILETYPE_ASN1
         if self.isPEM(certificate):
             filetype = crypto.FILETYPE_PEM
-            
         cert = crypto.load_certificate(crypto.FILETYPE_ASN1, certificate)
-            
         return cert
 
     def getIssuerCertificateURL(self, certificate_info):
+        ''' Getting issuer certificate url '''
+
         url = None
-        
         if certificate_info is None:
             return None
-            
         if certificate_info.get_extension_count() <= 0:
             return None
-           
         try:
             for i in range(0, certificate_info.get_extension_count()):
                 ext = certificate_info.get_extension(i)
-                if 'authorityInfoAccess' == ext.get_short_name():
-                    data = decoder.decode(ext.get_data(), asn1Spec=AuthorityInfoAccessSyntax())
+                if ext.get_short_name() == 'authorityInfoAccess':
+                    data = decoder.decode(
+                        ext.get_data(),
+                        asn1Spec=AuthorityInfoAccessSyntax())
+
                     for authorityInfoAccessSyntax in data:
                         for i in range(len(authorityInfoAccessSyntax)):
-                            accessDescription = authorityInfoAccessSyntax.getComponentByPosition(i)
-                            if id_ad_caIssuers == accessDescription.getComponentByName('accessMethod'):
-                                url = unicode(accessDescription.getComponentByName('accessLocation').getComponentByName('uniformResourceIdentifier'))
+                            accessDescription = authorityInfoAccessSyntax \
+                                                .getComponentByPosition(i)
+                            if (
+                                id_ad_caIssuers == \
+                                accessDescription \
+                                .getComponentByName('accessMethod')
+                            ):
+                                url = unicode(
+                                    accessDescription \
+                                    .getComponentByName('accessLocation') \
+                                    .getComponentByName(
+                                        'uniformResourceIdentifier'))
                                 break
-        except:
-            self.logger.warn('Error trying to get issuer certificate URL from cetificate info!')
+        except Exception:
+            self.logger.warn(
+                'Error trying to get issuer certificate URL '+
+                'from cetificate info!')
             self.logger.warn(str(traceback.format_exc()))
-            
+
         return url
-        
+
     def getCertificateFromURL(self, url):
+        ''' Getting certificate from url '''
+
         if url is None:
             return None
-
         certificate = None
         r = requests.get(url, verify=None, timeout=self.timeout)
         if r.ok:
-            certificate = r.content                
-        
+            certificate = r.content
         return certificate
-        
-    def addCertificateToTrustedCAs(self, certificate, isChefCertificate = False):
+
+    def addCertificateToTrustedCAs(self, certificate, isChefCertificate=False):
+        ''' Adding certificate to trusted CAs '''
+
         if certificate is None:
             return
-            
         if not os.path.isdir('/usr/share/ca-certificates/'):
-            raise Exception('There is no /usr/share/ca-certificates/ directory')
-            
+            raise Exception(
+                'There is no /usr/share/ca-certificates/ directory')
         if not os.path.isfile('/etc/ca-certificates.conf'):
             raise Exception('There is no /etc/ca-certificates.conf file')
-            
         if not os.path.isdir('/usr/share/ca-certificates/gecos'):
-            os.mkdir('/usr/share/ca-certificates/gecos') 
-        
+            os.mkdir('/usr/share/ca-certificates/gecos')
         info = self.getCertificateInfo(certificate)
         filename = 'unknown'
         if info.get_subject().commonName is not None:
             filename = ("%s.crt"%(info.get_subject().commonName.lower()))
-            
         if not self.isSelfSigned(info):
             # Is not a self signed certificate
             # We must get the Issuer CA certificate
             url = self.getIssuerCertificateURL(info)
             if url is None:
                 raise Exception('Can\'t find issuer CA certificate URL!')
-            
             certificate = self.getCertificateFromURL(url)
-            filename = os.path.basename(url)     
+            filename = os.path.basename(url)
             info = self.getCertificateInfo(certificate)
-
             if self.getIssuerCertificateURL(info) is not None:
                 # Recursively add certificate to trusted CA
                 self.addCertificateToTrustedCAs(certificate)
-        
-        # Write PEM certificate into /usr/share/ca-certificates/gecos/<certificate CN>.crt
+        # Write PEM certificate into
+        # /usr/share/ca-certificates/gecos/<certificate CN>.crt
         fd = open('/usr/share/ca-certificates/gecos/%s'%(filename), 'w')
         fd.write(self.convertDERcertificateToPEM(certificate))
         fd.close()
-
-        # Chef server certificates must be also included inside /etc/chef/trusted_certs path
-        # (At least for embedded Chef clients that use /opt/chef/embedded/ssl/certs)
-        if isChefCertificate and not os.path.exists('/etc/chef/trusted_certs/%s'%(filename)):
-            if not os.path.isdir('/etc/chef'): 
+        # Chef server certificates must be also included inside
+        # /etc/chef/trusted_certs path (at least for embedded Chef clients
+        # that use /opt/chef/embedded/ssl/certs)
+        if (
+            isChefCertificate and
+            not os.path.exists('/etc/chef/trusted_certs/{}'.format(filename))
+        ):
+            if not os.path.isdir('/etc/chef'):
                 os.mkdir('/etc/chef')
-
-            if not os.path.isdir('/etc/chef/trusted_certs'): 
+            if not os.path.isdir('/etc/chef/trusted_certs'):
                 os.mkdir('/etc/chef/trusted_certs')
-
-            os.symlink('/usr/share/ca-certificates/gecos/%s'%(filename), '/etc/chef/trusted_certs/%s'%(filename))
-
-        
-        # Check if there is a line for this certificate in /etc/ca-certificates.conf
+            os.symlink(
+                '/usr/share/ca-certificates/gecos/{}'.format(filename),
+                '/etc/chef/trusted_certs/{}'.format(filename))
+        # Check if there is a line for this certificate
+        # in /etc/ca-certificates.conf
         fd = codecs.open('/etc/ca-certificates.conf', 'r', encoding='utf-8')
         ca_certificates_conf = fd.read()
         fd.close()
-        
         found = False
         ca_certificates = []
         for line in ca_certificates_conf.split('\n'):
-            if line.startswith(u'gecos/%s'%(filename)):
+            if line.startswith(u'gecos/{}'.format(filename)):
                 # The certificate already existed
                 found = True
-                
-            if not line.startswith(u'!gecos/%s'%(filename)) and len(line.strip()) > 0:
+            if (
+                not line.startswith(u'!gecos/{}'.format(filename)) and
+                len(line.strip()) > 0
+            ):
                 # Skip the deleted certificate
                 ca_certificates.append(line)
-        
         if not found:
-            ca_certificates.append(u'gecos/%s'%(filename))
+            ca_certificates.append(u'gecos/{}'.format(filename))
             ca_certificates.append(u'')
             ca_certificates_conf = '\n'.join(ca_certificates)
-        
             # Overwrite the  /etc/ca-certificates.conf file
-            fd = codecs.open('/etc/ca-certificates.conf', 'w', encoding='utf-8')
+            fd = codecs.open('/etc/ca-certificates.conf','w',encoding='utf-8')
             fd.write(ca_certificates_conf)
-            fd.close()            
-        
+            fd.close()
             # Run update-ca-certificates
             commandUtil = CommandUtil()
             commandUtil.execute_command('/usr/sbin/update-ca-certificates')
-        
+
     def formatX509Name(self, x509Name):
-        str = '';
-        
+        ''' Formatting X509 name '''
+
+        self.logger.debug("formatX509Name starting...")
+        string = ''
         if x509Name.commonName is not None:
-            str = str + 'CN='+x509Name.commonName+', '
-
+            string = string + 'CN='+x509Name.commonName+', '
         if x509Name.organizationalUnitName is not None:
-            str = str + 'OU='+x509Name.organizationalUnitName+', '
-
+            string = string + 'OU='+x509Name.organizationalUnitName+', '
         if x509Name.organizationName is not None:
-            str = str + 'O='+x509Name.organizationName+', '
-            
+            string = string + 'O='+x509Name.organizationName+', '
         if x509Name.localityName is not None:
-            str = str + 'L='+x509Name.localityName+', '
-            
+            string = string + 'L='+x509Name.localityName+', '
         if x509Name.stateOrProvinceName is not None:
-            str = str + 'ST='+x509Name.stateOrProvinceName+', '
-            
+            string = string + 'ST='+x509Name.stateOrProvinceName+', '
         if x509Name.countryName is not None:
-            str = str + 'C='+x509Name.countryName+', '
-        
-        if str.endswith(', '):
-            str = str[:-2]
-        
-        return str
-        
-        
-        
+            string = string + 'C='+x509Name.countryName+', '
+        if string.endswith(', '):
+            string = string[:-2]
+        return string
+
     def removeCertificateFromTrustedCAs(self, certificate):
+        ''' Removing certificate from trusted CAs '''
+
         if certificate is None:
             return
-            
         if not os.path.isdir('/usr/share/ca-certificates/'):
-            raise Exception('There is no /usr/share/ca-certificates/ directory')
-            
+            raise Exception(
+                'There is no /usr/share/ca-certificates/ directory')
         if not os.path.isfile('/etc/ca-certificates.conf'):
             raise Exception('There is no /etc/ca-certificates.conf file')
-            
         if not os.path.isdir('/usr/share/ca-certificates/gecos'):
             # There are no certificates to remove
             return
-        
-        # Check if there is a line for this certificate in /etc/ca-certificates.conf
-        info = self.getCertificateInfo(certificate)        
+        # Check if there is a line for this certificate
+        # in /etc/ca-certificates.conf
+        info = self.getCertificateInfo(certificate)
         filename = 'unknown'
-        if info.get_subject().commonName is not None:        
-            filename = ("%s.crt"%(info.get_subject().commonName.lower()))
-        
+        if info.get_subject().commonName is not None:
+            filename = ("{}.crt".format(info.get_subject().commonName.lower()))
         if not self.isSelfSigned(info):
             # Is not a self signed certificate
             # We must get the Issuer CA certificate
             url = self.getIssuerCertificateURL(info)
             if url is None:
                 raise Exception('Can\'t find issuer CA certificate URL!')
-            filename = os.path.basename(url)      
-        
-        
+            filename = os.path.basename(url)
         fd = codecs.open('/etc/ca-certificates.conf', 'r', encoding='utf-8')
         ca_certificates_conf = fd.read()
         fd.close()
-        
         found = False
         ca_certificates = []
         for line in ca_certificates_conf.split('\n'):
-            if line.startswith(u'gecos/%s'%(filename)):
+            if line.startswith(u'gecos/{}'.format(filename)):
                 # The certificate already exist
                 found = True
-                
             elif len(line.strip()) > 0:
                 ca_certificates.append(line)
-        
         if found:
-            ca_certificates.append(u'!gecos/%s'%(filename))
+            ca_certificates.append(u'!gecos/{}'.format(filename))
             ca_certificates.append(u'')
             ca_certificates_conf = '\n'.join(ca_certificates)
-      
-        
             # Overwrite the  /etc/ca-certificates.conf file
-            fd = codecs.open('/etc/ca-certificates.conf', 'w', encoding='utf-8')
+            fd = codecs.open('/etc/ca-certificates.conf','w',encoding='utf-8')
             fd.write(ca_certificates_conf)
-            fd.close()            
-        
+            fd.close()
             # Run update-ca-certificates
             commandUtil = CommandUtil()
-            commandUtil.execute_command('/usr/sbin/update-ca-certificates')        
+            commandUtil.execute_command('/usr/sbin/update-ca-certificates')
+        if os.path.lexists('/etc/chef/trusted_certs/{}'.format(filename)):
+            os.unlink('/etc/chef/trusted_certs/{}'.format(filename))
 
-        if os.path.lexists('/etc/chef/trusted_certs/%s'%(filename)):
-            os.unlink('/etc/chef/trusted_certs/%s'%(filename))
-            
-
-        
-        
     def convertDERcertificateToPEM(self, certificate):
+        ''' Converting DER certificate to PEM '''
+
         if certificate is None:
             return None
-            
         if self.isPEM(certificate):
             return certificate
-            
         pem = ssl.DER_cert_to_PEM_cert(certificate)
         return pem
-        
+
     def convertPEMcertificateToDER(self, certificate):
+        ''' Converting PEM certificate to DER '''
+
         if certificate is None:
             return None
-            
         if not self.isPEM(certificate):
             return certificate
-            
         der = ssl.PEM_cert_to_DER_cert(certificate)
         return der
-        

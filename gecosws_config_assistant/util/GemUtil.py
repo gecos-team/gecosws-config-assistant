@@ -17,12 +17,12 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
-__copyright__ = "Copyright (C) 2016, Junta de Andalucía <devmaster@guadalinex.org>"
+__copyright__ = "Copyright (C) 2015, Junta de Andalucía" + \
+    "<devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
 import logging
 import os
-
 
 from gecosws_config_assistant.util.CommandUtil import CommandUtil
 from gecosws_config_assistant.util.PackageManager import PackageManager
@@ -51,48 +51,75 @@ class GemUtil(object):
         self.pm = PackageManager()
 
     def get_gem_sources_list(self):
-        list = []
+        ''' Getting gem sources '''
 
-        output = self.commandUtil.get_command_output('%s source --list'%(self.command))
+        lst = []
+
+        output = self.commandUtil.get_command_output(
+            '{} source --list'.format(self.command))
 
         for line in output:
             if line.startswith('http'):
-                list.append(line.strip())
+                lst.append(line.strip())
 
-        return list
+        return lst
+
     def clear_cache_gem_sources(self):
+        ''' Cleaning up gem sources cache '''
 
-        return self.commandUtil.execute_command('%s source -c --config-file "%s"'%(self.command, self.sys_gemrc))
-        
+        return self.commandUtil.execute_command(
+            '{} source -c --config-file "{}"'.format(
+                self.command, self.sys_gemrc)
+        )
+
     def remove_all_gem_sources(self):
+        ''' Removing all gem sources '''
+
         sources = self.get_gem_sources_list()
         for source in sources:
             print "removing %s", source
-            self.commandUtil.execute_command('%s source -r "%s" --config-file "%s"'%(self.command, source, self.sys_gemrc))
+            self.commandUtil.execute_command(
+                '{} source -r "{}" --config-file "{}"'.format(
+                    self.command, source, self.sys_gemrc)
+            )
+
         if os.path.exists(self.sys_gemrc):
             os.remove(self.sys_gemrc)
 
     # Adding only gecoscc.ini source ("gem_repo")
-    # The gem add command adds https://rubygems.org source by default. We must manually delete it.
+    # The gem add command adds https://rubygems.org source
+    # by default. We must manually delete it.
     def add_gem_only_one_source(self, url):
+        ''' Adding only gecoscc.ini gem source '''
+
         sources = self.get_gem_sources_list()
 
-        self.logger.debug("adding gem source from gecoscc.ini: %s" % (url))
+        self.logger.debug("adding gem source from gecoscc.ini: %s", url)
         res = self.add_gem_source(url)
 
         self.logger.debug("deleting all the other sources")
         for source in sources:
             if source != url:
-                self.logger.debug("removing %s from gem sources" % (source))
-                res &= self.commandUtil.execute_command('%s source -r "%s" --config-file "%s"'%(self.command, source, self.sys_gemrc))
+                self.logger.debug("removing %s from gem sources", source)
+                res &= self.commandUtil.execute_command(
+                    '{} source -r "{}" --config-file "{}"'.format(
+                        self.command, source, self.sys_gemrc)
+                )
 
         return res
 
     def add_gem_source(self, url):
-        return self.commandUtil.execute_command('%s source -a "%s" --config-file "%s"'%(self.command, url, self.sys_gemrc))
+        ''' Adding gem sources '''
+
+        return self.commandUtil.execute_command(
+            '{} source -a "{}" --config-file "{}"'.format(
+                self.command, url, self.sys_gemrc))
 
     def is_gem_intalled(self, gem_name):
-        output = self.commandUtil.get_command_output('%s list'%(self.command))
+        ''' Is gem installed? '''
+
+        output = self.commandUtil.get_command_output(
+            '{} list'.format(self.command))
         res = False
         if output != False:
             for line in output:
@@ -102,38 +129,51 @@ class GemUtil(object):
         return res
 
     def install_gem(self, gem_name):
+        ''' Installing gem '''
+
         if not self.rubyEmbeddedInChef:
             # Try to install the GEM by using the package manager
             package_name = gem_name
             if not package_name.startswith('ruby-'):
-                package_name = 'ruby-%s'%(package_name)
-                
-            if (self.pm.exists_package(package_name) and not self.pm.is_package_installed(package_name)):
+                package_name = 'ruby-{}'.format(package_name)
+
+            if (
+                self.pm.exists_package(package_name) and
+                not self.pm.is_package_installed(package_name)
+            ):
                 self.pm.install_package(package_name)
-            
+
             if self.is_gem_intalled(gem_name):
                 # GEM installed successfully by using the package manager
                 return True
-                
+
             # GEM is not installed successfully
             if not self.pm.is_package_installed('build-essential'):
                 # We will need 'build-essential' package to build GEMs
                 self.pm.install_package('build-essential')
-            
-        return self.commandUtil.execute_command('%s install "%s"'%(self.command, gem_name), os.environ)
+
+        return self.commandUtil.execute_command(
+            '{} install "{}"'.format(self.command, gem_name),
+            os.environ)
 
     def uninstall_gem(self, gem_name):
+        ''' Uninstall gem '''
+
         if not self.rubyEmbeddedInChef:
             # Try to uninstall the GEM by using the package manager
             package_name = gem_name
             if not package_name.startswith('ruby-'):
-                package_name = 'ruby-%s'%(package_name)
-                
-            if (self.pm.exists_package(package_name) and self.pm.is_package_installed(package_name)):
-                self.pm.remove_package(package_name)        
-                
+                package_name = 'ruby-{}'.format(package_name)
+
+            if (
+                self.pm.exists_package(package_name) and
+                self.pm.is_package_installed(package_name)
+            ):
+                self.pm.remove_package(package_name)
+
             if not self.is_gem_intalled(gem_name):
                 # GEM uninstalled successfully by using the package manager
-                return True    
-    
-        return self.commandUtil.execute_command('%s uninstall "%s"'%(self.command, gem_name))
+                return True
+
+        return self.commandUtil.execute_command(
+            '{} uninstall "{}"'.format(self.command, gem_name))
