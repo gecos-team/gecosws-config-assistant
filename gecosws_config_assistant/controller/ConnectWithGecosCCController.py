@@ -193,38 +193,28 @@ class ConnectWithGecosCCController(object):
                                 ,'utf-8')
                         else:
                             message = unicode(
-                                _("The certificate of this server is not" +
+                                _("The certificate of this server is not " +
                                   "trusted!")
                                 ,'utf-8')
 
-                        response = askyesno_gtk(
-                            (message + "\n" +
-                             unicode(
-                                _("Do you want to disable the SSL " +
-                                  "certificate verification?"),
-                                 'utf-8') +
-                                "\n\n" +
-                                unicode(_("Subject:"), 'utf-8') +
-                                " " +
-                                (sslUtil.formatX509Name(info.get_subject())) +
-                                "\n" +
-                                unicode(_("Issuer:"), 'utf-8') +
-                                " " +
-                                (sslUtil.formatX509Name(info.get_issuer())) +
-                                "\n" +
-                                unicode(_("Serial Number:"), 'utf-8') +
-                                " " +
-                                str(info.get_serial_number()) +
-                                "\n" +
-                                unicode(_("Not before:"), 'utf-8') +
-                                " " +
-                                str(info.get_notBefore()) +
-                                " " +
-                                unicode(_("Not after:"), 'utf-8') +
-                                " " +
-                                str(info.get_notAfter()) +
-                                "\n"),
-                            self.view, 'warning')
+                        ask_msg = message + "\n"
+                        ask_msg += unicode(
+                            _("Do you want to disable the SSL " +
+                              "certificate verification?"), 'utf-8')
+                        ask_msg += "\n\n"
+                        ask_msg += unicode(_("Subject:"), 'utf-8') + " "
+                        ask_msg += sslUtil.formatX509Name(info.get_subject())
+                        ask_msg += unicode(_("Issuer:"), 'utf-8') + " "
+                        ask_msg += sslUtil.formatX509Name(
+                            info.get_issuer()) + "\n"
+                        ask_msg += unicode(_("Serial Number:"), 'utf-8') + " "
+                        ask_msg += str(info.get_serial_number()) + "\n"
+                        ask_msg += unicode(_("Not before:"), 'utf-8') + " "
+                        ask_msg += str(info.get_notBefore()) + "\n"
+                        ask_msg += unicode(_("Not after:"), 'utf-8') + " "
+                        ask_msg += str(info.get_notAfter()) + "\n"
+
+                        response = askyesno_gtk(ask_msg, self.view, 'warning')
 
                         if not response:
                             self.logger.debug(
@@ -556,26 +546,27 @@ class ConnectWithGecosCCController(object):
                                     _("The certificate of this server " +
                                       "is not trusted!"), 'utf-8')
 
+                            ask_msg = message + "\n"
+                            ask_msg += unicode(
+                                _("Do you want to disable the SSL " +
+                                  "certificate verification?"), 'utf-8')
+                            ask_msg += "\n\n"
+                            ask_msg += unicode(_("Subject:"), 'utf-8') + " "
+                            ask_msg += sslUtil.formatX509Name(
+                                info.get_subject())
+                            ask_msg += unicode(_("Issuer:"), 'utf-8') + " "
+                            ask_msg += sslUtil.formatX509Name(
+                                info.get_issuer()) + "\n"
+                            ask_msg += unicode(
+                                _("Serial Number:"), 'utf-8') + " "
+                            ask_msg += str(info.get_serial_number()) + "\n"
+                            ask_msg += unicode(_("Not before:"), 'utf-8') + " "
+                            ask_msg += str(info.get_notBefore()) + "\n"
+                            ask_msg += unicode(_("Not after:"), 'utf-8') + " "
+                            ask_msg += str(info.get_notAfter()) + "\n"
+
                             response = askyesno_gtk(
-                                (message + "\n" +
-                                 unicode(
-                                    _("Do you want to disable the SSL " +
-                                      "certificate verification?"), 'utf-8') +
-                                 "\n\n" +
-                                unicode(
-                                    _("Subject:"), 'utf-8') + " " +
-                                (sslUtil.formatX509Name(info.get_subject())) +
-                                "\n" +
-                                unicode(_("Issuer:"), 'utf-8') + " " +
-                                (sslUtil.formatX509Name(info.get_issuer())) +
-                                "\n" +
-                                unicode(_("Serial Number:"), 'utf-8') + " " +
-                                str(info.get_serial_number()) + "\n" +
-                                unicode(_("Not before:"), 'utf-8') + " " +
-                                str(info.get_notBefore()) + " " +
-                                unicode(_("Not after:"), 'utf-8') + " " +
-                                str(info.get_notAfter()) + "\n"),
-                                self.view, 'warning')
+                                ask_msg, self.view, 'warning')
 
                             if not response:
                                 self.logger.debug(
@@ -701,28 +692,27 @@ class ConnectWithGecosCCController(object):
                                 , 'utf-8')
                         else:
                             message = unicode(
-                                _("The certificate of this server is not" +
+                                _("The certificate of this server is not " +
                                 "trusted!"), 'utf-8')
 
-                        response = askyesno_gtk(
-                            (message + "\n" +
-                            unicode(
-                                _("Do you want to disable the SSL" +
-                                  "certificate verification?"), 'utf-8') +
-                            "\n\n" +
-                            +unicode(_("Subject:"), 'utf-8') + " " +
-                            (sslUtil.formatX509Name(info.get_subject())) +
-                            "\n" +
-                            unicode(_("Issuer:"), 'utf-8') + " " +
-                            (sslUtil.formatX509Name(info.get_issuer())) +
-                            "\n" +
-                            unicode(_("Serial Number:"), 'utf-8') + " " +
-                            str(info.get_serial_number()) + "\n" +
-                            unicode(_("Not before:"), 'utf-8') + " " +
-                            str(info.get_notBefore()) + " " +
-                            unicode(_("Not after:"), 'utf-8') + " " +
-                            str(info.get_notAfter()) + "\n"),
-                            self.view, 'warning')
+                        ask_msg = message + "\n"
+                        ask_msg += unicode(
+                            _("Do you want to disable the SSL " +
+                              "certificate verification?"), 'utf-8')
+                        ask_msg += "\n\n"
+                        ask_msg += unicode(_("Subject:"), 'utf-8') + " "
+                        ask_msg += sslUtil.formatX509Name(info.get_subject())
+                        ask_msg += unicode(_("Issuer:"), 'utf-8') + " "
+                        ask_msg += sslUtil.formatX509Name(
+                            info.get_issuer()) + "\n"
+                        ask_msg += unicode(_("Serial Number:"), 'utf-8') + " "
+                        ask_msg += str(info.get_serial_number()) + "\n"
+                        ask_msg += unicode(_("Not before:"), 'utf-8') + " "
+                        ask_msg += str(info.get_notBefore()) + "\n"
+                        ask_msg += unicode(_("Not after:"), 'utf-8') + " "
+                        ask_msg += str(info.get_notAfter()) + "\n"
+
+                        response = askyesno_gtk(ask_msg, self.view, 'warning')
 
                         if not response:
                             self.logger.debug(
@@ -892,6 +882,8 @@ class ConnectWithGecosCCController(object):
         return True
 
     def disconnect(self, local_disconn_checkbox):
+        ''' Disconnect '''
+
         self.logger.info("Disconnect from Gecos CC")
 
         if local_disconn_checkbox:

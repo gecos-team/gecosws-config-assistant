@@ -50,13 +50,12 @@ def showerror_gtk(message, parent_window):
     dialog.run()
     dialog.destroy()
 
-def askyesno_gtk(message, parent_window):
+def askyesno_gtk(message, parent_window = None,
+                 msgtype = Gtk.MessageType.QUESTION):
     ''' Asking yes/no gtk '''
 
-    msgtype = Gtk.MessageType.QUESTION
     if msgtype == 'warning':
         msgtype = Gtk.MessageType.WARNING
-    parent_window = None
     dialog = Gtk.MessageDialog(parent_window, 0, msgtype,
             Gtk.ButtonsType.YES_NO, message)
     response = dialog.run()
