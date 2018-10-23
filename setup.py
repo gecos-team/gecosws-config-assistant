@@ -273,8 +273,8 @@ DistUtilsExtra.auto.setup(
     license='GPL-2',
     author='GECOS Team',
     author_email='gecos@guadalinex.org',
-    description='Configuration assistant for helping to connect a GECOS \
-workstation to different services',
+    description='Configuration assistant for helping to connect a GECOS' \
+                'workstation to different services',
     url='https://github.com/gecos-team/gecosws-config-assistant',
 
     keywords=['python', 'gnome', 'guadalinex', 'gecos'],
