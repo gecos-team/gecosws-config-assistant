@@ -55,12 +55,6 @@ def get_datafiles(datadir):
         dfiles.append(['share/gecosws-config-assistant/'+root, sources])
     return dfiles
 
-if not os.path.isfile('data/cookbooks/ohai-gecos/metadata.rb'):
-    # Initialize git submodules
-    os.system("git submodule init")
-
-os.system("git submodule update")
-
 datafiles = get_datafiles('data')
 datafiles.append(
     ('share/applications/',

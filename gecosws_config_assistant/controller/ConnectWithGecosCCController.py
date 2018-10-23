@@ -384,16 +384,10 @@ class ConnectWithGecosCCController(object):
 
     def _clean_connection_files_on_error(self):
         self.logger.debug("_clean_connection_files_on_error")
-        self._remove_file('/etc/chef/validation.pem')
         self._remove_file('/etc/chef/client.pem')
         self._remove_file('/etc/chef/client.rb')
-        self._remove_file('/etc/chef/knife.rb')
         self._remove_file('/etc/chef.control')
         self._remove_file('/etc/gcc.control')
-
-    def _clean_disconnection_files_on_error(self):
-        self.logger.debug("_clean_disconnection_files_on_error")
-        self._remove_file('/etc/chef/validation.pem')
 
     def connect(self):
         ''' Connect with Gecos Control Center '''
@@ -871,9 +865,6 @@ class ConnectWithGecosCCController(object):
 
         self.processView.setCleanStatus(_('IN PROCESS'))
 
-        # Clean setup files
-        self._remove_file('/etc/chef/validation.pem')
-
         self.processView.setCleanStatus(_('DONE'))
         self.processView.addProgressFraction(0.2)
 
@@ -894,8 +885,6 @@ class ConnectWithGecosCCController(object):
             self._remove_file('/etc/chef.control')
             self._remove_file('/etc/chef/client.rb')
             self._remove_file('/etc/chef/client.pem')
-            self._remove_file('/etc/chef/validation.pem')
-            self._remove_file('/etc/chef/knife.rb')
 
             self.logger.debug("DONE.")
             showwarning_gtk(_("Local disconnection done!"), self)
@@ -958,7 +947,6 @@ class ConnectWithGecosCCController(object):
             self.processView.enableAcceptButton()
             showerror_gtk(_("Can't unregister the computer from GECOS CC"),
                  None)
-            self._clean_disconnection_files_on_error()
             return False
 
         # Unlink from Chef
@@ -970,7 +958,6 @@ class ConnectWithGecosCCController(object):
             self.processView.enableAcceptButton()
             showerror_gtk(_("Can't remove /etc/chef.control file"),
                  self.view)
-            self._clean_disconnection_files_on_error()
             return False
 
         self.logger.debug("- Remove client.pem")
@@ -979,7 +966,6 @@ class ConnectWithGecosCCController(object):
             self.processView.enableAcceptButton()
             showerror_gtk(_("Can't remove /etc/chef/client.pem file"),
                  self.view)
-            self._clean_disconnection_files_on_error()
             return False
 
         self.logger.debug('- Deleting node ' + workstationData.get_node_name())
@@ -989,7 +975,6 @@ class ConnectWithGecosCCController(object):
             self.processView.enableAcceptButton()
             showerror_gtk(_("Can't delete Chef node"),
                  self.view)
-            self._clean_disconnection_files_on_error()
             return False
 
         self.logger.debug("- Remove chef-client-wrapper")
@@ -998,7 +983,6 @@ class ConnectWithGecosCCController(object):
             self.processView.enableAcceptButton()
             showerror_gtk(_("Can't remove /usr/bin/chef-client-wrapper file"),
                  self.view)
-            self._clean_disconnection_files_on_error()
             return False
 
         self.processView.setLinkToChefStatus(_('DONE'))
@@ -1011,17 +995,12 @@ class ConnectWithGecosCCController(object):
             self.processView.enableAcceptButton()
             showerror_gtk(_("Can't remove /etc/gcc.control file"),
                  self.view)
-            self._clean_disconnection_files_on_error()
             return False
 
         self.processView.setRegisterInGecosStatus(_('DONE'))
         self.processView.addProgressFraction(0.16)
 
         self.processView.setCleanStatus(_('IN PROCESS'))
-
-        # Clean setup files
-        self._remove_file('/etc/chef/validation.pem')
-        self._remove_file('/etc/chef/knife.rb')
 
         self.processView.setCleanStatus(_('DONE'))
         self.processView.addProgressFraction(0.2)
