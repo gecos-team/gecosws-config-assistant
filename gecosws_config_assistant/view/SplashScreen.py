@@ -53,8 +53,8 @@ class SplashScreen(GladeWindow):
     def show(self):
         ''' Show '''
 
-        width = super(SplashScreen, self).getWidth()
-        height = super(SplashScreen, self).getHeight()
+        width = self.getWidth()
+        height = self.getHeight()
         self.window.set_size_request(width, height)
         self.window.show_all()
         #Gtk.main()
