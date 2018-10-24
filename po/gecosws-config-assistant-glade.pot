@@ -8,16 +8,27 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-17 13:18+0200\n"
+"POT-Creation-Date: 2018-10-24 11:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../data/glade/autoconf.glade:320 ../data/glade/autoconf.glade:352
 msgid " "
+msgstr ""
+
+#: ../data/glade/main.glade:362 ../data/glade/requirements.glade:36
+#: ../data/glade/window.glade:25
+msgid "127.0.0.1"
+msgstr ""
+
+#: ../data/glade/main.glade:366 ../data/glade/requirements.glade:40
+#: ../data/glade/window.glade:29
+msgid "192.168.1.99"
 msgstr ""
 
 #: ../data/glade/gecoscon.glade:335
@@ -358,6 +369,16 @@ msgstr ""
 msgid "You can create, update or delete local users in this workstation."
 msgstr ""
 
+#: ../data/glade/main.glade:365 ../data/glade/requirements.glade:39
+#: ../data/glade/window.glade:28
+msgid "eth0"
+msgstr ""
+
 #: ../data/glade/gecoscon.glade:149
 msgid "http://"
+msgstr ""
+
+#: ../data/glade/main.glade:361 ../data/glade/requirements.glade:35
+#: ../data/glade/window.glade:24
+msgid "lo"
 msgstr ""
