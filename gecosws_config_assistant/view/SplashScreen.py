@@ -52,11 +52,17 @@ class SplashScreen(GladeWindow):
         self.logger.debug('UI initiated')
 
     def show(self):
-        width = super(SplashScreen, self).getWidth()
-        height = super(SplashScreen, self).getHeight()
+        width = self.getWidth()
+        height = self.getHeight()
         self.window.set_size_request(width, height)
         self.window.show_all()
-        #Gtk.main()
 
     def hide(self):
         self.window.destroy()
+
+    def getWidth(self):
+        return 350
+
+    def getHeight(self):
+        return 100
+
