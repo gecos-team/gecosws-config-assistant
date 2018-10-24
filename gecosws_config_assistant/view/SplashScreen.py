@@ -63,3 +63,13 @@ class SplashScreen(GladeWindow):
         ''' Hide '''
 
         self.window.destroy()
+
+    def getWidth(self):
+        ''' Override parent method. Splash window width adjusted '''
+
+        return 350
+
+    def getHeight(self):
+        ''' Override parent method. Splash window height adjusted'''
+
+        return 100
