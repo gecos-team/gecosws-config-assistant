@@ -4,7 +4,12 @@ import time
 import os
 import gi
 gi.require_version("Gtk", "3.0")
-gi.require_version("Vte", "2.90")
+try:
+    old_version=True
+    gi.require_version("Vte", "2.90")
+except:
+    old_version=False
+    gi.require_version("Vte", "2.91")
 from gi.repository import Gtk
 from gi.repository import GObject
 from gi.repository import GLib
@@ -91,7 +96,10 @@ class GInstallProgress(GObject.GObject, InstallProgress):
         self.apt_status = -1
         self.time_last_update = time.time()
         self.term = term
-        self.term.connect("child-exited", self.child_exited)
+        if old_version:
+            self.term.connect("child-exited", self.child_exited)
+        else:
+            self.term.connect("child-exited", self.child_exited_2)
         self.env = ["VTE_PTY_KEEP_FD=%s" % self.writefd,
                     "DEBIAN_FRONTEND=gnome",
                     "APT_LISTCHANGES_FRONTEND=Gtk"]
@@ -101,6 +109,10 @@ class GInstallProgress(GObject.GObject, InstallProgress):
     def child_exited(self, term):
         """Called when a child process exits"""
         self.apt_status = term.get_child_exit_status()
+        self.finished = True
+
+    def child_exited_2(self, term, status):
+        self.apt_status = status
         self.finished = True
 
     def error(self, pkg, errormsg):
@@ -164,8 +176,12 @@ class GInstallProgress(GObject.GObject, InstallProgress):
         """Fork the process."""
         #return self.term.forkpty(envv=self.env)
 
-        pty = Vte.Pty.new(Vte.PtyFlags.DEFAULT)
-        self.term.set_pty_object(pty)
+        if old_version:
+            pty = Vte.Pty.new(Vte.PtyFlags.DEFAULT)
+            self.term.set_pty_object(pty)
+        else:
+            pty = Vte.Pty.new_sync(Vte.PtyFlags.DEFAULT)
+            self.term.set_pty(pty)
         pid = os.fork()
         if pid == 0:
             # *grumpf* workaround bug in vte here (gnome bug #588871)
@@ -176,7 +192,10 @@ class GInstallProgress(GObject.GObject, InstallProgress):
             pty.child_setup()
             # FIXME: close all fds expect for self.writefd
         else:
-            self.term.set_pty_object(pty)
+            if old_version:
+                self.term.set_pty_object(pty)
+            else:
+                self.term.set_pty(pty)
             self.term.watch_child(pid)
 
         return pid
@@ -261,7 +280,8 @@ class GtkAptProgress(Gtk.VBox):
         # Setup some child widgets
         self._expander = Gtk.Expander.new(_("Details"))
         self._terminal = Vte.Terminal()
-        self._terminal.set_font_from_string("monospace 10")
+        if old_version:
+            self._terminal.set_font_from_string("monospace 10")
         self._expander.add(self._terminal)
         self._progressbar = Gtk.ProgressBar()
         # Setup the always italic status label
