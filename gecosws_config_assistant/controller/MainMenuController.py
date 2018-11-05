@@ -296,7 +296,6 @@ class MainMenuController(object):
             apt_progress.show_terminal(True)
             try:
                 cache.commit(apt_progress.acquire, apt_progress.install)
-                time.sleep(5)
             except Exception as exc:
                 self.logger.debug("Exception happened: %s" % exc)
                 showerror_gtk(_("An error occurred during the upgrade"), self.window.getMainWindow())
