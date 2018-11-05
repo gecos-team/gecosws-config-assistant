@@ -24,6 +24,7 @@ __license__ = "GPL-2"
 
 from gettext import gettext as _
 import gettext
+from inspect import getmembers
 import logging
 import os
 
