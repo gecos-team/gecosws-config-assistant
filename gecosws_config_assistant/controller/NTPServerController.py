@@ -17,26 +17,26 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
-__copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
+__copyright__ = "Copyright (C) 2015, Junta de Andalucía" + \
+    "<devmaster@guadalinex.org>"
 __license__ = "GPL-2"
+
+
+import logging
+import gettext
+from gettext import gettext as _
 
 from gecosws_config_assistant.dao.NTPServerDAO import NTPServerDAO
 from gecosws_config_assistant.dto.NTPServer import NTPServer
 from gecosws_config_assistant.view.NTPServerElemView import NTPServerElemView
 from gecosws_config_assistant.view.CommonDialog import showerror_gtk
 
-import logging
-import json
-
-import gettext
-from gettext import gettext as _
 gettext.textdomain('gecosws-config-assistant')
 
 class NTPServerController(object):
     '''
     Controller class for the NTP time synchronization functionality.
     '''
-
 
     def __init__(self, mainController):
         '''
@@ -49,11 +49,12 @@ class NTPServerController(object):
 
 
     def show(self, mainWindow):
+        ''' Show NTP window '''
         self.logger.debug('show - BEGIN')
         self.view = NTPServerElemView(mainWindow, self)
-        
+
         ntpDto = self.dao.load()
-        
+
         conf = self.mainWindowController.requirementsCheck.autoSetup.get_conf()
         ntpKey = 'uri_ntp'
         if conf:
@@ -63,20 +64,26 @@ class NTPServerController(object):
                 ntpDto = NTPServer()
                 ntpDto.set_address(conf[ntpKey])
             else:
-                self.logger.debug('Something went wrong extractiong data from the json repsone')
+                self.logger.debug(
+                    'Something went wrong extractiong data ' +
+                    'from the json response')
         else:
             self.logger.debug('Autoconf is not done yet')
-        
+
         self.view.set_data(ntpDto)
-        
-        self.view.show()   
+
+        self.view.show()
         self.logger.debug('show - END')
 
     def hide(self):
+        ''' Hide NTP window '''
+
         self.logger.debug('hide')
         self.mainWindowController.showRequirementsCheckDialog()
-    
+
     def save(self):
+        ''' Save data '''
+
         self.logger.debug('save')
         data = self.view.get_data()
         try:
@@ -84,15 +91,20 @@ class NTPServerController(object):
                 self.hide()
             else:
                 # Show error message
-                showerror_gtk(_("Error saving NTP server data.") + "\n" + _("See log for more details."),
+                showerror_gtk(
+                    _("Error saving NTP server data.") + "\n" +
+                    _("See log for more details."),
                     self.view)
-        except:
+        except Exception:
             # Show error message
-            showerror_gtk(_("Error saving NTP server data.") + "\n" + _("See log for more details."),
+            showerror_gtk(
+                _("Error saving NTP server data.") + "\n" +
+                _("See log for more details."),
                 self.view)
-            
 
     def test(self):
+        ''' Testing purposes '''
+
         self.logger.debug('test')
         data = self.view.get_data()
         return data.syncrhonize()

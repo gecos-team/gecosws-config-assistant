@@ -17,7 +17,8 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
-__copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
+__copyright__ = "Copyright (C) 2015, Junta de Andalucía" + \
+    "<devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
 
@@ -25,7 +26,6 @@ class WorkstationData(object):
     '''
     DTO object that represents a the data of a GECOS CC associated workstation.
     '''
-
 
     def __init__(self):
         '''
@@ -36,33 +36,48 @@ class WorkstationData(object):
         self.node_name = ''
 
     def get_node_name(self):
+        ''' Getter node name '''
+
         return self.__node_name
 
-
     def set_node_name(self, value):
+        ''' Setter node name '''
+
         self.__node_name = value
 
-
     def get_name(self):
+        ''' Getter name workstation '''
+
         return self.__name
 
-
     def get_ou(self):
+        ''' Getter OU belong to workstation '''
+
         return self.__ou
 
-
     def set_name(self, value):
+        ''' Setter name workstation '''
+
         self.__name = value
 
-
     def set_ou(self, value):
+        ''' Setter OU '''
+
         self.__ou = value
-    
-
-    name = property(get_name, set_name, None, None)
-    ou = property(get_ou, set_ou, None, None)
-    node_name = property(get_node_name, set_node_name, None, None)
 
 
-
-
+    name = property(
+        get_name,
+        set_name,
+        None,
+        None)
+    ou = property(
+        get_ou,
+        set_ou,
+        None,
+        None)
+    node_name = property(
+        get_node_name,
+        set_node_name,
+        None,
+        None)

@@ -17,13 +17,12 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
-__copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
+__copyright__ = "Copyright (C) 2015, Junta de Andalucía" + \
+    "<devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
 import logging
-import traceback
 import json
-
 
 class JSONUtil(object):
     '''
@@ -36,22 +35,20 @@ class JSONUtil(object):
         Constructor
         '''
         self.logger = logging.getLogger('JSONUtil')
-        
-    def loadJSONFromFile(self, filepath):        
+
+    def loadJSONFromFile(self, filepath):
+        ''' Loading JSON from file '''
+
         json_data = None
         # Get data from data file
         try:
             gcc_control_file = open(filepath, 'r')
             content = gcc_control_file.read()
             gcc_control_file.close()
-            
+
             json_data = json.loads(content)
-            
+
         except Exception:
             self.logger.warn('Error reading file: ' + filepath)
-            #self.logger.warn(str(traceback.format_exc()))
-            
-        return json_data            
 
-
-
+        return json_data

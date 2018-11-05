@@ -17,16 +17,16 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
-__copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
+__copyright__ = "Copyright (C) 2015, Junta de Andalucía" + \
+    "<devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
 
 class UserAuthenticationMethod(object):
     '''
-    DTO object that represents the necessary data to setup the 
+    DTO object that represents the necessary data to setup the
     user authentication method.
     '''
-
 
     def __init__(self):
         '''
@@ -35,22 +35,27 @@ class UserAuthenticationMethod(object):
         raise TypeError('This is an abstract class!')
 
     def get_name(self):
+        ''' Getter name '''
+
         return self.__name
 
-
     def get_data(self):
+        ''' Getter data '''
+
         return self.__data
 
-
     def set_data(self, value):
+        ''' Setter data '''
+
         self.__data = value
 
-    name = property(get_name, None, None, None)
-    data = property(get_data, set_data, None, None)
-        
-        
-
-
-
-
-
+    name = property(
+        get_name,
+        None,
+        None,
+        None)
+    data = property(
+        get_data,
+        set_data,
+        None,
+        None)

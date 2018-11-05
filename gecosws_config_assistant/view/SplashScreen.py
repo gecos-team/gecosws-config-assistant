@@ -21,45 +21,49 @@ __copyright__ = "Copyright (C) 2015, Junta de Andalucía" + \
     "<devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
+import logging
 import gettext
 from gettext import gettext as _
-
-from gecosws_config_assistant.dto.UserAuthenticationMethod import (
-    UserAuthenticationMethod)
-from gecosws_config_assistant.dto.LDAPSetupData import LDAPSetupData
+from gecosws_config_assistant.view.GladeWindow import GladeWindow
 
 gettext.textdomain('gecosws-config-assistant')
 
-class LDAPAuthMethod(UserAuthenticationMethod):
+class SplashScreen(GladeWindow):
     '''
-    DTO object that represents the necessary data to setup the LDAP
-    authentication method.
+    Dialog class that shows the Auto setup Dialog.
     '''
 
     def __init__(self):
         '''
         Constructor
         '''
-        self.data = None
+        self.logger = logging.getLogger('SplashScreen')
+        self.gladepath = 'splash.glade'
+        self.initUI()
 
-    def get_name(self):
-        ''' Getter name '''
 
-        return _('LDAP')
+    def initUI(self):
+        ''' Initialize UI '''
 
-    def get_data(self):
-        ''' Getter data '''
+        self.buildUI(self.gladepath)
+        label = self.getElementById('label1')
+        label.set_label(_('Loading ...'))
+        self.logger.debug('UI initiated')
 
-        return self.__data
+    def show(self):
 
-    def set_data(self, value):
-        ''' Setter data '''
+        width = self.getWidth()
+        height = self.getHeight()
+        self.window.set_size_request(width, height)
+        self.window.show_all()
 
-        if value is None:
-            self.__data = None
-        elif isinstance(value, LDAPSetupData):
-            self.__data = value
-        else:
-            raise TypeError('value must be an instance of LDAPSetupData')
+    def hide(self):
+        ''' Hide '''
 
-    data = property(get_data, set_data, None, None)
+        self.window.destroy()
+
+    def getWidth(self):
+        return 350
+
+    def getHeight(self):
+        return 100
