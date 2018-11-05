@@ -17,7 +17,8 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
-__copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
+__copyright__ = "Copyright (C) 2015, Junta de Andalucía" + \
+    "<devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
 import subprocess
@@ -29,7 +30,6 @@ class NTPServer(object):
     DTO object that represents a NTP server.
     '''
 
-
     def __init__(self):
         '''
         Constructor
@@ -38,26 +38,36 @@ class NTPServer(object):
         self.logger = logging.getLogger('NTPServer')
 
     def syncrhonize(self):
+        ''' Syncronizing time with ntpdate cpmmand '''
+
         if self.address is None or self.address.strip() == '':
             return False
         else:
-            self.logger.debug('ntpdate-debian -u %s'%(self.address))
-            p = subprocess.Popen('ntpdate-debian -u %s'%(self.address), shell=True, 
-                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            self.logger.debug('ntpdate-debian -u %s', self.address)
+            p = subprocess.Popen(
+                'ntpdate-debian -u {}'.format(self.address),
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT)
+
             for line in p.stdout.readlines():
                 self.logger.debug(line)
-            retval = p.wait()   
-             
-            return (retval == 0)    
+            retval = p.wait()
+
+            return retval == 0
 
     def get_address(self):
+        ''' Getter address '''
+
         return self.__address
 
-
     def set_address(self, value):
+        ''' Setter address '''
+
         self.__address = value
 
-    address = property(get_address, set_address, None, None)
-
-
-
+    address = property(
+        get_address,
+        set_address,
+        None,
+        None)

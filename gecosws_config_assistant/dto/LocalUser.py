@@ -17,15 +17,14 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
-__copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
+__copyright__ = "Copyright (C) 2015, Junta de Andalucía" + \
+    "<devmaster@guadalinex.org>"
 __license__ = "GPL-2"
-
 
 class LocalUser(object):
     '''
     DTO object that represents a local user account.
     '''
-
 
     def __init__(self):
         '''
@@ -36,44 +35,64 @@ class LocalUser(object):
         self.name = ''
 
     def get_login(self):
+        ''' Getter login '''
+
         return self.__login
 
-
     def get_password(self):
+        ''' Getter password '''
+
         return self.__password
 
-
     def get_name(self):
+        ''' Getter name '''
+
         return self.__name
 
-
     def set_login(self, value):
+        ''' Setter login '''
+
         self.__login = value
 
-
     def set_password(self, value):
+        ''' Setter password '''
+
         self.__password = value
 
-
     def set_name(self, value):
+        ''' Setter name '''
+
         self.__name = value
 
-
     def isEqual(self, other):
+        ''' Equality comparator '''
+
         if other is None:
             return False
-        
+
         if self.get_login() != other.get_login():
             return False
 
         if self.get_name() != other.get_name():
             return False
-        
+
         return True
 
-    login = property(get_login, set_login, None, None)
-    password = property(get_password, set_password, None, None)
-    name = property(get_name, set_name, None, None)
+    login = property(
+        get_login,
+        set_login,
+        None,
+        None)
+    password = property(
+        get_password,
+        set_password,
+        None,
+        None)
+    name = property(
+        get_name,
+        set_name,
+        None,
+        None)
 
 
 

@@ -17,24 +17,21 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
-__copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
+__copyright__ = "Copyright (C) 2015, Junta de Andalucía" + \
+    "<devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
-from GladeWindow import GladeWindow
-from gi.repository import GLib, Gtk, GObject
 import logging
-import threading
 import gettext
 from gettext import gettext as _
-gettext.textdomain('gecosws-config-assistant')
+from gecosws_config_assistant.view.GladeWindow import GladeWindow
 
-from gecosws_config_assistant.dto.GecosAccessData import GecosAccessData
+gettext.textdomain('gecosws-config-assistant')
 
 class SplashScreen(GladeWindow):
     '''
     Dialog class that shows the Auto setup Dialog.
     '''
-
 
     def __init__(self):
         '''
@@ -42,22 +39,27 @@ class SplashScreen(GladeWindow):
         '''
         self.logger = logging.getLogger('SplashScreen')
         self.gladepath = 'splash.glade'
-        self.initUI()       
-        
+        self.initUI()
+
 
     def initUI(self):
+        ''' Initialize UI '''
+
         self.buildUI(self.gladepath)
         label = self.getElementById('label1')
         label.set_label(_('Loading ...'))
         self.logger.debug('UI initiated')
 
     def show(self):
+
         width = self.getWidth()
         height = self.getHeight()
         self.window.set_size_request(width, height)
         self.window.show_all()
 
     def hide(self):
+        ''' Hide '''
+
         self.window.destroy()
 
     def getWidth(self):
@@ -65,4 +67,3 @@ class SplashScreen(GladeWindow):
 
     def getHeight(self):
         return 100
-

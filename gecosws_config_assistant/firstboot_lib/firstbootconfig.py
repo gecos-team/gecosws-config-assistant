@@ -17,7 +17,8 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 __author__ = "Antonio Hernández <ahernandez@emergya.com>"
-__copyright__ = "Copyright (C) 2011, Junta de Andalucía <devmaster@guadalinex.org>"
+__copyright__ = "Copyright (C) 2011, Junta de Andalucía" + \
+    "<devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
 
@@ -41,10 +42,8 @@ __firstboot_prefix__ = '/usr'
 
 import os
 import sys
-
-import gettext
 from gettext import gettext as _
-gettext.textdomain('gecosws-config-assistant')
+
 
 class project_path_not_found(Exception):
     """Raised when we can't find the project directory."""
@@ -76,7 +75,7 @@ def get_data_path():
     and /usr/share/firstboot in an installed version but this path
     is specified at installation time.
     """
-    
+
     # Get pathname absolute or relative.
     path = os.path.join(
         os.path.dirname(__file__), __firstboot_data_directory__)

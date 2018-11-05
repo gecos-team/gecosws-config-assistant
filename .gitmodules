@@ -1,3 +1,0 @@
-[submodule "data/cookbooks/gecos-ws-mgmt"]
-	path = data/cookbooks/gecos-ws-mgmt
-	url = https://github.com/gecos-team/gecos-workstation-management-cookbook.git

@@ -18,72 +18,102 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 __author__ = "Francisco Fuentes Barrera <ffuentes@solutia-it.es>"
-__copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
+__copyright__ = "Copyright (C) 2015, Junta de Andalucía" + \
+    "<devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
 from gi.repository import Gtk, Gdk
-from gecosws_config_assistant.view import GLADE_PATH, CSS_PATH, CSS_COMMON 
+from gecosws_config_assistant.view import GLADE_PATH, CSS_PATH, CSS_COMMON
 """
 Abstract parent class for any Gtk window used in GECOS
 """
 class GladeWindow(object):
+
     def __init__(self, mainController):
-        raise NotImplementedError( "This is an abstract class that cannot be instantiated" )
-        
+        ''' Construct '''
+        raise NotImplementedError(
+            "This is an abstract class that cannot be instantiated" )
+
     def buildUI(self, gladepath):
+        ''' Initialize UI '''
+
         self.logger.debug("Building UI")
-        
+
         self.gladepath = gladepath
         self.builder = Gtk.Builder()
         self.builder.set_translation_domain('gecosws-config-assistant')
         self.builder.add_from_file(GLADE_PATH+self.gladepath)
-        
+
         self.css_provider = Gtk.CssProvider()
         self.css_provider.load_from_path(CSS_PATH+CSS_COMMON)
-        
+
         self.context = Gtk.StyleContext()
         self.context.add_provider_for_screen(
-            Gdk.Screen.get_default(), self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_USER)
-        
+            Gdk.Screen.get_default(),
+            self.css_provider,
+            Gtk.STYLE_PROVIDER_PRIORITY_USER)
+
         # main window
         self.window = self.getElementById("window1")
-        # center frame, here we'll do the transformations to keep all in the same window
+        # center frame, here we'll do the transformations
+        # to keep all in the same window
         self.frame = self.getCentralFrame()
-        
+
         self.addHandlers()
         self.bindHandlers()
-    
+
     def getMainWindow(self):
+        ''' Main window '''
+
         return self.window
-    
+
     def show(self):
+        ''' Show '''
+
         self.window.show_all()
         Gtk.main()
-    
+
     def addHandlers(self):
+        ''' Adding handlers '''
+
         self.logger.debug("Adding all handlers")
         self.handlers = {}
         # handling common hooks
         self.addCloseHandler()
-        
+
     def addCloseHandler(self):
+        ''' Adding close handler '''
+
         self.logger.debug("Adding close handlers")
         self.handlers['onDeleteWindow'] = Gtk.main_quit
-    
+
     def bindHandlers(self):
+        ''' Binding handlers '''
+
         self.logger.debug("Binding handlers")
         self.builder.connect_signals(self.handlers)
-    
+
     def getCentralFrame(self):
+        ''' Getting central frame '''
+
         return self.getElementById("frame2")
-    
+
     def getElementById(self, id_):
+        ''' Getting element by its id '''
+
+        self.logger.debug("getElementById")
         return self.builder.get_object(id_)
-    
+
     def getWidth(self):
+        ''' Width '''
+
         # Default width
+        self.logger.debug("getWidth")
         return 600
-        
+
     def getHeight(self):
+        ''' Height '''
+
         # Default height
-        return 300    
+        self.logger.debug("getHeight")
+        return 300

@@ -17,16 +17,16 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 __author__ = "Abraham Macias Paredes <amacias@solutia-it.es>"
-__copyright__ = "Copyright (C) 2015, Junta de Andalucía <devmaster@guadalinex.org>"
+__copyright__ = "Copyright (C) 2015, Junta de Andalucía" + \
+    "<devmaster@guadalinex.org>"
 __license__ = "GPL-2"
 
-from gecosws_config_assistant.dto.LocalUser import LocalUser
 
 import logging
-
 import pwd
 import subprocess
 
+from gecosws_config_assistant.dto.LocalUser import LocalUser
 
 class LocalUserDAO(object):
     '''
@@ -41,137 +41,192 @@ class LocalUserDAO(object):
                                 cls, *args, **kwargs)
         return cls._instance
 
-
-
     def __init__(self):
         '''
         Constructor
         '''
-        
+
         self.logger = logging.getLogger('LocalUserDAO')
         self.min_uid = 1000
-     
-        
 
     def loadAll(self):
+        ''' Loading all users '''
+
         self.logger.debug('loadAll - BEGIN')
         users = []
-        
-        
+
         for user in pwd.getpwall():
             if user.pw_uid < self.min_uid or user.pw_name == 'nobody':
                 continue
-            
+
             lu = LocalUser()
-            lu.set_login(user.pw_name) 
-            lu.set_name(unicode(user.pw_gecos.split(',')[0], 'utf-8', 'replace'))
-            
+            lu.set_login(user.pw_name)
+            lu.set_name(
+                unicode(
+                    user.pw_gecos.split(',')[0], 'utf-8', 'replace'
+                )
+            )
+
             # For security reasons can't get raw user password
             lu.set_password(None)
-            
-            users.append(lu)        
-      
+
+            users.append(lu)
+
         return users
 
     def existsUser(self, local_user):
+        ''' Does user exists ? '''
+
+        self.logger.debug("Does user exists?")
         if local_user is None:
             return False
-        
+
         if not isinstance(local_user, LocalUser):
             return False
-        
+
         if local_user.get_login() is None:
             return False
-               
+
         try:
             pwd.getpwnam(local_user.get_login())
             return True
         except KeyError:
-            return False        
+            return False
 
     def save(self, local_user):
+        ''' Saving user '''
+
         self.logger.debug('save - BEGIN')
         if local_user is None:
             raise ValueError('local_user is None')
-        
+
         if not isinstance(local_user, LocalUser):
             raise ValueError('local_user is not a LocalUser instance')
-        
+
         if not self.existsUser(local_user):
             # Create a new user
-            self.logger.debug('creating new user: %s'%(local_user.get_login()))
-            p = subprocess.Popen('LC_ALL=C adduser --gecos "%s" %s'%(local_user.get_name(), local_user.get_login()), shell=True, 
-                                 stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.STDOUT)
-            
-            p.stdin.write("%s\n"%(local_user.get_password()))
-            p.stdin.write("%s\n"%(local_user.get_password()))
-            
-            for line in p.stdout.readlines():
-                line = line.strip()
-                self.logger.debug(line)
-            
-            retval = p.wait()
-            if retval != 0:
-                self.logger.error('Error creating user: '+local_user.get_login())
-            
-        else:   
-            # Modify an existent user
-            self.logger.debug('setting information for user: %s'%(local_user.get_login()))
-            p = subprocess.Popen('usermod -c "%s" %s'%(local_user.get_name(), local_user.get_login()), shell=True, 
-                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            for line in p.stdout.readlines():
-                self.logger.debug(line)
-                    
-            retval = p.wait()
-            if retval != 0:
-                self.logger.error('Error modifying user name: '+local_user.get_login())
+            self.logger.debug('creating new user: %s' ,local_user.get_login())
+            p = subprocess.Popen(
+                'LC_ALL=C adduser --gecos "{}" {}'.format(
+                    local_user.get_name(), local_user.get_login()),
+                shell=True,
+                stdout=subprocess.PIPE,
+                stdin=subprocess.PIPE,
+                stderr=subprocess.STDOUT
+            )
 
-            # Change password            
-            self.logger.debug('setting password for user: %s'%(local_user.get_login()))
-            p = subprocess.Popen('LC_ALL=C passwd %s'%(local_user.get_login()), shell=True, 
-                                 stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.STDOUT)
+            p.stdin.write("%s\n"%(local_user.get_password()))
+            p.stdin.write("%s\n"%(local_user.get_password()))
+
+            for line in p.stdout.readlines():
+                line = line.strip()
+                self.logger.debug(line)
+
+            retval = p.wait()
+            if retval != 0:
+                self.logger.error(
+                    'Error creating user: ' + local_user.get_login()
+                )
+        else:
+            # Modify an existent user
+            self.logger.debug(
+                'setting information for user: %s', local_user.get_login()
+            )
+
+            p = subprocess.Popen(
+                'usermod -c "{}" {}'.format(
+                    local_user.get_name(), local_user.get_login()),
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT
+            )
+
+            for line in p.stdout.readlines():
+                self.logger.debug(line)
+
+            retval = p.wait()
+            if retval != 0:
+                self.logger.error(
+                    'Error modifying user name: %s', local_user.get_login()
+                )
+
+            # Change password
+            self.logger.debug(
+                'setting password for user: %s', local_user.get_login()
+            )
+
+            p = subprocess.Popen(
+                'LC_ALL=C passwd {}'.format(local_user.get_login()),
+                shell=True,
+                stdout=subprocess.PIPE,
+                stdin=subprocess.PIPE,
+                stderr=subprocess.STDOUT
+            )
+
             p.stdin.write("%s\n"%(local_user.get_password()))
             p.stdin.write("%s\n"%(local_user.get_password()))
             for line in p.stdout.readlines():
                 self.logger.debug(line)
                 line = line.strip()
-                    
+
             retval = p.wait()
             if retval != 0:
-                self.logger.error('Error modifying user password: '+local_user.get_login())
-            
+                self.logger.error(
+                    'Error modifying user password: %s',
+                    local_user.get_login()
+                )
+
         self.logger.debug('save - END')
 
-
     def delete(self, local_user):
+        ''' Deleting user '''
+
         self.logger.debug('delete - BEGIN')
         if local_user is None:
             raise ValueError('local_user is None')
-        
+
         if not isinstance(local_user, LocalUser):
             raise ValueError('local_user is not a LocalUser instance')
-        
-        if not self.existsUser(local_user):
-            raise ValueError('Trying to delete a non existent user: %s'%(local_user.get_login()))
-        else:
-            self.logger.debug('Deleting user: %s'%(local_user.get_login()))
-            p = subprocess.Popen('userdel %s'%(local_user.get_login()), shell=True, 
-                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            for line in p.stdout.readlines():
-                self.logger.debug(line)
-                    
-            retval = p.wait()
-            if retval != 0:
-                self.logger.error('Error deleting user: '+local_user.get_login())
 
-            self.logger.debug('Deleting folder user: %s'%(local_user.get_login()))
-            p = subprocess.Popen('rm -rf /home/%s'%(local_user.get_login()), shell=True, 
-                                 stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        if not self.existsUser(local_user):
+            raise ValueError(
+                'Trying to delete a non existent user: %s',
+                local_user.get_login()
+            )
+        else:
+            self.logger.debug('Deleting user: %s', local_user.get_login())
+            p = subprocess.Popen(
+                'userdel {}'.format(local_user.get_login()),
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT
+            )
+
             for line in p.stdout.readlines():
                 self.logger.debug(line)
-                    
+
             retval = p.wait()
             if retval != 0:
-                self.logger.error('Error deleting user home: '+local_user.get_login())
-                
-                
+                self.logger.error(
+                    'Error deleting user: %s',
+                    local_user.get_login()
+                )
+
+            self.logger.debug(
+                'Deleting folder user: %s', local_user.get_login()
+            )
+            p = subprocess.Popen(
+                'rm -rf /home/{}'.format(local_user.get_login()),
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT
+            )
+
+            for line in p.stdout.readlines():
+                self.logger.debug(line)
+
+            retval = p.wait()
+            if retval != 0:
+                self.logger.error(
+                    'Error deleting user home: %s', local_user.get_login()
+                )
