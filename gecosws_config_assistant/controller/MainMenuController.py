@@ -191,33 +191,33 @@ class MainMenuController(object):
 
         if self.checkNetwork():
             text[self.networkStatusKey] = \
-                _("The system has a network connection configured")
+                _("This workstation has got a network connection configured")
         else:
             text[self.networkStatusKey] = \
-                _("The system has NO network connection")
+                _("This workstation has NO network connection")
 
         if self.checkAutoconf():
             text[self.autoconfStatusKey] = \
-                _("The system has loaded setup data values from GECOS server")
+                _("This worstation has loaded setup data values from Control Center")
         else:
             text[self.autoconfStatusKey] = \
-                _("The system may load setup data values from GECOS server")
+                _("This workstation can load setup data values from Control Center")
 
         if self.checkNTP():
             text[self.ntpStatusKey] = \
-                _("The system is synchronized with a NTP server")
+                _("This workstation is synchronized with a time server (NTP)")
         else:
             text[self.ntpStatusKey] = \
-                _("The system is NOT synchronized with a NTP server")
+                _("This workstation is NOT synchronized with a time server (NTP)")
 
         if self.checkGECOS():
             text[self.gecosStatusKey] = \
-                _("The system is linked to a GECOS server")
+                _("This workstation is linked to a Control Center")
         else:
             text[self.gecosStatusKey] = \
-                _("The system is NOT linked to a GECOS server")
+                _("This workstation is NOT linked to a Control Center")
 
-        basetext = _("Users authenticate by %s method")
+        basetext = _("Users authenticate themselves with %s")
 
         status = self.userAuthenticationMethod.getStatus()
 
