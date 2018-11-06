@@ -463,7 +463,7 @@ msgstr ""
 
 #: ../gecosws_config_assistant/controller/MainMenuController.py:219
 #, python-format
-msgid "Users authenticate by %s method"
+msgid "Users authenticate themselves with %s"
 msgstr ""
 
 #: ../gecosws_config_assistant/controller/MainMenuController.py:331

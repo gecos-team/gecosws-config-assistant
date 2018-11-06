@@ -327,16 +327,16 @@ msgid "System status"
 msgstr "Estado del Sistema"
 
 #: ../data/glade/requirements.glade:229
-msgid "The system has network connection (connection data)"
-msgstr "El sistema dispone de conexión a red (datos de conexión)"
+msgid "This workstation has got network connection (connection data)"
+msgstr "Este puesto dispone de conexión a red (datos de conexión)"
 
 #: ../data/glade/requirements.glade:327
-msgid "The system is NOT linked to GECOS"
-msgstr "El sistema NO está vinculado a GECOS"
+msgid "This workstation is NOT linked to a Control Center"
+msgstr "Este puesto NO está vinculado a un Centro de Control"
 
 #: ../data/glade/requirements.glade:293
-msgid "The system is NOT synchronized its time with a NTP server"
-msgstr "El sistema NO está sincronizado con un servidor NTP"
+msgid "This workstation is NOT synchronized with a time server (NTP)"
+msgstr "Este puesto NO está sincronizado con un servidor de hora (NTP)"
 
 #: ../data/glade/users.glade:196
 msgid ""
@@ -344,9 +344,9 @@ msgid ""
 "like LDAP or Microsoft Active Directory. Also, they can be authenticated by "
 "using local users of this O.S."
 msgstr ""
-"Los usuarios de esta estación pueden autenticarse mediante un sistema "
-"externocomo LDAP o Microsoft Active Directory. También, pueden autenticarse "
-"usando usuarios locales de este S. O."
+"Los usuarios de este puesto pueden autenticarse mediante un sistema "
+"externo como LDAP o Microsoft Active Directory. También pueden autenticarse "
+"usando usuarios locales del sistema operativo."
 
 #: ../data/glade/adsetupdata.glade:167
 msgid ""
@@ -749,7 +749,7 @@ msgid ""
 "Do you want to setup the user authentication method using this new data?"
 msgstr ""
 "Los datos de autenticación del usuario han cambiado.\n"
-"¿Desea configurar los el método de autenticación de usuarios usando estos "
+"¿Desea configurar el método de autenticación de usuarios usando estos "
 "nuevos datos?"
 
 #: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:387
@@ -858,8 +858,8 @@ msgstr "El sistema NO está vinculado al servidor GECOS"
 
 #: ../gecosws_config_assistant/controller/MainMenuController.py:219
 #, python-format
-msgid "Users authenticate by %s method"
-msgstr "Los usuarios se autentican usando el método %s"
+msgid "Users authenticate themselves with %s"
+msgstr "Los usuarios se autentican usando %s"
 
 #: ../gecosws_config_assistant/controller/MainMenuController.py:331
 msgid "Upgrading ..."
