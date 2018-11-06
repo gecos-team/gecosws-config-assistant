@@ -1,3 +1,9 @@
+gecosws-config-assistant (2.1.7-1) xenial; urgency=medium
+
+  * Some literals improved.
+
+ -- Gecos Team <gecos@guadalinex.org>  Wed, 8 Nov 2018 17:41:00 +0100
+
 gecosws-config-assistant (2.1.6-1) xenial; urgency=medium
 
   * Splash and Upgrade screens added.
