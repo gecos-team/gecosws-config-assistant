@@ -49,9 +49,9 @@ class PackageManager(object):
         try:
             import apt
             cache = apt.Cache()
-            self.logger.debug('is_package_installed(%s) APT: %s',
-                              package_name, cache[package_name].is_installed)
-            return cache[package_name].is_installed
+            installed = cache.has_key(package_name) and cache[package_name].is_installed
+            self.logger.debug('is_package_installed(%s) APT: %s', package_name, installed)
+            return installed
 
         except ImportError:
             self.logger.info('No apt library available')
@@ -130,7 +130,7 @@ class PackageManager(object):
         try:
             import apt
             cache = apt.Cache()
-            pkg = cache[package_name]
+            pkg = cache[package_name] if cache.has_key(package_name) else None
             if pkg is None:
                 self.logger.error('Package not found:' + package_name)
             elif pkg.is_installed:
@@ -207,17 +207,20 @@ class PackageManager(object):
             raise ValueError('package_name is None')
 
         self.logger.debug('get_package_version(%s)', package_name)
+        ver = ''
 
         try:
             import apt
             cache = apt.Cache()
-            pkg = cache[package_name]
+            pkg = cache[package_name] if cache.has_key(package_name) else None
             if pkg is None:
                 self.logger.error('Package not found:' + package_name)
             elif not pkg.is_installed:
                 self.logger.error('Package is not installed:' + package_name)
             else:
-                return pkg.installed.version
+                ver = pkg.installed.version
+
+            return ver
 
         except ImportError:
             self.logger.info('No apt library available')

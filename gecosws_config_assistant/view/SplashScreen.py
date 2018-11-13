@@ -25,6 +25,7 @@ import logging
 import gettext
 from gettext import gettext as _
 from gecosws_config_assistant.view.GladeWindow import GladeWindow
+from gi.repository import GdkPixbuf
 
 gettext.textdomain('gecosws-config-assistant')
 
@@ -46,6 +47,10 @@ class SplashScreen(GladeWindow):
         ''' Initialize UI '''
 
         self.buildUI(self.gladepath)
+        spinner = self.getElementById('spinner')
+        path = '/usr/share/gecosws-config-assistant/media/spinner.gif'
+        pixbufanim = GdkPixbuf.PixbufAnimation.new_from_file(path)
+        spinner.set_from_animation(pixbufanim)
         label = self.getElementById('label1')
         label.set_label(_('Loading ...'))
         self.logger.debug('UI initiated')

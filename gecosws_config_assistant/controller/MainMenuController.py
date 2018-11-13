@@ -27,6 +27,7 @@ import gettext
 from inspect import getmembers
 import logging
 import os
+import sys
 
 from gecosws_config_assistant.controller.ConnectWithGecosCCController import (
     ConnectWithGecosCCController)
@@ -85,7 +86,9 @@ class MainMenuController(object):
     def show(self):
         ''' Show main window '''
 
+        # Checking updates for GCA
         self.checkForUpdates()
+
         self.window.show()
 
     def hide(self):
@@ -316,9 +319,9 @@ class MainMenuController(object):
 
         apt_progress = GtkAptProgress()
         cache = apt.cache.Cache(apt_progress.open)
-        pkg = cache["gecosws-config-assistant"]
+        pkg = cache['gecosws-config-assistant'] if cache.has_key('gecosws-config-assistant') else None
 
-        if pkg.is_installed and pkg.is_upgradable:
+        if pkg is not None and pkg.is_installed and pkg.is_upgradable:
 
             pkg.mark_upgrade()
 
@@ -333,18 +336,32 @@ class MainMenuController(object):
 
             apt_progress.show_terminal(True)
 
+            upgrade = True
+
             try:
                 cache.commit(apt_progress.acquire, apt_progress.install)
-            except Exception as exc:
-                self.logger.debug("Exception happened: %s", exc)
+            except FetchFailedException, e:
+                upgrade = False
+                self.logger.debug("Exception happened: %s", e)
+                showerror_gtk(
+                    _("Unable to connect to software repository"),
+                    self.window.getMainWindow())
+            except Exception, e:
+                upgrade = False
+                self.logger.debug("Exception happened: %s", e)
                 showerror_gtk(
                     _("An error occurred during the upgrade"),
                     self.window.getMainWindow())
 
             splash.hide()
-            showinfo_gtk(
-                _("GECOS Config Assistant has been udpated." +
-                  " Please restart GCA"), self.window.getMainWindow())
+
+            if upgrade:
+                showinfo_gtk(
+                    _("GECOS Config Assistant has been udpated. Restarting ..."),
+                      self.window.getMainWindow())
+                args = sys.argv[:]
+                os.execvp(sys.executable, [sys.executable] + args)
+
 
 
     def showSystemStatus(self):

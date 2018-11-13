@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-24 11:34+0200\n"
+"POT-Creation-Date: 2018-11-13 10:33+0100\n"
 "PO-Revision-Date: 2015-09-29 17:13+0200\n"
 "Last-Translator: root <amp_21004@yahoo.es>\n"
 "Language-Team: Spanish\n"
@@ -21,12 +21,12 @@ msgstr ""
 msgid " "
 msgstr " "
 
-#: ../data/glade/main.glade:362 ../data/glade/requirements.glade:36
+#: ../data/glade/main.glade:362 ../data/glade/requirements.glade:694
 #: ../data/glade/window.glade:25
 msgid "127.0.0.1"
 msgstr ""
 
-#: ../data/glade/main.glade:366 ../data/glade/requirements.glade:40
+#: ../data/glade/main.glade:366 ../data/glade/requirements.glade:698
 #: ../data/glade/window.glade:29
 msgid "192.168.1.99"
 msgstr ""
@@ -62,7 +62,7 @@ msgstr "Configurar el Método de Autenticación"
 
 #: ../data/glade/autoconf.glade:84 ../data/glade/main.glade:94
 #: ../data/glade/network.glade:99 ../data/glade/ntp.glade:78
-#: ../data/glade/requirements.glade:113 ../data/glade/users.glade:87
+#: ../data/glade/requirements.glade:94 ../data/glade/users.glade:87
 #: ../data/glade/users.glade:215
 msgid "Authentication type"
 msgstr "Tipo de autenticación"
@@ -79,7 +79,7 @@ msgstr "DN Base para grupos:"
 msgid "Base:"
 msgstr "DN Base:"
 
-#: ../data/glade/requirements.glade:259
+#: ../data/glade/requirements.glade:241
 msgid "Basic setup values got from GECOS server"
 msgstr "Valores de configuración obtenidos del servidor"
 
@@ -113,12 +113,12 @@ msgstr "Limpiar los datos de configuración"
 
 #: ../data/glade/autoconf.glade:530 ../data/glade/gecoscon.glade:707
 #: ../data/glade/main.glade:325 ../data/glade/network.glade:450
-#: ../data/glade/ntp.glade:445 ../data/glade/requirements.glade:670
+#: ../data/glade/ntp.glade:445 ../data/glade/requirements.glade:657
 #: ../data/glade/users.glade:621 ../data/glade/window.glade:322
 msgid "Close"
 msgstr "Cerrar"
 
-#: ../data/glade/requirements.glade:459
+#: ../data/glade/requirements.glade:449
 msgid "Configure"
 msgstr "Configurar"
 
@@ -144,7 +144,7 @@ msgstr "Dominio:"
 
 #: ../data/glade/autoconf.glade:17 ../data/glade/gecoscon.glade:13
 #: ../data/glade/main.glade:27 ../data/glade/network.glade:35
-#: ../data/glade/ntp.glade:16 ../data/glade/requirements.glade:46
+#: ../data/glade/ntp.glade:16 ../data/glade/requirements.glade:27
 #: ../data/glade/users.glade:23 ../data/glade/window.glade:35
 msgid "GECOS Config Assistant"
 msgstr "Asistente de configuración GECOS"
@@ -165,7 +165,7 @@ msgstr "URL de GECOS"
 msgid "Get chef certificate "
 msgstr "Obtener certificado de chef"
 
-#: ../data/glade/autoconf.glade:299 ../data/glade/requirements.glade:440
+#: ../data/glade/autoconf.glade:299 ../data/glade/requirements.glade:431
 msgid "Get data"
 msgstr "Obtener datos"
 
@@ -195,7 +195,7 @@ msgstr ""
 "Debe ser único. Pueden usarse espacios o símbolos. Será usado como "
 "descripción en los informes."
 
-#: ../data/glade/requirements.glade:477
+#: ../data/glade/requirements.glade:467
 msgid "Link"
 msgstr "Vincular"
 
@@ -205,13 +205,13 @@ msgstr "Vincular a Chef "
 
 #: ../data/glade/autoconf.glade:48 ../data/glade/main.glade:57
 #: ../data/glade/network.glade:66 ../data/glade/ntp.glade:47
-#: ../data/glade/requirements.glade:77 ../data/glade/users.glade:54
+#: ../data/glade/requirements.glade:57 ../data/glade/users.glade:54
 msgid "Link/Unlink"
 msgstr "Vincular/Desvincular"
 
 #: ../data/glade/autoconf.glade:457 ../data/glade/gecoscon.glade:634
 #: ../data/glade/main.glade:252 ../data/glade/network.glade:377
-#: ../data/glade/ntp.glade:373 ../data/glade/requirements.glade:596
+#: ../data/glade/ntp.glade:373 ../data/glade/requirements.glade:584
 #: ../data/glade/users.glade:548 ../data/glade/window.glade:233
 msgid "Local Users"
 msgstr "Usuarios locales"
@@ -228,7 +228,7 @@ msgstr "Login:"
 msgid "Manage local users"
 msgstr "Gestionar usuarios locales"
 
-#: ../data/glade/requirements.glade:495
+#: ../data/glade/requirements.glade:485
 msgid "Modify"
 msgstr "Modificar"
 
@@ -248,7 +248,7 @@ msgstr "Nombre:"
 msgid "Network Setup"
 msgstr "Configuración de Red"
 
-#: ../data/glade/requirements.glade:206
+#: ../data/glade/requirements.glade:189
 msgid "Network connection"
 msgstr "Conexión de red"
 
@@ -310,14 +310,14 @@ msgstr "Ver log"
 
 #: ../data/glade/autoconf.glade:500 ../data/glade/gecoscon.glade:677
 #: ../data/glade/main.glade:295 ../data/glade/network.glade:420
-#: ../data/glade/ntp.glade:415 ../data/glade/requirements.glade:640
+#: ../data/glade/ntp.glade:415 ../data/glade/requirements.glade:627
 #: ../data/glade/users.glade:591 ../data/glade/window.glade:277
 msgid "Software Manager"
 msgstr "Gestor de Software"
 
 #: ../data/glade/autoconf.glade:414 ../data/glade/gecoscon.glade:591
 #: ../data/glade/main.glade:209 ../data/glade/network.glade:334
-#: ../data/glade/ntp.glade:331 ../data/glade/requirements.glade:552
+#: ../data/glade/ntp.glade:331 ../data/glade/requirements.glade:541
 #: ../data/glade/users.glade:505 ../data/glade/window.glade:189
 msgid "System Status"
 msgstr "Estado del Sistema"
@@ -326,15 +326,15 @@ msgstr "Estado del Sistema"
 msgid "System status"
 msgstr "Estado del Sistema"
 
-#: ../data/glade/requirements.glade:229
+#: ../data/glade/requirements.glade:211
 msgid "The system has network connection (connection data)"
 msgstr "El sistema dispone de conexión a red (datos de conexión)"
 
-#: ../data/glade/requirements.glade:327
+#: ../data/glade/requirements.glade:309
 msgid "The system is NOT linked to GECOS"
 msgstr "El sistema NO está vinculado a GECOS"
 
-#: ../data/glade/requirements.glade:293
+#: ../data/glade/requirements.glade:275
 msgid "The system is NOT synchronized its time with a NTP server"
 msgstr "El sistema NO está sincronizado con un servidor NTP"
 
@@ -372,7 +372,7 @@ msgstr "Usuario"
 msgid "User:"
 msgstr "Usuario:"
 
-#: ../data/glade/requirements.glade:361
+#: ../data/glade/requirements.glade:343
 msgid "Users are authenticated using the INTERNAL method"
 msgstr "Los usuarios se autentican usando el método INTERNO"
 
@@ -386,7 +386,7 @@ msgstr ""
 "Puede crear, actualizar o borrar usuarios locales en esta estación de "
 "trabajo."
 
-#: ../data/glade/main.glade:365 ../data/glade/requirements.glade:39
+#: ../data/glade/main.glade:365 ../data/glade/requirements.glade:697
 #: ../data/glade/window.glade:28
 msgid "eth0"
 msgstr ""
@@ -395,7 +395,7 @@ msgstr ""
 msgid "http://"
 msgstr ""
 
-#: ../data/glade/main.glade:361 ../data/glade/requirements.glade:35
+#: ../data/glade/main.glade:361 ../data/glade/requirements.glade:693
 #: ../data/glade/window.glade:24
 msgid "lo"
 msgstr ""
