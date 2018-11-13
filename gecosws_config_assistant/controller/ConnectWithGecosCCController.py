@@ -504,7 +504,7 @@ class ConnectWithGecosCCController(object):
             workstationData.get_ou())
 
         selected_ou = ou[0][0] # Selected ou by admin
-        selected_ou_path = ou[0][2].split(',')
+        selected_ou_path = ou[0][2].split(',') + [selected_ou]
         selected_ou_path.reverse() # From nearest to farthest OU to workstation
 
         # GEMs repo defaults
