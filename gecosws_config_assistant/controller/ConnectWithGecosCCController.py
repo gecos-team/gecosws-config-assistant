@@ -504,10 +504,20 @@ class ConnectWithGecosCCController(object):
             workstationData.get_ou())
 
         selected_ou = ou[0][0] # Selected ou by admin
+        selected_ou_path = ou[0][2].split(',')
+        selected_ou_path.reverse() # From nearest to farthest OU to workstation
 
         # GEMs repo defaults
         defaults = conf['gem_repo'] if conf.has_key('gem_repo') else 'https://rubygems.org/'
-        gem_repos = filter(lambda o: o['ou'] == selected_ou, conf['gem_repos_by_admin'])
+
+        # Walking through path searching gem sources (inheritance)
+        for item in selected_ou_path:
+            gem_repos = filter(lambda o: o['ou'] == item, conf['gem_repos_by_admin'])
+            if gem_repos:
+                self.logger.info("GEMs REPOs found: {}".format(gem_repos))
+                break
+
+        # Is http(s)://rubygems.org/ configured by user?
         is_rubygems_site = False
         regex = re.compile(r'http[s]?://rubygems.org')
 
