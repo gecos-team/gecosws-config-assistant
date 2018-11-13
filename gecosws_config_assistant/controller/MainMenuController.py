@@ -316,6 +316,7 @@ class MainMenuController(object):
         ''' Checking for update gecos config assistant '''
 
         import apt
+        from apt.cache import FetchFailedException
 
         apt_progress = GtkAptProgress()
         cache = apt.cache.Cache(apt_progress.open)
