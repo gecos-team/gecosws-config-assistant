@@ -26,6 +26,7 @@ import traceback
 import os
 import pwd
 import grp
+import re
 from gettext import gettext as _
 
 from gecosws_config_assistant.view.ConnectWithGecosCCDialog import (
@@ -295,8 +296,10 @@ class ConnectWithGecosCCController(object):
             workstationData.set_node_name(node_name)
 
         if check_ou:
-            if (workstationData.get_ou() is None or
-                workstationData.get_ou().strip() == ''):
+            if (
+                workstationData.get_ou() is None or
+                workstationData.get_ou().strip() == ''
+            ):
                 self.logger.debug("Empty OU name!")
                 showerror_gtk(
                     _("You must select an OU!") +
@@ -496,11 +499,38 @@ class ConnectWithGecosCCController(object):
         conf = gecosCC.get_json_autoconf(self.view.get_gecos_access_data())
 
         # Check configured GEMs repo
-        if (
-            conf is not None and
-            conf.has_key("gem_repo")
-        ):
-            gem_repo = conf['gem_repo']
+        ou = gecosCC.search_ou_by_text(
+            self.view.get_gecos_access_data(),
+            workstationData.get_ou())
+
+        selected_ou = ou[0][0] # Selected ou by admin
+
+        # GEMs repo defaults
+        defaults = conf['gem_repo'] if conf.has_key('gem_repo') else 'https://rubygems.org/'
+        gem_repos = filter(lambda o: o['ou'] == selected_ou, conf['gem_repos_by_admin'])
+        is_rubygems_site = False
+        regex = re.compile(r'http[s]?://rubygems.org')
+
+        if gem_repos:
+            gem_repos = gem_repos[0].get('gem_sources')
+
+            # Workaround: 'gem source add' command adds https://rubygems.org by default
+            if filter(regex.match, gem_repos):
+                is_rubygems_site = True
+
+        else:
+            gem_repos = [defaults]
+
+        self.logger.debug("gem_sources by ou: {}".format(gem_repos))
+
+        # GEMs tool
+        gemUtil = GemUtil()
+        gemUtil.remove_all_gem_sources()
+        gemUtil.clear_cache_gem_sources()
+
+        # Adding gem sources
+        for gem_repo in gem_repos:
+
             if not gem_repo.endswith('/'):
                 gem_repo = gem_repo + '/'
 
@@ -599,10 +629,7 @@ class ConnectWithGecosCCController(object):
                         self._clean_connection_files_on_error()
                         return False
 
-            gemUtil = GemUtil()
-            gemUtil.remove_all_gem_sources()
-            gemUtil.clear_cache_gem_sources()
-            if not gemUtil.add_gem_only_one_source(gem_repo):
+            if not gemUtil.add_gem_source(gem_repo):
                 # Error adding GEMs repository
                 self.processView.setChefCertificateRetrievalStatus(_('ERROR'))
                 self.processView.enableAcceptButton()
@@ -614,6 +641,10 @@ class ConnectWithGecosCCController(object):
                     workstationData.get_node_name())
                 self._clean_connection_files_on_error()
                 return False
+
+        if not is_rubygems_site and not regex.match(defaults):
+            # Workaround: Rubygems site added by default not by admin
+            gemUtil.remove_gem_source('https://rubygems.org/')
 
         # Check installed GEMs
         for gem_name in self.necessary_gems:
@@ -823,12 +854,9 @@ class ConnectWithGecosCCController(object):
 
         # Register from GECOS Control Center
         self.logger.debug('- register in GECOS CC ')
-        ou = gecosCC.search_ou_by_text(
-            self.view.get_gecos_access_data(),
-            workstationData.get_ou())
 
         if not gecosCC.register_computer(self.view.get_gecos_access_data(),
-                workstationData.get_node_name(), ou[0][0]):
+                workstationData.get_node_name(), selected_ou):
 
             self.processView.setRegisterInGecosStatus(_('ERROR'))
             self.processView.enableAcceptButton()

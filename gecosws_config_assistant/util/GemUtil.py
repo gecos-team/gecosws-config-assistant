@@ -56,7 +56,7 @@ class GemUtil(object):
         lst = []
 
         output = self.commandUtil.get_command_output(
-            '{} source --list'.format(self.command))
+            '{} source --list --config-file "{}"'.format(self.command, self.sys_gemrc))
 
         for line in output:
             if line.startswith('http'):
@@ -113,6 +113,13 @@ class GemUtil(object):
 
         return self.commandUtil.execute_command(
             '{} source -a "{}" --config-file "{}"'.format(
+                self.command, url, self.sys_gemrc))
+
+    def remove_gem_source(self, url):
+        ''' Removing gem source '''
+
+        return self.commandUtil.execute_command(
+            '{} source -r "{}" --config-file "{}"'.format(
                 self.command, url, self.sys_gemrc))
 
     def is_gem_intalled(self, gem_name):
