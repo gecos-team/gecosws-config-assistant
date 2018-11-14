@@ -263,7 +263,7 @@ class Check(Command):
 
 DistUtilsExtra.auto.setup(
     name='gecosws-config-assistant',
-    version='2.1.7',
+    version='2.2.0',
     license='GPL-2',
     author='GECOS Team',
     author_email='gecos@guadalinex.org',
