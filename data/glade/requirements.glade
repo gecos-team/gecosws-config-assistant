@@ -208,7 +208,7 @@
                               <object class="GtkLabel" id="netlabel">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">The system has network connection (connection data)</property>
+                                <property name="label" translatable="yes">This workstation has got a network connection configured</property>
                                 <property name="xalign">0</property>
                               </object>
                               <packing>
@@ -272,7 +272,7 @@
                               <object class="GtkLabel" id="synclabel">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">The system is NOT synchronized its time with a NTP server</property>
+                                <property name="label" translatable="yes">This workstation is NOT synchronized with a time server (NTP)</property>
                                 <property name="xalign">0</property>
                               </object>
                               <packing>
@@ -306,7 +306,7 @@
                               <object class="GtkLabel" id="syslabel">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">The system is NOT linked to GECOS</property>
+                                <property name="label" translatable="yes">This workstation is NOT linked to a Control Center</property>
                                 <property name="xalign">0</property>
                               </object>
                               <packing>
@@ -340,7 +340,7 @@
                               <object class="GtkLabel" id="userlabel">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Users are authenticated using the INTERNAL method</property>
+                                <property name="label" translatable="yes">Users authenticate themselves using the INTERNAL method</property>
                                 <property name="xalign">0</property>
                               </object>
                               <packing>
