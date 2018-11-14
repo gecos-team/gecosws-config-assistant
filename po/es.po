@@ -464,7 +464,7 @@ msgstr "Este puesto NO está sincronizado con un servidor de hora (NTP)"
 #: ../gecosws_config_assistant/controller/MainMenuController.py:218
 #, fuzzy
 msgid "This workstation is linked to a Control Center"
-msgstr "Este puesto NO está vinculado a un Centro de Control"
+msgstr "Este puesto está vinculado a un Centro de Control"
 
 #: ../gecosws_config_assistant/controller/MainMenuController.py:221
 msgid "This workstation is NOT linked to a Control Center"

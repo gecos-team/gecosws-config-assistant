@@ -327,16 +327,16 @@ msgid "System status"
 msgstr "Estado del Sistema"
 
 #: ../data/glade/requirements.glade:211
-msgid "The system has network connection (connection data)"
-msgstr "El sistema dispone de conexión a red (datos de conexión)"
+msgid "This workstation has got a network connection configured"
+msgstr "Este puesto dispone de conexión a red (datos de conexión)"
 
 #: ../data/glade/requirements.glade:309
-msgid "The system is NOT linked to GECOS"
-msgstr "El sistema NO está vinculado a GECOS"
+msgid "This workstation is NOT linked to a Control Center"
+msgstr "Este puesto NO está vinculado a un Centro de Control"
 
 #: ../data/glade/requirements.glade:275
-msgid "The system is NOT synchronized its time with a NTP server"
-msgstr "El sistema NO está sincronizado con un servidor NTP"
+msgid "This workstation is NOT synchronized with a time server (NTP)"
+msgstr "Este puesto NO está sincronizado con un servidor de hora (NTP)"
 
 #: ../data/glade/users.glade:196
 msgid ""
@@ -345,8 +345,8 @@ msgid ""
 "using local users of this O.S."
 msgstr ""
 "Los usuarios de esta estación pueden autenticarse mediante un sistema "
-"externocomo LDAP o Microsoft Active Directory. También, pueden autenticarse "
-"usando usuarios locales de este S. O."
+"externo como LDAP o Microsoft Active Directory. También pueden autenticarse "
+"usando usuarios locales de este Sistema Operativo"
 
 #: ../data/glade/adsetupdata.glade:167
 msgid ""
@@ -373,12 +373,12 @@ msgid "User:"
 msgstr "Usuario:"
 
 #: ../data/glade/requirements.glade:343
-msgid "Users are authenticated using the INTERNAL method"
+msgid "Users authenticate themselves with INTERNAL method"
 msgstr "Los usuarios se autentican usando el método INTERNO"
 
 #: ../data/glade/adsetupdata.glade:85
 msgid "Workgroup:"
-msgstr "Gurpo de trabajo:"
+msgstr "Grupo de trabajo:"
 
 #: ../data/glade/localusers.glade:43
 msgid "You can create, update or delete local users in this workstation."
