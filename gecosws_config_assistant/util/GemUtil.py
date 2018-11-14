@@ -40,12 +40,16 @@ class GemUtil(object):
         # Embebed Chef installation
         self.command = "/opt/chef/embedded/bin/gem"
         self.rubyEmbeddedInChef = True
-        self.sys_gemrc = "/etc/gemrc"
+        self.sys_gemrc = "/opt/chef/embedded/etc/gemrc"
 
         if not os.path.isfile(self.command):
             # Linux distribution Chef installation
             self.command = "/usr/bin/gem"
+            self.sys_gemrc = "/etc/gemrc"
             self.rubyEmbeddedInChef = False
+
+        if self.rubyEmbeddedInChef and not os.path.isdir("/opt/chef/embedded/etc"):
+            os.mkdir("/opt/chef/embedded/etc", 0755)
 
         self.commandUtil = CommandUtil()
         self.pm = PackageManager()
