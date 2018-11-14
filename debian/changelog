@@ -1,3 +1,9 @@
+gecosws-config-assistant (2.2.2-1) xenial; urgency=medium
+
+  * Fixing gem repositories for embedded ruby
+
+ -- Gecos Team <gecos@guadalinex.org>  Wed, 14 Nov 2018 12:10:00 +0100
+
 gecosws-config-assistant (2.2.1-1) xenial; urgency=medium
 
   * Some translations improved
