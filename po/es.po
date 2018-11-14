@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-24 11:34+0200\n"
+"POT-Creation-Date: 2018-11-13 10:33+0100\n"
 "PO-Revision-Date: 2015-09-29 17:13+0200\n"
 "Last-Translator: root <amp_21004@yahoo.es>\n"
 "Language-Team: Spanish\n"
@@ -21,12 +21,12 @@ msgstr ""
 msgid " "
 msgstr " "
 
-#: ../data/glade/main.glade:362 ../data/glade/requirements.glade:36
+#: ../data/glade/main.glade:362 ../data/glade/requirements.glade:694
 #: ../data/glade/window.glade:25
 msgid "127.0.0.1"
 msgstr ""
 
-#: ../data/glade/main.glade:366 ../data/glade/requirements.glade:40
+#: ../data/glade/main.glade:366 ../data/glade/requirements.glade:698
 #: ../data/glade/window.glade:29
 msgid "192.168.1.99"
 msgstr ""
@@ -62,7 +62,7 @@ msgstr "Configurar el Método de Autenticación"
 
 #: ../data/glade/autoconf.glade:84 ../data/glade/main.glade:94
 #: ../data/glade/network.glade:99 ../data/glade/ntp.glade:78
-#: ../data/glade/requirements.glade:113 ../data/glade/users.glade:87
+#: ../data/glade/requirements.glade:94 ../data/glade/users.glade:87
 #: ../data/glade/users.glade:215
 msgid "Authentication type"
 msgstr "Tipo de autenticación"
@@ -79,7 +79,7 @@ msgstr "DN Base para grupos:"
 msgid "Base:"
 msgstr "DN Base:"
 
-#: ../data/glade/requirements.glade:259
+#: ../data/glade/requirements.glade:241
 msgid "Basic setup values got from GECOS server"
 msgstr "Valores de configuración obtenidos del servidor"
 
@@ -113,12 +113,12 @@ msgstr "Limpiar los datos de configuración"
 
 #: ../data/glade/autoconf.glade:530 ../data/glade/gecoscon.glade:707
 #: ../data/glade/main.glade:325 ../data/glade/network.glade:450
-#: ../data/glade/ntp.glade:445 ../data/glade/requirements.glade:670
+#: ../data/glade/ntp.glade:445 ../data/glade/requirements.glade:657
 #: ../data/glade/users.glade:621 ../data/glade/window.glade:322
 msgid "Close"
 msgstr "Cerrar"
 
-#: ../data/glade/requirements.glade:459
+#: ../data/glade/requirements.glade:449
 msgid "Configure"
 msgstr "Configurar"
 
@@ -144,7 +144,7 @@ msgstr "Dominio:"
 
 #: ../data/glade/autoconf.glade:17 ../data/glade/gecoscon.glade:13
 #: ../data/glade/main.glade:27 ../data/glade/network.glade:35
-#: ../data/glade/ntp.glade:16 ../data/glade/requirements.glade:46
+#: ../data/glade/ntp.glade:16 ../data/glade/requirements.glade:27
 #: ../data/glade/users.glade:23 ../data/glade/window.glade:35
 msgid "GECOS Config Assistant"
 msgstr "Asistente de configuración GECOS"
@@ -165,7 +165,7 @@ msgstr "URL de GECOS"
 msgid "Get chef certificate "
 msgstr "Obtener certificado de chef"
 
-#: ../data/glade/autoconf.glade:299 ../data/glade/requirements.glade:440
+#: ../data/glade/autoconf.glade:299 ../data/glade/requirements.glade:431
 msgid "Get data"
 msgstr "Obtener datos"
 
@@ -195,7 +195,7 @@ msgstr ""
 "Debe ser único. Pueden usarse espacios o símbolos. Será usado como "
 "descripción en los informes."
 
-#: ../data/glade/requirements.glade:477
+#: ../data/glade/requirements.glade:467
 msgid "Link"
 msgstr "Vincular"
 
@@ -205,13 +205,13 @@ msgstr "Vincular a Chef "
 
 #: ../data/glade/autoconf.glade:48 ../data/glade/main.glade:57
 #: ../data/glade/network.glade:66 ../data/glade/ntp.glade:47
-#: ../data/glade/requirements.glade:77 ../data/glade/users.glade:54
+#: ../data/glade/requirements.glade:57 ../data/glade/users.glade:54
 msgid "Link/Unlink"
 msgstr "Vincular/Desvincular"
 
 #: ../data/glade/autoconf.glade:457 ../data/glade/gecoscon.glade:634
 #: ../data/glade/main.glade:252 ../data/glade/network.glade:377
-#: ../data/glade/ntp.glade:373 ../data/glade/requirements.glade:596
+#: ../data/glade/ntp.glade:373 ../data/glade/requirements.glade:584
 #: ../data/glade/users.glade:548 ../data/glade/window.glade:233
 msgid "Local Users"
 msgstr "Usuarios locales"
@@ -228,7 +228,7 @@ msgstr "Login:"
 msgid "Manage local users"
 msgstr "Gestionar usuarios locales"
 
-#: ../data/glade/requirements.glade:495
+#: ../data/glade/requirements.glade:485
 msgid "Modify"
 msgstr "Modificar"
 
@@ -248,7 +248,7 @@ msgstr "Nombre:"
 msgid "Network Setup"
 msgstr "Configuración de Red"
 
-#: ../data/glade/requirements.glade:206
+#: ../data/glade/requirements.glade:189
 msgid "Network connection"
 msgstr "Conexión de red"
 
@@ -310,14 +310,14 @@ msgstr "Ver log"
 
 #: ../data/glade/autoconf.glade:500 ../data/glade/gecoscon.glade:677
 #: ../data/glade/main.glade:295 ../data/glade/network.glade:420
-#: ../data/glade/ntp.glade:415 ../data/glade/requirements.glade:640
+#: ../data/glade/ntp.glade:415 ../data/glade/requirements.glade:627
 #: ../data/glade/users.glade:591 ../data/glade/window.glade:277
 msgid "Software Manager"
 msgstr "Gestor de Software"
 
 #: ../data/glade/autoconf.glade:414 ../data/glade/gecoscon.glade:591
 #: ../data/glade/main.glade:209 ../data/glade/network.glade:334
-#: ../data/glade/ntp.glade:331 ../data/glade/requirements.glade:552
+#: ../data/glade/ntp.glade:331 ../data/glade/requirements.glade:541
 #: ../data/glade/users.glade:505 ../data/glade/window.glade:189
 msgid "System Status"
 msgstr "Estado del Sistema"
@@ -326,17 +326,17 @@ msgstr "Estado del Sistema"
 msgid "System status"
 msgstr "Estado del Sistema"
 
-#: ../data/glade/requirements.glade:229
-msgid "This workstation has got network connection (connection data)"
-msgstr "Este puesto dispone de conexión a red (datos de conexión)"
+#: ../data/glade/requirements.glade:211
+msgid "The system has network connection (connection data)"
+msgstr "El sistema dispone de conexión a red (datos de conexión)"
 
-#: ../data/glade/requirements.glade:327
-msgid "This workstation is NOT linked to a Control Center"
-msgstr "Este puesto NO está vinculado a un Centro de Control"
+#: ../data/glade/requirements.glade:309
+msgid "The system is NOT linked to GECOS"
+msgstr "El sistema NO está vinculado a GECOS"
 
-#: ../data/glade/requirements.glade:293
-msgid "This workstation is NOT synchronized with a time server (NTP)"
-msgstr "Este puesto NO está sincronizado con un servidor de hora (NTP)"
+#: ../data/glade/requirements.glade:275
+msgid "The system is NOT synchronized its time with a NTP server"
+msgstr "El sistema NO está sincronizado con un servidor NTP"
 
 #: ../data/glade/users.glade:196
 msgid ""
@@ -344,9 +344,9 @@ msgid ""
 "like LDAP or Microsoft Active Directory. Also, they can be authenticated by "
 "using local users of this O.S."
 msgstr ""
-"Los usuarios de este puesto pueden autenticarse mediante un sistema "
-"externo como LDAP o Microsoft Active Directory. También pueden autenticarse "
-"usando usuarios locales del sistema operativo."
+"Los usuarios de esta estación pueden autenticarse mediante un sistema "
+"externocomo LDAP o Microsoft Active Directory. También, pueden autenticarse "
+"usando usuarios locales de este S. O."
 
 #: ../data/glade/adsetupdata.glade:167
 msgid ""
@@ -372,7 +372,7 @@ msgstr "Usuario"
 msgid "User:"
 msgstr "Usuario:"
 
-#: ../data/glade/requirements.glade:361
+#: ../data/glade/requirements.glade:343
 msgid "Users are authenticated using the INTERNAL method"
 msgstr "Los usuarios se autentican usando el método INTERNO"
 
@@ -386,7 +386,7 @@ msgstr ""
 "Puede crear, actualizar o borrar usuarios locales en esta estación de "
 "trabajo."
 
-#: ../data/glade/main.glade:365 ../data/glade/requirements.glade:39
+#: ../data/glade/main.glade:365 ../data/glade/requirements.glade:697
 #: ../data/glade/window.glade:28
 msgid "eth0"
 msgstr ""
@@ -395,16 +395,130 @@ msgstr ""
 msgid "http://"
 msgstr ""
 
-#: ../data/glade/main.glade:361 ../data/glade/requirements.glade:35
+#: ../data/glade/main.glade:361 ../data/glade/requirements.glade:693
 #: ../data/glade/window.glade:24
 msgid "lo"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:129
-#: ../gecosws_config_assistant/controller/AutoSetupController.py:113
-msgid "The URL field is empty!"
-msgstr "¡El campo URL está vacío!"
+#: ../gecosws_config_assistant/dto/ADAuthMethod.py:45
+#: ../gecosws_config_assistant/controller/MainMenuController.py:230
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:252
+#: ../gecosws_config_assistant/tests/dto/ADAuthMethodTest.py:40
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:69
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:169
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:216
+msgid "Active Directory"
+msgstr ""
 
+#: ../gecosws_config_assistant/dto/LocalUsersAuthMethod.py:47
+#: ../gecosws_config_assistant/controller/MainMenuController.py:232
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:248
+#: ../gecosws_config_assistant/tests/dto/LocalUsersAuthMethodTest.py:39
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:69
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:165
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:212
+msgid "Internal"
+msgstr "Interno"
+
+#: ../gecosws_config_assistant/dto/LDAPAuthMethod.py:48
+#: ../gecosws_config_assistant/controller/MainMenuController.py:228
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:250
+#: ../gecosws_config_assistant/tests/dto/LDAPAuthMethodTest.py:40
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:69
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:167
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:214
+msgid "LDAP"
+msgstr ""
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:197
+#, fuzzy
+msgid "This workstation has got a network connection configured"
+msgstr "Este puesto dispone de conexión a red (datos de conexión)"
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:200
+#, fuzzy
+msgid "This workstation has NO network connection"
+msgstr "El sistema no dispone de conexión a red"
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:204
+#, fuzzy
+msgid "This worstation has loaded setup data values from Control Center"
+msgstr ""
+"El sistema ha cargado los valores de configuración desde el servidor de GECOS"
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:207
+#, fuzzy
+msgid "This workstation can load setup data values from Control Center"
+msgstr ""
+"El sistema cargará los datos de configuración desde el servidor de GECOS"
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:211
+#, fuzzy
+msgid "This workstation is synchronized with a time server (NTP)"
+msgstr "Este puesto NO está sincronizado con un servidor de hora (NTP)"
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:214
+msgid "This workstation is NOT synchronized with a time server (NTP)"
+msgstr "Este puesto NO está sincronizado con un servidor de hora (NTP)"
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:218
+#, fuzzy
+msgid "This workstation is linked to a Control Center"
+msgstr "Este puesto NO está vinculado a un Centro de Control"
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:221
+msgid "This workstation is NOT linked to a Control Center"
+msgstr "Este puesto NO está vinculado a un Centro de Control"
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:223
+#, python-format
+msgid "Users authenticate themselves with %s"
+msgstr "Los usuarios se autentican usando %s"
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:335
+msgid "Upgrading ..."
+msgstr "Actualizando ..."
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:347
+msgid "Unable to connect to software repository"
+msgstr "¡No se puede conectar al repositorio de software!"
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:353
+msgid "An error occurred during the upgrade"
+msgstr "Ha ocurrido un problema durante la actualización"
+
+#: ../gecosws_config_assistant/controller/MainMenuController.py:360
+msgid "GECOS Config Assistant has been udpated. Restarting ..."
+msgstr ""
+"El Asistente de Configuración GECOS se ha actualizado. Reiniciando ... "
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:339
+msgid ""
+"The user authentication data has changed.\n"
+"Do you want to setup the user authentication method using this new data?"
+msgstr ""
+"Los datos de autenticación del usuario han cambiado.\n"
+"¿Desea configurar el método de autenticación de usuarios usando estos nuevos "
+"datos?"
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:387
+msgid "Authentication method saved!"
+msgstr "Método de Autenticación configurado!"
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:391
+msgid "Authentication method failed!"
+msgstr "Método de Autenticación falló!"
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:418
+msgid "The URI field is empty!"
+msgstr "¡El campo URI está vacío!"
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:419
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:438
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:474
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:507
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:517
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:527
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:131
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:152
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:163
@@ -413,18 +527,75 @@ msgstr "¡El campo URL está vacío!"
 #: ../gecosws_config_assistant/controller/AutoSetupController.py:115
 #: ../gecosws_config_assistant/controller/AutoSetupController.py:206
 #: ../gecosws_config_assistant/controller/AutoSetupController.py:218
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:419
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:438
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:474
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:507
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:517
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:527
 #: ../gecosws_config_assistant/controller/LocalUserController.py:85
 #: ../gecosws_config_assistant/controller/LocalUserController.py:102
 #: ../gecosws_config_assistant/controller/LocalUserController.py:111
 #: ../gecosws_config_assistant/view/LocalUserElemDialog.py:138
 msgid "Please fill all the mandatory fields."
 msgstr "Por favor rellene todos los campos obligatorios."
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:427
+msgid "Malformed LDAP URI!"
+msgstr "¡URI de LDAP mal formada!"
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:428
+#, fuzzy
+msgid "Please check that the URI starts with 'ldap(s)://'."
+msgstr "Por favor, compruebe que la URI empieza con 'ldap://' o 'ldaps://'."
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:437
+msgid "The users base DN field is empty!"
+msgstr "¡El campo base DN de usuarios está vacío!"
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:445
+msgid "Can't connect to LDAP server!"
+msgstr "¡No se puede conectar al servidor de LDAP!"
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:446
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:536
+msgid "Please check all the fields and your network connection."
+msgstr "Por favor compruebe todos los campos y su conexión con la red!"
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:463
+msgid "Bad netbios hostname!"
+msgstr "¡El hosname no cumple los requisitos de Netbios!"
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:464
+msgid "Please change the hostname of this computer."
+msgstr "Por favor cambie el hostname de este ordenador."
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:473
+msgid "The Domain field is empty!"
+msgstr "¡El campo Dominio está vacío!"
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:494
+msgid "Can't resolv the Active Directory Domain name!"
+msgstr "¡No se puede resolver el nombre de dominio de Active Directory!"
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:496
+msgid "Please check the Domain field and your DNS configuration."
+msgstr "Por favor compurebe el campo Dominio y su configuración de DNS."
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:506
+msgid "The Workgroup field is empty!"
+msgstr "El campo Grupo de trabajo está vacío!"
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:516
+msgid "The AD administrator user field is empty!"
+msgstr "¡El campo usuario Administrador AD está vacío!"
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:526
+msgid "The AD administrator password field is empty!"
+msgstr "¡El campo contraseña de administrador AD está vacío!"
+
+#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:535
+msgid "Can't connect to Active Directory server!"
+msgstr "¡No se puede conectar con el servidor de Active Directory!"
+
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:129
+#: ../gecosws_config_assistant/controller/AutoSetupController.py:113
+msgid "The URL field is empty!"
+msgstr "¡El campo URL está vacío!"
 
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:139
 #: ../gecosws_config_assistant/controller/AutoSetupController.py:123
@@ -713,168 +884,6 @@ msgstr ""
 msgid "Success getting data from GECOS server"
 msgstr "Exito al obtener los datos desde el servidor GECOS"
 
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:248
-#: ../gecosws_config_assistant/controller/MainMenuController.py:228
-#: ../gecosws_config_assistant/dto/LocalUsersAuthMethod.py:47
-#: ../gecosws_config_assistant/view/UserAuthDialog.py:69
-#: ../gecosws_config_assistant/view/UserAuthDialog.py:165
-#: ../gecosws_config_assistant/view/UserAuthDialog.py:212
-#: ../gecosws_config_assistant/tests/dto/LocalUsersAuthMethodTest.py:39
-msgid "Internal"
-msgstr "Interno"
-
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:250
-#: ../gecosws_config_assistant/controller/MainMenuController.py:224
-#: ../gecosws_config_assistant/dto/LDAPAuthMethod.py:48
-#: ../gecosws_config_assistant/view/UserAuthDialog.py:69
-#: ../gecosws_config_assistant/view/UserAuthDialog.py:167
-#: ../gecosws_config_assistant/view/UserAuthDialog.py:214
-#: ../gecosws_config_assistant/tests/dto/LDAPAuthMethodTest.py:40
-msgid "LDAP"
-msgstr ""
-
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:252
-#: ../gecosws_config_assistant/controller/MainMenuController.py:226
-#: ../gecosws_config_assistant/dto/ADAuthMethod.py:45
-#: ../gecosws_config_assistant/view/UserAuthDialog.py:69
-#: ../gecosws_config_assistant/view/UserAuthDialog.py:169
-#: ../gecosws_config_assistant/view/UserAuthDialog.py:216
-#: ../gecosws_config_assistant/tests/dto/ADAuthMethodTest.py:40
-msgid "Active Directory"
-msgstr ""
-
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:339
-msgid ""
-"The user authentication data has changed.\n"
-"Do you want to setup the user authentication method using this new data?"
-msgstr ""
-"Los datos de autenticación del usuario han cambiado.\n"
-"¿Desea configurar el método de autenticación de usuarios usando estos "
-"nuevos datos?"
-
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:387
-msgid "Authentication method saved!"
-msgstr "Método de Autenticación configurado!"
-
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:391
-msgid "Authentication method failed!"
-msgstr "Método de Autenticación falló!"
-
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:418
-msgid "The URI field is empty!"
-msgstr "¡El campo URI está vacío!"
-
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:427
-msgid "Malformed LDAP URI!"
-msgstr "¡URI de LDAP mal formada!"
-
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:428
-#, fuzzy
-msgid "Please check that the URI starts with 'ldap(s)://'."
-msgstr "Por favor, compruebe que la URI empieza con 'ldap://' o 'ldaps://'."
-
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:437
-msgid "The users base DN field is empty!"
-msgstr "¡El campo base DN de usuarios está vacío!"
-
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:445
-msgid "Can't connect to LDAP server!"
-msgstr "¡No se puede conectar al servidor de LDAP!"
-
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:446
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:536
-msgid "Please check all the fields and your network connection."
-msgstr "Por favor compruebe todos los campos y su conexión con la red!"
-
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:463
-msgid "Bad netbios hostname!"
-msgstr "¡El hosname no cumple los requisitos de Netbios!"
-
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:464
-msgid "Please change the hostname of this computer."
-msgstr "Por favor cambie el hostname de este ordenador."
-
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:473
-msgid "The Domain field is empty!"
-msgstr "¡El campo Dominio está vacío!"
-
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:494
-msgid "Can't resolv the Active Directory Domain name!"
-msgstr "¡No se puede resolver el nombre de dominio de Active Directory!"
-
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:496
-msgid "Please check the Domain field and your DNS configuration."
-msgstr "Por favor compurebe el campo Dominio y su configuración de DNS."
-
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:506
-msgid "The Workgroup field is empty!"
-msgstr "El campo Grupo de trabajo está vacío!"
-
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:516
-msgid "The AD administrator user field is empty!"
-msgstr "¡El campo usuario Administrador AD está vacío!"
-
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:526
-msgid "The AD administrator password field is empty!"
-msgstr "¡El campo contraseña de administrador AD está vacío!"
-
-#: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:535
-msgid "Can't connect to Active Directory server!"
-msgstr "¡No se puede conectar con el servidor de Active Directory!"
-
-#: ../gecosws_config_assistant/controller/MainMenuController.py:193
-msgid "The system has a network connection configured"
-msgstr "El sistema dispone de conexión a red configurada"
-
-#: ../gecosws_config_assistant/controller/MainMenuController.py:196
-msgid "The system has NO network connection"
-msgstr "El sistema no dispone de conexión a red"
-
-#: ../gecosws_config_assistant/controller/MainMenuController.py:200
-msgid "The system has loaded setup data values from GECOS server"
-msgstr ""
-"El sistema ha cargado los valores de configuración desde el servidor de GECOS"
-
-#: ../gecosws_config_assistant/controller/MainMenuController.py:203
-msgid "The system may load setup data values from GECOS server"
-msgstr ""
-"El sistema cargará los datos de configuración desde el servidor de GECOS"
-
-#: ../gecosws_config_assistant/controller/MainMenuController.py:207
-msgid "The system is synchronized with a NTP server"
-msgstr "El sistema está sincronizado con un servidor NTP"
-
-#: ../gecosws_config_assistant/controller/MainMenuController.py:210
-msgid "The system is NOT synchronized with a NTP server"
-msgstr "El sistema NO está sincronizado con un servidor NTP"
-
-#: ../gecosws_config_assistant/controller/MainMenuController.py:214
-msgid "The system is linked to a GECOS server"
-msgstr "El sistema está vinculado al servidor GECOS"
-
-#: ../gecosws_config_assistant/controller/MainMenuController.py:217
-msgid "The system is NOT linked to a GECOS server"
-msgstr "El sistema NO está vinculado al servidor GECOS"
-
-#: ../gecosws_config_assistant/controller/MainMenuController.py:219
-#, python-format
-msgid "Users authenticate themselves with %s"
-msgstr "Los usuarios se autentican usando %s"
-
-#: ../gecosws_config_assistant/controller/MainMenuController.py:331
-msgid "Upgrading ..."
-msgstr "Actualizando ..."
-
-#: ../gecosws_config_assistant/controller/MainMenuController.py:340
-msgid "An error occurred during the upgrade"
-msgstr "Ha ocurrido un problema durante la actualización"
-
-#: ../gecosws_config_assistant/controller/MainMenuController.py:345
-msgid "GECOS Config Assistant has been udpated. Please restart GCA"
-msgstr ""
-"El Asistente de Configuración GECOS se ha actualizado. Por favor reinicie el "
-"ACG!"
-
 #: ../gecosws_config_assistant/controller/LocalUserController.py:84
 msgid "The login field is empty!"
 msgstr "¡El campo Login está vacío!"
@@ -910,31 +919,27 @@ msgstr "Error guardando los datos del servidor de NTP"
 msgid "See log for more details."
 msgstr "Vea el log para más detalles."
 
-#: ../gecosws_config_assistant/util/GtkAptProgress.py:232
+#: ../gecosws_config_assistant/util/GtkAptProgress.py:251
 #, python-format
 msgid "Downloading file %(current)li of %(total)li with %(speed)s/s"
 msgstr ""
 
-#: ../gecosws_config_assistant/util/GtkAptProgress.py:238
+#: ../gecosws_config_assistant/util/GtkAptProgress.py:257
 #, python-format
 msgid "Downloading file %(current)li of %(total)li"
 msgstr ""
 
-#: ../gecosws_config_assistant/util/GtkAptProgress.py:261
+#: ../gecosws_config_assistant/util/GtkAptProgress.py:280
 msgid "Details"
 msgstr ""
 
-#: ../gecosws_config_assistant/util/GtkAptProgress.py:334
+#: ../gecosws_config_assistant/util/GtkAptProgress.py:354
 msgid "Starting..."
 msgstr ""
 
-#: ../gecosws_config_assistant/util/GtkAptProgress.py:340
+#: ../gecosws_config_assistant/util/GtkAptProgress.py:360
 msgid "Complete"
 msgstr ""
-
-#: ../gecosws_config_assistant/view/ConnectWithGecosCCDialog.py:172
-msgid "Disconnect from CC GECOS"
-msgstr "Desconectar del CC GECOS"
 
 #: ../gecosws_config_assistant/view/ADSetupDataElemView.py:125
 msgid ""
@@ -943,6 +948,90 @@ msgid ""
 msgstr ""
 "No se ha podido conectar con el Active Directory.\n"
 "Por favor revise todos los campos"
+
+#: ../gecosws_config_assistant/view/ConnectWithGecosCCDialog.py:172
+msgid "Disconnect from CC GECOS"
+msgstr "Desconectar del CC GECOS"
+
+#: ../gecosws_config_assistant/view/NTPServerElemView.py:129
+msgid ""
+"Can't connect with NTP server.\n"
+"Please double-check the NTP server address"
+msgstr ""
+"No se puede conectar con el servidor NTP.\n"
+"Por favor revise la dirección del servidor NTP"
+
+#: ../gecosws_config_assistant/view/NTPServerElemView.py:133
+msgid "NTP server connection successful"
+msgstr "Éxito al configurar el servidor NTP"
+
+#: ../gecosws_config_assistant/view/SplashScreen.py:55
+msgid "Loading ..."
+msgstr "Cargando ..."
+
+#: ../gecosws_config_assistant/view/LogTerminalDialog.py:135
+msgid "Log terminal"
+msgstr "Terminal de Log"
+
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:244
+msgid "Please fill the data to setup the LDAP authentication method."
+msgstr ""
+"Por favor rellene todos los datos para configurar el méotod de autenticación "
+"por LDAP."
+
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:247
+msgid "LDAP server URI:"
+msgstr "URI del servidor LDAP:"
+
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:248
+#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:160
+msgid "Users base DN:"
+msgstr "DN base de usuarios:"
+
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:249
+msgid "Groups base DN (optional):"
+msgstr "DN base de grupos (opcional):"
+
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:250
+msgid "Bind user DN (optional):"
+msgstr "DN del usuario para enlazar (opcional):"
+
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:251
+msgid "Bind user password (optional):"
+msgstr "Contraseña para enlace (opcional):"
+
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:279
+msgid ""
+"Please fill the data to setup the Active Directory authentication method."
+msgstr ""
+
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:285
+msgid "(Active Directory) User:"
+msgstr "(Active Directory) Usuario:"
+
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:286
+msgid "(Active Directory) Password:"
+msgstr "(Active Directory) Contraseña:"
+
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:314
+#, fuzzy
+msgid ""
+"Specific configuration data was loaded from GECOS server\n"
+"(sssd.conf, krb5.conf, smb.conf and pam.conf)"
+msgstr ""
+"Se ha descargado desde el Centro de Control GECOS datos de configuración\n"
+"específicos (sssd.conf, krb5.conf, smb.conf y pam.conf)"
+
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:349
+msgid ""
+"There is no necessary data to setup the local users authentication method."
+msgstr ""
+"No se necesita configuración para usar el método de autenticación por "
+"usuarios locales."
+
+#: ../gecosws_config_assistant/view/UserAuthDialog.py:500
+msgid "An error happened while saving the users authentication method!"
+msgstr "¡Ocurrió un error al guardar el método de autenticación de usuarios!"
 
 #: ../gecosws_config_assistant/view/MainWindow.py:209
 msgid "Link with GECOS server"
@@ -1018,11 +1107,6 @@ msgstr "Método: "
 msgid "Server URI:"
 msgstr "URI del servidor:"
 
-#: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:160
-#: ../gecosws_config_assistant/view/UserAuthDialog.py:248
-msgid "Users base DN:"
-msgstr "DN base de usuarios:"
-
 #: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:162
 msgid "Groups base DN:"
 msgstr "DN base de grupos:"
@@ -1030,26 +1114,6 @@ msgstr "DN base de grupos:"
 #: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:167
 msgid "No status data!"
 msgstr "¡No hay información de estado!"
-
-#: ../gecosws_config_assistant/view/NTPServerElemView.py:129
-msgid ""
-"Can't connect with NTP server.\n"
-"Please double-check the NTP server address"
-msgstr ""
-"No se puede conectar con el servidor NTP.\n"
-"Por favor revise la dirección del servidor NTP"
-
-#: ../gecosws_config_assistant/view/NTPServerElemView.py:133
-msgid "NTP server connection successful"
-msgstr "Éxito al configurar el servidor NTP"
-
-#: ../gecosws_config_assistant/view/SplashScreen.py:50
-msgid "Loading ..."
-msgstr "Cargando ..."
-
-#: ../gecosws_config_assistant/view/LogTerminalDialog.py:135
-msgid "Log terminal"
-msgstr "Terminal de Log"
 
 #: ../gecosws_config_assistant/view/LocalUserElemDialog.py:95
 msgid "Modifiy local user"
@@ -1063,63 +1127,23 @@ msgstr "El campo Confirmación de la clave está vacío!"
 msgid "The password confirmation is different from password"
 msgstr "El campo confirmación de la clave es diferente del campo clave"
 
-#: ../gecosws_config_assistant/view/UserAuthDialog.py:244
-msgid "Please fill the data to setup the LDAP authentication method."
-msgstr ""
-"Por favor rellene todos los datos para configurar el méotod de autenticación "
-"por LDAP."
-
-#: ../gecosws_config_assistant/view/UserAuthDialog.py:247
-msgid "LDAP server URI:"
-msgstr "URI del servidor LDAP:"
-
-#: ../gecosws_config_assistant/view/UserAuthDialog.py:249
-msgid "Groups base DN (optional):"
-msgstr "DN base de grupos (opcional):"
-
-#: ../gecosws_config_assistant/view/UserAuthDialog.py:250
-msgid "Bind user DN (optional):"
-msgstr "DN del usuario para enlazar (opcional):"
-
-#: ../gecosws_config_assistant/view/UserAuthDialog.py:251
-msgid "Bind user password (optional):"
-msgstr "Contraseña para enlace (opcional):"
-
-#: ../gecosws_config_assistant/view/UserAuthDialog.py:279
-msgid ""
-"Please fill the data to setup the Active Directory authentication method."
-msgstr ""
-
-#: ../gecosws_config_assistant/view/UserAuthDialog.py:285
-msgid "(Active Directory) User:"
-msgstr "(Active Directory) Usuario:"
-
-#: ../gecosws_config_assistant/view/UserAuthDialog.py:286
-msgid "(Active Directory) Password:"
-msgstr "(Active Directory) Contraseña:"
-
-#: ../gecosws_config_assistant/view/UserAuthDialog.py:314
-#, fuzzy
-msgid ""
-"Specific configuration data was loaded from GECOS server\n"
-"(sssd.conf, krb5.conf, smb.conf and pam.conf)"
-msgstr ""
-"Se ha descargado desde el Centro de Control GECOS datos de configuración\n"
-"específicos (sssd.conf, krb5.conf, smb.conf y pam.conf)"
-
-#: ../gecosws_config_assistant/view/UserAuthDialog.py:349
-msgid ""
-"There is no necessary data to setup the local users authentication method."
-msgstr ""
-"No se necesita configuración para usar el método de autenticación por "
-"usuarios locales."
-
-#: ../gecosws_config_assistant/view/UserAuthDialog.py:500
-msgid "An error happened while saving the users authentication method!"
-msgstr "¡Ocurrió un error al guardar el método de autenticación de usuarios!"
-
 #~ msgid "Update assistant"
 #~ msgstr "Actualizar asistente"
+
+#~ msgid "The system has a network connection configured"
+#~ msgstr "El sistema dispone de conexión a red configurada"
+
+#~ msgid "The system is synchronized with a NTP server"
+#~ msgstr "El sistema está sincronizado con un servidor NTP"
+
+#~ msgid "The system is NOT synchronized with a NTP server"
+#~ msgstr "El sistema NO está sincronizado con un servidor NTP"
+
+#~ msgid "The system is linked to a GECOS server"
+#~ msgstr "El sistema está vinculado al servidor GECOS"
+
+#~ msgid "The system is NOT linked to a GECOS server"
+#~ msgstr "El sistema NO está vinculado al servidor GECOS"
 
 #, fuzzy
 #~ msgid "The user authentication data has changed.\n"

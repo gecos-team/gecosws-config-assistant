@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.1 -->
+<!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.0"/>
   <object class="GtkAdjustment" id="adjustment1">
@@ -31,7 +31,6 @@
     </data>
   </object>
   <object class="GtkWindow" id="window1">
-    <property name="visible">False</property>
     <property name="can_focus">False</property>
     <property name="events">GDK_EXPOSURE_MASK | GDK_STRUCTURE_MASK</property>
     <property name="title" translatable="yes">GECOS Config Assistant</property>
@@ -40,7 +39,6 @@
     <property name="decorated">False</property>
     <property name="deletable">False</property>
     <property name="gravity">center</property>
-    <property name="has_resize_grip">False</property>
     <signal name="delete-event" handler="onDeleteWindow" swapped="no"/>
     <child>
       <object class="GtkFrame" id="frame1">
@@ -71,10 +69,10 @@
                     <property name="can_focus">False</property>
                     <property name="events">GDK_EXPOSURE_MASK | GDK_STRUCTURE_MASK</property>
                     <child>
-                      <object class="GtkSpinner" id="spinner2">
+                      <object class="GtkImage" id="spinner">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="active">True</property>
+                        <property name="pixbuf">../media/spinner.gif</property>
                       </object>
                       <packing>
                         <property name="expand">True</property>
