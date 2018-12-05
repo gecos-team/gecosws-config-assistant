@@ -431,29 +431,24 @@ msgid "LDAP"
 msgstr ""
 
 #: ../gecosws_config_assistant/controller/MainMenuController.py:197
-#, fuzzy
 msgid "This workstation has got a network connection configured"
 msgstr "Este puesto dispone de conexión a red (datos de conexión)"
 
 #: ../gecosws_config_assistant/controller/MainMenuController.py:200
-#, fuzzy
 msgid "This workstation has NO network connection"
 msgstr "El sistema no dispone de conexión a red"
 
 #: ../gecosws_config_assistant/controller/MainMenuController.py:204
-#, fuzzy
 msgid "This worstation has loaded setup data values from Control Center"
 msgstr ""
 "El sistema ha cargado los valores de configuración desde el servidor de GECOS"
 
 #: ../gecosws_config_assistant/controller/MainMenuController.py:207
-#, fuzzy
 msgid "This workstation can load setup data values from Control Center"
 msgstr ""
 "El sistema cargará los datos de configuración desde el servidor de GECOS"
 
 #: ../gecosws_config_assistant/controller/MainMenuController.py:211
-#, fuzzy
 msgid "This workstation is synchronized with a time server (NTP)"
 msgstr "Este puesto NO está sincronizado con un servidor de hora (NTP)"
 
@@ -462,7 +457,6 @@ msgid "This workstation is NOT synchronized with a time server (NTP)"
 msgstr "Este puesto NO está sincronizado con un servidor de hora (NTP)"
 
 #: ../gecosws_config_assistant/controller/MainMenuController.py:218
-#, fuzzy
 msgid "This workstation is linked to a Control Center"
 msgstr "Este puesto está vinculado a un Centro de Control"
 
@@ -539,7 +533,6 @@ msgid "Malformed LDAP URI!"
 msgstr "¡URI de LDAP mal formada!"
 
 #: ../gecosws_config_assistant/controller/UserAuthenticationMethodController.py:428
-#, fuzzy
 msgid "Please check that the URI starts with 'ldap(s)://'."
 msgstr "Por favor, compruebe que la URI empieza con 'ldap://' o 'ldaps://'."
 
@@ -688,7 +681,6 @@ msgid "SSL ERROR:"
 msgstr "ERROR de SSL:"
 
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:247
-#, fuzzy
 msgid "Please double-check all the data and yournetwork setup."
 msgstr "Por favor revise todos los datos y su configuración de red."
 
@@ -792,12 +784,10 @@ msgid "Can't connect to GEMs repository!"
 msgstr "¡No se puede conectar al repositrio de GEMas!"
 
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:610
-#, fuzzy
 msgid "There was an error while adding the GEMs repository:\n"
 msgstr "Ha ocurrido un error al añadir el repositorio de GEMas:\n"
 
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:627
-#, fuzzy
 msgid "There was an error while installing a required GEM: "
 msgstr "Ha ocurrido un error al instalar una GEMa requerida: "
 
@@ -826,7 +816,6 @@ msgid "Can't save /etc/gcc.control file"
 msgstr "No se puede guardar el fichero /etc/gcc.control"
 
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:890
-#, fuzzy
 msgid "Local disconnection done!"
 msgstr "¿Desconexión local?"
 
@@ -1014,7 +1003,6 @@ msgid "(Active Directory) Password:"
 msgstr "(Active Directory) Contraseña:"
 
 #: ../gecosws_config_assistant/view/UserAuthDialog.py:314
-#, fuzzy
 msgid ""
 "Specific configuration data was loaded from GECOS server\n"
 "(sssd.conf, krb5.conf, smb.conf and pam.conf)"
@@ -1038,7 +1026,6 @@ msgid "Link with GECOS server"
 msgstr "Enlazar al servidor GECOS"
 
 #: ../gecosws_config_assistant/view/MainWindow.py:211
-#, fuzzy
 msgid ""
 "You must link your workstation with a GECOS server to be \n"
 "able to manage this workstation in a centralized way"
@@ -1145,7 +1132,6 @@ msgstr "El campo confirmación de la clave es diferente del campo clave"
 #~ msgid "The system is NOT linked to a GECOS server"
 #~ msgstr "El sistema NO está vinculado al servidor GECOS"
 
-#, fuzzy
 #~ msgid "The user authentication data has changed.\n"
 #~ msgstr "Configurar el Método de Autenticación"
 
