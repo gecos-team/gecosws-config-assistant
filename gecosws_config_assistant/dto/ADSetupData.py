@@ -199,11 +199,11 @@ class ADSetupData(object):
             return True
 
         try:
-            ld = ldap.initialize('ldap://%s', self.get_domain())
+            ld = ldap.initialize('ldap://{}'.format(self.get_domain()))
             ld.protocol_version = 3
             ld.set_option(ldap.OPT_REFERRALS, 0)
 
-            user = "%s@%s", self.get_ad_administrator_user(), self.get_domain()
+            user = "{0}@{1}".format(self.get_ad_administrator_user(), self.get_domain())
             password = self.get_ad_administrator_pass()
             ld.simple_bind_s(user, password)
 
