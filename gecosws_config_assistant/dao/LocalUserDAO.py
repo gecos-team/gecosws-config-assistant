@@ -54,9 +54,14 @@ class LocalUserDAO(object):
 
         self.logger.debug('loadAll - BEGIN')
         users = []
+        usernames = []
 
         for user in pwd.getpwall():
             if user.pw_uid < self.min_uid or user.pw_name == 'nobody':
+                continue
+
+            if user.pw_name in usernames:
+                # Show every user only once
                 continue
 
             lu = LocalUser()
@@ -71,6 +76,7 @@ class LocalUserDAO(object):
             lu.set_password(None)
 
             users.append(lu)
+            usernames.append(user.pw_name)
 
         return users
 
