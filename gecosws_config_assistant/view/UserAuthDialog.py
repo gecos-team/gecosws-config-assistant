@@ -270,6 +270,13 @@ class UserAuthDialog(GladeWindow):
         self.entry4.set_visibility(True)
         self.entry5.set_visibility(False)
 
+        # defaults
+        self.entry1.set_text("")
+        self.entry2.set_text("")
+        self.entry3.set_text("")
+        self.entry4.set_text("")
+        self.entry5.set_text("")
+ 
     def setFormForAD(self):
         ''' Active Directory Form '''
 
@@ -304,6 +311,12 @@ class UserAuthDialog(GladeWindow):
         self.entry3.set_visibility(True)
         self.entry4.set_visibility(False)
         self.entry5.set_visibility(True)
+
+        # defaults
+        self.entry1.set_text("")
+        self.entry2.set_text("")
+        self.entry3.set_text("")
+        self.entry4.set_text("")
 
     def setFormForSpecificAD(self):
         ''' Setting form for specific Active Directory setup '''
