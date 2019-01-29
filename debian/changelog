@@ -1,4 +1,4 @@
-gecosws-config-assistant (2.2.2-1gecos1) trusty; urgency=medium
+gecosws-config-assistant (2.2.3-1gecos1) trusty; urgency=medium
 
   * Bugfix: Authentication form clearing for LDAP/AD method.
 
