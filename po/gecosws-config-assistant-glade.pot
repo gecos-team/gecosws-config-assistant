@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-13 10:33+0100\n"
+"POT-Creation-Date: 2019-02-19 10:57+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -316,23 +316,23 @@ msgstr ""
 msgid "System status"
 msgstr ""
 
-#: ../data/glade/requirements.glade:211
-msgid "The system has network connection (connection data)"
-msgstr ""
-
-#: ../data/glade/requirements.glade:309
-msgid "The system is NOT linked to GECOS"
-msgstr ""
-
-#: ../data/glade/requirements.glade:275
-msgid "The system is NOT synchronized its time with a NTP server"
-msgstr ""
-
 #: ../data/glade/users.glade:196
 msgid ""
 "The users of this workstation may authenticate by using an external system "
 "like LDAP or Microsoft Active Directory. Also, they can be authenticated by "
 "using local users of this O.S."
+msgstr ""
+
+#: ../data/glade/requirements.glade:211
+msgid "This workstation has got a network connection configured"
+msgstr ""
+
+#: ../data/glade/requirements.glade:309
+msgid "This workstation is NOT linked to a Control Center"
+msgstr ""
+
+#: ../data/glade/requirements.glade:275
+msgid "This workstation is NOT synchronized with a time server (NTP)"
 msgstr ""
 
 #: ../data/glade/adsetupdata.glade:167
@@ -358,7 +358,7 @@ msgid "User:"
 msgstr ""
 
 #: ../data/glade/requirements.glade:343
-msgid "Users are authenticated using the INTERNAL method"
+msgid "Users authenticate themselves using the INTERNAL method"
 msgstr ""
 
 #: ../data/glade/adsetupdata.glade:85

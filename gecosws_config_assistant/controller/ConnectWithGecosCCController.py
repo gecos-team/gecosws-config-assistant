@@ -43,7 +43,7 @@ from gecosws_config_assistant.util.Template import Template
 from gecosws_config_assistant.util.CommandUtil import CommandUtil
 from gecosws_config_assistant.util.SSLUtil import (
     SSLUtil, SSL_R_CERTIFICATE_VERIFY_FAILED)
-from gecosws_config_assistant.util.GemUtil import GemUtil
+from gecosws_config_assistant.util.GemUtil import GemUtil, REQUIRED_GEMS
 from gecosws_config_assistant.util.PackageManager import PackageManager
 
 from gecosws_config_assistant.dao.GecosAccessDataDAO import GecosAccessDataDAO
@@ -67,10 +67,6 @@ class ConnectWithGecosCCController(object):
         self.accessDataDao = GecosAccessDataDAO()
         self.workstationDataDao = WorkstationDataDAO()
         self.logger = logging.getLogger('ConnectWithGecosCCController')
-
-        # List of GEMS required to run GECOS
-        self.necessary_gems = [
-            'json', 'rest-client', 'activesupport', 'netaddr']
 
         # Check if 'gecosws-certificates-locale' package exists
         try:
@@ -657,7 +653,7 @@ class ConnectWithGecosCCController(object):
             gemUtil.remove_gem_source('https://rubygems.org/')
 
         # Check installed GEMs
-        for gem_name in self.necessary_gems:
+        for gem_name in REQUIRED_GEMS:
             if not gemUtil.is_gem_intalled(gem_name):
                 if not gemUtil.install_gem(gem_name):
                     # Error installing a GEM
