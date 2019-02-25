@@ -27,6 +27,7 @@ import traceback
 from gecosws_config_assistant.dto.NTPServer import NTPServer
 from gecosws_config_assistant.util.PackageManager import PackageManager
 from gecosws_config_assistant.util.Template import Template
+from gecosws_config_assistant.util.Utils import Utils, System_Manager
 from gecosws_config_assistant.firstboot_lib.firstbootconfig import (
     get_data_file)
 
@@ -48,10 +49,27 @@ class NTPServerDAO(object):
         '''
         Constructor
         '''
-
+        self.sysmanager = Utils.get_system_manager()
         self.logger = logging.getLogger('NTPServerDAO')
-        self.data_file = '/etc/systemd/timesyncd.conf'
-        self.initiated = True
+
+        if self.sysmanager == System_Manager.SYSTEMD: # timesyncd
+            self.data_file = '/etc/systemd/timesyncd.conf'
+            self.initiated = True
+        else: # ntpdate
+            self.data_file = '/etc/default/ntpdate'
+            self.initiated = False
+            self.pm = PackageManager()
+
+            if not self.pm.is_package_installed('ntpdate'):
+                # Try to install the package
+                try:
+                    self.pm.install_package('ntpdate')
+                    self.initiated = True
+                except Exception:
+                    self.logger.error('Package installation failed:' + 'ntpdate')
+                    self.logger.error(str(traceback.format_exc()))
+            else:
+                self.initiated = True
 
     def load(self):
         ''' Loading data '''
@@ -63,10 +81,14 @@ class NTPServerDAO(object):
             # Get server from data file
             try:
                 address = None
+                ntpstring = 'NTP=' \
+                        if self.sysmanager == System_Manager.SYSTEMD \
+                        else 'NTPSERVERS='
+
                 with open(self.data_file) as fp:
                     for line in fp:
-                        if line.startswith('NTP='):
-                            address = line[len('NTP='):]
+                        if line.startswith(ntpstring):
+                            address = line[len(ntpstring):]
                             break
 
                 if address is not None:
@@ -74,6 +96,10 @@ class NTPServerDAO(object):
                     address = address.strip()
                     ntpServer = NTPServer()
                     ntpServer.set_address(address)
+                else:
+                    # Initialize template
+                    ntpServer = NTPServer()
+                    ntpServer.set_address('ntp.ubuntu.org')
 
             except Exception:
                 self.logger.error('Error reading file:' + self.data_file)
@@ -113,7 +139,9 @@ class NTPServerDAO(object):
 
             # Save the value to data file
             template = Template()
-            template.source = get_data_file('templates/timesyncd.conf')
+            template.source = get_data_file('templates/timesyncd.conf') \
+                    if self.sysmanager == System_Manager.SYSTEMD \
+                    else get_data_file('templates/ntpdate')
             template.destination = self.data_file
             template.owner = 'root'
             template.group = 'root'
