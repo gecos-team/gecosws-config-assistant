@@ -22,7 +22,7 @@ __copyright__ = "Copyright (C) 2015, Junta de Andalucía" + \
 __license__ = "GPL-2"
 
 import subprocess
-
+import re
 import logging
 
 class NTPServer(object):
@@ -38,23 +38,27 @@ class NTPServer(object):
         self.logger = logging.getLogger('NTPServer')
 
     def syncrhonize(self):
-        ''' Syncronizing time with ntpdate cpmmand '''
+        ''' Syncronizing time with systemd-timesyncd service '''
 
         if self.address is None or self.address.strip() == '':
             return False
         else:
-            self.logger.debug('ntpdate-debian -u %s', self.address)
+            subprocess.call(["systemctl", "enable", "systemd-timesyncd.service"])
+            subprocess.call(["systemctl", "start", "systemd-timesyncd.service"])
+            subprocess.call(["timedatectl", "set-ntp", "true"])
             p = subprocess.Popen(
-                'ntpdate-debian -u {}'.format(self.address),
-                shell=True,
-                stdout=subprocess.PIPE,
+                "timedatectl status", 
+                shell=True, 
+                stdout=subprocess.PIPE, 
                 stderr=subprocess.STDOUT)
 
             for line in p.stdout.readlines():
-                self.logger.debug(line)
-            retval = p.wait()
+                if re.match(r'NTP synchronized: yes', line):
+                    self.logger.debug('NTP synchronized: %s', self.address)
+                    return True
 
-            return retval == 0
+            self.logger.debug('NTP unsynchronized: %s', self.address)
+            return False
 
     def get_address(self):
         ''' Getter address '''

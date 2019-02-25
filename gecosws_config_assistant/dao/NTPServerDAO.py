@@ -50,21 +50,8 @@ class NTPServerDAO(object):
         '''
 
         self.logger = logging.getLogger('NTPServerDAO')
-        self.data_file = '/etc/default/ntpdate'
-        self.initiated = False
-
-        # Check if 'ntpdate' package exists
-        self.pm = PackageManager()
-        if not self.pm.is_package_installed('ntpdate'):
-            # Try to install the package
-            try:
-                self.pm.install_package('ntpdate')
-                self.initiated = True
-            except Exception:
-                self.logger.error('Package installation failed:' + 'ntpdate')
-                self.logger.error(str(traceback.format_exc()))
-        else:
-            self.initiated = True
+        self.data_file = '/etc/systemd/timesyncd.conf'
+        self.initiated = True
 
     def load(self):
         ''' Loading data '''
@@ -78,8 +65,8 @@ class NTPServerDAO(object):
                 address = None
                 with open(self.data_file) as fp:
                     for line in fp:
-                        if line.startswith('NTPSERVERS='):
-                            address = line[len('NTPSERVERS='):]
+                        if line.startswith('NTP='):
+                            address = line[len('NTP='):]
                             break
 
                 if address is not None:
@@ -126,7 +113,7 @@ class NTPServerDAO(object):
 
             # Save the value to data file
             template = Template()
-            template.source = get_data_file('templates/ntpdate')
+            template.source = get_data_file('templates/timesyncd.conf')
             template.destination = self.data_file
             template.owner = 'root'
             template.group = 'root'

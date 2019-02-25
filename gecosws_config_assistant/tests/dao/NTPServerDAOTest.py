@@ -51,10 +51,10 @@ class NTPServerDAOTest(unittest.TestCase):
         newServer.set_address('hora.roa.es')
         dao.save(newServer)
         
-        self.assertTrue(self.findInFile('/etc/default/ntpdate', 'hora.roa.es'))
+        self.assertTrue(self.findInFile('/etc/systemd/timesyncd.conf', 'hora.roa.es'))
         
         if originalServer is not None:
             dao.save(originalServer)
-            self.assertTrue(self.findInFile('/etc/default/ntpdate', 
+            self.assertTrue(self.findInFile('/etc/systemd/timesyncd.conf', 
                                             originalServer.get_address()))
 
