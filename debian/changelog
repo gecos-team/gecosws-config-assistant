@@ -1,3 +1,9 @@
+gecosws-config-assistant (2.2.5-1gecos1) trusty; urgency=medium
+
+  * Time Synchronization with NTP and systemd.
+
+ -- Gecos Team <gecos@guadalinex.org>  Mon, 25 Feb 2019 8:30:00 +0100
+
 gecosws-config-assistant (2.2.4-1gecos1) trusty; urgency=medium
 
   * Updating chef and gecos-agent from GCA.
