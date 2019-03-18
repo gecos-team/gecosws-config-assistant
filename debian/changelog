@@ -1,16 +1,16 @@
 gecosws-config-assistant (2.3gecos1) bionic; urgency=medium
 
-   * Configuring NTP with systemd-timesyncd.
-   * Updating chef and gecosws-agent packages.
-   * GEMs installation.
+  * Configuring NTP with systemd-timesyncd.
+  * Updating chef and gecosws-agent packages.
+  * GEMs installation.
 
-  -- Gecos Team <gecos@guadalinex.org>  Mon, 18 Mar 2019 12:30:00 +0100
+ -- Gecos Team <gecos@guadalinex.org>  Mon, 18 Mar 2019 12:30:00 +0100
 
 gecosws-config-assistant (2.2.2-1gecos1) trusty; urgency=medium
 
-   * Bugfix: Authentication form clearing for LDAP/AD method.
+  * Bugfix: Authentication form clearing for LDAP/AD method.
 
-  -- Gecos Team <gecos@guadalinex.org>  Mon, 28 Jan 2019 16:30:00 +0100
+ -- Gecos Team <gecos@guadalinex.org>  Mon, 28 Jan 2019 16:30:00 +0100
 
 gecosws-config-assistant (2.2.1-1gecos1) trusty; urgency=medium
 
