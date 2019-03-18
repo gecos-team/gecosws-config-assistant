@@ -28,6 +28,8 @@ from inspect import getmembers
 import logging
 import os
 import sys
+import threading
+from gi.repository import Gtk, GObject
 
 from gecosws_config_assistant.controller.ConnectWithGecosCCController import (
     ConnectWithGecosCCController)
@@ -48,6 +50,7 @@ from gecosws_config_assistant.view.MainWindow import MainWindow
 from gecosws_config_assistant.util.GtkAptProgress import GtkAptProgress
 from gecosws_config_assistant.view.UserAuthDialog import (
     LDAP_USERS, AD_USERS)
+from gecosws_config_assistant.util.GemUtil import GemUtil, REQUIRED_GEMS
 
 gettext.textdomain('gecosws-config-assistant')
 
@@ -312,6 +315,16 @@ class MainMenuController(object):
 
         self.localUserList.showList(self.window)
 
+    def splash_threading(self, title=_('Upgrading ...')):
+        ''' Thread running splash screen '''
+
+        GObject.threads_init()
+        splash = SplashScreen()
+        button = splash.getElementById('label1')
+        button.set_label(title)
+        splash.show()
+        Gtk.main()
+
     def checkForUpdates(self):
         ''' Checking for update gecos config assistant '''
 
@@ -320,11 +333,17 @@ class MainMenuController(object):
 
         apt_progress = GtkAptProgress()
         cache = apt.cache.Cache(apt_progress.open)
-        pkg = cache['gecosws-config-assistant'] if cache.has_key('gecosws-config-assistant') else None
+        # apt-get update
+        cache.update()
+        # We need to re-open the cache because it needs to read the package list
+        cache.open(None)
 
-        if pkg is not None and pkg.is_installed and pkg.is_upgradable:
+        software_checks = [ 'chef', 'gecosws-agent', 'gecosws-config-assistant' ]
+        updates = [ pkg for pkg in software_checks if cache.has_key(pkg) and cache[pkg].is_upgradable ]
+ 
+        if len(updates) > 0:
 
-            pkg.mark_upgrade()
+            [ cache[update].mark_upgrade() for update in updates ]
 
             splash = SplashScreen()
             hbox2 = splash.getElementById('hbox2')
@@ -355,6 +374,30 @@ class MainMenuController(object):
                     self.window.getMainWindow())
 
             splash.hide()
+            while Gtk.events_pending():
+                Gtk.main_iteration()
+
+            # GEMs installation for chef-client new version
+            if cache['chef'].marked_upgrade:
+
+                thread = threading.Thread(target=self.splash_threading, args=(_('Installing gems ...'),))
+                thread.daemon = True
+                thread.start()
+
+                gemUtil = GemUtil()
+                for gem_name in REQUIRED_GEMS:
+                    if not gemUtil.is_gem_intalled(gem_name):
+                        if not gemUtil.install_gem(gem_name):
+                            upgrade = False
+                            self.logger.debug("GemUtil: An error while installing {} : %s", gem_name)
+                            showerror_gtk(
+                                _("An error ocurred while installing gems"),
+                                self.window.getMainWindow())
+                            break
+
+                GObject.idle_add(Gtk.main_quit)
+                thread.join()
+
 
             if upgrade:
                 showinfo_gtk(

@@ -27,6 +27,8 @@ import os
 from gecosws_config_assistant.util.CommandUtil import CommandUtil
 from gecosws_config_assistant.util.PackageManager import PackageManager
 
+REQUIRED_GEMS = [ 'json', 'rest-client', 'activesupport', 'netaddr' ]
+
 class GemUtil(object):
     '''
     Utility class to configure Ruby GEMs.
