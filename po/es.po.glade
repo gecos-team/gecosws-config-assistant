@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-13 10:33+0100\n"
+"POT-Creation-Date: 2019-03-18 13:00+0100\n"
 "PO-Revision-Date: 2015-09-29 17:13+0200\n"
 "Last-Translator: root <amp_21004@yahoo.es>\n"
 "Language-Team: Spanish\n"
@@ -326,6 +326,16 @@ msgstr "Estado del Sistema"
 msgid "System status"
 msgstr "Estado del Sistema"
 
+#: ../data/glade/users.glade:196
+msgid ""
+"The users of this workstation may authenticate by using an external system "
+"like LDAP or Microsoft Active Directory. Also, they can be authenticated by "
+"using local users of this O.S."
+msgstr ""
+"Los usuarios de esta estación pueden autenticarse mediante un sistema "
+"externo como LDAP o Microsoft Active Directory. También pueden autenticarse "
+"usando usuarios locales de este Sistema Operativo"
+
 #: ../data/glade/requirements.glade:211
 msgid "This workstation has got a network connection configured"
 msgstr "Este puesto dispone de conexión a red (datos de conexión)"
@@ -337,16 +347,6 @@ msgstr "Este puesto NO está vinculado a un Centro de Control"
 #: ../data/glade/requirements.glade:275
 msgid "This workstation is NOT synchronized with a time server (NTP)"
 msgstr "Este puesto NO está sincronizado con un servidor de hora (NTP)"
-
-#: ../data/glade/users.glade:196
-msgid ""
-"The users of this workstation may authenticate by using an external system "
-"like LDAP or Microsoft Active Directory. Also, they can be authenticated by "
-"using local users of this O.S."
-msgstr ""
-"Los usuarios de esta estación pueden autenticarse mediante un sistema "
-"externo como LDAP o Microsoft Active Directory. También pueden autenticarse "
-"usando usuarios locales de este Sistema Operativo"
 
 #: ../data/glade/adsetupdata.glade:167
 msgid ""
@@ -373,7 +373,7 @@ msgid "User:"
 msgstr "Usuario:"
 
 #: ../data/glade/requirements.glade:343
-msgid "Users authenticate themselves with INTERNAL method"
+msgid "Users authenticate themselves using the INTERNAL method"
 msgstr "Los usuarios se autentican usando el método INTERNO"
 
 #: ../data/glade/adsetupdata.glade:85

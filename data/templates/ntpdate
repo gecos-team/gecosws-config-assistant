@@ -11,4 +11,3 @@ NTPSERVERS="${ntp_server}"
 
 # Additional options to pass to ntpdate
 NTPOPTIONS=""
-
