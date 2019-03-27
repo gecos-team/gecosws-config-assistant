@@ -339,6 +339,7 @@ class MainMenuController(object):
         cache.open(None)
 
         software_checks = [ 'chef', 'gecos-agent', 'gecosws-config-assistant' ]
+
         updates = [ pkg for pkg in software_checks if cache.has_key(pkg) and cache[pkg].is_upgradable ]
  
         if len(updates) > 0:

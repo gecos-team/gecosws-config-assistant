@@ -276,7 +276,7 @@ class UserAuthDialog(GladeWindow):
         self.entry3.set_text("")
         self.entry4.set_text("")
         self.entry5.set_text("")
-
+ 
     def setFormForAD(self):
         ''' Active Directory Form '''
 

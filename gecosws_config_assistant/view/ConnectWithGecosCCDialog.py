@@ -24,7 +24,7 @@ __license__ = "GPL-2"
 import logging
 import gettext
 from gettext import gettext as _
-from gi.repository import Gtk
+from gi.repository import Gtk, Pango
 
 from gecosws_config_assistant.view.GladeWindow import GladeWindow
 from gecosws_config_assistant.dto.GecosAccessData import GecosAccessData
@@ -82,6 +82,9 @@ class ConnectWithGecosCCDialog(GladeWindow):
         self.combo = self.getElementById('combobox1')
 
         renderer_text = Gtk.CellRendererText()
+        renderer_text.set_property('xpad', 2)
+        renderer_text.set_property('ellipsize',Pango.EllipsizeMode.END)
+
         self.combo.pack_start(renderer_text, True)
         self.combo.add_attribute(renderer_text, "text", 0)
 

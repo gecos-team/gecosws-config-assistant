@@ -80,7 +80,7 @@ class NTPServer(object):
                     stderr=subprocess.STDOUT)
 
                 for line in p.stdout.readlines():
-                    if re.match(r'NTP synchronized: yes', line):
+                    if re.match(r'.*synchronized: yes', line):
                         self.logger.debug('NTP synchronized: %s', self.address)
                         return True
 

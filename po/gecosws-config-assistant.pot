@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-19 10:57+0100\n"
+"POT-Creation-Date: 2019-03-18 13:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -343,6 +343,7 @@ msgstr ""
 msgid "IN PROCESS"
 msgstr ""
 
+#. Error adding GEMs repository
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:408
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:414
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:421
@@ -376,6 +377,7 @@ msgstr ""
 msgid "ERROR"
 msgstr ""
 
+#. We don't need any certificate to unlink from Chef or GECOS CC
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:425
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:437
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:672
@@ -475,6 +477,8 @@ msgstr ""
 msgid "Please double-check all the data and your network setup."
 msgstr ""
 
+#. Show process view
+#. Get auto setup JSON
 #: ../gecosws_config_assistant/controller/AutoSetupController.py:249
 msgid "Please wait"
 msgstr ""
@@ -536,6 +540,7 @@ msgstr ""
 msgid "Downloading file %(current)li of %(total)li"
 msgstr ""
 
+#. Setup some child widgets
 #: ../gecosws_config_assistant/util/GtkAptProgress.py:280
 msgid "Details"
 msgstr ""
@@ -584,6 +589,7 @@ msgstr ""
 msgid "Please fill the data to setup the LDAP authentication method."
 msgstr ""
 
+#. text
 #: ../gecosws_config_assistant/view/UserAuthDialog.py:247
 msgid "LDAP server URI:"
 msgstr ""
@@ -610,6 +616,7 @@ msgid ""
 "Please fill the data to setup the Active Directory authentication method."
 msgstr ""
 
+#. text
 #: ../gecosws_config_assistant/view/UserAuthDialog.py:290
 #: ../gecosws_config_assistant/view/UserAuthDialog.py:331
 #: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:152
