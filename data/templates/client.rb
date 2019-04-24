@@ -21,7 +21,7 @@ report_handlers << reporthandler
 exception_handlers << reporthandler
 
 cache_options({ :path => "/var/cache/chef/checksums", :skip_expires => true})
-Ohai::Config[:disabled_plugins] =['applications','c','erlang','groovy','java','lua','network_listeners','php','ip_scopes','passwd']
+ohai.disabled_plugins =['applications','c','erlang','groovy','java','lua','network_listeners','php','ip_scopes','passwd']
 
 node_name           "${chef_node_name}"
 
