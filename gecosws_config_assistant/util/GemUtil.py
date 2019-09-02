@@ -27,7 +27,7 @@ import os
 from gecosws_config_assistant.util.CommandUtil import CommandUtil
 from gecosws_config_assistant.util.PackageManager import PackageManager
 
-REQUIRED_GEMS = [ 'json', 'rest-client', 'activesupport', 'netaddr' ]
+REQUIRED_GEMS = [ 'json', 'rest-client', 'activesupport:4.2.11.1', 'netaddr' ]
 
 class GemUtil(object):
     '''
