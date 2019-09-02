@@ -1,3 +1,9 @@
+gecosws-config-assistant (2.3.1-1gecos1) bionic; urgency=medium
+
+  * Locking activesupport gem version to avoid a newer Ruby version
+
+ -- Gecos Team <gecos@guadalinex.org>  Mon, 2 Sep 2019 12:30:00 +0100
+
 gecosws-config-assistant (2.3gecos1) bionic; urgency=medium
 
   * Configuring NTP with systemd-timesyncd.
