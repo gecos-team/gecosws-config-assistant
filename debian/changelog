@@ -1,3 +1,9 @@
+gecosws-config-assistant (2.3.1-2gecos1) bionic; urgency=medium
+
+  * Disable GECOS server SSL certificate validation when needed
+
+ -- Gecos Team <gecos@guadalinex.org>  Thu, 23 Jan 2020 12:30:00 +0100
+
 gecosws-config-assistant (2.3.1-1gecos1) bionic; urgency=medium
 
   * Locking activesupport gem version to avoid a newer Ruby version
