@@ -36,7 +36,7 @@ from gecosws_config_assistant.util.JSONUtil import JSONUtil
 from gecosws_config_assistant.util.Template import Template
 from gecosws_config_assistant.firstboot_lib.firstbootconfig import (
     get_data_file)
-
+from gecosws_config_assistant.util.SSLUtil import SSLUtil
 
 class GecosAccessDataDAO(object):
     '''
@@ -159,7 +159,8 @@ class GecosAccessDataDAO(object):
         template.variables = {
             'uri_gcc':  url,
             'gcc_username':  data.get_login(),
-            'gcc_nodename':  gcc_nodename
+            'gcc_nodename':  gcc_nodename,
+            'ssl_verify': SSLUtil.isSSLCertificatesVerificationEnabled()
         }
 
         return template.save()
