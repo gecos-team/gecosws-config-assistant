@@ -263,14 +263,40 @@ class ConnectWithGecosCCController(object):
             self.view.focusWorkstationNameField()
             return False
 
-        if (
-            workstationData.get_node_name() is None or
-            workstationData.get_node_name().strip() == ''
-        ):
+        if (workstationData.get_node_name() is None or
+            workstationData.get_node_name().strip() == ''):
+            # Create a new node_name
+            node_name = self.accessDataDao.calculate_workstation_node_name()
+            workstationData.set_node_name(node_name)
+
+        if check_ou:
+            if (workstationData.get_ou() is None or
+                workstationData.get_ou().strip() == ''):
+                self.logger.debug("Empty OU name!")
+                showerror_gtk(
+                    _("You must select an OU!") +
+                    "\n" +
+                    _("Please fill all the mandatory fields."),
+                     None)
+                self.view.focusSeachFilterField()
+                return False
+            else:
+                self.logger.debug("Selected OU: %s", workstationData.get_ou())
+
             # Computer name must be unique
             gecosCC = GecosCC()
             computer_names = gecosCC.get_computer_names(
                 self.view.get_gecos_access_data())
+            if not computer_names and isinstance(computer_names, bool):
+                self.logger.debug("Error obtaining computer names!")
+                showerror_gtk(
+                    _("Can't obtain data from OU!") +
+                    "\n" +
+                    _("Please double check the selected OU."),
+                    self.view)
+                self.view.focusSeachFilterField()
+                return False                
+            
             is_in_computer_names = False
             for cname in computer_names:
                 if cname['name'] == workstationData.get_name():
@@ -287,25 +313,6 @@ class ConnectWithGecosCCController(object):
                 self.view.focusWorkstationNameField()
                 return False
 
-            # Create a new node_name
-            node_name = self.accessDataDao.calculate_workstation_node_name()
-            workstationData.set_node_name(node_name)
-
-        if check_ou:
-            if (
-                workstationData.get_ou() is None or
-                workstationData.get_ou().strip() == ''
-            ):
-                self.logger.debug("Empty OU name!")
-                showerror_gtk(
-                    _("You must select an OU!") +
-                    "\n" +
-                    _("Please fill all the mandatory fields."),
-                     None)
-                self.view.focusSeachFilterField()
-                return False
-            else:
-                self.logger.debug("Selected OU: %s", workstationData.get_ou())
 
         return True
 

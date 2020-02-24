@@ -79,7 +79,9 @@ class Template(object):
 
             # Replace the variables
             for key, value in self.variables.items():
-                contents = contents.replace('${%s}'%(key), value)
+                if isinstance(value, bool):
+                    value = str(value).lower()
+                contents = contents.replace('${%s}'%(key), str(value))
 
             # Eliminate non existing IF blocks
             lines = contents.splitlines()

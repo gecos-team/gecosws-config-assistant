@@ -40,7 +40,15 @@ module GECOSReports
           end
           if has_conection
             Chef::Log.info(gcc_control)
-            resource = RestClient::Resource.new(gcc_control['uri_gcc'] + '/chef/status/')
+            # SSL certificate validation (enable by default)
+            verify_ssl = true
+            if gcc_control.key?('ssl_verify')
+                verify_ssl = gcc_control['ssl_verify']
+            end
+
+            resource = RestClient::Resource.new(
+                gcc_control['uri_gcc'] + '/chef/status/',
+                :verify_ssl => verify_ssl)
             response = resource.put :node_id => gcc_control['gcc_nodename'], :gcc_username => gcc_control['gcc_username']
             if not response.code.between?(200,299)
               Chef::Log.error('Wrong response from GECOS Control Center')
