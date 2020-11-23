@@ -53,6 +53,7 @@ def get_datafiles(datadir):
         root_s.remove(datadir)
         root = str.join('/', root_s)
         dfiles.append(['share/gecosws-config-assistant/'+root, sources])
+    
     return dfiles
 
 datafiles = get_datafiles('data')
@@ -68,10 +69,10 @@ def update_config(values={}):
 
     oldvalues = {}
     try:
-        fin = file(
+        fin = open(
             'gecosws_config_assistant/firstboot_lib/firstbootconfig.py',
             'r')
-        fout = file(fin.name + '.new', 'w')
+        fout = open(fin.name + '.new', 'w')
 
         for line in fin:
             fields = line.split(' = ')  # Separate variable from value
@@ -85,8 +86,8 @@ def update_config(values={}):
         fin.close()
         os.rename(fout.name, fin.name)
     except (OSError, IOError):
-        print "ERROR: Can't find gecosws_config_assistant/firstboot " + \
-            "lib/firstbootconfig.py"
+        print ("ERROR: Can't find gecosws_config_assistant/firstboot " + \
+            "lib/firstbootconfig.py")
         sys.exit(1)
     return oldvalues
 
@@ -94,8 +95,8 @@ def update_desktop_file(datadir):
     ''' Update desktop file '''
 
     try:
-        fin = file('gecos-config-assistant.desktop.in', 'r')
-        fout = file(fin.name + '.new', 'w')
+        fin = open('gecos-config-assistant.desktop.in', 'r')
+        fout = open(fin.name + '.new', 'w')
 
         for line in fin:
             if 'Icon=' in line:
@@ -106,7 +107,7 @@ def update_desktop_file(datadir):
         fin.close()
         os.rename(fout.name, fin.name)
     except (OSError, IOError):
-        print "ERROR: Can't find gecos-config-assistant.desktop.in"
+        print ("ERROR: Can't find gecos-config-assistant.desktop.in")
         sys.exit(1)
 
 def copy_pages(pages_path):
