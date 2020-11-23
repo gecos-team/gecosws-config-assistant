@@ -44,20 +44,20 @@ class SSLUtilTest(unittest.TestCase):
 
         # Start the test
         SSLUtil.disableSSLCertificatesVerification()
-   		self.assertFalse(SSLUtil.isSSLCertificatesVerificationEnabled())
+   	self.assertFalse(SSLUtil.isSSLCertificatesVerificationEnabled())
 
-   		self.assertFalse(SSLUtil.isSSLCertificatesVerificationEnabled())
+   	self.assertFalse(SSLUtil.isSSLCertificatesVerificationEnabled())
         SSLUtil.enableSSLCertificatesVerification()
 
         
-		self.assertFalse(sslUtil.isServerCertificateTrusted(None))
-		self.assertFalse(sslUtil.isServerCertificateTrusted('https://ws003.juntadeandalucia.es/'))
+	self.assertFalse(sslUtil.isServerCertificateTrusted(None))
+	self.assertFalse(sslUtil.isServerCertificateTrusted('https://ws003.juntadeandalucia.es/'))
 
         SSLUtil.disableSSLCertificatesVerification()
-		self.assertTrue(sslUtil.isServerCertificateTrusted('https://ws003.juntadeandalucia.es/'))
+	self.assertTrue(sslUtil.isServerCertificateTrusted('https://ws003.juntadeandalucia.es/'))
         SSLUtil.enableSSLCertificatesVerification()
 
-		self.assertTrue(sslUtil.isServerCertificateTrusted('https://www.google.es/'))
+	self.assertTrue(sslUtil.isServerCertificateTrusted('https://www.google.es/'))
 
         self.assertIsNotNone(sslUtil.getUntrustedCertificateCause('https://ws003.juntadeandalucia.es/'))
         print('Untrusted certificate cause: %s'%(sslUtil.getUntrustedCertificateCause('https://ws003.juntadeandalucia.es/')))
@@ -96,7 +96,7 @@ class SSLUtilTest(unittest.TestCase):
         self.assertIsNone(issuerCertificateUrl)        
 
         sslUtil.addCertificateToTrustedCAs(certificate, True)
-		self.assertTrue(sslUtil.isServerCertificateTrusted('https://gecos.solutia-it.es:8443/'))
+	self.assertTrue(sslUtil.isServerCertificateTrusted('https://gecos.solutia-it.es:8443/'))
 
         self.assertTrue(os.path.exists('/etc/chef/trusted_certs/gecos.solutia-it.es.crt'))
 
@@ -104,7 +104,7 @@ class SSLUtilTest(unittest.TestCase):
         print('Untrusted certificate cause: %s'%(sslUtil.getUntrustedCertificateCause('https://192.168.0.15:8443/')))
 
         sslUtil.removeCertificateFromTrustedCAs(certificate)
-		self.assertFalse(sslUtil.isServerCertificateTrusted('https://gecos.solutia-it.es:8443/'))
+	self.assertFalse(sslUtil.isServerCertificateTrusted('https://gecos.solutia-it.es:8443/'))
         self.assertFalse(os.path.exists('/etc/chef/trusted_certs/gecos.solutia-it.es.crt'))
         
         
@@ -141,9 +141,9 @@ class SSLUtilTest(unittest.TestCase):
         
         
         sslUtil.addCertificateToTrustedCAs(certificate)
-		self.assertTrue(sslUtil.isServerCertificateTrusted('https://ws003.juntadeandalucia.es/'))
+	self.assertTrue(sslUtil.isServerCertificateTrusted('https://ws003.juntadeandalucia.es/'))
 
         sslUtil.removeCertificateFromTrustedCAs(certificate)
-		self.assertFalse(sslUtil.isServerCertificateTrusted('https://ws003.juntadeandalucia.es/'))
+	self.assertFalse(sslUtil.isServerCertificateTrusted('https://ws003.juntadeandalucia.es/'))
 		
 

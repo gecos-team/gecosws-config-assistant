@@ -37,7 +37,7 @@ __all__ = [
 # files). By default, this is ../data, relative your trunk layout
 __firstboot_data_directory__ = '/usr/share/gecosws-config-assistant/'
 __license__ = ''
-__version__ = '0.8.0-0gecos4'
+__version__ = '2.3'
 __firstboot_prefix__ = '/usr'
 
 import os

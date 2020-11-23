@@ -67,9 +67,7 @@ class LocalUserDAO(object):
             lu = LocalUser()
             lu.set_login(user.pw_name)
             lu.set_name(
-                unicode(
-                    user.pw_gecos.split(',')[0], 'utf-8', 'replace'
-                )
+                str( user.pw_gecos.split(',')[0])
             )
 
             # For security reasons can't get raw user password

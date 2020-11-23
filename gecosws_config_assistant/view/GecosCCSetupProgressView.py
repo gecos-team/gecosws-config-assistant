@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
-from __builtin__ import True
+#from __builtin__ import True
 
 # This file is part of Guadalinex
 #

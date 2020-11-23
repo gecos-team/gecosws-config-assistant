@@ -48,7 +48,7 @@ class TemplateTest(unittest.TestCase):
         template.destination = '/tmp/test1/test2/test3/test.file'
         template.owner = 'root'
         template.group = 'root'
-        template.mode = 00644
+        template.mode = 0o00644
         template.variables = { 'test_value':  'TEST_VALUE_1',
                               'test_2_value':  'TEST_2_VALUE_1'}        
         
@@ -80,7 +80,7 @@ class TemplateTest(unittest.TestCase):
         
 
         # Change mode and owner
-        os.chmod(template.destination, 00666)
+        os.chmod(template.destination, 0o00666)
         uid = pwd.getpwnam('nobody').pw_uid
         gid = grp.getgrnam('nogroup').gr_gid
         os.chown(template.destination, uid, gid)
@@ -93,7 +93,7 @@ class TemplateTest(unittest.TestCase):
         gid = stat_info.st_gid   
         current_usr = pwd.getpwuid(uid)[0]
         current_grp = grp.getgrgid(gid)[0]        
-        m = stat_info.st_mode & 00777
+        m = stat_info.st_mode & 0o00777
         self.assertEqual(template.mode, m)     
         self.assertEqual(current_usr, template.owner)     
         self.assertEqual(current_grp, template.group)     

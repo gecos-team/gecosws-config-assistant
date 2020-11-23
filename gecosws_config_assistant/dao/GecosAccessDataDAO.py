@@ -100,9 +100,9 @@ class GecosAccessDataDAO(object):
         self.logger.debug("Getting hardware address")
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         info = fcntl.ioctl(
-            s.fileno(), 0x8927,  struct.pack('256s', ifname[:15])
+            s.fileno(), 0x8927,  struct.pack('256s', bytes(ifname[:15], 'utf-8'))
         )
-        return ''.join(['%02x:' % ord(char) for char in info[18:24]])[:-1]
+        return ''.join(['%02x:' % char for char in info[18:24]])[:-1]
 
     def calculate_workstation_node_name(self):
         ''' Calculates workstation node name '''
@@ -152,7 +152,7 @@ class GecosAccessDataDAO(object):
         template.destination = self.data_file
         template.owner = 'root'
         template.group = 'root'
-        template.mode = 00755
+        template.mode = 0o00755
         url = data.get_url()
         if url.endswith('/'):
             url = url[0:-1]

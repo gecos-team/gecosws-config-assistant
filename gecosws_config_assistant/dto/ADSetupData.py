@@ -205,6 +205,7 @@ class ADSetupData(object):
 
             user = "{0}@{1}".format(self.get_ad_administrator_user(), self.get_domain())
             password = self.get_ad_administrator_pass()
+            
             ld.simple_bind_s(user, password)
 
             return True

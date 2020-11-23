@@ -155,7 +155,7 @@ class UserAuthenticationMethodDAO(object):
         template.destination = self.main_data_file
         template.owner = 'root'
         template.group = 'root'
-        template.mode = 00600
+        template.mode = 0o00600
         template.variables = {
             'ldap_uri':  data.get_uri(),
             'ldap_search_base': data.get_base()
@@ -204,7 +204,7 @@ class UserAuthenticationMethodDAO(object):
         template.destination = '/usr/share/pam-configs/my_mkhomedir'
         template.owner = 'root'
         template.group = 'root'
-        template.mode = 00644
+        template.mode = 0o00644
         template.variables = { }
 
         if not template.save():
@@ -237,7 +237,7 @@ class UserAuthenticationMethodDAO(object):
         template.destination = '/etc/gca-sssd.control'
         template.owner = 'root'
         template.group = 'root'
-        template.mode = 00644
+        template.mode = 0o00644
         template.variables = { 'auth_type':  'ldap' }
 
         if not template.save():
@@ -481,7 +481,7 @@ class UserAuthenticationMethodDAO(object):
         template.destination = '/usr/share/pam-configs/my_mkhomedir'
         template.owner = 'root'
         template.group = 'root'
-        template.mode = 00644
+        template.mode = 0o00644
         template.variables = { }
 
         if not template.save():
@@ -514,7 +514,7 @@ class UserAuthenticationMethodDAO(object):
         template.destination = '/etc/gca-sssd.control'
         template.owner = 'root'
         template.group = 'root'
-        template.mode = 00644
+        template.mode = 0o00644
         template.variables = { 'auth_type':  'ad' }
 
         if not template.save():
@@ -527,14 +527,27 @@ class UserAuthenticationMethodDAO(object):
         extra_conf_lines = ''
         if self.sssd_version is not None:
             major, minor, _ = self.pm.parse_version_number(self.sssd_version)
+            # This line is needed on gecos v3 and v4, but in ubuntu 20.04
+            # not need that line, we can check through version of sssd
+            # sssd version gv4 -> 1.13.4
+            # sssd version gv4 -> 1.16.1
+            # sssd version ubuntu20.04 (gv5) -> 2.2.3
 
-            if major > 1 or (major == 1 and minor > 11):
+            if (major > 1 or (major == 1 and minor > 11)) and major < 2: 
                 extra_conf_lines = '[domain/DEFAULT]\n'
                 extra_conf_lines = extra_conf_lines + 'enumerate = TRUE\n'
                 extra_conf_lines = extra_conf_lines + 'min_id = 500\n'
                 extra_conf_lines = extra_conf_lines + 'max_id = 999\n'
                 extra_conf_lines = extra_conf_lines + 'id_provider = local\n'
                 extra_conf_lines = extra_conf_lines + 'auth_provider = local\n'
+                extra_conf_lines = extra_conf_lines + '\n'
+            if major >= 2:
+                extra_conf_lines = '[domain/DEFAULT]\n'
+                extra_conf_lines = extra_conf_lines + 'enumerate = TRUE\n'
+                extra_conf_lines = extra_conf_lines + 'min_id = 500\n'
+                extra_conf_lines = extra_conf_lines + 'max_id = 999\n'
+                extra_conf_lines = extra_conf_lines + 'id_provider = none\n'
+                extra_conf_lines = extra_conf_lines + 'auth_provider = none\n'
                 extra_conf_lines = extra_conf_lines + '\n'
 
         self.logger.debug('Save /etc/sssd/sssd.conf file')
@@ -544,7 +557,7 @@ class UserAuthenticationMethodDAO(object):
         template.destination = self.main_data_file
         template.owner = 'root'
         template.group = 'root'
-        template.mode = 00600
+        template.mode = 0o00600
         template.variables = {'extra_conf_lines': extra_conf_lines }
 
         if not template.save():
@@ -591,7 +604,7 @@ class UserAuthenticationMethodDAO(object):
         template.destination = self.samba_conf_file
         template.owner = 'root'
         template.group = 'root'
-        template.mode = 00644
+        template.mode = 0o00644
         template.variables = {
             'ad_domain':  data.get_domain().upper(),
             'ad_workgroup': data.get_workgroup()
@@ -609,7 +622,7 @@ class UserAuthenticationMethodDAO(object):
         template.destination = self.krb_conf_file
         template.owner = 'root'
         template.group = 'root'
-        template.mode = 00644
+        template.mode = 0o00644
         template.variables = {
             'ad_domain':  data.get_domain(),
             'ad_domain_upper':  data.get_domain().upper()
@@ -643,7 +656,13 @@ class UserAuthenticationMethodDAO(object):
         if self.sssd_version is not None:
             major, minor, _ = self.pm.parse_version_number(self.sssd_version)
 
-            if major > 1 or (major == 1 and minor > 11):
+            # This line is needed on gecos v3 and v4, but in ubuntu 20.04
+            # not need that line, we can check through version of sssd
+            # sssd version gv4 -> 1.13.4
+            # sssd version gv4 -> 1.16.1
+            # sssd version ubuntu20.04 (gv5) -> 2.2.3
+
+            if (not (major > 1 or (major == 1 and minor > 11))) and major < 2:
                 extra_conf_lines = 'ad_gpo_map_interactive = +mdm, +polkit-1'
 
         self.logger.debug('Save /etc/sssd/sssd.conf file')
@@ -653,7 +672,7 @@ class UserAuthenticationMethodDAO(object):
         template.destination = self.main_data_file
         template.owner = 'root'
         template.group = 'root'
-        template.mode = 00600
+        template.mode = 0o00600
         template.variables = {
             'ad_domain':  data.get_domain(),
             'extra_conf_lines': extra_conf_lines
@@ -687,7 +706,7 @@ class UserAuthenticationMethodDAO(object):
         template.destination = '/usr/share/pam-configs/my_mkhomedir'
         template.owner = 'root'
         template.group = 'root'
-        template.mode = 00644
+        template.mode = 0o00644
         template.variables = { }
 
         if not template.save():
@@ -720,7 +739,7 @@ class UserAuthenticationMethodDAO(object):
         template.destination = '/etc/gca-sssd.control'
         template.owner = 'root'
         template.group = 'root'
-        template.mode = 00644
+        template.mode = 0o00644
         template.variables = { 'auth_type':  'ad' }
 
         if not template.save():
@@ -760,13 +779,27 @@ class UserAuthenticationMethodDAO(object):
         if self.sssd_version is not None:
             major, minor, _ = self.pm.parse_version_number(self.sssd_version)
 
-            if major > 1 or (major == 1 and minor > 11):
+                        # This line is needed on gecos v3 and v4, but in ubuntu 20.04
+            # not need that line, we can check through version of sssd
+            # sssd version gv4 -> 1.13.4
+            # sssd version gv4 -> 1.16.1
+            # sssd version ubuntu20.04 (gv5) -> 2.2.3
+
+            if (major > 1 or (major == 1 and minor > 11)) and major < 2: 
                 extra_conf_lines = '[domain/DEFAULT]\n'
                 extra_conf_lines = extra_conf_lines + 'enumerate = TRUE\n'
                 extra_conf_lines = extra_conf_lines + 'min_id = 500\n'
                 extra_conf_lines = extra_conf_lines + 'max_id = 999\n'
                 extra_conf_lines = extra_conf_lines + 'id_provider = local\n'
                 extra_conf_lines = extra_conf_lines + 'auth_provider = local\n'
+                extra_conf_lines = extra_conf_lines + '\n'
+            if major >= 2:
+                extra_conf_lines = '[domain/DEFAULT]\n'
+                extra_conf_lines = extra_conf_lines + 'enumerate = TRUE\n'
+                extra_conf_lines = extra_conf_lines + 'min_id = 500\n'
+                extra_conf_lines = extra_conf_lines + 'max_id = 999\n'
+                extra_conf_lines = extra_conf_lines + 'id_provider = none\n'
+                extra_conf_lines = extra_conf_lines + 'auth_provider = none\n'
                 extra_conf_lines = extra_conf_lines + '\n'
 
         self.logger.debug('Save /etc/sssd/sssd.conf file')

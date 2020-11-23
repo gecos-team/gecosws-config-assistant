@@ -25,7 +25,7 @@ __license__ = "GPL-2"
 import traceback
 import json
 import logging
-from urlparse import urlparse
+from urllib.parse import urlparse
 import requests
 
 from gecosws_config_assistant.dto.GecosAccessData import GecosAccessData
@@ -391,22 +391,21 @@ class GecosCC(object):
 
             payload = {'node_id': nodename}
             self.logger.debug('payload: %s', json.dumps(payload))
-
-            r = requests.post(
+            rq = requests.post(
                 url,
                 auth=(user,password),
                 verify=SSLUtil.isSSLCertificatesVerificationEnabled(),
                 timeout=self.timeout,
                 data=payload)
-            if r.ok:
+            if rq.ok:
                 self.logger.debug('Response: %s', url)
                 response_json = False
-                if hasattr(r,'text'):
-                    self.logger.debug('Response: %s', r.text)
-                    response_json = json.loads(r.text)
+                if hasattr(rq,'text'):
+                    self.logger.debug('Response: %s', rq.text)
+                    response_json = json.loads(rq.text)
                 else:
-                    self.logger.debug('Response: %s', r.content)
-                    response_json = json.loads(r.content)
+                    self.logger.debug('Response: %s', rq.content)
+                    response_json = json.loads(rq.content)
 
                 if response_json is None:
                     self.logger.error(
@@ -454,13 +453,13 @@ class GecosCC(object):
 
             payload = {'node_id': nodename}
             self.logger.debug('payload: %s', json.dumps(payload))
-
             r = requests.put(
                 url,
                 auth=(user,password),
                 verify=SSLUtil.isSSLCertificatesVerificationEnabled(),
                 timeout=self.timeout,
                 data=payload)
+            
             if r.ok:
                 self.logger.debug('Response: %s', url)
                 response_json = False

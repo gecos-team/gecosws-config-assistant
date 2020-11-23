@@ -39,10 +39,10 @@ class NetworkInterfaceDAOTest(unittest.TestCase):
         interfaces = networkInterfaceDAO.loadAll() 
         self.assertTrue(isinstance(interfaces, list))
         
-        print 'Network interfaces: '
+        print ('Network interfaces: ')
         for interface in interfaces:
             self.assertTrue(isinstance(interface, NetworkInterface))
-            print 'NAME: ', interface.get_name(), ' IP: ', interface.get_ip_address()
+            print ('NAME: ', interface.get_name(), ' IP: ', interface.get_ip_address())
             self.assertNotEqual(interface.get_name(), '')
             self.assertNotEqual(interface.get_ip_address(), '')
         

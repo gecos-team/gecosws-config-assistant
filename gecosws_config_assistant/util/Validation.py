@@ -94,7 +94,7 @@ class Validation(object):
 
     def isValidNetbiosHostname(self, hostname):
         ''' Validator for netbios hostname '''
-
+        hostname = str(hostname, "utf-8")
         # See https://support.microsoft.com/en-us/kb/909264
         if hostname is None:
             return False

@@ -59,7 +59,7 @@ class Template(object):
         self.check_directory_strutcture(base)
 
         # Create directory
-        os.mkdir(dirname, 0755)
+        os.mkdir(dirname, 0o0755)
 
     def save(self):
         ''' Saving template '''
@@ -141,7 +141,7 @@ class Template(object):
                 else:
                     os.chown(self.destination, uid, gid)
 
-            m = stat_info.st_mode & 00777
+            m = stat_info.st_mode & 0o00777
             if self.mode is not None and m != self.mode:
                 os.chmod(self.destination, self.mode)
 

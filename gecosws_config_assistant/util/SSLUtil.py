@@ -29,6 +29,8 @@ from OpenSSL import crypto
 from pyasn1.codec.ber import decoder
 from pyasn1_modules.rfc2459 import AuthorityInfoAccessSyntax, id_ad_caIssuers
 import requests
+import urllib3
+urllib3.disable_warnings()
 from gecosws_config_assistant.util.CommandUtil import CommandUtil
 SSL_R_APP_DATA_IN_HANDSHAKE=100
 SSL_R_ATTEMPT_TO_REUSE_SESSION_IN_DIFFERENT_CONTEXT=272
@@ -389,6 +391,7 @@ class SSLUtil(object):
             # Check if the error message is similar to
             # '[SSL: CERTIFICATE_VERIFY_FAILED] certificate
             #  verify failed (_ssl.c:590)'
+            
             p = re.compile(
                 '.*\\[SSL: (?P<constant>[A-Z_]+)\\] (?P<message>[^\\(]+)'
             )
@@ -401,6 +404,9 @@ class SSLUtil(object):
                     except Exception:
                         self.logger.warn(
                             'Error evaluating constant: %s',constant)
+            else:
+                if 'certificate verify failed' in msg:
+                    errornum = SSL_R_CERTIFICATE_VERIFY_FAILED
             # If not look for a packed error number
             if msg.rfind('error:') > 0:
                 msg = msg[(msg.find('error:')+6):]
@@ -440,7 +446,7 @@ class SSLUtil(object):
             s.settimeout(self.timeout)
             c = ssl.wrap_socket(s,cert_reqs=ssl.CERT_NONE)
             c.connect((server_ip, server_port))
-            return c.getpeercert(True)
+            return ssl.DER_cert_to_PEM_cert(c.getpeercert(True))
         except Exception:
             self.logger.warn('Error connecting to server: %s', url)
             self.logger.warn(str(traceback.format_exc()))
@@ -463,10 +469,10 @@ class SSLUtil(object):
 
         if certificate is None:
             return None
-        filetype = crypto.FILETYPE_ASN1
-        if self.isPEM(certificate):
-            filetype = crypto.FILETYPE_PEM
-        cert = crypto.load_certificate(crypto.FILETYPE_ASN1, certificate)
+        #filetype = crypto.FILETYPE_ASN1
+        #if self.isPEM(certificate):
+        #    filetype = crypto.FILETYPE_PEM
+        cert = crypto.load_certificate(crypto.FILETYPE_PEM, certificate)
         return cert
 
     def getIssuerCertificateURL(self, certificate_info):
@@ -494,7 +500,7 @@ class SSLUtil(object):
                                 accessDescription \
                                 .getComponentByName('accessMethod')
                             ):
-                                url = unicode(
+                                url = str(
                                     accessDescription \
                                     .getComponentByName('accessLocation') \
                                     .getComponentByName(
@@ -510,7 +516,7 @@ class SSLUtil(object):
 
     def getCertificateFromURL(self, url):
         ''' Getting certificate from url '''
-
+        
         if url is None:
             return None
         certificate = None

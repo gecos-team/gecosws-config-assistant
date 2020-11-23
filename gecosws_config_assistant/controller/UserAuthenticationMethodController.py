@@ -75,7 +75,7 @@ class UserAuthenticationMethodController(object):
             conf = self.mainController.requirementsCheck.autoSetup.get_conf()
             if conf is not None:
                 new_data = self.get_auth_data_from_conf(conf)
-                if type(new_data) != types.BooleanType:
+                if type(new_data) != types.bool:
                     data = new_data
 
         self.logger.debug('data is of type %s', type(data).__name__)
@@ -92,7 +92,7 @@ class UserAuthenticationMethodController(object):
         if conf is None or conf is False or not isinstance(conf, dict):
             return False
 
-        if not conf.has_key("auth") or not conf["auth"].has_key("auth_type"):
+        if not "auth" in conf or not "auth_type" in conf["auth"]:
             self.logger.error(
                 "Authentication method values aren't in auto setup data!")
             return False
@@ -123,18 +123,18 @@ class UserAuthenticationMethodController(object):
         self.logger.debug("_setup_ad_authentication_method")
         adSetupData = ADSetupData()
 
-        if not conf["auth"].has_key("auth_properties"):
+        if not "auth_properties" in conf["auth"]:
             self.logger.error("AD authentication method needs data!")
             return False
 
-        if not conf["auth"]["auth_properties"].has_key("specific_conf"):
+        if not "specific_conf" in conf["auth"]["auth_properties"]:
             self.logger.error(
                 "AD authentication method needs 'specific_conf' parameter!")
             return False
 
         specific_conf = conf["auth"]["auth_properties"]["specific_conf"]
         if specific_conf:
-            if not conf["auth"]["auth_properties"].has_key("ad_properties"):
+            if not "ad_properties" in conf["auth"]["auth_properties"]:
                 self.logger.error(
                     "AD authentication method needs " +
                     "'ad_properties' parameter!")
@@ -142,22 +142,22 @@ class UserAuthenticationMethodController(object):
 
             ad_properties = conf["auth"]["auth_properties"]["ad_properties"]
 
-            if not ad_properties.has_key("krb5_conf"):
+            if not "krb5_conf" in ad_properties:
                 self.logger.error(
                     "AD authentication method needs krb5.conf file!")
                 return False
 
-            if not ad_properties.has_key("sssd_conf"):
+            if not "sssd_conf" in ad_properties:
                 self.logger.error(
                     "AD authentication method needs sssd.conf file!")
                 return False
 
-            if not ad_properties.has_key("smb_conf"):
+            if not "smb_conf" in ad_properties:
                 self.logger.error(
                     "AD authentication method needs smb.conf file!")
                 return False
 
-            if not ad_properties.has_key("pam_conf"):
+            if not "pam_conf" in ad_properties:
                 self.logger.error(
                     "AD authentication method needs pam.conf file!")
                 return False
@@ -170,7 +170,7 @@ class UserAuthenticationMethodController(object):
             adSetupData.set_pam_conf(ad_properties["pam_conf"])
 
         else:
-            if not conf["auth"]["auth_properties"].has_key("ad_properties"):
+            if not "ad_properties" in conf["auth"]["auth_properties"]:
                 self.logger.error(
                     "AD authentication method needs " +
                     "'ad_properties' parameter!")
@@ -178,11 +178,11 @@ class UserAuthenticationMethodController(object):
 
             ad_properties = conf["auth"]["auth_properties"]["ad_properties"]
 
-            if not ad_properties.has_key("fqdn"):
+            if not "fqdn" in ad_properties:
                 self.logger.error("AD authentication method needs FQDN!")
                 return False
 
-            if not ad_properties.has_key("workgroup"):
+            if not "workgroup" in ad_properties:
                 self.logger.error("AD authentication method needs workgroup!")
                 return False
 
@@ -200,16 +200,16 @@ class UserAuthenticationMethodController(object):
         self.logger.debug("_setup_ldap_authentication_method")
 
         ldapSetupData = LDAPSetupData()
-        if not conf["auth"].has_key("auth_properties"):
+        if not "auth_properties" in conf["auth"]:
             self.logger.error("LDAP authentication method needs data!")
             return False
 
-        if not conf["auth"]["auth_properties"].has_key("uri"):
+        if not "uri" in conf["auth"]["auth_properties"]:
             self.logger.error(
                 "LDAP authentication method needs LDAP server URI!")
             return False
 
-        if not conf["auth"]["auth_properties"].has_key("base"):
+        if not "base" in conf["auth"]["auth_properties"]:
             self.logger.error(
                 "LDAP authentication method needs LDAP users base DN!")
             return False
@@ -222,15 +222,15 @@ class UserAuthenticationMethodController(object):
 
         ldapSetupData.set_uri(conf["auth"]["auth_properties"]["uri"])
         ldapSetupData.set_base(conf["auth"]["auth_properties"]["base"])
-        if conf["auth"]["auth_properties"].has_key("basegroup"):
+        if "basegroup" in conf["auth"]["auth_properties"]:
             ldapSetupData.set_base_group(
                 conf["auth"]["auth_properties"]["basegroup"])
 
-        if conf["auth"]["auth_properties"].has_key("binddn"):
+        if "binddn" in conf["auth"]["auth_properties"]:
             ldapSetupData.set_bind_user_dn(
                 conf["auth"]["auth_properties"]["binddn"])
 
-        if conf["auth"]["auth_properties"].has_key("bindpwd"):
+        if "bindpwd" in conf["auth"]["auth_properties"]:
             ldapSetupData.set_bind_user_pwd(
                 conf["auth"]["auth_properties"]["bindpwd"])
 
@@ -460,7 +460,7 @@ class UserAuthenticationMethodController(object):
             if not Validation().isValidNetbiosHostname(hostname):
                 self.logger.debug("Bad hostname: %s", hostname)
                 showerror_gtk(
-                    _("Bad netbios hostname!") + ": " + hostname + "\n" +
+                    _("Bad netbios hostname!") + ": " + str(hostname, "utf-8") + "\n" +
                     _("Please change the hostname of this computer."),
                      self.view)
                 self.view.focusAdDomainField()

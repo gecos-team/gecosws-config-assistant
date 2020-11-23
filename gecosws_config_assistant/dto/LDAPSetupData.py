@@ -70,27 +70,32 @@ class LDAPSetupData(object):
 
     def set_uri(self, value):
         ''' Setter uri '''
-
+        if isinstance(value, bytes):
+            value = str(value, "utf-8")
         self.__uri = value
 
     def set_base(self, value):
         ''' Setter base '''
-
+        if isinstance(value, bytes):
+            value = str(value, "utf-8")
         self.__base = value
 
     def set_base_group(self, value):
         ''' Setter base group '''
-
+        if isinstance(value, bytes):
+            value = str(value, "utf-8")
         self.__baseGroup = value
 
     def set_bind_user_dn(self, value):
         ''' Setter binddn '''
-
+        if isinstance(value, bytes):
+            value = str(value, "utf-8")
         self.__bindUserDN = value
 
     def set_bind_user_pwd(self, value):
         ''' Setter bindpw '''
-
+        if isinstance(value, bytes):
+            value = str(value, "utf-8")
         self.__bindUserPWD = value
 
     def test(self):

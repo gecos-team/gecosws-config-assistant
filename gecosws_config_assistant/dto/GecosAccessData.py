@@ -53,17 +53,20 @@ class GecosAccessData(object):
 
     def set_url(self, value):
         ''' Setter url '''
-
+        if isinstance(value, bytes):
+            value = str(value, "utf-8")
         self.__url = value
 
     def set_login(self, value):
         ''' Setter login '''
-
+        if isinstance(value, bytes):
+            value = str(value, "utf-8")
         self.__login = value
 
     def set_password(self, value):
         ''' Setter password '''
-
+        if isinstance(value, bytes):
+            value = str(value, "utf-8")
         self.__password = value
 
     url = property(

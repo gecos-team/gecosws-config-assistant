@@ -40,16 +40,16 @@ class GecosAccessDataDAOTest(unittest.TestCase):
     def runTest(self):
         dao = GecosAccessDataDAO()
         
-        print "Try to load original data..."
+        print ("Try to load original data...")
         originalData = dao.load() 
         
-        print "Set test data..."
+        print ("Set test data...")
         newData = GecosAccessData()
         newData.set_url('test_url')
         newData.set_login('test_login')
         dao.save(newData)
         
-        print "Load and check test data..."
+        print ("Load and check test data...")
         newData = dao.load()
         
         self.assertEqual(newData.get_url(), 'test_url')
@@ -62,7 +62,7 @@ class GecosAccessDataDAOTest(unittest.TestCase):
         self.assertFalse(os.path.isfile('/etc/gcc.control'))
         
         if originalData is not None:
-            print "Restore original data..."
+            print ("Restore original data...")
             dao.save(originalData)
             wddao.save(wd)
 
