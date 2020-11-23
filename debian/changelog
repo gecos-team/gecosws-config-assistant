@@ -1,3 +1,9 @@
+gecosws-config-assistant (3.0.1-1gecos3) focal; urgency=medium
+
+  * Fix dh install folder
+
+ -- Gecos Team <gecos@guadalinex.org>  Thu, 23 Nov 2020 13:30:00 +0100
+
 gecosws-config-assistant (2.3.1-2gecos1) bionic; urgency=medium
 
   * Disable GECOS server SSL certificate validation when needed
