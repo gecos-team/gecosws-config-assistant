@@ -44,7 +44,7 @@ class GemUtil(object):
         self.command = "/opt/chef/embedded/bin/gem"
         self.rubyEmbeddedInChef = True
         self.sys_gemrc = "/opt/chef/embedded/etc/gemrc"
-        self.expect_cmd =  get_prefix() + '/share/gecosws-config-assistant/bash_scripts/gem_soruce_add.sh'
+        
 
         if not os.path.isfile(self.command):
             # Linux distribution Chef installation
