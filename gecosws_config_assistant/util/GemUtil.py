@@ -168,7 +168,7 @@ class GemUtil(object):
                 self.pm.install_package('build-essential')
 
         return self.commandUtil.execute_command(
-            '{} install "{}"'.format(self.command, gem_name),
+            '{} install "{}" --config-file "{}"'.format(self.command, gem_name, self.sys_gemrc),
             os.environ)
 
     def uninstall_gem(self, gem_name):
