@@ -1,3 +1,9 @@
+gecosws-config-assistant (3.0.2-1gecos3) focal; urgency=medium
+
+  * Fix install gem with the config file setted
+
+ -- Gecos Team <gecos@guadalinex.org>  Thu, 24 Nov 2020 09:20:00 +0100
+
 gecosws-config-assistant (3.0.1-1gecos3) focal; urgency=medium
 
   * Fix dh install folder
