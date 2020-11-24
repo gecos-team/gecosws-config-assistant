@@ -78,7 +78,8 @@ class NetworkInterfaceDAO(object):
             raise OSError("Unknown architecture: %s" % arch)
 
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        names = array.array('B', '\0' * MAXBYTES)
+        names = array.array('b')
+        names.frombytes(('\0' * MAXBYTES).encode())
         outbytes = struct.unpack('iL', fcntl.ioctl(
             sock.fileno(),
             SIOCGIFCONF,
@@ -87,10 +88,10 @@ class NetworkInterfaceDAO(object):
 
         namestr = names.tostring()
         ifaces = [
-            (namestr[i:i + var1].split('\0', 1)[0],
+            (namestr[i:i + var1].split('\0'.encode(), 1)[0],
              socket.inet_ntoa(namestr[i + 20:i + 24])
             ) for i
-            in xrange(0, outbytes, var2)
+            in range(0, outbytes, var2)
         ]
 
         for iface in ifaces:

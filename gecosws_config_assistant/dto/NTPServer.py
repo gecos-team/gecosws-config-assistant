@@ -63,7 +63,7 @@ class NTPServer(object):
                 template.destination = '/etc/systemd/timesyncd.conf'
                 template.owner = 'root'
                 template.group = 'root'
-                template.mode = 00644
+                template.mode = 0o00644
                 template.variables = { 'ntp_server':  self.address }
                 template.save()
 
@@ -80,7 +80,7 @@ class NTPServer(object):
                     stderr=subprocess.STDOUT)
 
                 for line in p.stdout.readlines():
-                    if re.match(r'.*synchronized: yes', line):
+                    if re.match(r'.*synchronized: yes', str(line, "utf-8")):
                         self.logger.debug('NTP synchronized: %s', self.address)
                         return True
 
@@ -94,7 +94,8 @@ class NTPServer(object):
 
     def set_address(self, value):
         ''' Setter address '''
-
+        if isinstance(value, bytes):
+            value = str(value, "utf-8")
         self.__address = value
 
     address = property(

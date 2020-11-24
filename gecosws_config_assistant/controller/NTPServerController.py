@@ -59,7 +59,7 @@ class NTPServerController(object):
         ntpKey = 'uri_ntp'
         if conf:
             self.logger.debug('We got an autoconf response object')
-            if conf.has_key(ntpKey) and conf[ntpKey].strip() != '':
+            if ntpKey in conf and conf[ntpKey].strip() != '':
                 self.logger.debug('Ntp key is present in the autoconf object')
                 ntpDto = NTPServer()
                 ntpDto.set_address(conf[ntpKey])

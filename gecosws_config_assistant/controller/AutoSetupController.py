@@ -69,7 +69,7 @@ class AutoSetupController(object):
             else:
                 self.logger.debug(
                     'Already installed "gecosws-certificates-locale" package')
-        except (ValueError, OSError), e:
+        except (ValueError, OSError) as e:
             self.logger.warn(
                 'Error installing "gecosws-certificates-locale": %s', str(e))
             self.logger.error(str(traceback.format_exc()))
@@ -148,30 +148,30 @@ class AutoSetupController(object):
                     # Ask to the user if he want to trust this certificate
                     if info is not None:
                         if info.has_expired():
-                            message = unicode(
+                            message = str(
                                 _("The certificate of this server " +
-                                  "is expired!"), 'utf-8')
+                                  "is expired!"))
                         else:
-                            message = unicode(
+                            message = str(
                                 _("The certificate of this server " +
-                                  "is not trusted!"), 'utf-8')
+                                  "is not trusted!"))
 
                         response =  askyesno_gtk(
                             (message  + "\n" +
-                             unicode(_("Do you want to disable the SSL " +
-                                       "certificate verification?"), 'utf-8') +
+                             str(_("Do you want to disable the SSL " +
+                                       "certificate verification?")) +
                               "\n\n" +
-                             unicode(_("Subject:"), 'utf-8') + " " +
+                             str(_("Subject:")) + " " +
                              (sslUtil.formatX509Name(info.get_subject())) +
                              "\n" +
-                             unicode(_("Issuer:"), 'utf-8') + " " +
+                             str(_("Issuer:")) + " " +
                              (sslUtil.formatX509Name(info.get_issuer())) +
                              "\n" +
-                             unicode(_("Serial Number:"), 'utf-8') + " " +
+                             str(_("Serial Number:")) + " " +
                              str(info.get_serial_number()) + "\n" +
-                             unicode(_("Not before:"), 'utf-8') + " " +
+                             str(_("Not before:")) + " " +
                              str(info.get_notBefore()) + " " +
-                             unicode(_("Not after:"), 'utf-8') + " " +
+                             str(_("Not after:")) + " " +
                              str(info.get_notAfter()) + "\n"),
                              self.view, 'warning')
 

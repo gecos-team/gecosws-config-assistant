@@ -86,7 +86,7 @@ class WorkstationDataDAO(object):
             name = networkInterfaceDAO.get_hostname()
 
             if name is not None:
-                name = name.replace('"', '')
+                name = name.replace("\"".encode(), "".encode())
                 data.set_name(name)
 
         # Can't get OU from GECOS CC!!!
@@ -147,7 +147,7 @@ class WorkstationDataDAO(object):
         template.destination = self.gcc_control_file
         template.owner = 'root'
         template.group = 'root'
-        template.mode = 00755
+        template.mode = 0o00755
         template.variables = {
             'uri_gcc':  uri_gcc,
             'gcc_username':  gcc_username,
@@ -196,7 +196,7 @@ class WorkstationDataDAO(object):
         template.destination = self.gcc_control_file
         template.owner = 'root'
         template.group = 'root'
-        template.mode = 00755
+        template.mode = 0o00755
         template.variables = {
             'uri_gcc':  uri_gcc,
             'gcc_username':  gcc_username,

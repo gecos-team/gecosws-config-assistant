@@ -33,7 +33,7 @@ from gecosws_config_assistant.util.PasswordMaskingFilter import (
 
 if 'check' in sys.argv:
     # Mock view classes for testing purposses
-    print "==> Loading mocks..."
+    print ("==> Loading mocks...")
     from gecosws_config_assistant.view.ViewMocks import askyesno_gtk
 else:
     # Use real view classes
@@ -84,9 +84,10 @@ class CommandUtil(object):
             # Read the process output with a timeout
             line = ''
             previous_line = ''
-            c = p.stdout.read(1)
+            c = p.stdout.read(1).decode("utf-8")
             lastread = int(round(time.time() * 1000))
             read = True
+            
             while c:
                 if read:
                     read = False
@@ -100,10 +101,10 @@ class CommandUtil(object):
 
                 r, _, _ = select.select([ p.stdout ], [], [], 0.050)
                 if p.stdout in r:
-                    c = p.stdout.read(1)
+                    c = p.stdout.read(1).decode("utf-8")
                     lastread = int(round(time.time() * 1000))
                     read = True
-
+                
                 # Try to detect when the command waits for a yes/no question
                 if (
                     (int(round(time.time() * 1000)) - lastread > self.timeout
@@ -123,7 +124,8 @@ class CommandUtil(object):
                 self.logger.error('Error running command: %s',cmd)
                 return False
 
-        except Exception:
+        except Exception as ex:
+            self.logger.error("AMI:" + str(ex))
             self.logger.error('Error running command: %s',cmd)
             self.logger.error(str(traceback.format_exc()))
             return False

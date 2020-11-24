@@ -79,7 +79,7 @@ class GecosCCTest(unittest.TestCase):
         # Check autoconfiguration JSON
         conf = gecosCC.get_json_autoconf(validCredentials)
         self.assertNotEqual(conf, None, "None returned!")
-        print "AutoSetup JSON:", json.dumps(conf)
+        print ("AutoSetup JSON:", json.dumps(conf))
        
         # Check ou search
         result = gecosCC.search_ou_by_text(validCredentials, '')

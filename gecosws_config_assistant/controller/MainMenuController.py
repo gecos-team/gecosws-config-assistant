@@ -338,8 +338,8 @@ class MainMenuController(object):
         # We need to re-open the cache because it needs to read the package list
         cache.open(None)
 
-        software_checks = [ 'chef', 'gecos-agent', 'gecosws-config-assistant' ]
-
+        #software_checks = [ 'chef', 'gecos-agent', 'gecosws-config-assistant' ]
+        software_checks = []
         updates = [ pkg for pkg in software_checks if cache.has_key(pkg) and cache[pkg].is_upgradable ]
  
         if len(updates) > 0:
@@ -361,13 +361,13 @@ class MainMenuController(object):
 
             try:
                 cache.commit(apt_progress.acquire, apt_progress.install)
-            except FetchFailedException, e:
+            except FetchFailedException as e:
                 upgrade = False
                 self.logger.debug("Exception happened: %s", e)
                 showerror_gtk(
                     _("Unable to connect to software repository"),
                     self.window.getMainWindow())
-            except Exception, e:
+            except Exception as e:
                 upgrade = False
                 self.logger.debug("Exception happened: %s", e)
                 showerror_gtk(

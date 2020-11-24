@@ -81,7 +81,7 @@ class ConnectWithGecosCCController(object):
             else:
                 self.logger.debug(
                     'Already installed "gecosws-certificates-locale" package')
-        except (ValueError, OSError), e:
+        except (ValueError, OSError) as e:
             self.logger.warn(
                 'Error installing "gecosws-certificates-locale": %s', str(e))
             self.logger.error(str(traceback.format_exc()))
@@ -185,30 +185,27 @@ class ConnectWithGecosCCController(object):
                     # Ask to the user if he want to trust this certificate
                     if info is not None:
                         if info.has_expired():
-                            message = unicode(
-                                _("The certificate of this server is expired!")
-                                ,'utf-8')
+                            message = str(_("The certificate of this server is expired!"))
                         else:
-                            message = unicode(
+                            message = str(
                                 _("The certificate of this server is not " +
-                                  "trusted!")
-                                ,'utf-8')
+                                  "trusted!"))
 
                         ask_msg = message + "\n"
-                        ask_msg += unicode(
+                        ask_msg += str(
                             _("Do you want to disable the SSL " +
-                              "certificate verification?"), 'utf-8')
+                              "certificate verification?"))
                         ask_msg += "\n\n"
-                        ask_msg += unicode(_("Subject:"), 'utf-8') + " "
+                        ask_msg += str(_("Subject:")) + " "
                         ask_msg += sslUtil.formatX509Name(info.get_subject())
-                        ask_msg += unicode(_("Issuer:"), 'utf-8') + " "
+                        ask_msg += str(_("Issuer:")) + " "
                         ask_msg += sslUtil.formatX509Name(
                             info.get_issuer()) + "\n"
-                        ask_msg += unicode(_("Serial Number:"), 'utf-8') + " "
+                        ask_msg += str(_("Serial Number:")) + " "
                         ask_msg += str(info.get_serial_number()) + "\n"
-                        ask_msg += unicode(_("Not before:"), 'utf-8') + " "
+                        ask_msg += str(_("Not before:")) + " "
                         ask_msg += str(info.get_notBefore()) + "\n"
-                        ask_msg += unicode(_("Not after:"), 'utf-8') + " "
+                        ask_msg += str(_("Not after:")) + " "
                         ask_msg += str(info.get_notAfter()) + "\n"
 
                         response = askyesno_gtk(ask_msg, self.view, 'warning')
@@ -231,7 +228,7 @@ class ConnectWithGecosCCController(object):
                         "Error connecting to HTTPS server: %s", errormsg)
                     showerror_gtk(
                         _("Can't connect to GECOS CC!") + "\n" +
-                        _("SSL ERROR:") + ' ' + errormsg,
+                        _("SSL ERROR:") + ' ' + str(errormsg),
                          None)
                     self.view.focusUrlField()
                     return False
@@ -319,7 +316,7 @@ class ConnectWithGecosCCController(object):
     def _remove_file(self, filename):
         try:
             os.remove(filename)
-        except OSError, e:
+        except OSError as e:
             self.logger.debug("Error removing %s file: ", e)
             self.logger.error("Error removing %s file", filename)
             self.logger.error(str(traceback.format_exc()))
@@ -363,8 +360,8 @@ class ConnectWithGecosCCController(object):
                     os.chown(filename, uid, gid)
 
             # Set permissions to 00600
-            mode = 00600
-            m = stat_info.st_mode & 00777
+            mode = 0o00600
+            m = stat_info.st_mode & 0o00777
             if m != mode:
                 os.chmod(filename, mode)
 
@@ -511,11 +508,11 @@ class ConnectWithGecosCCController(object):
         selected_ou_path.reverse() # From nearest to farthest OU to workstation
 
         # GEMs repo defaults
-        defaults = conf['gem_repo'] if conf.has_key('gem_repo') else 'https://rubygems.org/'
+        defaults = conf['gem_repo'] if 'gem_repo' in conf else 'https://rubygems.org/'
 
         # Walking through path searching gem sources (inheritance)
         for item in selected_ou_path:
-            gem_repos = filter(lambda o: o['ou'] == item, conf['gem_repos_by_admin'])
+            gem_repos = list(filter(lambda o: o['ou'] == item, conf['gem_repos_by_admin']))
             if gem_repos:
                 self.logger.info("GEMs REPOs found: {}".format(gem_repos))
                 break
@@ -528,7 +525,7 @@ class ConnectWithGecosCCController(object):
             gem_repos = gem_repos[0].get('gem_sources')
 
             # Workaround: 'gem source add' command adds https://rubygems.org by default
-            if filter(regex.match, gem_repos):
+            if list(filter(regex.match, gem_repos)):
                 is_rubygems_site = True
 
         else:
@@ -575,31 +572,31 @@ class ConnectWithGecosCCController(object):
                         # Ask to the user if he want to trust this certificate
                         if info is not None:
                             if info.has_expired():
-                                message = unicode(
+                                message = str(
                                     _("The certificate of this server " +
-                                      "is expired!"), 'utf-8')
+                                      "is expired!"))
                             else:
-                                message = unicode(
+                                message = str(
                                     _("The certificate of this server " +
-                                      "is not trusted!"), 'utf-8')
+                                      "is not trusted!"))
 
                             ask_msg = message + "\n"
-                            ask_msg += unicode(
+                            ask_msg += str(
                                 _("Do you want to disable the SSL " +
-                                  "certificate verification?"), 'utf-8')
+                                  "certificate verification?"))
                             ask_msg += "\n\n"
-                            ask_msg += unicode(_("Subject:"), 'utf-8') + " "
+                            ask_msg += str(_("Subject:")) + " "
                             ask_msg += sslUtil.formatX509Name(
                                 info.get_subject())
-                            ask_msg += unicode(_("Issuer:"), 'utf-8') + " "
+                            ask_msg += str(_("Issuer:")) + " "
                             ask_msg += sslUtil.formatX509Name(
                                 info.get_issuer()) + "\n"
-                            ask_msg += unicode(
-                                _("Serial Number:"), 'utf-8') + " "
+                            ask_msg += str(
+                                _("Serial Number:")) + " "
                             ask_msg += str(info.get_serial_number()) + "\n"
-                            ask_msg += unicode(_("Not before:"), 'utf-8') + " "
+                            ask_msg += str(_("Not before:")) + " "
                             ask_msg += str(info.get_notBefore()) + "\n"
-                            ask_msg += unicode(_("Not after:"), 'utf-8') + " "
+                            ask_msg += str(_("Not after:")) + " "
                             ask_msg += str(info.get_notAfter()) + "\n"
 
                             response = askyesno_gtk(
@@ -695,14 +692,14 @@ class ConnectWithGecosCCController(object):
         chef_url = "https://" + chef_url + '/'
 
         if (conf is not None
-            and conf.has_key("chef")
-            and conf["chef"].has_key("chef_server_uri")):
+            and "chef" in conf
+            and "chef_server_uri" in conf["chef"]):
             chef_url = conf["chef"]["chef_server_uri"]
             self.logger.debug("chef_url retrieved from GECOS auto conf")
 
         if (conf is not None
-            and conf.has_key("chef")
-            and conf["chef"].has_key("chef_admin_name")):
+            and "chef" in conf
+            and "chef_admin_name" in conf["chef"]):
             chef_admin_name = conf["chef"]["chef_admin_name"]
             self.logger.debug("chef_admin_name retrieved from GECOS auto conf")
 
@@ -725,29 +722,29 @@ class ConnectWithGecosCCController(object):
                     # Ask to the user if he want to trust this certificate
                     if info is not None:
                         if info.has_expired():
-                            message = unicode(
+                            message = str(
                                 _("The certificate of this server is expired!")
-                                , 'utf-8')
+                                )
                         else:
-                            message = unicode(
+                            message = str(
                                 _("The certificate of this server is not " +
-                                "trusted!"), 'utf-8')
+                                "trusted!"))
 
                         ask_msg = message + "\n"
-                        ask_msg += unicode(
+                        ask_msg += str(
                             _("Do you want to disable the SSL " +
-                              "certificate verification?"), 'utf-8')
+                              "certificate verification?"))
                         ask_msg += "\n\n"
-                        ask_msg += unicode(_("Subject:"), 'utf-8') + " "
+                        ask_msg += str(_("Subject:")) + " "
                         ask_msg += sslUtil.formatX509Name(info.get_subject())
-                        ask_msg += unicode(_("Issuer:"), 'utf-8') + " "
+                        ask_msg += str(_("Issuer:")) + " "
                         ask_msg += sslUtil.formatX509Name(
                             info.get_issuer()) + "\n"
-                        ask_msg += unicode(_("Serial Number:"), 'utf-8') + " "
+                        ask_msg += str(_("Serial Number:")) + " "
                         ask_msg += str(info.get_serial_number()) + "\n"
-                        ask_msg += unicode(_("Not before:"), 'utf-8') + " "
+                        ask_msg += str(_("Not before:")) + " "
                         ask_msg += str(info.get_notBefore()) + "\n"
-                        ask_msg += unicode(_("Not after:"), 'utf-8') + " "
+                        ask_msg += str(_("Not after:")) + " "
                         ask_msg += str(info.get_notAfter()) + "\n"
 
                         response = askyesno_gtk(ask_msg, self.view, 'warning')
@@ -789,7 +786,7 @@ class ConnectWithGecosCCController(object):
         template.destination = '/etc/chef/client.rb'
         template.owner = 'root'
         template.group = 'root'
-        template.mode = 00644
+        template.mode = 0o00644
 
         ssl_certificate_verification = ':verify_peer'
         if not SSLUtil.isSSLCertificatesVerificationEnabled():
@@ -842,7 +839,7 @@ class ConnectWithGecosCCController(object):
         template.destination = '/etc/chef.control'
         template.owner = 'root'
         template.group = 'root'
-        template.mode = 00755
+        template.mode = 0o00755
         template.variables = {
             'chef_url':  chef_url,
             'chef_admin_name':  chef_admin_name,

@@ -26,6 +26,7 @@ import os
 
 from gecosws_config_assistant.util.CommandUtil import CommandUtil
 from gecosws_config_assistant.util.PackageManager import PackageManager
+from gecosws_config_assistant.firstboot_lib.firstbootconfig import get_prefix
 
 REQUIRED_GEMS = [ 'json', 'rest-client', 'activesupport:4.2.11.1', 'netaddr' ]
 
@@ -43,6 +44,7 @@ class GemUtil(object):
         self.command = "/opt/chef/embedded/bin/gem"
         self.rubyEmbeddedInChef = True
         self.sys_gemrc = "/opt/chef/embedded/etc/gemrc"
+        
 
         if not os.path.isfile(self.command):
             # Linux distribution Chef installation
@@ -51,7 +53,7 @@ class GemUtil(object):
             self.rubyEmbeddedInChef = False
 
         if self.rubyEmbeddedInChef and not os.path.isdir("/opt/chef/embedded/etc"):
-            os.mkdir("/opt/chef/embedded/etc", 0755)
+            os.mkdir("/opt/chef/embedded/etc", 0o0755)
 
         self.commandUtil = CommandUtil()
         self.pm = PackageManager()
@@ -83,7 +85,7 @@ class GemUtil(object):
 
         sources = self.get_gem_sources_list()
         for source in sources:
-            print "removing %s", source
+            print ("removing %s", source)
             self.commandUtil.execute_command(
                 '{} source -r "{}" --config-file "{}"'.format(
                     self.command, source, self.sys_gemrc)
@@ -116,7 +118,7 @@ class GemUtil(object):
 
     def add_gem_source(self, url):
         ''' Adding gem sources '''
-
+        
         return self.commandUtil.execute_command(
             '{} source -a "{}" --config-file "{}"'.format(
                 self.command, url, self.sys_gemrc))
@@ -166,7 +168,7 @@ class GemUtil(object):
                 self.pm.install_package('build-essential')
 
         return self.commandUtil.execute_command(
-            '{} install "{}"'.format(self.command, gem_name),
+            '{} install "{}" --config-file "{}"'.format(self.command, gem_name, self.sys_gemrc),
             os.environ)
 
     def uninstall_gem(self, gem_name):

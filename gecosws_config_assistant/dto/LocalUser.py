@@ -36,7 +36,6 @@ class LocalUser(object):
 
     def get_login(self):
         ''' Getter login '''
-
         return self.__login
 
     def get_password(self):
@@ -51,17 +50,20 @@ class LocalUser(object):
 
     def set_login(self, value):
         ''' Setter login '''
-
+        if isinstance(value, bytes):
+            value = str(value, "utf-8")
         self.__login = value
 
     def set_password(self, value):
         ''' Setter password '''
-
+        if isinstance(value, bytes):
+            value = str(value, "utf-8")
         self.__password = value
 
     def set_name(self, value):
         ''' Setter name '''
-
+        if isinstance(value, bytes):
+            value = str(value, "utf-8")
         self.__name = value
 
     def isEqual(self, other):

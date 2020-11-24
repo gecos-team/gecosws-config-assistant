@@ -117,7 +117,7 @@ class SystemStatusElemDialog(GladeWindow):
             if data.get_time_server() is not None:
                 d = data.get_time_server()
                 if d.get_address() is not None:
-                    statusText += _('Time server: ') + d.get_address() + "\n"
+                    statusText += _('Time server: ') + d.get_address()+ "\n"
 
             if data.get_network_interfaces() is not None:
                 statusText += "\n" + _('Network interfaces: ')  + "\n"
@@ -138,9 +138,9 @@ class SystemStatusElemDialog(GladeWindow):
             if data.get_local_users() is not None:
                 statusText += "\n" + _('Local users: ')  + "\n"
                 statusText += "=====================================\n"
-                for d in data.get_local_users():
-                    statusText += d.get_login() + "\t\t" + \
-                                  d.get_name().encode('utf-8') + "\n"
+                for user in data.get_local_users():
+                    statusText += user.get_login() + "\t\t" + \
+                                  user.get_name() + "\n"
 
             if data.get_user_authentication_method() is not None:
                 statusText += "\n" + _('User authentication method: ')  + "\n"

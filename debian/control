@@ -2,8 +2,8 @@ Source: gecosws-config-assistant
 Section: utils
 Priority: optional
 Maintainer: Gecos Team <gecos@guadalinex.org>
-Build-Depends: debhelper (>= 8), cdbs (>=0.4.43), python-all-dev (>=2.3.5-11), dh-python, git
-Build-Depends-Indep: gettext, python-distutils-extra
+Build-Depends: debhelper (>= 8), cdbs (>=0.4.43), python3-all-dev,  dh-python, git
+Build-Depends-Indep: gettext, python3-distutils-extra
 Standards-Version: 3.8.3
 Homepage: https://github.com/gecos-team/gecosws-config-assistant
 Vcs-Browser: https://github.com/gecos-team/gecosws-config-assistant
@@ -12,7 +12,7 @@ XS-Python-Version: current
 
 Package: gecosws-config-assistant
 Architecture: all
-Depends: ${misc:Depends}, python, python-requests, python-xdg, synaptic, python-gi, python-ldap, python-openssl, python-pyasn1, python-pyasn1-modules, python-apt, python-enum34
+Depends: ${misc:Depends}, python3, python3-requests, python3-xdg, synaptic, python3-gi, python3-ldap, python3-openssl, python3-pyasn1, python3-pyasn1-modules, python3-apt, expect
 Description: Gecos Workstation Configuration Assistant
  Desktop Application used to link an standalone GECOS Workstation to a
  Control Center, and a Login Authority.

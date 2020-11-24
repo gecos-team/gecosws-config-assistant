@@ -86,7 +86,7 @@ class AutoSetupDialog(GladeWindow):
         if data is not None:
             if (data.get_url() is not None
                 and data.get_url().strip() != ''):
-                self.getElementById('url_entry').set_text(data.get_url())
+                self.getElementById('url_entry').set_text(data.get_url(),)
 
             if (data.get_login() is not None
                 and data.get_login().strip() != ''):

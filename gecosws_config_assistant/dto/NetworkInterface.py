@@ -46,11 +46,14 @@ class NetworkInterface(object):
 
     def set_name(self, value):
         ''' Setter name '''
-
+        if isinstance(value, bytes):
+            value = str(value, "utf-8")
         self.__name = value
 
     def set_ip_address(self, value):
         ''' Setter ip address '''
+        if isinstance(value, bytes):
+            value = str(value, "utf-8")
         self.__ipAddress = value
 
     name = property(

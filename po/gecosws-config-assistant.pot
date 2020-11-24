@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-23 13:18+0100\n"
+"POT-Creation-Date: 2020-11-24 09:30+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,36 +21,37 @@ msgstr ""
 msgid "Log terminal"
 msgstr ""
 
+#. Error adding GEMs repository
 #: ../gecosws_config_assistant/view/GecosCCSetupProgressView.py:121
 #: ../gecosws_config_assistant/view/GecosCCSetupProgressView.py:128
 #: ../gecosws_config_assistant/view/GecosCCSetupProgressView.py:135
 #: ../gecosws_config_assistant/view/GecosCCSetupProgressView.py:148
 #: ../gecosws_config_assistant/view/GecosCCSetupProgressView.py:161
 #: ../gecosws_config_assistant/view/GecosCCSetupProgressView.py:168
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:415
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:421
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:428
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:440
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:477
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:490
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:615
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:633
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:647
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:668
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:759
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:775
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:805
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:829
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:853
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:874
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:894
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:947
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:960
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:987
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:998
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:1006
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:1015
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:1027
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:412
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:418
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:425
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:437
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:474
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:487
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:612
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:630
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:644
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:665
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:756
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:772
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:802
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:826
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:850
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:871
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:891
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:944
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:957
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:984
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:995
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:1003
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:1012
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:1024
 msgid "ERROR"
 msgstr ""
 
@@ -111,6 +112,7 @@ msgstr ""
 msgid "Method:"
 msgstr ""
 
+#. text
 #: ../gecosws_config_assistant/view/SystemStatusElemDialog.py:152
 #: ../gecosws_config_assistant/view/UserAuthDialog.py:290
 #: ../gecosws_config_assistant/view/UserAuthDialog.py:331
@@ -180,6 +182,7 @@ msgstr ""
 msgid "Please fill the data to setup the LDAP authentication method."
 msgstr ""
 
+#. text
 #: ../gecosws_config_assistant/view/UserAuthDialog.py:247
 msgid "LDAP server URI:"
 msgstr ""
@@ -266,8 +269,8 @@ msgstr ""
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:128
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:149
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:160
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:261
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:279
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:258
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:276
 msgid "Please fill all the mandatory fields."
 msgstr ""
 
@@ -327,6 +330,7 @@ msgstr ""
 msgid "Downloading file %(current)li of %(total)li"
 msgstr ""
 
+#. Setup some child widgets
 #: ../gecosws_config_assistant/util/GtkAptProgress.py:280
 msgid "Details"
 msgstr ""
@@ -422,72 +426,72 @@ msgid "Please double-check it."
 msgstr ""
 
 #: ../gecosws_config_assistant/controller/AutoSetupController.py:152
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:189
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:579
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:729
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:188
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:576
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:726
 msgid "The certificate of this server is expired!"
 msgstr ""
 
 #: ../gecosws_config_assistant/controller/AutoSetupController.py:156
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:193
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:583
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:733
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:191
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:580
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:730
 msgid "The certificate of this server is not trusted!"
 msgstr ""
 
 #: ../gecosws_config_assistant/controller/AutoSetupController.py:161
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:199
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:588
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:738
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:196
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:585
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:735
 msgid "Do you want to disable the SSL certificate verification?"
 msgstr ""
 
 #: ../gecosws_config_assistant/controller/AutoSetupController.py:164
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:202
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:591
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:741
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:199
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:588
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:738
 msgid "Subject:"
 msgstr ""
 
 #: ../gecosws_config_assistant/controller/AutoSetupController.py:167
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:204
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:594
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:743
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:201
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:591
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:740
 msgid "Issuer:"
 msgstr ""
 
 #: ../gecosws_config_assistant/controller/AutoSetupController.py:170
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:207
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:598
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:746
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:204
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:595
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:743
 msgid "Serial Number:"
 msgstr ""
 
 #: ../gecosws_config_assistant/controller/AutoSetupController.py:172
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:209
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:600
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:748
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:206
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:597
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:745
 msgid "Not before:"
 msgstr ""
 
 #: ../gecosws_config_assistant/controller/AutoSetupController.py:174
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:211
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:602
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:750
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:208
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:599
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:747
 msgid "Not after:"
 msgstr ""
 
 #: ../gecosws_config_assistant/controller/AutoSetupController.py:195
 #: ../gecosws_config_assistant/controller/AutoSetupController.py:227
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:233
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:243
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:230
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:240
 msgid "Can't connect to GECOS CC!"
 msgstr ""
 
 #: ../gecosws_config_assistant/controller/AutoSetupController.py:196
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:234
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:637
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:779
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:231
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:634
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:776
 msgid "SSL ERROR:"
 msgstr ""
 
@@ -505,6 +509,8 @@ msgstr ""
 msgid "Please double-check all the data and your network setup."
 msgstr ""
 
+#. Show process view
+#. Get auto setup JSON
 #: ../gecosws_config_assistant/controller/AutoSetupController.py:249
 msgid "Please wait"
 msgstr ""
@@ -620,148 +626,149 @@ msgstr ""
 msgid "Can't connect to Active Directory server!"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:244
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:241
 msgid "Please double-check all the data and yournetwork setup."
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:259
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:256
 msgid "The GECOS workstation name field is empty!"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:277
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:274
 msgid "You must select an OU!"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:293
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:290
 msgid "Can't obtain data from OU!"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:295
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:292
 msgid "Please double check the selected OU."
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:309
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:306
 msgid "The GECOS workstation name already exist!"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:311
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:308
 msgid "Please choose a different name."
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:405
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:402
 msgid "Link to Chef"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:406
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:403
 msgid "Register in GECOS CC"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:411
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:435
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:447
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:682
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:866
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:907
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:942
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:954
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:967
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:977
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:1024
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:1036
-msgid "IN PROCESS"
-msgstr ""
-
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:408
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:432
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:444
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:679
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:863
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:904
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:909
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:939
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:951
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:964
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:974
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:1021
 #: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:1033
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:1038
+msgid "IN PROCESS"
+msgstr ""
+
+#. We don't need any certificate to unlink from Chef or GECOS CC
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:429
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:441
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:676
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:860
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:901
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:906
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:948
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:961
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:971
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:1018
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:1030
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:1035
 msgid "DONE"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:480
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:477
 msgid "There was an error while getting the client certificate"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:493
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:490
 msgid "There was an error while saving the client certificate"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:636
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:633
 msgid "Can't connect to GEMs repository!"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:650
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:647
 msgid "There was an error while adding the GEMs repository:\n"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:671
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:668
 msgid "There was an error while installing a required GEM: "
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:778
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:775
 msgid "Can't connect to Chef Server!"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:808
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:805
 msgid "Can't create/modify /etc/chef/client.rb file"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:831
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:828
 msgid "Can't link to chef server!"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:855
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:852
 msgid "Can't create/modify /etc/chef.control file"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:876
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:873
 msgid "Can't register the computer in GECOS CC"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:896
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:893
 msgid "Can't save /etc/gcc.control file"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:931
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:928
 msgid "Local disconnection done!"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:936
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:933
 msgid "Unlink from Chef"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:937
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:934
 msgid "Unregister from GECOS CC"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:989
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:986
 msgid "Can't unregister the computer from GECOS CC"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:1000
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:997
 msgid "Can't remove /etc/chef.control file"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:1008
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:1005
 msgid "Can't remove /etc/chef/client.pem file"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:1017
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:1014
 msgid "Can't delete Chef node"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:1029
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:1026
 msgid "Can't remove /etc/gcc.control file"
 msgstr ""
 
-#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:1062
+#: ../gecosws_config_assistant/controller/ConnectWithGecosCCController.py:1059
 msgid "Can't get OUs from GECOS Control Center"
 msgstr ""

@@ -42,7 +42,8 @@ class WorkstationData(object):
 
     def set_node_name(self, value):
         ''' Setter node name '''
-
+        if isinstance(value, bytes):
+            value = str(value, "utf-8")
         self.__node_name = value
 
     def get_name(self):
@@ -57,13 +58,15 @@ class WorkstationData(object):
 
     def set_name(self, value):
         ''' Setter name workstation '''
-
+        if isinstance(value, bytes):
+            value = str(value, "utf-8")
         self.__name = value
 
     def set_ou(self, value):
         ''' Setter OU '''
-
-        self.__ou = value
+        if isinstance(value, bytes):
+            value = str(value, "utf-8")
+        self.__ou = value 
 
 
     name = property(

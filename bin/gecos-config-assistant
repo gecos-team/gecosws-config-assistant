@@ -83,13 +83,13 @@ def redirect_to_log_file():
 		if not os.path.exists(dirname):
 			os.makedirs(dirname)
 		
-		buf = file(path, "a", 0)
-	except IOError, err:
+		buf = open(path, "a")
+	except IOError as err:
 		return
 	
 	sys.stderr = buf
 	sys.stdout = buf
-	print "#################################################"
+	print ("#################################################")
     
 def show_splash():
     from gecosws_config_assistant.view.SplashScreen import SplashScreen

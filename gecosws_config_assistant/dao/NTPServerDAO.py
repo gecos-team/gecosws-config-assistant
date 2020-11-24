@@ -145,7 +145,7 @@ class NTPServerDAO(object):
             template.destination = self.data_file
             template.owner = 'root'
             template.group = 'root'
-            template.mode = 00644
+            template.mode = 0o00644
             template.variables = { 'ntp_server':  ntp_server.get_address()}
 
             return template.save()
