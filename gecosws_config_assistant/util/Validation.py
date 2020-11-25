@@ -85,7 +85,7 @@ class Validation(object):
             return False
 
         try:
-            asciiText = text.encode('ascii')
+            asciiText = text.encode('ascii').decode('ascii')
 
             return asciiText == text
 

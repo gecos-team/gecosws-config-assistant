@@ -54,7 +54,7 @@ msgstr "Aceptar "
 
 #: ../data/glade/localuserpopup.glade:6
 msgid "Add local user"
-msgstr "A&ntilde;adir usuario local"
+msgstr "Añadir usuario local"
 
 #: ../data/glade/users.glade:167
 msgid "Authentication Method Setup"

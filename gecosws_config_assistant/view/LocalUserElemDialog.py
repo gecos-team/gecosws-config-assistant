@@ -175,6 +175,17 @@ class LocalUserElemDialog(GladeWindow):
         self.logger.debug("cancel")
         self.dialog.destroy()
 
+    def focusLoginField(self):
+        ''' Focus the login field '''
+        self.loginEntry.grab_focus()
+
+    def focusNameField(self):
+        ''' Focus the name field '''
+        self.nameEntry.grab_focus()
+
+    def focusPasswordField(self):
+        ''' Focus the password field '''
+        self.passwordEntry.grab_focus()
 
     data = property(
         get_data,

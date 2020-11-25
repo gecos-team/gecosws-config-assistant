@@ -25,6 +25,7 @@ __license__ = "GPL-2"
 import logging
 import pwd
 import subprocess
+import time
 
 from gecosws_config_assistant.dto.LocalUser import LocalUser
 
@@ -53,6 +54,7 @@ class LocalUserDAO(object):
         ''' Loading all users '''
 
         self.logger.debug('loadAll - BEGIN')
+        time.sleep(0.5)
         users = []
         usernames = []
 
@@ -76,6 +78,7 @@ class LocalUserDAO(object):
             users.append(lu)
             usernames.append(user.pw_name)
 
+        self.logger.debug('loadAll - END: users={}'.format(users))
         return users
 
     def existsUser(self, local_user):
@@ -119,12 +122,14 @@ class LocalUserDAO(object):
                 stderr=subprocess.STDOUT
             )
 
-            p.stdin.write("%s\n"%(local_user.get_password()))
-            p.stdin.write("%s\n"%(local_user.get_password()))
+            p.stdin.write(("%s\n"%(local_user.get_password())).encode('ascii'))
+            p.stdin.flush()
+            p.stdin.write(("%s\n"%(local_user.get_password())).encode('ascii'))
+            p.stdin.flush()
 
             for line in p.stdout.readlines():
                 line = line.strip()
-                self.logger.debug(line)
+                self.logger.debug(line.decode('utf-8'))
 
             retval = p.wait()
             if retval != 0:
@@ -167,10 +172,13 @@ class LocalUserDAO(object):
                 stderr=subprocess.STDOUT
             )
 
-            p.stdin.write("%s\n"%(local_user.get_password()))
-            p.stdin.write("%s\n"%(local_user.get_password()))
+            p.stdin.write(("%s\n"%(local_user.get_password())).encode('ascii'))
+            p.stdin.flush()
+            p.stdin.write(("%s\n"%(local_user.get_password())).encode('ascii'))
+            p.stdin.flush()
+
             for line in p.stdout.readlines():
-                self.logger.debug(line)
+                self.logger.debug(line.decode('utf-8'))
                 line = line.strip()
 
             retval = p.wait()

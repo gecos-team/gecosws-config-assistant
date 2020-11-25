@@ -91,7 +91,7 @@ class LogTerminalDialog(GladeWindow):
         ''' Update terminal '''
 
         self.textBuffer.insert_at_cursor(
-            self.non_block_read(self.sub_proc.stdout))
+            self.non_block_read(self.sub_proc.stdout).decode("utf-8"))
         return self.sub_proc.poll() is None
 
     def extractGUIElements(self):

@@ -80,6 +80,9 @@ class LocalUser(object):
 
         return True
 
+    def __str__(self):
+        return self.get_login()
+
     login = property(
         get_login,
         set_login,
