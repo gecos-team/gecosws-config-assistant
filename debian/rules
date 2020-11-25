@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 export DH_VERBOSE=1
-export PYTHONPYCACHEPREFIX="/tmp/.cache/cpython/"
+export PYTHONDONTWRITEBYTECODE=y
 export PYBUILD_INSTALL_ARGS_python3=--install-lib=/usr/lib/python3/dist-packages
 
 %:
