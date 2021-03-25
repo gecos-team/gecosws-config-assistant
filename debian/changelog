@@ -1,3 +1,9 @@
+gecosws-config-assistant (2.3.1-3gecos1) bionic; urgency=medium
+
+  * Remove "ad_gpo_map_interactive = +mdm, +polkit-1" from sssd.conf
+
+ -- Gecos Team <gecos@guadalinex.org>  Wed, 24 Mar 2020 12:30:00 +0100
+
 gecosws-config-assistant (2.3.1-2gecos1) bionic; urgency=medium
 
   * Disable GECOS server SSL certificate validation when needed

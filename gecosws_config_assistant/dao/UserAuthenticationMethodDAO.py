@@ -640,11 +640,11 @@ class UserAuthenticationMethodDAO(object):
                 return False
 
         extra_conf_lines = ''
-        if self.sssd_version is not None:
-            major, minor, _ = self.pm.parse_version_number(self.sssd_version)
+        #if self.sssd_version is not None:
+        #    major, minor, _ = self.pm.parse_version_number(self.sssd_version)
 
-            if major > 1 or (major == 1 and minor > 11):
-                extra_conf_lines = 'ad_gpo_map_interactive = +mdm, +polkit-1'
+        #    if major > 1 or (major == 1 and minor > 11):
+        #        extra_conf_lines = 'ad_gpo_map_interactive = +mdm, +polkit-1'
 
         self.logger.debug('Save /etc/sssd/sssd.conf file')
         # Save /etc/samba/sssd.conf file
