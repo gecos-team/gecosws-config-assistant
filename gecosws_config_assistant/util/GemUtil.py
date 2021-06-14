@@ -144,26 +144,25 @@ class GemUtil(object):
     def install_gem(self, gem_name):
         ''' Installing gem '''
 
-        if not self.rubyEmbeddedInChef:
-            # Try to install the GEM by using the package manager
-            package_name = gem_name
-            if not package_name.startswith('ruby-'):
-                package_name = 'ruby-{}'.format(package_name)
+        # Try to install the GEM by using the package manager
+        package_name = gem_name
+        if not package_name.startswith('ruby-'):
+            package_name = 'ruby-{}'.format(package_name)
 
-            if (
-                self.pm.exists_package(package_name) and
-                not self.pm.is_package_installed(package_name)
-            ):
-                self.pm.install_package(package_name)
+        if (
+            self.pm.exists_package(package_name) and
+            not self.pm.is_package_installed(package_name)
+        ):
+            self.pm.install_package(package_name)
 
-            if self.is_gem_intalled(gem_name):
-                # GEM installed successfully by using the package manager
-                return True
+        if self.is_gem_intalled(gem_name):
+            # GEM installed successfully by using the package manager
+            return True
 
-            # GEM is not installed successfully
-            if not self.pm.is_package_installed('build-essential'):
-                # We will need 'build-essential' package to build GEMs
-                self.pm.install_package('build-essential')
+        # GEM is not installed successfully
+        if not self.pm.is_package_installed('build-essential'):
+            # We will need 'build-essential' package to build GEMs
+            self.pm.install_package('build-essential')
 
         return self.commandUtil.execute_command(
             '{} install "{}"'.format(self.command, gem_name),
