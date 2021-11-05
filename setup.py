@@ -264,10 +264,10 @@ class Check(Command):
 
 DistUtilsExtra.auto.setup(
     name='gecosws-config-assistant',
-    version='2.3',
+    version='2.4',
     license='GPL-2',
     author='GECOS Team',
-    author_email='gecos@guadalinex.org',
+    author_email='gecos@juntadeandalucia.es',
     description='Configuration assistant for helping to connect a GECOS' \
                 'workstation to different services',
     url='https://github.com/gecos-team/gecosws-config-assistant',
