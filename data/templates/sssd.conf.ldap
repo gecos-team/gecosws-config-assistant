@@ -11,6 +11,8 @@ debug_level = 0
 # La enumeracion no esta recomendada en entornos con muchos usuarios
 enumerate = false
 cache_credentials = true
+default_shell = /bin/bash
+override_shell = /bin/bash
 
 id_provider = ldap
 auth_provider = ldap

@@ -11,6 +11,8 @@ debug_level = 0
 # La enumeracion no esta recomendada en entornos con muchos usuarios
 cache_credentials=true
 enumerate = false
+default_shell = /bin/bash
+override_shell = /bin/bash
 
 ${extra_conf_lines}
 
